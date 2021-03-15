@@ -15,7 +15,6 @@
 		AF043A2523B3DADB00C43ED7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
 		AF043A3023B3DADB00C43ED7 /* bVNCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A2F23B3DADB00C43ED7 /* bVNCTests.swift */; };
 		AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */; };
-		AF130CB225FA88160085C2E8 /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
 		AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
 		AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
 		AF30D196253396EF00BA7A62 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
@@ -42,6 +41,173 @@
 		AF30D1AD253396EF00BA7A62 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
 		AF30D1AE253396EF00BA7A62 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
 		AF30D1AF253396EF00BA7A62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
+		AF44C9C42601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AF44C9C52601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AF44C9C62601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9CF260128A000DAA44B /* SpiceBridge.c */; };
+		AF44CD1C260184A000DAA44B /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
+		AF44CD7D26018ABF00DAA44B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF4825C923B479ED00826395 /* AudioToolbox.framework */; };
+		AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDE260180D000DAA44B /* libgstaudio-1.0.a */; };
+		AF44CDBF260197FA00DAA44B /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC19260180DD00DAA44B /* libbz2.a */; };
+		AF44CDC0260197FA00DAA44B /* libcairo-gobject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFC260180D600DAA44B /* libcairo-gobject.a */; };
+		AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD9260180CF00DAA44B /* libcairo-script-interpreter.a */; };
+		AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC06260180D800DAA44B /* libcairo.a */; };
+		AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF2260180D500DAA44B /* libcharset.a */; };
+		AF44CDC4260197FA00DAA44B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC14260180DC00DAA44B /* libcrypto.a */; };
+		AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC17260180DD00DAA44B /* libdv.a */; };
+		AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFB260180D600DAA44B /* libexpat.a */; };
+		AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0F260180DB00DAA44B /* libffi.a */; };
+		AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD6260180CE00DAA44B /* libFLAC.a */; };
+		AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC04260180D800DAA44B /* libfontconfig.a */; };
+		AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC01260180D700DAA44B /* libfreetype.a */; };
+		AF44CDCB260197FA00DAA44B /* libfribidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC05260180D800DAA44B /* libfribidi.a */; };
+		AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD0260180CD00DAA44B /* libgdk_pixbuf-2.0.a */; };
+		AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDC260180D000DAA44B /* libgio-2.0.a */; };
+		AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC10260180DB00DAA44B /* libglib-2.0.a */; };
+		AF44CDCF260197FA00DAA44B /* libgmodule-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC07260180D800DAA44B /* libgmodule-2.0.a */; };
+		AF44CDD0260197FA00DAA44B /* libgobject-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD2260180CE00DAA44B /* libgobject-2.0.a */; };
+		AF44CDD1260197FA00DAA44B /* libgraphene-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD8260180CF00DAA44B /* libgraphene-1.0.a */; };
+		AF44CDD2260197FA00DAA44B /* libgstallocators-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD1260180CD00DAA44B /* libgstallocators-1.0.a */; };
+		AF44CDD3260197FA00DAA44B /* libgstapp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD3260180CE00DAA44B /* libgstapp-1.0.a */; };
+		AF44CDD4260197FA00DAA44B /* libgstbase-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFE260180D600DAA44B /* libgstbase-1.0.a */; };
+		AF44CDD5260197FA00DAA44B /* libgstcheck-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDA260180CF00DAA44B /* libgstcheck-1.0.a */; };
+		AF44CDD6260197FA00DAA44B /* libgstcontroller-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEE260180D400DAA44B /* libgstcontroller-1.0.a */; };
+		AF44CDD7260197FA00DAA44B /* libgstfft-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC09260180D900DAA44B /* libgstfft-1.0.a */; };
+		AF44CDD8260197FA00DAA44B /* libgstnet-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEF260180D400DAA44B /* libgstnet-1.0.a */; };
+		AF44CDD9260197FA00DAA44B /* libgstpbutils-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE8260180D200DAA44B /* libgstpbutils-1.0.a */; };
+		AF44CDDA260197FA00DAA44B /* libgstreamer-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFF260180D700DAA44B /* libgstreamer-1.0.a */; };
+		AF44CDDB260197FA00DAA44B /* libgstriff-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE7260180D200DAA44B /* libgstriff-1.0.a */; };
+		AF44CDDC260197FA00DAA44B /* libgstrtp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF9260180D500DAA44B /* libgstrtp-1.0.a */; };
+		AF44CDDD260197FA00DAA44B /* libgstrtsp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFA260180D500DAA44B /* libgstrtsp-1.0.a */; };
+		AF44CDDE260197FA00DAA44B /* libgstsdp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC08260180D900DAA44B /* libgstsdp-1.0.a */; };
+		AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE1260180D100DAA44B /* libgsttag-1.0.a */; };
+		AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEC260180D300DAA44B /* libgstvideo-1.0.a */; };
+		AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE4260180D200DAA44B /* libgthread-2.0.a */; };
+		AF44CDE2260197FA00DAA44B /* libharfbuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE6260180D200DAA44B /* libharfbuzz.a */; };
+		AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE0260180D100DAA44B /* libintl.a */; };
+		AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC18260180DD00DAA44B /* libjpeg.a */; };
+		AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC00260180D700DAA44B /* libjson-glib-1.0.a */; };
+		AF44CDE7260197FA00DAA44B /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE3260180D100DAA44B /* libmp3lame.a */; };
+		AF44CDE8260197FA00DAA44B /* libmpg123.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEA260180D300DAA44B /* libmpg123.a */; };
+		AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC03260180D800DAA44B /* libogg.a */; };
+		AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD7260180CF00DAA44B /* libopus.a */; };
+		AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEB260180D300DAA44B /* liborc-0.4.a */; };
+		AF44CDEC260197FA00DAA44B /* libpango-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC12260180DB00DAA44B /* libpango-1.0.a */; };
+		AF44CDED260197FA00DAA44B /* libpangocairo-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC15260180DC00DAA44B /* libpangocairo-1.0.a */; };
+		AF44CDEE260197FA00DAA44B /* libpangoft2-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0C260180DA00DAA44B /* libpangoft2-1.0.a */; };
+		AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFD260180D600DAA44B /* libpixman-1.a */; };
+		AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0A260180D900DAA44B /* libpng16.a */; };
+		AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD4260180CE00DAA44B /* libpsl.a */; };
+		AF44CDF2260197FA00DAA44B /* libsoup-2.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBED260180D400DAA44B /* libsoup-2.4.a */; };
+		AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDB260180D000DAA44B /* libspeex.a */; };
+		AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE9260180D300DAA44B /* libspice-client-glib-2.0.a */; };
+		AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC02260180D700DAA44B /* libspiceglue.a */; };
+		AF44CDF6260197FA00DAA44B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0B260180DA00DAA44B /* libssl.a */; };
+		AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF1260180D400DAA44B /* libtag.a */; };
+		AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD5260180CE00DAA44B /* libtheora.a */; };
+		AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC11260180DB00DAA44B /* libtheoradec.a */; };
+		AF44CDFA260197FA00DAA44B /* libtheoraenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDD260180D000DAA44B /* libtheoraenc.a */; };
+		AF44CDFB260197FA00DAA44B /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE5260180D200DAA44B /* libtiff.a */; };
+		AF44CDFC260197FA00DAA44B /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF0260180D400DAA44B /* libvorbis.a */; };
+		AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDF260180D100DAA44B /* libvorbisenc.a */; };
+		AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC13260180DC00DAA44B /* libvorbisfile.a */; };
+		AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF8260180D500DAA44B /* libvorbisidec.a */; };
+		AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0D260180DA00DAA44B /* libvpx.a */; };
+		AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC16260180DD00DAA44B /* libwavpack.a */; };
+		AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0E260180DA00DAA44B /* libxml2.a */; };
+		AF44CE03260197FA00DAA44B /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC1A260180DD00DAA44B /* libz.a */; };
+		AF44CE6F2601A16600DAA44B /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CE6E2601A16600DAA44B /* libiconv.a */; };
+		AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE5260180A600DAA44B /* libgstadder.a */; };
+		AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEF260180A700DAA44B /* libgstalaw.a */; };
+		AF44CE9A2601A32B00DAA44B /* libgstalpha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE8260180A700DAA44B /* libgstalpha.a */; };
+		AF44CE9B2601A32B00DAA44B /* libgstalphacolor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD1260180A300DAA44B /* libgstalphacolor.a */; };
+		AF44CE9C2601A32B00DAA44B /* libgstapetag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD6260180A300DAA44B /* libgstapetag.a */; };
+		AF44CE9D2601A32B00DAA44B /* libgstapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB72601809F00DAA44B /* libgstapp.a */; };
+		AF44CE9E2601A32B00DAA44B /* libgstaudioconvert.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB9260180A000DAA44B /* libgstaudioconvert.a */; };
+		AF44CE9F2601A32B00DAA44B /* libgstaudiofx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA982601809700DAA44B /* libgstaudiofx.a */; };
+		AF44CEA02601A32B00DAA44B /* libgstaudiomixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB12601809E00DAA44B /* libgstaudiomixer.a */; };
+		AF44CEA12601A32B00DAA44B /* libgstaudioparsers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7E2601809400DAA44B /* libgstaudioparsers.a */; };
+		AF44CEA22601A32B00DAA44B /* libgstaudiorate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8E2601809600DAA44B /* libgstaudiorate.a */; };
+		AF44CEA32601A32B00DAA44B /* libgstaudioresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB09260180AB00DAA44B /* libgstaudioresample.a */; };
+		AF44CEA42601A32B00DAA44B /* libgstaudiotestsrc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD0260180A300DAA44B /* libgstaudiotestsrc.a */; };
+		AF44CEA52601A32B00DAA44B /* libgstauparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7D2601809400DAA44B /* libgstauparse.a */; };
+		AF44CEA62601A32B00DAA44B /* libgstautodetect.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAA62601809900DAA44B /* libgstautodetect.a */; };
+		AF44CEA72601A32B00DAA44B /* libgstavi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB52601809F00DAA44B /* libgstavi.a */; };
+		AF44CEA82601A32B00DAA44B /* libgstcairo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8C2601809600DAA44B /* libgstcairo.a */; };
+		AF44CEA92601A32B00DAA44B /* libgstcompositor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB15260180AD00DAA44B /* libgstcompositor.a */; };
+		AF44CEAA2601A32B00DAA44B /* libgstcoreelements.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAA2601809E00DAA44B /* libgstcoreelements.a */; };
+		AF44CEAB2601A32B00DAA44B /* libgstcoretracers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA782601809300DAA44B /* libgstcoretracers.a */; };
+		AF44CEAC2601A32B00DAA44B /* libgstcutter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEB260180A700DAA44B /* libgstcutter.a */; };
+		AF44CEAD2601A32B00DAA44B /* libgstdebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB11260180AC00DAA44B /* libgstdebug.a */; };
+		AF44CEAE2601A32B00DAA44B /* libgstdtmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF2260180A800DAA44B /* libgstdtmf.a */; };
+		AF44CEAF2601A32B00DAA44B /* libgstdv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAF2601809E00DAA44B /* libgstdv.a */; };
+		AF44CEB02601A32B00DAA44B /* libgsteffectv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB05260180AB00DAA44B /* libgsteffectv.a */; };
+		AF44CEB12601A32B00DAA44B /* libgstencoding.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA852601809500DAA44B /* libgstencoding.a */; };
+		AF44CEB22601A32B00DAA44B /* libgstequalizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC6260180A100DAA44B /* libgstequalizer.a */; };
+		AF44CEB32601A32B00DAA44B /* libgstflac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAB2601809E00DAA44B /* libgstflac.a */; };
+		AF44CEB42601A32B00DAA44B /* libgstflv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB0A260180AB00DAA44B /* libgstflv.a */; };
+		AF44CEB52601A32B00DAA44B /* libgstflxdec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACC260180A200DAA44B /* libgstflxdec.a */; };
+		AF44CEB62601A32B00DAA44B /* libgstgdkpixbuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE1260180A500DAA44B /* libgstgdkpixbuf.a */; };
+		AF44CEB72601A32B00DAA44B /* libgstgio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAE2601809E00DAA44B /* libgstgio.a */; };
+		AF44CEB82601A32B00DAA44B /* libgstgoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB20260180AE00DAA44B /* libgstgoom.a */; };
+		AF44CEB92601A32B00DAA44B /* libgstgoom2k1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB13260180AD00DAA44B /* libgstgoom2k1.a */; };
+		AF44CEBA2601A32B00DAA44B /* libgsticydemux.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACB260180A200DAA44B /* libgsticydemux.a */; };
+		AF44CEBB2601A32B00DAA44B /* libgstid3demux.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB42601809F00DAA44B /* libgstid3demux.a */; };
+		AF44CEBC2601A32B00DAA44B /* libgstimagefreeze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABF260180A000DAA44B /* libgstimagefreeze.a */; };
+		AF44CEBD2601A32B00DAA44B /* libgstinterleave.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEC260180A700DAA44B /* libgstinterleave.a */; };
+		AF44CEBE2601A32B00DAA44B /* libgstisomp4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA992601809700DAA44B /* libgstisomp4.a */; };
+		AF44CEBF2601A32B00DAA44B /* libgstivorbisdec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACD260180A200DAA44B /* libgstivorbisdec.a */; };
+		AF44CEC02601A32B00DAA44B /* libgstjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAED260180A700DAA44B /* libgstjpeg.a */; };
+		AF44CEC12601A32B00DAA44B /* libgstlame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAA22601809900DAA44B /* libgstlame.a */; };
+		AF44CEC22601A32B00DAA44B /* libgstlevel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8F2601809600DAA44B /* libgstlevel.a */; };
+		AF44CEC32601A32B00DAA44B /* libgstmatroska.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC8260180A100DAA44B /* libgstmatroska.a */; };
+		AF44CEC42601A32B00DAA44B /* libgstmpg123.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC3260180A100DAA44B /* libgstmpg123.a */; };
+		AF44CEC52601A32B00DAA44B /* libgstmulaw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8A2601809500DAA44B /* libgstmulaw.a */; };
+		AF44CEC62601A32B00DAA44B /* libgstmultifile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB02601809E00DAA44B /* libgstmultifile.a */; };
+		AF44CEC72601A32B00DAA44B /* libgstmultipart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1A260180AE00DAA44B /* libgstmultipart.a */; };
+		AF44CEC82601A32B00DAA44B /* libgstogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA862601809500DAA44B /* libgstogg.a */; };
+		AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD9260180A400DAA44B /* libgstopus.a */; };
+		AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CADC260180A500DAA44B /* libgstosxaudio.a */; };
+		AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFD260180A900DAA44B /* libgstoverlaycomposition.a */; };
+		AF44CECC2601A32B00DAA44B /* libgstpango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9B2601809700DAA44B /* libgstpango.a */; };
+		AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB02260180AA00DAA44B /* libgstplayback.a */; };
+		AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1C260180AE00DAA44B /* libgstpng.a */; };
+		AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF3260180A800DAA44B /* libgstrawparse.a */; };
+		AF44CED02601A32B00DAA44B /* libgstreplaygain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC7260180A100DAA44B /* libgstreplaygain.a */; };
+		AF44CED12601A32B00DAA44B /* libgstrtp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB22601809F00DAA44B /* libgstrtp.a */; };
+		AF44CED22601A32B00DAA44B /* libgstrtpmanager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE0260180A500DAA44B /* libgstrtpmanager.a */; };
+		AF44CED32601A32B00DAA44B /* libgstrtsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7A2601809300DAA44B /* libgstrtsp.a */; };
+		AF44CED42601A32B00DAA44B /* libgstshapewipe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEA260180A700DAA44B /* libgstshapewipe.a */; };
+		AF44CED52601A32B00DAA44B /* libgstsmpte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC9260180A200DAA44B /* libgstsmpte.a */; };
+		AF44CED62601A32B00DAA44B /* libgstsoup.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABD260180A000DAA44B /* libgstsoup.a */; };
+		AF44CED72601A32B00DAA44B /* libgstspectrum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD4260180A300DAA44B /* libgstspectrum.a */; };
+		AF44CED82601A32B00DAA44B /* libgstspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1D260180AE00DAA44B /* libgstspeex.a */; };
+		AF44CED92601A32B00DAA44B /* libgstsubparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9C2601809800DAA44B /* libgstsubparse.a */; };
+		AF44CEDA2601A32B00DAA44B /* libgsttaglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9D2601809800DAA44B /* libgsttaglib.a */; };
+		AF44CEDB2601A32B00DAA44B /* libgsttcp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CADB260180A400DAA44B /* libgsttcp.a */; };
+		AF44CEDC2601A32B00DAA44B /* libgsttheora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB10260180AC00DAA44B /* libgsttheora.a */; };
+		AF44CEDD2601A32B00DAA44B /* libgsttypefindfunctions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA882601809500DAA44B /* libgsttypefindfunctions.a */; };
+		AF44CEDE2601A32B00DAA44B /* libgstudp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF0260180A800DAA44B /* libgstudp.a */; };
+		AF44CEDF2601A32B00DAA44B /* libgstvideobox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE2260180A600DAA44B /* libgstvideobox.a */; };
+		AF44CEE02601A32B00DAA44B /* libgstvideoconvert.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABE260180A000DAA44B /* libgstvideoconvert.a */; };
+		AF44CEE12601A32B00DAA44B /* libgstvideocrop.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE4260180A600DAA44B /* libgstvideocrop.a */; };
+		AF44CEE22601A32B00DAA44B /* libgstvideofilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC5260180A100DAA44B /* libgstvideofilter.a */; };
+		AF44CEE32601A32B00DAA44B /* libgstvideomixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB19260180AD00DAA44B /* libgstvideomixer.a */; };
+		AF44CEE42601A32B00DAA44B /* libgstvideorate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFC260180A900DAA44B /* libgstvideorate.a */; };
+		AF44CEE52601A32B00DAA44B /* libgstvideoscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAC2601809E00DAA44B /* libgstvideoscale.a */; };
+		AF44CEE62601A32B00DAA44B /* libgstvideotestsrc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7C2601809400DAA44B /* libgstvideotestsrc.a */; };
+		AF44CEE72601A32B00DAA44B /* libgstvolume.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA772601809300DAA44B /* libgstvolume.a */; };
+		AF44CEE82601A32B00DAA44B /* libgstvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA822601809400DAA44B /* libgstvorbis.a */; };
+		AF44CEE92601A32B00DAA44B /* libgstwavenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFE260180AA00DAA44B /* libgstwavenc.a */; };
+		AF44CEEA2601A32B00DAA44B /* libgstwavpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA962601809700DAA44B /* libgstwavpack.a */; };
+		AF44CEEB2601A32B00DAA44B /* libgstwavparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA972601809700DAA44B /* libgstwavparse.a */; };
+		AF44CEEC2601A32B00DAA44B /* libgsty4menc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB07260180AB00DAA44B /* libgsty4menc.a */; };
+		AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */; };
+		AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
+		AF44CF37260259A300DAA44B /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
+		AF44CF4226025A8200DAA44B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB2C90626001FF900E2859F /* libz.tbd */; };
 		AF48283223B47EC300826395 /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
 		AF51B3002410BAED005DE8AB /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
 		AF53DCB124022C8C00569F19 /* VncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB024022C8C00569F19 /* VncSession.swift */; };
@@ -54,8 +220,34 @@
 		AF9E8F932427F3B500752FC2 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
 		AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AF9E8F99242AE4E900752FC2 /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
+		AFB2C8C125FFCEC000E2859F /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
+		AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
+		AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
+		AFB2C8D326001F4D00E2859F /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
+		AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
+		AFB2C8D526001F4D00E2859F /* VncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB024022C8C00569F19 /* VncSession.swift */; };
+		AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
+		AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
+		AFB2C8D826001F4D00E2859F /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
+		AFB2C8D926001F4D00E2859F /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		AFB2C8DA26001F4D00E2859F /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
+		AFB2C8DB26001F4D00E2859F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
+		AFB2C8DC26001F4D00E2859F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
+		AFB2C8DD26001F4D00E2859F /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
+		AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
+		AFB2C8DF26001F4D00E2859F /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
+		AFB2C8E026001F4D00E2859F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
+		AFB2C8E126001F4D00E2859F /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
+		AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
+		AFB2C8E426001F4D00E2859F /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
+		AFB2C8EB26001F4D00E2859F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
+		AFB2C8EC26001F4D00E2859F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
+		AFB2C8ED26001F4D00E2859F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
+		AFB2C8EE26001F4D00E2859F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
+		AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
 		AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
-		AFE02553260E51C4005E851E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE02552260E51C4005E851E /* libz.tbd */; };
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
@@ -542,9 +734,20 @@
 		AF9E8F96242AE02D00752FC2 /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AF9E8F97242AE4BB00752FC2 /* SystemMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemMonitor.h; sourceTree = "<group>"; };
 		AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemMonitor.m; sourceTree = "<group>"; };
+		AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSession.swift; sourceTree = "<group>"; };
+		AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpiceSession.swift; sourceTree = "<group>"; };
+		AFB2C8F326001F4D00E2859F /* aSPICE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aSPICE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFB2C8F926001F5800E2859F /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "/Users/iiordanov/software/remote-desktop-clients/ios/bVNC/aSPICE-Info.plist"; sourceTree = "<absolute>"; };
+		AFB2C90626001FF900E2859F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		AFB2C91E2600210B00E2859F /* spicelib_no_jpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib_no_jpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/spicelib_no_jpeg.a"; sourceTree = "<group>"; };
+		AFB2C9252600217F00E2859F /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		AFB2C9A32600273800E2859F /* aSPICE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE copy-Info.plist"; path = "/Users/iiordanov/software/remote-desktop-clients/ios/bVNC/aSPICE copy-Info.plist"; sourceTree = "<absolute>"; };
+		AFB2CA3126002A5F00E2859F /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.2.tbd; sourceTree = DEVELOPER_DIR; };
+		AFB2CA3E26002A9B00E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/libs_combined/lib/libjpeg.a; sourceTree = "<group>"; };
+		AFB2CA6626002B8700E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libjpeg.a"; sourceTree = "<group>"; };
+		AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.2.dylib"; sourceTree = "<group>"; };
 		AFBBBD7924C3C6CD00F64E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringKey.swift; sourceTree = "<group>"; };
-		AFE02552260E51C4005E851E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalKeyboardHandler.swift; sourceTree = "<group>"; };
 		AFE7B0BF243A316900275C3A /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined/lib/libvncclient.a; sourceTree = "<group>"; };
 		AFECDF212439D9C6000E1E9A /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined/lib/libssh2.a; sourceTree = "<group>"; };
@@ -560,8 +763,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFE02553260E51C4005E851E /* libz.tbd in Frameworks */,
-				AF130CB225FA88160085C2E8 /* superlib.a in Frameworks */,
+				AF44CF4226025A8200DAA44B /* libz.tbd in Frameworks */,
+				AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +790,170 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFB2C8E526001F4D00E2859F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
+				AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */,
+				AF44CE9A2601A32B00DAA44B /* libgstalpha.a in Frameworks */,
+				AF44CE9B2601A32B00DAA44B /* libgstalphacolor.a in Frameworks */,
+				AF44CE9C2601A32B00DAA44B /* libgstapetag.a in Frameworks */,
+				AF44CE9D2601A32B00DAA44B /* libgstapp.a in Frameworks */,
+				AF44CE9E2601A32B00DAA44B /* libgstaudioconvert.a in Frameworks */,
+				AF44CE9F2601A32B00DAA44B /* libgstaudiofx.a in Frameworks */,
+				AF44CEA02601A32B00DAA44B /* libgstaudiomixer.a in Frameworks */,
+				AF44CEA12601A32B00DAA44B /* libgstaudioparsers.a in Frameworks */,
+				AF44CEA22601A32B00DAA44B /* libgstaudiorate.a in Frameworks */,
+				AF44CEA32601A32B00DAA44B /* libgstaudioresample.a in Frameworks */,
+				AF44CEA42601A32B00DAA44B /* libgstaudiotestsrc.a in Frameworks */,
+				AF44CEA52601A32B00DAA44B /* libgstauparse.a in Frameworks */,
+				AF44CEA62601A32B00DAA44B /* libgstautodetect.a in Frameworks */,
+				AF44CEA72601A32B00DAA44B /* libgstavi.a in Frameworks */,
+				AF44CEA82601A32B00DAA44B /* libgstcairo.a in Frameworks */,
+				AF44CEA92601A32B00DAA44B /* libgstcompositor.a in Frameworks */,
+				AF44CEAA2601A32B00DAA44B /* libgstcoreelements.a in Frameworks */,
+				AF44CEAB2601A32B00DAA44B /* libgstcoretracers.a in Frameworks */,
+				AF44CEAC2601A32B00DAA44B /* libgstcutter.a in Frameworks */,
+				AF44CEAD2601A32B00DAA44B /* libgstdebug.a in Frameworks */,
+				AF44CEAE2601A32B00DAA44B /* libgstdtmf.a in Frameworks */,
+				AF44CEAF2601A32B00DAA44B /* libgstdv.a in Frameworks */,
+				AF44CEB02601A32B00DAA44B /* libgsteffectv.a in Frameworks */,
+				AF44CEB12601A32B00DAA44B /* libgstencoding.a in Frameworks */,
+				AF44CEB22601A32B00DAA44B /* libgstequalizer.a in Frameworks */,
+				AF44CEB32601A32B00DAA44B /* libgstflac.a in Frameworks */,
+				AF44CEB42601A32B00DAA44B /* libgstflv.a in Frameworks */,
+				AF44CEB52601A32B00DAA44B /* libgstflxdec.a in Frameworks */,
+				AF44CEB62601A32B00DAA44B /* libgstgdkpixbuf.a in Frameworks */,
+				AF44CEB72601A32B00DAA44B /* libgstgio.a in Frameworks */,
+				AF44CEB82601A32B00DAA44B /* libgstgoom.a in Frameworks */,
+				AF44CEB92601A32B00DAA44B /* libgstgoom2k1.a in Frameworks */,
+				AF44CEBA2601A32B00DAA44B /* libgsticydemux.a in Frameworks */,
+				AF44CEBB2601A32B00DAA44B /* libgstid3demux.a in Frameworks */,
+				AF44CEBC2601A32B00DAA44B /* libgstimagefreeze.a in Frameworks */,
+				AF44CEBD2601A32B00DAA44B /* libgstinterleave.a in Frameworks */,
+				AF44CEBE2601A32B00DAA44B /* libgstisomp4.a in Frameworks */,
+				AF44CEBF2601A32B00DAA44B /* libgstivorbisdec.a in Frameworks */,
+				AF44CEC02601A32B00DAA44B /* libgstjpeg.a in Frameworks */,
+				AF44CEC12601A32B00DAA44B /* libgstlame.a in Frameworks */,
+				AF44CEC22601A32B00DAA44B /* libgstlevel.a in Frameworks */,
+				AF44CEC32601A32B00DAA44B /* libgstmatroska.a in Frameworks */,
+				AF44CEC42601A32B00DAA44B /* libgstmpg123.a in Frameworks */,
+				AF44CEC52601A32B00DAA44B /* libgstmulaw.a in Frameworks */,
+				AF44CEC62601A32B00DAA44B /* libgstmultifile.a in Frameworks */,
+				AF44CEC72601A32B00DAA44B /* libgstmultipart.a in Frameworks */,
+				AF44CEC82601A32B00DAA44B /* libgstogg.a in Frameworks */,
+				AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */,
+				AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */,
+				AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */,
+				AF44CECC2601A32B00DAA44B /* libgstpango.a in Frameworks */,
+				AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */,
+				AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */,
+				AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */,
+				AF44CED02601A32B00DAA44B /* libgstreplaygain.a in Frameworks */,
+				AF44CED12601A32B00DAA44B /* libgstrtp.a in Frameworks */,
+				AF44CED22601A32B00DAA44B /* libgstrtpmanager.a in Frameworks */,
+				AF44CED32601A32B00DAA44B /* libgstrtsp.a in Frameworks */,
+				AF44CED42601A32B00DAA44B /* libgstshapewipe.a in Frameworks */,
+				AF44CED52601A32B00DAA44B /* libgstsmpte.a in Frameworks */,
+				AF44CED62601A32B00DAA44B /* libgstsoup.a in Frameworks */,
+				AF44CED72601A32B00DAA44B /* libgstspectrum.a in Frameworks */,
+				AF44CED82601A32B00DAA44B /* libgstspeex.a in Frameworks */,
+				AF44CED92601A32B00DAA44B /* libgstsubparse.a in Frameworks */,
+				AF44CEDA2601A32B00DAA44B /* libgsttaglib.a in Frameworks */,
+				AF44CEDB2601A32B00DAA44B /* libgsttcp.a in Frameworks */,
+				AF44CEDC2601A32B00DAA44B /* libgsttheora.a in Frameworks */,
+				AF44CEDD2601A32B00DAA44B /* libgsttypefindfunctions.a in Frameworks */,
+				AF44CEDE2601A32B00DAA44B /* libgstudp.a in Frameworks */,
+				AF44CEDF2601A32B00DAA44B /* libgstvideobox.a in Frameworks */,
+				AF44CEE02601A32B00DAA44B /* libgstvideoconvert.a in Frameworks */,
+				AF44CEE12601A32B00DAA44B /* libgstvideocrop.a in Frameworks */,
+				AF44CEE22601A32B00DAA44B /* libgstvideofilter.a in Frameworks */,
+				AF44CEE32601A32B00DAA44B /* libgstvideomixer.a in Frameworks */,
+				AF44CEE42601A32B00DAA44B /* libgstvideorate.a in Frameworks */,
+				AF44CEE52601A32B00DAA44B /* libgstvideoscale.a in Frameworks */,
+				AF44CEE62601A32B00DAA44B /* libgstvideotestsrc.a in Frameworks */,
+				AF44CEE72601A32B00DAA44B /* libgstvolume.a in Frameworks */,
+				AF44CEE82601A32B00DAA44B /* libgstvorbis.a in Frameworks */,
+				AF44CEE92601A32B00DAA44B /* libgstwavenc.a in Frameworks */,
+				AF44CEEA2601A32B00DAA44B /* libgstwavpack.a in Frameworks */,
+				AF44CEEB2601A32B00DAA44B /* libgstwavparse.a in Frameworks */,
+				AF44CEEC2601A32B00DAA44B /* libgsty4menc.a in Frameworks */,
+				AF44CE6F2601A16600DAA44B /* libiconv.a in Frameworks */,
+				AF44CDBF260197FA00DAA44B /* libbz2.a in Frameworks */,
+				AF44CDC0260197FA00DAA44B /* libcairo-gobject.a in Frameworks */,
+				AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */,
+				AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */,
+				AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */,
+				AF44CDC4260197FA00DAA44B /* libcrypto.a in Frameworks */,
+				AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */,
+				AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */,
+				AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */,
+				AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */,
+				AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */,
+				AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */,
+				AF44CDCB260197FA00DAA44B /* libfribidi.a in Frameworks */,
+				AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */,
+				AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */,
+				AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */,
+				AF44CDCF260197FA00DAA44B /* libgmodule-2.0.a in Frameworks */,
+				AF44CDD0260197FA00DAA44B /* libgobject-2.0.a in Frameworks */,
+				AF44CDD1260197FA00DAA44B /* libgraphene-1.0.a in Frameworks */,
+				AF44CDD2260197FA00DAA44B /* libgstallocators-1.0.a in Frameworks */,
+				AF44CDD3260197FA00DAA44B /* libgstapp-1.0.a in Frameworks */,
+				AF44CDD4260197FA00DAA44B /* libgstbase-1.0.a in Frameworks */,
+				AF44CDD5260197FA00DAA44B /* libgstcheck-1.0.a in Frameworks */,
+				AF44CDD6260197FA00DAA44B /* libgstcontroller-1.0.a in Frameworks */,
+				AF44CDD7260197FA00DAA44B /* libgstfft-1.0.a in Frameworks */,
+				AF44CDD8260197FA00DAA44B /* libgstnet-1.0.a in Frameworks */,
+				AF44CDD9260197FA00DAA44B /* libgstpbutils-1.0.a in Frameworks */,
+				AF44CDDA260197FA00DAA44B /* libgstreamer-1.0.a in Frameworks */,
+				AF44CDDB260197FA00DAA44B /* libgstriff-1.0.a in Frameworks */,
+				AF44CDDC260197FA00DAA44B /* libgstrtp-1.0.a in Frameworks */,
+				AF44CDDD260197FA00DAA44B /* libgstrtsp-1.0.a in Frameworks */,
+				AF44CDDE260197FA00DAA44B /* libgstsdp-1.0.a in Frameworks */,
+				AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */,
+				AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */,
+				AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */,
+				AF44CDE2260197FA00DAA44B /* libharfbuzz.a in Frameworks */,
+				AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */,
+				AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */,
+				AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */,
+				AF44CDE7260197FA00DAA44B /* libmp3lame.a in Frameworks */,
+				AF44CDE8260197FA00DAA44B /* libmpg123.a in Frameworks */,
+				AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */,
+				AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */,
+				AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */,
+				AF44CDEC260197FA00DAA44B /* libpango-1.0.a in Frameworks */,
+				AF44CDED260197FA00DAA44B /* libpangocairo-1.0.a in Frameworks */,
+				AF44CDEE260197FA00DAA44B /* libpangoft2-1.0.a in Frameworks */,
+				AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */,
+				AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */,
+				AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */,
+				AF44CDF2260197FA00DAA44B /* libsoup-2.4.a in Frameworks */,
+				AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */,
+				AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */,
+				AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */,
+				AF44CDF6260197FA00DAA44B /* libssl.a in Frameworks */,
+				AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */,
+				AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */,
+				AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */,
+				AF44CDFA260197FA00DAA44B /* libtheoraenc.a in Frameworks */,
+				AF44CDFB260197FA00DAA44B /* libtiff.a in Frameworks */,
+				AF44CDFC260197FA00DAA44B /* libvorbis.a in Frameworks */,
+				AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */,
+				AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */,
+				AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */,
+				AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */,
+				AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */,
+				AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */,
+				AF44CE03260197FA00DAA44B /* libz.a in Frameworks */,
+				AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */,
+				AF44CD1C260184A000DAA44B /* superlib.a in Frameworks */,
+				AF44CD7D26018ABF00DAA44B /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -599,6 +966,7 @@
 				AF043A3923B3DADB00C43ED7 /* bVNCUITests */,
 				AF043A1623B3DADA00C43ED7 /* Products */,
 				AF48247C23B4783500826395 /* Frameworks */,
+				AFB2C9A32600273800E2859F /* aSPICE copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -609,6 +977,7 @@
 				AF043A2B23B3DADB00C43ED7 /* bVNCTests.xctest */,
 				AF043A3623B3DADB00C43ED7 /* bVNCUITests.xctest */,
 				AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */,
+				AFB2C8F326001F4D00E2859F /* aSPICE.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -628,6 +997,7 @@
 				AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */,
 				AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */,
 				AF043A2623B3DADB00C43ED7 /* Info.plist */,
+				AFB2C8F926001F5800E2859F /* aSPICE-Info.plist */,
 				AF48283023B47EC300826395 /* VncBridge.h */,
 				AF48283123B47EC300826395 /* VncBridge.c */,
 				AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */,
@@ -648,6 +1018,13 @@
 				AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */,
 				AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */,
 				AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */,
+				AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */,
+				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
+				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
+				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
+				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
+				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
+				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -689,7 +1066,260 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AFE02552260E51C4005E851E /* libz.tbd */,
+				AF44CE6E2601A16600DAA44B /* libiconv.a */,
+				AF44CD8326018B1B00DAA44B /* GStreamer.framework */,
+				AF44CD152601849100DAA44B /* spicelib.a */,
+				AF44CC762601825200DAA44B /* libgioopenssl.a */,
+				AF44CC752601825200DAA44B /* libgioopenssl.so */,
+				AF44CC19260180DD00DAA44B /* libbz2.a */,
+				AF44CBFC260180D600DAA44B /* libcairo-gobject.a */,
+				AF44CBD9260180CF00DAA44B /* libcairo-script-interpreter.a */,
+				AF44CC06260180D800DAA44B /* libcairo.a */,
+				AF44CBF2260180D500DAA44B /* libcharset.a */,
+				AF44CC14260180DC00DAA44B /* libcrypto.a */,
+				AF44CC17260180DD00DAA44B /* libdv.a */,
+				AF44CBFB260180D600DAA44B /* libexpat.a */,
+				AF44CC0F260180DB00DAA44B /* libffi.a */,
+				AF44CBD6260180CE00DAA44B /* libFLAC.a */,
+				AF44CC04260180D800DAA44B /* libfontconfig.a */,
+				AF44CC01260180D700DAA44B /* libfreetype.a */,
+				AF44CC05260180D800DAA44B /* libfribidi.a */,
+				AF44CBD0260180CD00DAA44B /* libgdk_pixbuf-2.0.a */,
+				AF44CBDC260180D000DAA44B /* libgio-2.0.a */,
+				AF44CC10260180DB00DAA44B /* libglib-2.0.a */,
+				AF44CC07260180D800DAA44B /* libgmodule-2.0.a */,
+				AF44CBD2260180CE00DAA44B /* libgobject-2.0.a */,
+				AF44CBD8260180CF00DAA44B /* libgraphene-1.0.a */,
+				AF44CBD1260180CD00DAA44B /* libgstallocators-1.0.a */,
+				AF44CBD3260180CE00DAA44B /* libgstapp-1.0.a */,
+				AF44CBDE260180D000DAA44B /* libgstaudio-1.0.a */,
+				AF44CBFE260180D600DAA44B /* libgstbase-1.0.a */,
+				AF44CBDA260180CF00DAA44B /* libgstcheck-1.0.a */,
+				AF44CBEE260180D400DAA44B /* libgstcontroller-1.0.a */,
+				AF44CC09260180D900DAA44B /* libgstfft-1.0.a */,
+				AF44CBEF260180D400DAA44B /* libgstnet-1.0.a */,
+				AF44CBE8260180D200DAA44B /* libgstpbutils-1.0.a */,
+				AF44CBFF260180D700DAA44B /* libgstreamer-1.0.a */,
+				AF44CBE7260180D200DAA44B /* libgstriff-1.0.a */,
+				AF44CBF9260180D500DAA44B /* libgstrtp-1.0.a */,
+				AF44CBFA260180D500DAA44B /* libgstrtsp-1.0.a */,
+				AF44CC08260180D900DAA44B /* libgstsdp-1.0.a */,
+				AF44CBE1260180D100DAA44B /* libgsttag-1.0.a */,
+				AF44CBEC260180D300DAA44B /* libgstvideo-1.0.a */,
+				AF44CBE4260180D200DAA44B /* libgthread-2.0.a */,
+				AF44CBE6260180D200DAA44B /* libharfbuzz.a */,
+				AF44CBE2260180D100DAA44B /* libiconv.a */,
+				AF44CBE0260180D100DAA44B /* libintl.a */,
+				AF44CC18260180DD00DAA44B /* libjpeg.a */,
+				AF44CC00260180D700DAA44B /* libjson-glib-1.0.a */,
+				AF44CBE3260180D100DAA44B /* libmp3lame.a */,
+				AF44CBEA260180D300DAA44B /* libmpg123.a */,
+				AF44CC03260180D800DAA44B /* libogg.a */,
+				AF44CBD7260180CF00DAA44B /* libopus.a */,
+				AF44CBEB260180D300DAA44B /* liborc-0.4.a */,
+				AF44CC12260180DB00DAA44B /* libpango-1.0.a */,
+				AF44CC15260180DC00DAA44B /* libpangocairo-1.0.a */,
+				AF44CC0C260180DA00DAA44B /* libpangoft2-1.0.a */,
+				AF44CBFD260180D600DAA44B /* libpixman-1.a */,
+				AF44CC0A260180D900DAA44B /* libpng16.a */,
+				AF44CBD4260180CE00DAA44B /* libpsl.a */,
+				AF44CBED260180D400DAA44B /* libsoup-2.4.a */,
+				AF44CBDB260180D000DAA44B /* libspeex.a */,
+				AF44CBE9260180D300DAA44B /* libspice-client-glib-2.0.a */,
+				AF44CC02260180D700DAA44B /* libspiceglue.a */,
+				AF44CC0B260180DA00DAA44B /* libssl.a */,
+				AF44CBF1260180D400DAA44B /* libtag.a */,
+				AF44CBD5260180CE00DAA44B /* libtheora.a */,
+				AF44CC11260180DB00DAA44B /* libtheoradec.a */,
+				AF44CBDD260180D000DAA44B /* libtheoraenc.a */,
+				AF44CBE5260180D200DAA44B /* libtiff.a */,
+				AF44CBF0260180D400DAA44B /* libvorbis.a */,
+				AF44CBDF260180D100DAA44B /* libvorbisenc.a */,
+				AF44CC13260180DC00DAA44B /* libvorbisfile.a */,
+				AF44CBF8260180D500DAA44B /* libvorbisidec.a */,
+				AF44CC0D260180DA00DAA44B /* libvpx.a */,
+				AF44CC16260180DD00DAA44B /* libwavpack.a */,
+				AF44CC0E260180DA00DAA44B /* libxml2.a */,
+				AF44CC1A260180DD00DAA44B /* libz.a */,
+				AF44CAE5260180A600DAA44B /* libgstadder.a */,
+				AF44CAA92601809A00DAA44B /* libgstadder.la */,
+				AF44CAEF260180A700DAA44B /* libgstalaw.a */,
+				AF44CB0E260180AC00DAA44B /* libgstalaw.la */,
+				AF44CAE8260180A700DAA44B /* libgstalpha.a */,
+				AF44CAAD2601809E00DAA44B /* libgstalpha.la */,
+				AF44CAD1260180A300DAA44B /* libgstalphacolor.a */,
+				AF44CABC260180A000DAA44B /* libgstalphacolor.la */,
+				AF44CAD6260180A300DAA44B /* libgstapetag.a */,
+				AF44CAB32601809F00DAA44B /* libgstapetag.la */,
+				AF44CAB72601809F00DAA44B /* libgstapp.a */,
+				AF44CA792601809300DAA44B /* libgstapp.la */,
+				AF44CAB9260180A000DAA44B /* libgstaudioconvert.a */,
+				AF44CAE7260180A600DAA44B /* libgstaudioconvert.la */,
+				AF44CA982601809700DAA44B /* libgstaudiofx.a */,
+				AF44CAA72601809A00DAA44B /* libgstaudiofx.la */,
+				AF44CAB12601809E00DAA44B /* libgstaudiomixer.a */,
+				AF44CB0F260180AC00DAA44B /* libgstaudiomixer.la */,
+				AF44CA7E2601809400DAA44B /* libgstaudioparsers.a */,
+				AF44CAFF260180AA00DAA44B /* libgstaudioparsers.la */,
+				AF44CA8E2601809600DAA44B /* libgstaudiorate.a */,
+				AF44CB08260180AB00DAA44B /* libgstaudiorate.la */,
+				AF44CB09260180AB00DAA44B /* libgstaudioresample.a */,
+				AF44CB18260180AD00DAA44B /* libgstaudioresample.la */,
+				AF44CAD0260180A300DAA44B /* libgstaudiotestsrc.a */,
+				AF44CAA52601809900DAA44B /* libgstaudiotestsrc.la */,
+				AF44CA7D2601809400DAA44B /* libgstauparse.a */,
+				AF44CAFA260180A900DAA44B /* libgstauparse.la */,
+				AF44CAA62601809900DAA44B /* libgstautodetect.a */,
+				AF44CAC4260180A100DAA44B /* libgstautodetect.la */,
+				AF44CAB52601809F00DAA44B /* libgstavi.a */,
+				AF44CABB260180A000DAA44B /* libgstavi.la */,
+				AF44CA8C2601809600DAA44B /* libgstcairo.a */,
+				AF44CB17260180AD00DAA44B /* libgstcairo.la */,
+				AF44CB15260180AD00DAA44B /* libgstcompositor.a */,
+				AF44CAA02601809900DAA44B /* libgstcompositor.la */,
+				AF44CAAA2601809E00DAA44B /* libgstcoreelements.a */,
+				AF44CB03260180AA00DAA44B /* libgstcoreelements.la */,
+				AF44CA782601809300DAA44B /* libgstcoretracers.a */,
+				AF44CAD7260180A400DAA44B /* libgstcoretracers.la */,
+				AF44CAEB260180A700DAA44B /* libgstcutter.a */,
+				AF44CAA82601809A00DAA44B /* libgstcutter.la */,
+				AF44CB11260180AC00DAA44B /* libgstdebug.a */,
+				AF44CAC1260180A100DAA44B /* libgstdebug.la */,
+				AF44CAF2260180A800DAA44B /* libgstdtmf.a */,
+				AF44CA8D2601809600DAA44B /* libgstdtmf.la */,
+				AF44CAAF2601809E00DAA44B /* libgstdv.a */,
+				AF44CA802601809400DAA44B /* libgstdv.la */,
+				AF44CB05260180AB00DAA44B /* libgsteffectv.a */,
+				AF44CA842601809500DAA44B /* libgsteffectv.la */,
+				AF44CA852601809500DAA44B /* libgstencoding.a */,
+				AF44CA9A2601809700DAA44B /* libgstencoding.la */,
+				AF44CAC6260180A100DAA44B /* libgstequalizer.a */,
+				AF44CB14260180AD00DAA44B /* libgstequalizer.la */,
+				AF44CAAB2601809E00DAA44B /* libgstflac.a */,
+				AF44CB01260180AA00DAA44B /* libgstflac.la */,
+				AF44CB0A260180AB00DAA44B /* libgstflv.a */,
+				AF44CAC2260180A100DAA44B /* libgstflv.la */,
+				AF44CACC260180A200DAA44B /* libgstflxdec.a */,
+				AF44CAF7260180A900DAA44B /* libgstflxdec.la */,
+				AF44CAE1260180A500DAA44B /* libgstgdkpixbuf.a */,
+				AF44CAF4260180A800DAA44B /* libgstgdkpixbuf.la */,
+				AF44CAAE2601809E00DAA44B /* libgstgio.a */,
+				AF44CAD2260180A300DAA44B /* libgstgio.la */,
+				AF44CB20260180AE00DAA44B /* libgstgoom.a */,
+				AF44CADD260180A500DAA44B /* libgstgoom.la */,
+				AF44CB13260180AD00DAA44B /* libgstgoom2k1.a */,
+				AF44CB06260180AB00DAA44B /* libgstgoom2k1.la */,
+				AF44CACB260180A200DAA44B /* libgsticydemux.a */,
+				AF44CAE6260180A600DAA44B /* libgsticydemux.la */,
+				AF44CAB42601809F00DAA44B /* libgstid3demux.a */,
+				AF44CAB82601809F00DAA44B /* libgstid3demux.la */,
+				AF44CABF260180A000DAA44B /* libgstimagefreeze.a */,
+				AF44CAD3260180A300DAA44B /* libgstimagefreeze.la */,
+				AF44CAEC260180A700DAA44B /* libgstinterleave.a */,
+				AF44CAEE260180A700DAA44B /* libgstinterleave.la */,
+				AF44CA992601809700DAA44B /* libgstisomp4.a */,
+				AF44CA832601809400DAA44B /* libgstisomp4.la */,
+				AF44CACD260180A200DAA44B /* libgstivorbisdec.a */,
+				AF44CAA12601809900DAA44B /* libgstivorbisdec.la */,
+				AF44CAED260180A700DAA44B /* libgstjpeg.a */,
+				AF44CB1F260180AE00DAA44B /* libgstjpeg.la */,
+				AF44CAA22601809900DAA44B /* libgstlame.a */,
+				AF44CA902601809600DAA44B /* libgstlame.la */,
+				AF44CA8F2601809600DAA44B /* libgstlevel.a */,
+				AF44CA8B2601809500DAA44B /* libgstlevel.la */,
+				AF44CAC8260180A100DAA44B /* libgstmatroska.a */,
+				AF44CAA42601809900DAA44B /* libgstmatroska.la */,
+				AF44CAC3260180A100DAA44B /* libgstmpg123.a */,
+				AF44CA892601809500DAA44B /* libgstmpg123.la */,
+				AF44CA8A2601809500DAA44B /* libgstmulaw.a */,
+				AF44CAFB260180A900DAA44B /* libgstmulaw.la */,
+				AF44CAB02601809E00DAA44B /* libgstmultifile.a */,
+				AF44CACE260180A200DAA44B /* libgstmultifile.la */,
+				AF44CB1A260180AE00DAA44B /* libgstmultipart.a */,
+				AF44CAF1260180A800DAA44B /* libgstmultipart.la */,
+				AF44CA862601809500DAA44B /* libgstogg.a */,
+				AF44CA912601809600DAA44B /* libgstogg.la */,
+				AF44CAD9260180A400DAA44B /* libgstopus.a */,
+				AF44CAF8260180A900DAA44B /* libgstopus.la */,
+				AF44CADC260180A500DAA44B /* libgstosxaudio.a */,
+				AF44CB16260180AD00DAA44B /* libgstosxaudio.la */,
+				AF44CAFD260180A900DAA44B /* libgstoverlaycomposition.a */,
+				AF44CB1B260180AE00DAA44B /* libgstoverlaycomposition.la */,
+				AF44CA9B2601809700DAA44B /* libgstpango.a */,
+				AF44CAC0260180A000DAA44B /* libgstpango.la */,
+				AF44CB02260180AA00DAA44B /* libgstplayback.a */,
+				AF44CADE260180A500DAA44B /* libgstplayback.la */,
+				AF44CB1C260180AE00DAA44B /* libgstpng.a */,
+				AF44CA872601809500DAA44B /* libgstpng.la */,
+				AF44CAF3260180A800DAA44B /* libgstrawparse.a */,
+				AF44CAA32601809900DAA44B /* libgstrawparse.la */,
+				AF44CAC7260180A100DAA44B /* libgstreplaygain.a */,
+				AF44CA922601809600DAA44B /* libgstreplaygain.la */,
+				AF44CAB22601809F00DAA44B /* libgstrtp.a */,
+				AF44CABA260180A000DAA44B /* libgstrtp.la */,
+				AF44CAE0260180A500DAA44B /* libgstrtpmanager.a */,
+				AF44CB04260180AA00DAA44B /* libgstrtpmanager.la */,
+				AF44CA7A2601809300DAA44B /* libgstrtsp.a */,
+				AF44CA7F2601809400DAA44B /* libgstrtsp.la */,
+				AF44CAEA260180A700DAA44B /* libgstshapewipe.a */,
+				AF44CAF5260180A800DAA44B /* libgstshapewipe.la */,
+				AF44CAC9260180A200DAA44B /* libgstsmpte.a */,
+				AF44CB0B260180AB00DAA44B /* libgstsmpte.la */,
+				AF44CABD260180A000DAA44B /* libgstsoup.a */,
+				AF44CADA260180A400DAA44B /* libgstsoup.la */,
+				AF44CAD4260180A300DAA44B /* libgstspectrum.a */,
+				AF44CB00260180AA00DAA44B /* libgstspectrum.la */,
+				AF44CB1D260180AE00DAA44B /* libgstspeex.a */,
+				AF44CAD8260180A400DAA44B /* libgstspeex.la */,
+				AF44CA9C2601809800DAA44B /* libgstsubparse.a */,
+				AF44CA932601809600DAA44B /* libgstsubparse.la */,
+				AF44CA9D2601809800DAA44B /* libgsttaglib.a */,
+				AF44CA7B2601809300DAA44B /* libgsttaglib.la */,
+				AF44CADB260180A400DAA44B /* libgsttcp.a */,
+				AF44CACF260180A200DAA44B /* libgsttcp.la */,
+				AF44CB10260180AC00DAA44B /* libgsttheora.a */,
+				AF44CA9E2601809800DAA44B /* libgsttheora.la */,
+				AF44CA882601809500DAA44B /* libgsttypefindfunctions.a */,
+				AF44CAF9260180A900DAA44B /* libgsttypefindfunctions.la */,
+				AF44CAF0260180A800DAA44B /* libgstudp.a */,
+				AF44CAD5260180A300DAA44B /* libgstudp.la */,
+				AF44CAE2260180A600DAA44B /* libgstvideobox.a */,
+				AF44CADF260180A500DAA44B /* libgstvideobox.la */,
+				AF44CABE260180A000DAA44B /* libgstvideoconvert.a */,
+				AF44CAB62601809F00DAA44B /* libgstvideoconvert.la */,
+				AF44CAE4260180A600DAA44B /* libgstvideocrop.a */,
+				AF44CAF6260180A900DAA44B /* libgstvideocrop.la */,
+				AF44CAC5260180A100DAA44B /* libgstvideofilter.a */,
+				AF44CB0C260180AC00DAA44B /* libgstvideofilter.la */,
+				AF44CB19260180AD00DAA44B /* libgstvideomixer.a */,
+				AF44CAE9260180A700DAA44B /* libgstvideomixer.la */,
+				AF44CAFC260180A900DAA44B /* libgstvideorate.a */,
+				AF44CA9F2601809800DAA44B /* libgstvideorate.la */,
+				AF44CAAC2601809E00DAA44B /* libgstvideoscale.a */,
+				AF44CB1E260180AE00DAA44B /* libgstvideoscale.la */,
+				AF44CA7C2601809400DAA44B /* libgstvideotestsrc.a */,
+				AF44CA812601809400DAA44B /* libgstvideotestsrc.la */,
+				AF44CA772601809300DAA44B /* libgstvolume.a */,
+				AF44CA942601809700DAA44B /* libgstvolume.la */,
+				AF44CA822601809400DAA44B /* libgstvorbis.a */,
+				AF44CACA260180A200DAA44B /* libgstvorbis.la */,
+				AF44CAFE260180AA00DAA44B /* libgstwavenc.a */,
+				AF44CA952601809700DAA44B /* libgstwavenc.la */,
+				AF44CA962601809700DAA44B /* libgstwavpack.a */,
+				AF44CB0D260180AC00DAA44B /* libgstwavpack.la */,
+				AF44CA972601809700DAA44B /* libgstwavparse.a */,
+				AF44CAE3260180A600DAA44B /* libgstwavparse.la */,
+				AF44CB07260180AB00DAA44B /* libgsty4menc.a */,
+				AF44CB12260180AC00DAA44B /* libgsty4menc.la */,
+				AF44CA0C26015DD500DAA44B /* libgstaudioconvert.dylib */,
+				AF44CA0526015D9A00DAA44B /* libgstaudioconvert.a */,
+				AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */,
+				AFB2CA3E26002A9B00E2859F /* libjpeg.a */,
+				AFB2CA6626002B8700E2859F /* libjpeg.a */,
+				AFB2CA3126002A5F00E2859F /* libiconv.2.tbd */,
+				AFB2C9252600217F00E2859F /* libiconv.tbd */,
+				AFB2C91E2600210B00E2859F /* spicelib_no_jpeg.a */,
+				AFB2C90626001FF900E2859F /* libz.tbd */,
 				AF130CC725FA897F0085C2E8 /* libfribidi.a */,
 				AF130CD125FA89800085C2E8 /* libgio-2.0.a */,
 				AF130CCE25FA89800085C2E8 /* libglib-2.0.a */,
@@ -1190,6 +1820,24 @@
 			productReference = AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AFB2C8CD26001F4D00E2859F /* aSPICE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFB2C8F026001F4D00E2859F /* Build configuration list for PBXNativeTarget "aSPICE" */;
+			buildPhases = (
+				AFB2C8CE26001F4D00E2859F /* Sources */,
+				AFB2C8E526001F4D00E2859F /* Frameworks */,
+				AFB2C8EA26001F4D00E2859F /* Resources */,
+				AFB2C8EF26001F4D00E2859F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = aSPICE;
+			productName = bVNC;
+			productReference = AFB2C8F326001F4D00E2859F /* aSPICE.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1206,10 +1854,12 @@
 					};
 					AF043A2A23B3DADB00C43ED7 = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1240;
 						TestTargetID = AF043A1423B3DADA00C43ED7;
 					};
 					AF043A3523B3DADB00C43ED7 = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1240;
 						TestTargetID = AF043A1423B3DADA00C43ED7;
 					};
 				};
@@ -1238,6 +1888,7 @@
 				AF043A2A23B3DADB00C43ED7 /* bVNCTests */,
 				AF043A3523B3DADB00C43ED7 /* bVNCUITests */,
 				AF30D194253396EF00BA7A62 /* SimpleRemoteTest */,
+				AFB2C8CD26001F4D00E2859F /* aSPICE */,
 			);
 		};
 /* End PBXProject section */
@@ -1309,6 +1960,23 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
 		};
+		AFB2C8EF26001F4D00E2859F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
+		};
 		AFECDF232439DB08000E1E9A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1339,9 +2007,11 @@
 				AF51B3002410BAED005DE8AB /* ucs2xkeysym.c in Sources */,
 				AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */,
 				AF53DCB124022C8C00569F19 /* VncSession.swift in Sources */,
+				AF44C9C42601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */,
 				AF9E8F99242AE4E900752FC2 /* SystemMonitor.m in Sources */,
 				AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */,
+				AFB2C8C125FFCEC000E2859F /* RemoteSession.swift in Sources */,
 				AF99997D243593C70018204F /* LongTapDragUIImageView.swift in Sources */,
 				AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */,
 				AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */,
@@ -1353,6 +2023,7 @@
 				AF99997F2435955F0018204F /* ShortTapDragUIImageView.swift in Sources */,
 				AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */,
 				AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */,
+				AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,6 +2031,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF44C9C52601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF043A3023B3DADB00C43ED7 /* bVNCTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1368,6 +2040,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF44C9C62601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1376,6 +2049,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF44CF37260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
 				AF30D196253396EF00BA7A62 /* SshPortForwarder.c in Sources */,
 				AF30D197253396EF00BA7A62 /* CustomTextInput.swift in Sources */,
 				AF30D198253396EF00BA7A62 /* ToggleButton.swift in Sources */,
@@ -1385,6 +2059,7 @@
 				AF30D19C253396EF00BA7A62 /* StoreReviewHelper.swift in Sources */,
 				AF30D19D253396EF00BA7A62 /* SystemMonitor.m in Sources */,
 				AF8C9CD3255B2F07001563A0 /* PhysicalKeyboardHandler.swift in Sources */,
+				AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF30D19E253396EF00BA7A62 /* LongTapDragUIImageView.swift in Sources */,
 				AF30D19F253396EF00BA7A62 /* AppDelegate.swift in Sources */,
 				AF30D1A0253396EF00BA7A62 /* SceneDelegate.swift in Sources */,
@@ -1396,6 +2071,37 @@
 				AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */,
 				AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */,
 				AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB2C8CE26001F4D00E2859F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */,
+				AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */,
+				AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */,
+				AFB2C8D326001F4D00E2859F /* ucs2xkeysym.c in Sources */,
+				AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */,
+				AFB2C8D526001F4D00E2859F /* VncSession.swift in Sources */,
+				AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */,
+				AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */,
+				AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */,
+				AFB2C8D826001F4D00E2859F /* PhysicalKeyboardHandler.swift in Sources */,
+				AFB2C8D926001F4D00E2859F /* RemoteSession.swift in Sources */,
+				AFB2C8DA26001F4D00E2859F /* LongTapDragUIImageView.swift in Sources */,
+				AFB2C8DB26001F4D00E2859F /* AppDelegate.swift in Sources */,
+				AFB2C8DC26001F4D00E2859F /* SceneDelegate.swift in Sources */,
+				AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */,
+				AFB2C8DD26001F4D00E2859F /* KeyboardObserving.swift in Sources */,
+				AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */,
+				AFB2C8DF26001F4D00E2859F /* VncBridge.c in Sources */,
+				AFB2C8E026001F4D00E2859F /* ContentView.swift in Sources */,
+				AFB2C8E126001F4D00E2859F /* Utility.c in Sources */,
+				AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */,
+				AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */,
+				AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */,
+				AFB2C8E426001F4D00E2859F /* TouchEnabledUIImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1592,7 +2298,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.5;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
 				PRELINK_LIBS = "";
@@ -1678,6 +2384,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
 				INFOPLIST_FILE = bVNCTests/Info.plist;
@@ -1700,6 +2407,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
 				INFOPLIST_FILE = bVNCTests/Info.plist;
@@ -1721,6 +2429,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
 				INFOPLIST_FILE = bVNCUITests/Info.plist;
@@ -1741,6 +2450,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
 				INFOPLIST_FILE = bVNCUITests/Info.plist;
@@ -1858,6 +2568,123 @@
 			};
 			name = Release;
 		};
+		AFB2C8F126001F4D00E2859F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-MacOS";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 29;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/aSPICE-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 1.0.5;
+				OTHER_LDFLAGS = "-lresolv";
+				PRELINK_LIBS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AFB2C8F226001F4D00E2859F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-MacOS";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 29;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/aSPICE-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 1.0.5;
+				OTHER_LDFLAGS = "-lresolv";
+				PRELINK_LIBS = "";
+				"PRELINK_LIBS[arch=*]" = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1902,6 +2729,15 @@
 			buildConfigurations = (
 				AF30D1B2253396EF00BA7A62 /* Debug */,
 				AF30D1B3253396EF00BA7A62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB2C8F026001F4D00E2859F /* Build configuration list for PBXNativeTarget "aSPICE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFB2C8F126001F4D00E2859F /* Debug */,
+				AFB2C8F226001F4D00E2859F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

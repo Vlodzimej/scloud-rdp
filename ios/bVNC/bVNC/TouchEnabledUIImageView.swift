@@ -199,12 +199,23 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         }
     }
     
+    func synced(_ lock: Any, closure: () -> ()) {
+        objc_sync_enter(lock)
+        closure()
+        objc_sync_exit(lock)
+    }
+    
     func sendPointerEvent(scrolling: Bool, moving: Bool, firstDown: Bool, secondDown: Bool, thirdDown: Bool, fourthDown: Bool, fifthDown: Bool) {
         //let timeNow = CACurrentMediaTime();
         //let timeDiff = timeNow - self.timeLast
         if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
-            let cl = self.stateKeeper!.cl[self.stateKeeper!.currInst]!
-            sendPointerEventToServer(cl, Float32(self.width), Float32(self.height), Float32(self.newX), Float32(self.newY), firstDown, secondDown, thirdDown, fourthDown, fifthDown)
+            synced(self) {
+                stateKeeper?.vncSession?.pointerEvent(
+                    totalX: Float32(self.width), totalY: Float32(self.height),
+                    x: Float32(self.newX), y: Float32(self.newY),
+                    firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
+                    scrollUp: fourthDown, scrollDown: fifthDown)
+            }
             self.lastX = self.newX
             self.lastY = self.newY
             //self.timeLast = timeNow

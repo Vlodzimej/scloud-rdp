@@ -43,6 +43,7 @@
 "SSH_TUNNEL_TIMEOUT_TITLE" = "Timeout establishing SSH Tunnel";
 "SSH_TUNNEL_CONNECTION_FAILURE_TITLE" = "Failed to establish SSH Tunnel";
 "VNC_CONNECTION_FAILURE_TITLE" = "Failed to establish connection to VNC server";
+"SPICE_CONNECTION_FAILURE_TITLE" = "Failed to establish connection to SPICE server";
 "RFB_CLIENT_OBJECT_NOT_INITIALIZED" = "RFB Client Object not Initialized";
 "FAILED_TO_SEND_MESSAGE_TO_SERVER" = "Failed to Send Message to Server";
 "FAILED_TO_INIT_CONNECTION_TO_SERVER" = "Failed to Initialize Connection to Server";

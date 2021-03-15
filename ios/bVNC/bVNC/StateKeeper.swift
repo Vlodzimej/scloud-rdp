@@ -44,7 +44,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var yesNoDialogLock: NSLock = NSLock()
     var yesNoDialogResponse: Int32 = 0
     var imageView: TouchEnabledUIImageView?
-    var vncSession: VncSession?
+    var vncSession: RemoteSession?
     var modifierButtons: [String: UIButton]
     var keyboardButtons: [String: UIButton]
     var topButtons: [String: UIButton]
@@ -274,7 +274,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         currInst = (currInst + 1) % maxClCapacity
         isDrawing = true;
         self.toggleModifiersIfDown()
-        self.vncSession = VncSession(instance: currInst, stateKeeper: self)
+        let bundleID = Bundle.main.bundleIdentifier
+        if bundleID?.contains("SPICE") ?? false {
+            self.vncSession = SpiceSession(instance: currInst, stateKeeper: self)
+        } else {
+            self.vncSession = VncSession(instance: currInst, stateKeeper: self)
+        }
         self.vncSession!.connect(currentConnection: selectedConnection)
         createAndRepositionButtons()
     }

@@ -165,27 +165,63 @@ index 4b2e9497..ebf7aa2b 100644
                  self.deps.remove(dep)
  
          if self.config.variants.nodebug:
+diff --git a/recipes/gst-plugins-good-1.0.recipe b/recipes/gst-plugins-good-1.0.recipe
+index 8c53305b..82b8f134 100644
+--- a/recipes/gst-plugins-good-1.0.recipe
++++ b/recipes/gst-plugins-good-1.0.recipe
+@@ -16,9 +16,10 @@ class Recipe(custom.GStreamer):
+                      'soup': 'enabled',
+                      'speex': 'enabled',
+                      'taglib': 'enabled',
+-                     'vpx': 'enabled',
++                     'vpx': 'disabled',
+                      'wavpack': 'enabled',
+                      # disabled plugins
++                     'deinterlace': 'disabled',
+                      'aalib': 'disabled',
+                      'dv1394': 'disabled',
+                      'gtk3': 'disabled',
+@@ -30,7 +31,7 @@ class Recipe(custom.GStreamer):
+                      'shout2': 'disabled',
+                      'twolame': 'disabled',
+                      'waveform': 'disabled',}
+-    deps = ['gstreamer-1.0', 'gst-plugins-base-1.0', 'libjpeg-turbo', 'libpng',
++    deps = ['gstreamer-1.0', 'gst-plugins-base-1.0', 'libjpeg8', 'libpng',
+             'speex', 'gdk-pixbuf', 'libsoup', 'mpg123', 'lame',
+             'orc', 'wavpack', 'flac', 'taglib', 'bzip2', 'zlib',
+             'libvpx', 'libdv', 'cairo']
+@@ -264,7 +265,7 @@ class Recipe(custom.GStreamer):
+             self.disable_plugin('cairo', 'effects', dep='cairo')
+             self.disable_plugin('flac', 'codecs', dep='flac')
+             self.disable_plugin('gdkpixbuf', 'effects', option='gdk-pixbuf', dep='gdk-pixbuf')
+-            self.disable_plugin('jpeg', 'codecs', dep='libjpeg-turbo')
++            self.disable_plugin('jpeg', 'codecs', dep='libjpeg8')
+             self.disable_plugin('lame', 'codecs', dep='lame')
+             self.disable_plugin('mpg123', 'codecs', dep='mpg123')
+             self.disable_plugin('png', 'codecs', dep='libpng')
 diff --git a/recipes/libjpeg-turbo.recipe b/recipes/libjpeg-turbo.recipe
-index c790335a..90ba2fd6 100644
+index c790335a..dee49f85 100644
 --- a/recipes/libjpeg-turbo.recipe
 +++ b/recipes/libjpeg-turbo.recipe
-@@ -3,15 +3,14 @@
+@@ -3,15 +3,13 @@
  
  class Recipe(recipe.Recipe):
      name = 'libjpeg-turbo'
 -    version = '1.5.3'
-+    version = '2.0.6'
-     licenses = [{License.BSD_like: ['LICENSE.md']}]
-     stype = SourceType.TARBALL
-     url = 'sf://.tar.gz'
+-    licenses = [{License.BSD_like: ['LICENSE.md']}]
+-    stype = SourceType.TARBALL
+-    url = 'sf://.tar.gz'
 -    tarball_checksum = 'b24890e2bb46e12e72a79f7e965f409f4e16466d00e1dd15d93d73ee6b592523'
-+    btype = BuildType.CMAKE
-+    tarball_checksum = 'd74b92ac33b0e3657123ddcf6728788c90dc84dcb6a52013d758af3c4af481bb'
++    version = '2'
++    commit = '2c01200c5d2d016c4c39747fa8e73b6f32cb956b'
++    remotes = {'origin': 'https://github.com/libjpeg-turbo/libjpeg-turbo.git'}
  
 -    configure_tpl = "%(config-sh)s --prefix=%(prefix)s "\
 -                    "--libdir=%(libdir)s"
 -    configure_options = " --with-jpeg8"
-+    configure_options = ''
++    btype = BuildType.CMAKE
++
++    configure_options = '-DENABLE_BITCODE=OFF -DENABLE_VISIBILITY=ON -DENABLE_ARC=OFF'
      patches = []
  
      files_libs = ['libjpeg','libturbojpeg']

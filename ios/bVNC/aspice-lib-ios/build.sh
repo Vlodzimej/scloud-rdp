@@ -18,6 +18,8 @@
 #
 #!/bin/bash -e
 
+CERBERO_VERSION=d9e53dd16d6588961c13dffaf7b00b7534cfe816
+
 realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
@@ -27,14 +29,15 @@ realpath() {
 if git clone https://github.com/GStreamer/cerbero.git
 then
   pushd cerbero
+  git checkout d9e53dd16d6588961c13dffaf7b00b7534cfe816
   patch -p1 < ../cerbero.patch
   popd
-fi
 
-BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python3"
-brew install ${BREW_DEPS} || true
-brew unlink ${BREW_DEPS}
-brew link --overwrite ${BREW_DEPS}
+  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python3"
+  brew install ${BREW_DEPS} || true
+  brew unlink ${BREW_DEPS}
+ brew link --overwrite ${BREW_DEPS}
+fi
 
 pushd cerbero
 
@@ -63,11 +66,24 @@ export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.plat
 
 popd
 
-ln -s $(realpath cerbero/build/dist/ios_universal/) ../bVNC.xcodeproj/ || true
-
+# Workaround for missing spiceglue header files
 cp cerbero/build/sources/ios_universal/x86_64/spiceglue-2.2/src/*.h cerbero/build/dist/ios_universal/include/
 
-# Make a super duper static lib out of all the other libs
+rsync -a $(realpath cerbero/build/dist/ios_universal) ../bVNC.xcodeproj/
+
+# Workaround for dylib libraries interfering with linking process
+find ../bVNC.xcodeproj/ios_universal/ -name \*.dylib -exec rm {} \;
+find ../bVNC.xcodeproj/ios_universal/ -name \*.la -exec rm {} \;
+
 pushd ../bVNC.xcodeproj/ios_universal/lib
-/Library/Developer/CommandLineTools/usr/bin/libtool -static -o spicelib.a lib*.a
+
+# Workaround for iconv symbols not found when library search path includes bVNC.xcodeproj/ios_universal/lib
+mkdir -p iconv
+mv libiconv.a iconv/
+
+## Make a super duper static lib out of all the other libs
+#SPICELIBS=$(find . -name 'lib*.a')
+#SPICELIBS_WITHOUT_JPEG=$(find . -name 'lib*.a' | grep -v jpeg | grep -v iconv)
+#/Library/Developer/CommandLineTools/usr/bin/libtool -static -o spicelib.a ${SPICELIBS}
+#/Library/Developer/CommandLineTools/usr/bin/libtool -static -o spicelib_no_jpeg.a ${SPICELIBS_WITHOUT_JPEG}
 popd

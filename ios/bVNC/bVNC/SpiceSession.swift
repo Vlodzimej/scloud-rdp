@@ -1,0 +1,225 @@
+//
+//  SpiceSession.swift
+//  bVNC
+//
+//  Created by iordan iordanov on 2021-03-15.
+//  Copyright © 2021 iordan iordanov. All rights reserved.
+//
+
+import UIKit
+import SwiftUI
+
+class SpiceSession: RemoteSession {
+    class var SPICE_MOUSE_BUTTON_MOVE: Int { return 0 }
+    class var SPICE_MOUSE_BUTTON_LEFT: Int { return 1 }
+    class var SPICE_MOUSE_BUTTON_MIDDLE: Int { return 2 }
+    class var SPICE_MOUSE_BUTTON_RIGHT: Int { return 3 }
+    class var SPICE_MOUSE_BUTTON_UP: Int { return 4 }
+    class var SPICE_MOUSE_BUTTON_DOWN: Int { return 5 }
+    var buttonState: Int = 0
+    var buttonStateMap: [Int: Bool] = [
+        SPICE_MOUSE_BUTTON_LEFT: false,
+        SPICE_MOUSE_BUTTON_MIDDLE: false,
+        SPICE_MOUSE_BUTTON_RIGHT: false,
+        SPICE_MOUSE_BUTTON_UP: false,
+        SPICE_MOUSE_BUTTON_DOWN: false,
+    ]
+    
+    override func connect(currentConnection: [String:String]) {
+        let sshAddress = currentConnection["sshAddress"] ?? ""
+        let sshPort = currentConnection["sshPort"] ?? ""
+        let sshUser = currentConnection["sshUser"] ?? ""
+        let sshPass = currentConnection["sshPass"] ?? ""
+        let vncPort = currentConnection["port"] ?? ""
+        let vncAddress = currentConnection["address"] ?? ""
+        let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
+        let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
+
+        let sshForwardPort = String(arc4random_uniform(30000) + 30000)
+        
+        if sshAddress != "" {
+            self.stateKeeper.sshTunnelingStarted = false
+            Background {
+                self.stateKeeper.sshForwardingLock.unlock()
+                self.stateKeeper.sshForwardingLock.lock()
+                self.stateKeeper.sshTunnelingStarted = true
+                log_callback_str(message: "Setting up SSH forwarding")
+                setupSshPortForward(
+                    Int32(self.stateKeeper.currInst),
+                    ssh_forward_success,
+                    ssh_forward_failure,
+                    log_callback,
+                    yes_no_dialog_callback,
+                    UnsafeMutablePointer<Int8>(mutating: (sshAddress as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshPort as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshUser as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshPass as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshPassphrase as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (vncAddress as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (vncPort as NSString).utf8String))
+            }
+        }
+        
+        let pass = currentConnection["password"] ?? ""
+
+        Background {
+            // Make it highly probable the SSH thread would obtain the lock before the VNC one does.
+            self.stateKeeper.yesNoDialogLock.unlock()
+            var title = ""
+            var continueConnecting = true
+            if sshAddress != "" {
+                // Wait until the SSH tunnel lock is obtained by the thread which sets up ssh tunneling.
+                while self.stateKeeper.sshTunnelingStarted != true {
+                    log_callback_str(message: "Waiting for SSH thread to start work")
+                    sleep(1)
+                }
+                log_callback_str(message: "Waiting for SSH forwarding to complete successfully")
+                // Wait for SSH Tunnel to be established for 60 seconds
+                continueConnecting = self.stateKeeper.sshForwardingLock.lock(before: Date(timeIntervalSinceNow: 60))
+                if !continueConnecting {
+                    title = "SSH_TUNNEL_TIMEOUT_TITLE"
+                } else if (self.stateKeeper.sshForwardingStatus != true) {
+                    title = "SSH_TUNNEL_CONNECTION_FAILURE_TITLE"
+                    continueConnecting = false
+                } else {
+                    log_callback_str(message: "SSH Tunnel indicated to be successful")
+                    self.stateKeeper.sshForwardingLock.unlock()
+                }
+            }
+            if continueConnecting {
+                log_callback_str(message: "Connecting VNC Session in the background...")
+                self.cl = initializeSpice(Int32(self.instance), update_callback, resize_callback, failure_callback_swift,
+                           log_callback, yes_no_dialog_callback,
+                           UnsafeMutablePointer<Int8>(mutating: (vncAddress as NSString).utf8String),
+                           UnsafeMutablePointer<Int8>(mutating: (vncPort as NSString).utf8String),
+                           nil,
+                           nil,
+                           UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
+                           nil,
+                           nil,
+                           true)
+                if self.cl != nil {
+                    self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
+                } else {
+                    title = "SPICE_CONNECTION_FAILURE_TITLE"
+                    failure_callback_str(instance: self.instance, title: title)
+                }
+            } else {
+                failure_callback_str(instance: self.instance, title: title)
+            }
+        }
+    }
+        
+    override func disconnect() {
+        Background {
+            disconnectSpice()
+        }
+    }
+    
+    func getButtonState(firstDown: Bool, secondDown: Bool, thirdDown: Bool,
+                        scrollUp: Bool, scrollDown: Bool) -> Int {
+        var newButtonState: Int = 0
+        if firstDown {
+            newButtonState = newButtonState | SpiceSession.SPICE_MOUSE_BUTTON_LEFT
+        } else {
+            newButtonState = newButtonState & ~SpiceSession.SPICE_MOUSE_BUTTON_LEFT
+        }
+        if secondDown {
+            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE
+        } else {
+            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE
+        }
+        if thirdDown {
+            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_RIGHT
+        } else {
+            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_RIGHT
+        }
+        /*
+        if scrollUp {
+            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_UP
+        } else {
+            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_UP
+        }
+        if scrollDown {
+            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_DOWN
+        } else {
+            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_DOWN
+        }*/
+        return newButtonState
+    }
+    
+    func updateCurrentState(buttonId: Int, isDown: Bool) -> Bool {
+        let currentState = buttonStateMap[buttonId]
+        buttonStateMap[buttonId] = isDown
+        return currentState != isDown
+    }
+    
+    override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
+                               firstDown: Bool, secondDown: Bool, thirdDown: Bool,
+                               scrollUp: Bool, scrollDown: Bool) {
+        let remoteX = Float(globalStateKeeper!.fbW) * x / totalX;
+        let remoteY = Float(globalStateKeeper!.fbH) * y / totalY;
+        
+        var isDown = 0
+        var buttonId = 0
+        var stateChanged = 0
+        
+        let firstStateChanged = updateCurrentState(
+            buttonId: SpiceSession.SPICE_MOUSE_BUTTON_LEFT, isDown: firstDown)
+        let secondStateChanged = updateCurrentState(
+            buttonId: SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE, isDown: secondDown)
+        let thirdStateChanged = updateCurrentState(
+            buttonId: SpiceSession.SPICE_MOUSE_BUTTON_RIGHT, isDown: thirdDown)
+        let scrollUpStateChanged = updateCurrentState(
+            buttonId: SpiceSession.SPICE_MOUSE_BUTTON_UP, isDown: scrollUp)
+        let scrollDownStateChanged = updateCurrentState(
+            buttonId: SpiceSession.SPICE_MOUSE_BUTTON_DOWN, isDown: scrollDown)
+
+        let buttonState = getButtonState(firstDown: firstDown,
+                                          secondDown: secondDown,
+                                          thirdDown: thirdDown,
+                                          scrollUp: scrollUp,
+                                          scrollDown: scrollDown)
+        var message = ""
+        if firstStateChanged {
+            message = "Left button"
+            stateChanged = 1
+            isDown = firstDown ? 1 : 0
+            buttonId = SpiceSession.SPICE_MOUSE_BUTTON_LEFT
+        }
+        if secondStateChanged {
+            message = "Middle button"
+            stateChanged = 1
+            isDown = secondDown ? 1 : 0
+            buttonId = SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE
+        }
+        if thirdStateChanged {
+            message = "Right button"
+            stateChanged = 1
+            isDown = thirdDown ? 1 : 0
+            buttonId = SpiceSession.SPICE_MOUSE_BUTTON_RIGHT
+        }
+        if scrollUpStateChanged {
+            message = "ScrollUp action"
+            stateChanged = 1
+            isDown = scrollUp ? 1 : 0
+            buttonId = SpiceSession.SPICE_MOUSE_BUTTON_UP
+        }
+        if scrollDownStateChanged {
+            message = "ScrollDown action"
+            stateChanged = 1
+            isDown = scrollDown ? 1 : 0
+            buttonId = SpiceSession.SPICE_MOUSE_BUTTON_DOWN
+        }
+
+        print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", SpiceSession.SPICE_MOUSE_BUTTON_LEFT, "isDown:", isDown)
+        sendPointerEvent(Int32(remoteX), Int32(remoteY),
+                         Int32(buttonId),
+                         0,
+                         Int32(stateChanged),
+                         Int32(isDown))
+    }
+}

@@ -17,21 +17,19 @@
  * USA.
  */
 
-#include <pthread/pthread.h>
+#include "RemoteBridge.h"
 #include "VncBridge.h"
 #include "ucs2xkeysym.h"
 #include "SshPortForwarder.h"
 #include "Utility.h"
-#include <signal.h>
-#include <pthread.h>
 
 char* USERNAME = NULL;
 char* PASSWORD = NULL;
 int pixel_buffer_size = 0;
 int BYTES_PER_PIXEL = 4;
-int fbW = 0;
-int fbH = 0;
 bool maintainConnection = 0;
+void (*lock_write_tls_callback)(int instance);
+void (*unlock_write_tls_callback)(int instance);
 
 bool getMaintainConnection(void *c) {
     return maintainConnection;
@@ -67,7 +65,7 @@ static rfbCredential* get_credential(rfbClient *cl, int credentialType){
 }
 
 static char* get_password(rfbClient *cl){
-    rfbClientLog("VNC password authentication callback called\n\n");
+    rfbClientLog("VNC password authentication callback called\n");
     char *p = malloc(RFB_BUF_SIZE);
     
     rfbClientLog("Password requested for authentication\n");
@@ -77,16 +75,14 @@ static char* get_password(rfbClient *cl){
     return p;
 }
 
-static void update (rfbClient *cl, int x, int y, int w, int h) {
-    //rfbClientLog("Update received\n");
-    if (!framebuffer_update_callback(cl->instance, cl->frameBuffer, fbW, fbH, x, y, w, h)) {
-        // This session is a left-over backgrounded session and must quit.
-        rfbClientLog("Must quit background session with instance number %d\n", cl->instance);
+static void update(rfbClient *cl, int x, int y, int w, int h) {
+    if (!updateFramebuffer(cl->instance, cl->frameBuffer, x, y, w, h)) {
         maintainConnection = false;
+        disconnectVnc(cl);
     }
 }
 
-static rfbBool resize (rfbClient *cl) {
+static rfbBool resize(rfbClient *cl) {
     rfbClientLog("Resize RFB Buffer, allocating buffer\n");
     fbW = cl->width;
     fbH = cl->height;
@@ -95,7 +91,7 @@ static rfbBool resize (rfbClient *cl) {
     uint8_t* oldFrameBuffer = cl->frameBuffer;
     pixel_buffer_size = BYTES_PER_PIXEL*fbW*fbH*sizeof(char);
     cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-    framebuffer_resize_callback(cl->instance, cl, fbW, fbH);
+    framebuffer_resize_callback(cl->instance, fbW, fbH);
     update(cl, 0, 0, fbW, fbH);
     if (oldFrameBuffer != NULL) {
         free(oldFrameBuffer);
@@ -150,28 +146,9 @@ rfbBool unlockWriteToTLS(rfbClient *client) {
     return TRUE;
 }
 
-void signal_handler(int signal, siginfo_t *info, void *reserved) {
-    rfbClientLog("Handling signal: %d\n", signal);
-    failure_callback(-1, NULL);
-}
-
-static void handle_signals() {
-    struct sigaction handler;
-    memset(&handler, 0, sizeof(handler));
-    handler.sa_sigaction = signal_handler;
-    handler.sa_flags = SA_SIGINFO;
-    sigaction(SIGILL, &handler, NULL);
-    sigaction(SIGABRT, &handler, NULL);
-    sigaction(SIGBUS, &handler, NULL);
-    sigaction(SIGFPE, &handler, NULL);
-    sigaction(SIGSEGV, &handler, NULL);
-    sigaction(SIGPIPE, &handler, NULL);
-    sigaction(SIGINT, &handler, NULL);
-}
-
 void *initializeVnc(int instance,
                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
-                   void (*fb_resize_callback)(int instance, void *, int fbW, int fbH),
+                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
                    void (*fail_callback)(int instance, uint8_t *),
                    void (*cl_log_callback)(int8_t *),
                    void (*lock_wrt_tls_callback)(int instance),
@@ -179,6 +156,8 @@ void *initializeVnc(int instance,
                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                    char* addr, char* user, char* password) {
     rfbClientLog("Initializing VNC session.\n");
+    fbW = 0;
+    fbH = 0;
     handle_signals();
     USERNAME = user;
     PASSWORD = password;
@@ -258,7 +237,7 @@ void connectVnc(void *c) {
         }
     }
     rfb_client_cleanup(cl);
-    rfbClientLog("Background thread exiting connectVnc function.\n\n");
+    rfbClientLog("Background thread exiting connectVnc function.\n");
     rfbClientLog("Connection terminating.\n\n");
 }
 

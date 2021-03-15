@@ -17,9 +17,14 @@
 		<key>SimpleRemoteTest.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
-		<key>bVNC copy.xcscheme_^#shared#^_</key>
+		<key>aSPICE copy.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>aSPICE.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
@@ -43,6 +48,11 @@
 			<true/>
 		</dict>
 		<key>AF043A3523B3DADB00C43ED7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AFB2C8CD26001F4D00E2859F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

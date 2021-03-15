@@ -12,7 +12,7 @@ class Recipe(recipe.Recipe):
     make_check = None
 
     deps = ['json-glib', 'glib', 'libpng', 'zlib', 'pixman', 'fontconfig', 'freetype', 'gtk-doc-lite',
-            'gstreamer-1.0', 'gst-plugins-base-1.0',
+            'gstreamer-1.0', 'gst-plugins-base-1.0', 'gst-plugins-good-1.0',
             'spice-protocol', 'libjpeg8', 'opus', 'pyparsing', 'six', 'openssl']
     platform_deps = {
             Platform.WINDOWS: [ 'gtk+3', 'usbredir', 'phodav' ],
@@ -28,7 +28,7 @@ class Recipe(recipe.Recipe):
     def prepare(self):
         self.configure_options += ' --disable-werror --disable-smartcard'
         self.configure_options += ' --disable-vala --disable-controller'
-        self.configure_options += ' --disable-pulse --disable-builtin-mjpeg'
+        self.configure_options += ' --disable-pulse'
 
         if self.config.target_platform in [Platform.IOS, 
                                           Platform.ANDROID]:
