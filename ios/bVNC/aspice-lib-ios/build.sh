@@ -18,7 +18,7 @@
 #
 #!/bin/bash -e
 
-CERBERO_VERSION=d9e53dd16d6588961c13dffaf7b00b7534cfe816
+CERBERO_VERSION=1.18.4
 
 realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
@@ -39,10 +39,15 @@ then
  brew link --overwrite ${BREW_DEPS}
 fi
 
-pushd cerbero
+echo "Get latest recipes for project"
+git clone https://github.com/iiordanov/remote-desktop-clients-cerbero-recipes.git recipes || true
+pushd recipes
+git pull
+popd
 
+pushd cerbero
 # Copy all spice recipes in automatically or git clone a repo with them.
-rsync -a ../recipes/ ./recipes/
+rsync -avP ../recipes/ ./recipes/
 
 # Workaround for missing lib-pthread.la dependency.
 for arch in x86_64 arm64
