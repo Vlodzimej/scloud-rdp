@@ -248,6 +248,7 @@
 		AFB2C8EE26001F4D00E2859F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
 		AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
 		AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
+		AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE0251E260DBD2D005E851E /* liblz4.a */; };
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
@@ -748,6 +749,7 @@
 		AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.2.dylib"; sourceTree = "<group>"; };
 		AFBBBD7924C3C6CD00F64E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringKey.swift; sourceTree = "<group>"; };
+		AFE0251E260DBD2D005E851E /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = bVNC.xcodeproj/ios_universal/lib/liblz4.a; sourceTree = "<group>"; };
 		AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalKeyboardHandler.swift; sourceTree = "<group>"; };
 		AFE7B0BF243A316900275C3A /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined/lib/libvncclient.a; sourceTree = "<group>"; };
 		AFECDF212439D9C6000E1E9A /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined/lib/libssh2.a; sourceTree = "<group>"; };
@@ -794,6 +796,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */,
 				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
 				AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */,
 				AF44CE9A2601A32B00DAA44B /* libgstalpha.a in Frameworks */,
@@ -1066,6 +1069,7 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AFE0251E260DBD2D005E851E /* liblz4.a */,
 				AF44CE6E2601A16600DAA44B /* libiconv.a */,
 				AF44CD8326018B1B00DAA44B /* GStreamer.framework */,
 				AF44CD152601849100DAA44B /* spicelib.a */,
