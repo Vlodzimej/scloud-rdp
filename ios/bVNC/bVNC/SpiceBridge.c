@@ -55,7 +55,7 @@ void engine_spice_worker(void *data) {
 }
 
 void engine_mainloop_worker(void *data) {
-    SpiceGlibGlue_InitializeLogging(10);
+    SpiceGlibGlue_InitializeLogging(0);
     SpiceGlibGlue_MainLoop();
 }
 

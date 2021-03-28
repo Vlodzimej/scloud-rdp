@@ -293,13 +293,6 @@ class RemoteSession {
         self.stateKeeper = stateKeeper
         self.cl = nil
     }
-        
-    func loadTextFile(path: String) -> String {
-        var contents = "Not Loaded"
-        do { contents = try String(contentsOfFile: path, encoding: String.Encoding.utf8) }
-            catch { log_callback_str(message: "Error loading file") }
-        return contents
-    }
     
     func connect(currentConnection: [String:String]) {
         preconditionFailure("This method must be overridden") 
@@ -312,6 +305,22 @@ class RemoteSession {
     func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                       firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                       scrollUp: Bool, scrollDown: Bool) {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    func keyEvent(char: Unicode.Scalar) {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    @objc func sendModifierIfNotDown(modifier: Int32) {
+        preconditionFailure("This method must be overridden")
+    }
+
+    @objc func releaseModifierIfDown(modifier: Int32) {
+        preconditionFailure("This method must be overridden")
+    }
+
+    @objc func sendSpecialKeyByXKeySym(key: Int32) {
         preconditionFailure("This method must be overridden")
     }
 }

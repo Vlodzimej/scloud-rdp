@@ -713,19 +713,15 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func sendModifierIfNotDown(modifier: Int32) {
-        if !modifiers[modifier]! {
-            modifiers[modifier] = true
-            //print("Sending modifier", modifier)
-            sendUniDirectionalKeyEventWithKeySym(self.cl[self.currInst]!, modifier, true)
-        }
+        vncSession?.sendModifierIfNotDown(modifier: modifier)
     }
 
     @objc func releaseModifierIfDown(modifier: Int32) {
-        if modifiers[modifier]! {
-            modifiers[modifier] = false
-            //print("Releasing modifier", modifier)
-            sendUniDirectionalKeyEventWithKeySym(self.cl[self.currInst]!, modifier, false)
-        }
+        vncSession?.releaseModifierIfDown(modifier: modifier)
+    }
+    
+    @objc func sendSpecialKeyByXKeySym(key: Int32) {
+        vncSession?.sendSpecialKeyByXKeySym(key: key)
     }
     
     func toggleModifiersIfDown() {

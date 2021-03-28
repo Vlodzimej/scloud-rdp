@@ -57,9 +57,7 @@ class CustomTextInput: UIButton, UIKeyInput {
         //log_callback_str(message: "Sending: " + text + ", number of characters: " + String(text.count))
         for char in text.unicodeScalars {
             Background {
-                if !sendKeyEventInt(self.stateKeeper!.cl[self.stateKeeper!.currInst]!, Int32(String(char.value))!) {
-                    sendKeyEvent(self.stateKeeper!.cl[self.stateKeeper!.currInst]!, String(char))
-                }
+                self.stateKeeper?.vncSession?.keyEvent(char: char)
                 self.stateKeeper?.toggleModifiersIfDown()
             }
             self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)

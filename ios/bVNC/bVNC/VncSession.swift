@@ -123,4 +123,30 @@ class VncSession: RemoteSession {
                                scrollUp: Bool, scrollDown: Bool) {
         sendPointerEventToServer(self.cl, totalX, totalY, x, y, firstDown, secondDown, thirdDown, scrollUp, scrollDown)
     }
+    
+    override func keyEvent(char: Unicode.Scalar) {
+        if !sendKeyEventInt(self.cl, Int32(String(char.value))!) {
+            sendKeyEvent(self.cl, String(char))
+        }
+    }
+    
+    @objc override func sendModifierIfNotDown(modifier: Int32) {
+        if !self.stateKeeper.modifiers[modifier]! {
+            self.stateKeeper.modifiers[modifier] = true
+            print("Sending modifier", modifier)
+            sendUniDirectionalKeyEventWithKeySym(self.cl, modifier, true)
+        }
+    }
+
+    @objc override func releaseModifierIfDown(modifier: Int32) {
+        if self.stateKeeper.modifiers[modifier]! {
+            self.stateKeeper.modifiers[modifier] = false
+            print("Releasing modifier", modifier)
+            sendUniDirectionalKeyEventWithKeySym(self.cl, modifier, false)
+        }
+    }
+    
+    @objc override func sendSpecialKeyByXKeySym(key: Int32) {
+        sendKeyEventWithKeySym(self.cl, key)
+    }
 }
