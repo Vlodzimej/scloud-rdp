@@ -283,8 +283,12 @@ pushd bVNC.xcodeproj/libs_combined/lib
 /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a libvncclient.a
 popd
 
+# Copy over SPICE layouts
+mkdir -p Sources/aSPICE/Resources/
+rsync -avP ../../bVNC/src/main/assets/layouts Sources/aSPICE/Resources/
+
 # Build SPICE dependencies
-pushd
-aspice-lib-ios
+pushd aspice-lib-ios
 ./build.sh
 popd
+

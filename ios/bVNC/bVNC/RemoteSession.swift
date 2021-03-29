@@ -323,4 +323,12 @@ class RemoteSession {
     @objc func sendSpecialKeyByXKeySym(key: Int32) {
         preconditionFailure("This method must be overridden")
     }
+    
+    @objc func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    @objc func sendScreenUpdateRequest(wholeScreen: Bool) {
+        preconditionFailure("This method must be overridden")
+    }
 }

@@ -66,7 +66,7 @@ class CustomTextInput: UIButton, UIKeyInput {
     
     public func deleteBackward(){
         Background {
-            sendKeyEventWithKeySym(self.stateKeeper!.cl[self.stateKeeper!.currInst]!, 0xff08);
+            self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: XK_BackSpace)
             self.stateKeeper?.toggleModifiersIfDown()
         }
         self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)

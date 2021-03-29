@@ -53,6 +53,7 @@ class SpiceSession: RemoteSession {
         XK_Down: 0x2193,
         XK_Left: 0x2190,
         XK_Right: 0x2192,
+        XK_BackSpace: 0x0008,
     ]
     
     class var DEFAULT_LAYOUT: String { return "aSPICE/Resources/layouts/English (US)" }
@@ -278,12 +279,21 @@ class SpiceSession: RemoteSession {
                          Int32(isDown))
     }
     
+    func getScanCodes(key: Int32) -> [Int] {
+        //print("sendSpecialKeyByXKeySym, key:", key)
+        let char = (specialXKeySymToUnicodeMap[key] ?? 0) | SpiceSession.UNICODE_MASK
+        //print("sendSpecialKeyByXKeySym, char", char)
+        let scanCodes = self.layoutMap[char] ?? []
+        //print("sendSpecialKeyByXKeySym, scancodes", scanCodes)
+        return scanCodes
+    }
+    
     override func keyEvent(char: Unicode.Scalar) {
         let char = String(char.value)
         let scanCodes = self.layoutMap[Int(char)! | SpiceSession.UNICODE_MASK] ?? []
         //print("Unicode:", char, "converted to:", scanCodes)
         for scanCode in scanCodes {
-            Background {
+            //Background {
                 var scode = scanCode
                 if scanCode & SpiceSession.SCANCODE_SHIFT_MASK != 0 {
                     //print("Found SCANCODE_SHIFT_MASK, sending Shift down")
@@ -307,7 +317,7 @@ class SpiceSession: RemoteSession {
                     //print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
                     SpiceGlibGlue_SpiceKeyEvent(0, Int32(SpiceSession.RALT))
                 }
-            }
+            //}
         }
     }
     
@@ -315,7 +325,7 @@ class SpiceSession: RemoteSession {
         let scode = xKeySymToScanCode[modifier] ?? 0
         if scode != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
-            //print("SpiceSession: Sending modifier", modifier)
+            //print("SpiceSession: Sending modifier scancode", scode)
             SpiceGlibGlue_SpiceKeyEvent(1, Int32(scode))
         }
     }
@@ -324,22 +334,32 @@ class SpiceSession: RemoteSession {
         let scode = xKeySymToScanCode[modifier] ?? 0
         if scode != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
-            //print("SpiceSession: Releasing modifier", modifier)
+            //print("SpiceSession: Releasing modifier scancode", scode)
             SpiceGlibGlue_SpiceKeyEvent(0, Int32(scode))
         }
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
-        //print("sendSpecialKeyByXKeySym, key:", key)
-        let char = (specialXKeySymToUnicodeMap[key] ?? 0) | SpiceSession.UNICODE_MASK
-        //print("sendSpecialKeyByXKeySym, char", char)
-        let scanCodes = self.layoutMap[char] ?? []
-        //print("sendSpecialKeyByXKeySym, scancodes", scanCodes)
+        let scanCodes = getScanCodes(key: key)
         for scanCode in scanCodes {
-            Background {
+            //Background {
                 SpiceGlibGlue_SpiceKeyEvent(1, Int32(scanCode))
                 SpiceGlibGlue_SpiceKeyEvent(0, Int32(scanCode))
-            }
+            //}
         }
+    }
+    
+    @objc override func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
+        let scanCodes = getScanCodes(key: key)
+        let d: Int16 = down ? 1 : 0
+        for scanCode in scanCodes {
+            //Background {
+                SpiceGlibGlue_SpiceKeyEvent(d, Int32(scanCode))
+            //}
+        }
+    }
+
+    @objc override func sendScreenUpdateRequest(wholeScreen: Bool) {
+        // Not used for SPICE
     }
 }

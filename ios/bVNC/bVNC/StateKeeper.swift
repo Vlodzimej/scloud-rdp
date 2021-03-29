@@ -168,7 +168,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func sendSuperKeyUp() {
-        sendUniDirectionalKeyEventWithKeySym(self.cl[self.currInst], XK_Super_L, false)
+        self.vncSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Super_L, down: false)
         self.modifiers[XK_Super_L] = false
         self.rescheduleScreenUpdateRequest(timeInterval: 0.2, fullScreenUpdate: false, recurring: false)
     }
@@ -176,21 +176,21 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     @objc func requestFullScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a whole screen update request.")
-            sendWholeScreenUpdateRequest(cl[currInst], true)
+            self.vncSession?.sendScreenUpdateRequest(wholeScreen: true)
         }
     }
 
     @objc func requestPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a partial screen update request.")
-            sendWholeScreenUpdateRequest(cl[currInst], true)
+            self.vncSession?.sendScreenUpdateRequest(wholeScreen: true)
         }
     }
 
     @objc func requestRecurringPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a recurring partial screen update request.")
-            sendWholeScreenUpdateRequest(cl[currInst], false)
+            self.vncSession?.sendScreenUpdateRequest(wholeScreen: false)
             UserInterface {
                 self.rescheduleScreenUpdateRequest(timeInterval: 30, fullScreenUpdate: false, recurring: true)
             }

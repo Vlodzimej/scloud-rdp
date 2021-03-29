@@ -15,6 +15,8 @@
 		AF043A2523B3DADB00C43ED7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
 		AF043A3023B3DADB00C43ED7 /* bVNCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A2F23B3DADB00C43ED7 /* bVNCTests.swift */; };
 		AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */; };
+		AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
+		AF05186026115FE900B64D95 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
 		AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
 		AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
 		AF30D196253396EF00BA7A62 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
@@ -298,6 +300,7 @@
 		AF043A3623B3DADB00C43ED7 /* bVNCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bVNCUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bVNCUITests.swift; sourceTree = "<group>"; };
 		AF043A3C23B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF05184926115F3B00B64D95 /* VncSessionDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VncSessionDummy.swift; sourceTree = "<group>"; };
 		AF130C5025FA783E0085C2E8 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/spicelib.a"; sourceTree = "<group>"; };
 		AF130C7B25FA81B40085C2E8 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.a"; sourceTree = "<group>"; };
 		AF130CC425FA897E0085C2E8 /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libopus.a"; sourceTree = "<group>"; };
@@ -1058,6 +1061,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF05186026115FE900B64D95 /* libssh2.a in Frameworks */,
 				AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */,
 				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
 				AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */,
@@ -1265,12 +1269,13 @@
 				AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */,
 				AF043A2623B3DADB00C43ED7 /* Info.plist */,
 				AFB2C8F926001F5800E2859F /* aSPICE-Info.plist */,
+				AF53DCB024022C8C00569F19 /* VncSession.swift */,
+				AF05184926115F3B00B64D95 /* VncSessionDummy.swift */,
 				AF48283023B47EC300826395 /* VncBridge.h */,
 				AF48283123B47EC300826395 /* VncBridge.c */,
 				AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */,
 				AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */,
 				AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */,
-				AF53DCB024022C8C00569F19 /* VncSession.swift */,
 				AF53DCB22402391600569F19 /* StateKeeper.swift */,
 				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
 				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
@@ -1286,9 +1291,9 @@
 				AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */,
 				AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */,
 				AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */,
-				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
 				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
 				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
+				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
 				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
 				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
 				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
@@ -2372,6 +2377,7 @@
 				AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */,
 				AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */,
 				AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */,
+				AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */,
 				AFB2C8D326001F4D00E2859F /* ucs2xkeysym.c in Sources */,
 				AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */,
 				AFF6D39F260FE8B20077F6D2 /* Utils.swift in Sources */,
@@ -2767,7 +2773,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;

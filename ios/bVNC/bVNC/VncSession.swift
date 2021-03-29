@@ -149,4 +149,14 @@ class VncSession: RemoteSession {
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
         sendKeyEventWithKeySym(self.cl, key)
     }
+    
+    @objc override func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
+        Background {
+            sendUniDirectionalKeyEventWithKeySym(self.cl, key, down)
+        }
+    }
+    
+    @objc override func sendScreenUpdateRequest(wholeScreen: Bool) {
+        sendWholeScreenUpdateRequest(self.cl, wholeScreen)
+    }
 }
