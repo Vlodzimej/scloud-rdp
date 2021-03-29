@@ -84,10 +84,14 @@ class SpiceSession: RemoteSession {
         let sshPort = currentConnection["sshPort"] ?? ""
         let sshUser = currentConnection["sshUser"] ?? ""
         let sshPass = currentConnection["sshPass"] ?? ""
-        let vncPort = currentConnection["port"] ?? ""
-        let vncAddress = currentConnection["address"] ?? ""
+        let port = currentConnection["port"] ?? ""
+        let tlsPort = currentConnection["tlsPort"] ?? ""
+        let address = currentConnection["address"] ?? ""
         let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
+        let certSubject = currentConnection["certSubject"] ?? ""
+        let certAuthority = currentConnection["certAuthority"] ?? ""
+        let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
 
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
         layoutMap = Utils.loadStringOfIntArraysToMap(source:
@@ -114,8 +118,8 @@ class SpiceSession: RemoteSession {
                     UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (vncAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (vncPort as NSString).utf8String))
+                    UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String))
             }
         }
         
@@ -149,13 +153,13 @@ class SpiceSession: RemoteSession {
                 log_callback_str(message: "Connecting VNC Session in the background...")
                 self.cl = initializeSpice(Int32(self.instance), update_callback, resize_callback, failure_callback_swift,
                            log_callback, yes_no_dialog_callback,
-                           UnsafeMutablePointer<Int8>(mutating: (vncAddress as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (vncPort as NSString).utf8String),
+                           UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
+                           UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
                            nil,
-                           nil,
+                           UnsafeMutablePointer<Int8>(mutating: (tlsPort as NSString).utf8String),
                            UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
-                           nil,
-                           nil,
+                           UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
+                           UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
                            true)
                 if self.cl != nil {
                     self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl

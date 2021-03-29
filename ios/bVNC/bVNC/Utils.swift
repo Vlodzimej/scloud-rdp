@@ -50,4 +50,16 @@ struct Utils {
             return
         }
     }
+    
+    static func writeToFile(name: String, text: String) -> String {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let filename = paths[0].appendingPathComponent(name)
+
+        do {
+            try text.write(to: filename, atomically: true, encoding: String.Encoding.utf8)
+        } catch {
+            print("Error \(error) writing to file at:", filename)
+        }
+        return filename.path
+    }
 }

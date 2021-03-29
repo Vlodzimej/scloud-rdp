@@ -101,6 +101,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         XK_Super_L: false,
         XK_Super_R: false,
     ]
+    
+    let bundleID = Bundle.main.bundleIdentifier
 
     // Dictionaries desctibing onscreen ToggleButton type buttons
     let topButtonData: [ String: [ String: Any ] ] = [
@@ -254,6 +256,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func setImageView(imageView: TouchEnabledUIImageView) {
         self.imageView = imageView
     }
+    
+    func isSpice() -> Bool {
+        return self.bundleID?.lowercased().contains("spice") ?? false
+    }
 
     func connect(index: Int) {
         showConnectionInProgress()
@@ -274,8 +280,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         currInst = (currInst + 1) % maxClCapacity
         isDrawing = true;
         self.toggleModifiersIfDown()
-        let bundleID = Bundle.main.bundleIdentifier
-        if bundleID?.contains("SPICE") ?? false {
+        if self.isSpice() {
             self.vncSession = SpiceSession(instance: currInst, stateKeeper: self)
         } else {
             self.vncSession = VncSession(instance: currInst, stateKeeper: self)

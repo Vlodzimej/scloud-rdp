@@ -102,7 +102,7 @@ struct MultilineTextView: UIViewRepresentable {
 
 struct ContentView : View {
     @ObservedObject var stateKeeper: StateKeeper
-    
+
     var body: some View {
         VStack {
             if stateKeeper.currentPage == "connectionsList" {
@@ -118,6 +118,9 @@ struct ContentView : View {
                      sshPrivateKeyText: stateKeeper.selectedConnection["sshPrivateKey"] ?? "",
                      addressText: stateKeeper.selectedConnection["address"] ?? "",
                      portText: stateKeeper.selectedConnection["port"] ?? "5900",
+                     tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "5901",
+                     certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
+                     certSubjectText: stateKeeper.selectedConnection["certSubject"] ?? "",
                      usernameText: stateKeeper.selectedConnection["username"] ?? "",
                      passwordText: stateKeeper.selectedConnection["password"] ?? "",
                      screenShotFile: stateKeeper.selectedConnection["screenShotFile"] ?? UUID().uuidString,
@@ -146,9 +149,8 @@ struct ContentView : View {
 }
 
 struct ConnectionsList : View {
-    
     @ObservedObject var stateKeeper: StateKeeper
-    
+
     func connect(index: Int) {
         if self.stateKeeper.currentPage != "connectionInProgress" {
             self.stateKeeper.currentPage = "connectionInProgress"
@@ -171,7 +173,15 @@ struct ConnectionsList : View {
             let user = "\(connection["sshUser"] ?? "")"
             title = "SSH\t\(user)@\(connection["sshAddress"] ?? ""):\(connection["sshPort"] ?? "22")\n"
         }
-        title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? "5900")"
+        if self.stateKeeper.isSpice() {
+            var port = connection["tlsPort"]
+            if port == nil || port == "-1" {
+                port = connection["port"]
+            }
+            title += "SPICE\t\(connection["address"] ?? ""):\(port ?? "5900")"
+        } else {
+            title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? "5900")"
+        }
         return title
     }
     
@@ -277,6 +287,9 @@ struct AddOrEditConnectionPage : View {
     @State var sshPrivateKeyText: String
     @State var addressText: String
     @State var portText: String
+    @State var tlsPortText: String
+    @State var certAuthorityText: String
+    @State var certSubjectText: String
     @State var usernameText: String
     @State var passwordText: String
     @State var screenShotFile: String
@@ -290,7 +303,7 @@ struct AddOrEditConnectionPage : View {
             VStack {
                 HStack {
                 Button(action: {
-                    let selectedConnection: [String : String] = [
+                    var selectedConnection: [String : String] = [
                         "sshAddress": self.sshAddressText.trimmingCharacters(in: .whitespacesAndNewlines),
                         "sshPort": self.sshPortText.trimmingCharacters(in: .whitespacesAndNewlines),
                         "sshUser": self.sshUserText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -306,6 +319,11 @@ struct AddOrEditConnectionPage : View {
                         "allowPanning": String(self.allowPanning),
                         "showSshTunnelSettings": String(self.showSshTunnelSettings)
                     ]
+                    if self.stateKeeper.isSpice() {
+                        selectedConnection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        selectedConnection["certSubject"] = self.certSubjectText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        selectedConnection["certAuthority"] = self.certAuthorityText.trimmingCharacters(in: .whitespacesAndNewlines)
+                    }
                     self.stateKeeper.saveConnection(connection: selectedConnection)
                 }) {
                         VStack(spacing: 10) {
@@ -383,13 +401,36 @@ struct AddOrEditConnectionPage : View {
                 }.padding()
                 }
 
-                VStack {
-                    Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
-                    TextField("ADDRESS_LABEL", text: $addressText).autocapitalization(.none).font(.title)
-                    TextField("PORT_LABEL", text: $portText).font(.title)
-                    TextField("USER_LABEL", text: $usernameText).autocapitalization(.none).font(.title)
-                    SecureField("PASSWORD_LABEL", text: $passwordText).font(.title)
-                }.padding()
+                if self.stateKeeper.isSpice() {
+                    VStack {
+                        Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
+                        TextField("ADDRESS_LABEL", text: $addressText).autocapitalization(.none).font(.title)
+                        TextField("PORT_LABEL", text: $portText).font(.title)
+                        TextField("TLS_PORT_LABEL", text: $tlsPortText).font(.title)
+                        TextField("USER_LABEL", text: $usernameText).autocapitalization(.none).font(.title)
+                        SecureField("PASSWORD_LABEL", text: $passwordText).font(.title)
+                        TextField("CERT_SUBJECT_LABEL", text: $certSubjectText).autocapitalization(.none).font(.title)
+                        VStack {
+                            Divider()
+                            HStack {
+                                Text("CERT_AUTHORITY_LABEL").font(.headline)
+                                Divider()
+                                MultilineTextView(placeholder: "", text: $certAuthorityText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
+                                Divider()
+                            }
+                            Divider()
+                        }
+
+                    }.padding()
+                } else {
+                    VStack {
+                        Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
+                        TextField("ADDRESS_LABEL", text: $addressText).autocapitalization(.none).font(.title)
+                        TextField("PORT_LABEL", text: $portText).font(.title)
+                        TextField("USER_LABEL", text: $usernameText).autocapitalization(.none).font(.title)
+                        SecureField("PASSWORD_LABEL", text: $passwordText).font(.title)
+                    }.padding()
+                }
                 
                 VStack {
                     Text("USER_INTERFACE_SETTINGS_LABEL").font(.headline)
@@ -665,7 +706,7 @@ struct YesNoDialog : View {
 
 struct ContentViewA_Previews : PreviewProvider {
     static var previews: some View {
-        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
+        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certAuthorityText: "", certSubjectText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
     }
 }
 
