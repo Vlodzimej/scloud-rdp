@@ -56,7 +56,7 @@ class SpiceSession: RemoteSession {
         XK_BackSpace: 0x0008,
     ]
     
-    class var DEFAULT_LAYOUT: String { return "aSPICE/Resources/layouts/English (US)" }
+    class var DEFAULT_LAYOUT: String { return "aSPICE-resources/Resources/layouts/English (US)" }
     class var SCANCODE_SHIFT_MASK: Int { return 0x10000 }
     class var SCANCODE_ALTGR_MASK: Int { return 0x20000 }
     class var SCANCODE_CIRCUMFLEX_MASK: Int { return 0x40000 }
@@ -80,6 +80,7 @@ class SpiceSession: RemoteSession {
     ]
     
     override func connect(currentConnection: [String:String]) {
+        let consoleFile = currentConnection["consoleFile"] ?? ""
         let sshAddress = currentConnection["sshAddress"] ?? ""
         let sshPort = currentConnection["sshPort"] ?? ""
         let sshUser = currentConnection["sshUser"] ?? ""
@@ -126,7 +127,7 @@ class SpiceSession: RemoteSession {
         let pass = currentConnection["password"] ?? ""
 
         Background {
-            // Make it highly probable the SSH thread would obtain the lock before the VNC one does.
+            // Make it highly probable the SSH thread would obtain the lock before the SPICE one does.
             self.stateKeeper.yesNoDialogLock.unlock()
             var title = ""
             var continueConnecting = true
@@ -150,8 +151,18 @@ class SpiceSession: RemoteSession {
                 }
             }
             if continueConnecting {
-                log_callback_str(message: "Connecting VNC Session in the background...")
-                self.cl = initializeSpice(Int32(self.instance), update_callback, resize_callback, failure_callback_swift,
+                log_callback_str(message: "Connecting SPICE Session in the background...")
+                if (consoleFile != "") {
+                    log_callback_str(message: "\(#function): Connecting with console file \(consoleFile)")
+                    self.cl = initializeSpiceVv(Int32(self.instance), update_callback,
+                                              resize_callback, failure_callback_swift,
+                           log_callback, yes_no_dialog_callback,
+                           UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
+                           true)
+                } else {
+                    log_callback_str(message: "\(#function): Connecting with selected connection parameters")
+                    self.cl = initializeSpice(Int32(self.instance), update_callback,
+                                              resize_callback, failure_callback_swift,
                            log_callback, yes_no_dialog_callback,
                            UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                            UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
@@ -161,6 +172,7 @@ class SpiceSession: RemoteSession {
                            UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
                            UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
                            true)
+                }
                 if self.cl != nil {
                     self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
                 } else {

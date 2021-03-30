@@ -34,7 +34,7 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -54,6 +54,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window!.makeKeyAndVisible()
             globalWindow = window
         }
+        
+        log_callback_str(message: "\(#function): \(connectionOptions.urlContexts)")
+        guard let url = connectionOptions.urlContexts.first?.url else {
+            return
+        }
+        log_callback_str(message: "\(#function): \(url.path)")
+        appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: url.path)
+    }
+    
+    func scene(_ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>) {
+
+        let url = URLContexts.first!.url
+        log_callback_str(message: "\(#function): \(url)")
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: url.path)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

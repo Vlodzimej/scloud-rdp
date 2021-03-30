@@ -288,7 +288,7 @@ class RemoteSession {
     var cl: UnsafeMutableRawPointer?
     
     init(instance: Int, stateKeeper: StateKeeper) {
-        log_callback_str(message: "Initializing VNC Session instance: \(instance)")
+        log_callback_str(message: "Initializing Remote Session instance: \(instance)")
         self.instance = instance
         self.stateKeeper = stateKeeper
         self.cl = nil

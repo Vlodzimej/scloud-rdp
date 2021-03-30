@@ -118,7 +118,7 @@ struct ContentView : View {
                      sshPrivateKeyText: stateKeeper.selectedConnection["sshPrivateKey"] ?? "",
                      addressText: stateKeeper.selectedConnection["address"] ?? "",
                      portText: stateKeeper.selectedConnection["port"] ?? "5900",
-                     tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "5901",
+                     tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "-1",
                      certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
                      certSubjectText: stateKeeper.selectedConnection["certSubject"] ?? "",
                      usernameText: stateKeeper.selectedConnection["username"] ?? "",
@@ -239,7 +239,7 @@ struct ConnectionsList : View {
                     Button(action: {
                     }) {
                         VStack {
-                            Image(uiImage: self.getSavedImage(named: self.stateKeeper.connections[i]["screenShotFile"]!) ?? UIImage())
+                            Image(uiImage: self.getSavedImage(named: self.stateKeeper.connections[i]["screenShotFile"] ?? "") ?? UIImage())
                                 .resizable()
                                 .scaledToFit()
                                 .cornerRadius(5)

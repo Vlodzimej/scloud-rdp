@@ -74,6 +74,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var orientation: Int = -1 /* -1 == Uninitialized, 0 == Portrait, 1 == Landscape */
     
     var disconnectedDueToBackgrounding: Bool = false
+    var connectedWithConsoleFileOrUri: Bool = false
     var currInst: Int = -1
     
     var cl: [UnsafeMutableRawPointer?]
@@ -103,7 +104,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     ]
     
     let bundleID = Bundle.main.bundleIdentifier
-
+    
     // Dictionaries desctibing onscreen ToggleButton type buttons
     let topButtonData: [ String: [ String: Any ] ] = [
         "f1Button": [ "title": "F1", "lx": 1*tbW+1*tbSp, "ly": z, "send": XK_F1, "tgl": false, "top": true, "right": false ],
@@ -231,6 +232,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         topButtons = [:]
         cl = Array<UnsafeMutableRawPointer?>(repeating:UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment), count: maxClCapacity);
     }
+    
+    func connectWithConsoleFile (consoleFile: String) {
+        self.connectedWithConsoleFileOrUri = true
+        let connection: [String: String] = ["consoleFile": consoleFile,
+                                            "screenShotFile": ""]
+        self.connect(connection: connection)
+    }
 
     required init?(coder: NSCoder) {
         // Load settings for current connection
@@ -261,7 +269,20 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return self.bundleID?.lowercased().contains("spice") ?? false
     }
 
+    /**
+     Used to connect with an index from the list of saved connections
+     */
     func connect(index: Int) {
+        self.connectedWithConsoleFileOrUri = false
+        self.connectionIndex = index
+        self.selectedConnection = self.connections[index]
+        self.connect(connection: self.selectedConnection)
+    }
+
+    /**
+     Used to connect with an individual connection, potentially specially crafted from a console file or URI
+     */
+    func connect(connection: [String: String]) {
         showConnectionInProgress()
         log_callback_str(message: "Connecting and navigating to the connection screen")
         yesNoDialogResponse = 0
@@ -270,8 +291,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clientLog.append("\n\n")
         self.registerForNotifications()
         // Needed in case we need to save a certificate during connection or change settings.
-        self.connectionIndex = index
-        self.selectedConnection = self.connections[index]
         self.allowZooming = Bool(selectedConnection["allowZooming"] ?? "true") ?? true && !macOs
         self.allowPanning = Bool(selectedConnection["allowPanning"] ?? "true") ?? true && !macOs
         //let contentView = ContentView(stateKeeper: self)
@@ -285,7 +304,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         } else {
             self.vncSession = VncSession(instance: currInst, stateKeeper: self)
         }
-        self.vncSession!.connect(currentConnection: selectedConnection)
+        self.vncSession!.connect(currentConnection: connection)
         createAndRepositionButtons()
     }
     
@@ -302,7 +321,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func reconnectIfDisconnectedDueToBackgrounding() {
-        if disconnectedDueToBackgrounding {
+        if disconnectedDueToBackgrounding && !connectedWithConsoleFileOrUri {
             disconnectedDueToBackgrounding = false
             connect(index: self.connectionIndex)
         } else if !self.isDrawing {
@@ -768,7 +787,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             return false
         }
         do {
-            try data.write(to: directory.appendingPathComponent(String(self.selectedConnection["screenShotFile"]!))!)
+            try data.write(to: directory.appendingPathComponent(String(self.selectedConnection["screenShotFile"] ?? "default"))!)
             return true
         } catch {
             log_callback_str(message: error.localizedDescription)

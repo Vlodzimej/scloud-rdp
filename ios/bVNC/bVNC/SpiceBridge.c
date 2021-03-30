@@ -47,8 +47,14 @@ void spiceConnectionFailure() {
 void engine_spice_worker(void *data) {
     int result;
     SpiceGlibGlue_SetLogCallback(client_log_callback);
-    result = SpiceGlibGlue_Connect(p.host, p.port, p.tls_port, p.ws_port, p.password,
-                                   p.ca_file, p.cert_subj, p.enable_sound);
+    if (strcmp(p.vv_file, "") != 0) {
+        client_log("Starting SpiceGlibGlue_ConnectWithVv");
+        result = SpiceGlibGlue_ConnectWithVv(p.vv_file, p.enable_sound);
+    } else {
+        client_log("Starting SpiceGlibGlue_Connect");
+        result = SpiceGlibGlue_Connect(p.host, p.port, p.tls_port, p.ws_port, p.password,
+                                       p.ca_file, p.cert_subj, p.enable_sound);
+    }
     SpiceGlibGlue_SetBufferResizeCallback(resizeSpiceBuffer);
     SpiceGlibGlue_SetBufferUpdateCallback(updateSpiceBuffer);
     SpiceGlibGlue_SetBufferDisconnectCallback(spiceConnectionFailure);
@@ -92,7 +98,7 @@ void *initializeSpice(int instance,
                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                    char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                    char* cert_subject, bool enable_sound) {
-    client_log("Initializing SPICE session.\n");
+    client_log("Initializing SPICE session\n");
     handle_signals();
         
     framebuffer_update_callback = fb_update_callback;
@@ -106,6 +112,7 @@ void *initializeSpice(int instance,
     fbW = 0;
     fbH = 0;
     p.instance = instance;
+    strncpy(p.vv_file, "", sizeof(p.vv_file));
     if (addr != NULL)
         strncpy(p.host, addr, sizeof(p.host));
     if (port != NULL)
@@ -125,6 +132,37 @@ void *initializeSpice(int instance,
     pthread_create(&spice_worker, NULL, (void *) &engine_spice_worker, NULL);
     pthread_create(&mainloop_worker, NULL, (void *) &engine_mainloop_worker, NULL);
     client_log("Done initializing SPICE session\n");
+    return (void *)&p;
+}
+
+void *initializeSpiceVv(int instance,
+                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                   void (*fail_callback)(int instance, uint8_t *),
+                   void (*cl_log_callback)(int8_t *),
+                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                   char* vv_file, bool enable_sound) {
+    client_log("Initializing SPICE session from vv file\n");
+    handle_signals();
+        
+    framebuffer_update_callback = fb_update_callback;
+    framebuffer_resize_callback = fb_resize_callback;
+    failure_callback = fail_callback;
+    client_log_callback = cl_log_callback;
+    yes_no_callback = y_n_callback;
+
+    gst_init_and_register_static_plugins();
+
+    fbW = 0;
+    fbH = 0;
+    p.instance = instance;
+    if (vv_file != NULL)
+        strncpy(p.vv_file, vv_file, sizeof(p.vv_file));
+    p.enable_sound = enable_sound;
+    
+    pthread_create(&spice_worker, NULL, (void *) &engine_spice_worker, NULL);
+    pthread_create(&mainloop_worker, NULL, (void *) &engine_mainloop_worker, NULL);
+    client_log("Done initializing SPICE session from file\n");
     return (void *)&p;
 }
 

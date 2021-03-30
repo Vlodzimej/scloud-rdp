@@ -17,6 +17,7 @@
 
 typedef struct {
     int instance;
+    char vv_file[4096];
     char host[256];
     char port[12];
     char tls_port[12];
@@ -36,6 +37,13 @@ void *initializeSpice(int instance,
                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                    char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                    char* cert_subject, bool enable_sound);
+void *initializeSpiceVv(int instance,
+                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                   void (*fail_callback)(int instance, uint8_t *),
+                   void (*cl_log_callback)(int8_t *),
+                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                        char* file, bool enable_sound);
 void disconnectSpice(void);
 
 static void resizeSpiceBuffer(int bytesPerPixel, int width, int height);

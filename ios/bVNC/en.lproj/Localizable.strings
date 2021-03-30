@@ -50,3 +50,6 @@
 "CONNECTION_FAILED" = "Connection to Server Failed";
 "SHOW_SSH_TUNNEL_SETTINGS_LABEL" = "Show SSH Tunnel Settings";
 "COPY_TO_CLIPBOARD_LABEL" = "Copy to Clipboard";
+"CERT_SUBJECT_LABEL" = "Cert Subject (prefix with CN=)";
+"CERT_AUTHORITY_LABEL" = "Certificate Authority";
+"TLS_PORT_LABEL" = "TLS Port";

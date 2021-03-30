@@ -51,8 +51,6 @@
 		AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9CF260128A000DAA44B /* SpiceBridge.c */; };
-		AF44CD1C260184A000DAA44B /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
-		AF44CD7D26018ABF00DAA44B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF4825C923B479ED00826395 /* AudioToolbox.framework */; };
 		AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDE260180D000DAA44B /* libgstaudio-1.0.a */; };
 		AF44CDBF260197FA00DAA44B /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC19260180DD00DAA44B /* libbz2.a */; };
 		AF44CDC0260197FA00DAA44B /* libcairo-gobject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFC260180D600DAA44B /* libcairo-gobject.a */; };
@@ -230,7 +228,6 @@
 		AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
 		AFB2C8D326001F4D00E2859F /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
 		AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
-		AFB2C8D526001F4D00E2859F /* VncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB024022C8C00569F19 /* VncSession.swift */; };
 		AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
 		AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
 		AFB2C8D826001F4D00E2859F /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
@@ -240,7 +237,6 @@
 		AFB2C8DC26001F4D00E2859F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
 		AFB2C8DD26001F4D00E2859F /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
 		AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
-		AFB2C8DF26001F4D00E2859F /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
 		AFB2C8E026001F4D00E2859F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
 		AFB2C8E126001F4D00E2859F /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
 		AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
@@ -253,7 +249,6 @@
 		AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
 		AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
 		AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE0251E260DBD2D005E851E /* liblz4.a */; };
-		AFE02553260E51C4005E851E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE02552260E51C4005E851E /* libz.tbd */; };
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
@@ -1030,8 +1025,6 @@
 			files = (
 				AF44CF4226025A8200DAA44B /* libz.tbd in Frameworks */,
 				AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */,
-				AFE02553260E51C4005E851E /* libz.tbd in Frameworks */,
-				AF130CB225FA88160085C2E8 /* superlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,8 +1211,6 @@
 				AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */,
 				AF44CE03260197FA00DAA44B /* libz.a in Frameworks */,
 				AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */,
-				AF44CD1C260184A000DAA44B /* superlib.a in Frameworks */,
-				AF44CD7D26018ABF00DAA44B /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1279,6 +1270,7 @@
 				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
 				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
 				AF291AD4242418A200DCD383 /* ToggleButton.swift */,
+				AFF6D39C260FE8B20077F6D2 /* Utils.swift */,
 				AF9E8F912427F3B500752FC2 /* Utility.h */,
 				AF9E8F922427F3B500752FC2 /* Utility.c */,
 				AF9E8F94242ADD9200752FC2 /* Utilities.m */,
@@ -1296,7 +1288,6 @@
 				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
 				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
 				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
-				AFF6D39C260FE8B20077F6D2 /* Utils.swift */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -2381,7 +2372,6 @@
 				AFB2C8D326001F4D00E2859F /* ucs2xkeysym.c in Sources */,
 				AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */,
 				AFF6D39F260FE8B20077F6D2 /* Utils.swift in Sources */,
-				AFB2C8D526001F4D00E2859F /* VncSession.swift in Sources */,
 				AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */,
 				AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */,
 				AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */,
@@ -2393,7 +2383,6 @@
 				AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */,
 				AFB2C8DD26001F4D00E2859F /* KeyboardObserving.swift in Sources */,
 				AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */,
-				AFB2C8DF26001F4D00E2859F /* VncBridge.c in Sources */,
 				AFB2C8E026001F4D00E2859F /* ContentView.swift in Sources */,
 				AFB2C8E126001F4D00E2859F /* Utility.c in Sources */,
 				AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */,
@@ -2694,6 +2683,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNCTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/bVNC.app/bVNC";
@@ -2738,6 +2728,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNCUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = bVNC;
@@ -2821,7 +2812,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2875,7 +2866,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2902,9 +2893,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
@@ -2931,7 +2923,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2962,9 +2954,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
