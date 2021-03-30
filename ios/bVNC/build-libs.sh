@@ -284,8 +284,8 @@ pushd bVNC.xcodeproj/libs_combined/lib
 popd
 
 # Copy over SPICE layouts
-mkdir -p Sources/aSPICE/Resources/
-rsync -avP ../../bVNC/src/main/assets/layouts Sources/aSPICE/Resources/
+mkdir -p Sources/aSPICE-resources/Resources/
+rsync -avP ../../bVNC/src/main/assets/layouts Sources/aSPICE-resources/Resources/
 
 # Build SPICE dependencies
 pushd aspice-lib-ios
