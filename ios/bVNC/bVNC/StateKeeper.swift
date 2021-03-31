@@ -240,16 +240,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.connect(connection: connection)
     }
 
-    required init?(coder: NSCoder) {
-        // Load settings for current connection
-        connectionIndex = -1
-        selectedConnection = [:]
-        connections = self.settings.array(forKey: "connections") as? [Dictionary<String, String>] ?? []
-        interfaceButtons = [:]
-        keyboardButtons = [:]
-        modifierButtons = [:]
-        topButtons = [:]
-        cl = Array<UnsafeMutableRawPointer?>(repeating:UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment), count: maxClCapacity);
+    convenience required init?(coder: NSCoder) {
+        self.init()
     }
 
     func encode(with coder: NSCoder) {
@@ -321,7 +313,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func reconnectIfDisconnectedDueToBackgrounding() {
-        if disconnectedDueToBackgrounding && !connectedWithConsoleFileOrUri {
+        if disconnectedDueToBackgrounding && !self.connectedWithConsoleFileOrUri {
+            log_callback_str(message: "Reconnecting after previous disconnect due to backgrounding")
             disconnectedDueToBackgrounding = false
             connect(index: self.connectionIndex)
         } else if !self.isDrawing {
@@ -330,7 +323,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func disconnectDueToBackgrounding() {
-        if (self.isDrawing) {
+        if self.isDrawing && !self.connectedWithConsoleFileOrUri {
+            log_callback_str(message: "Disconnecting due to backgrounding")
             disconnectedDueToBackgrounding = true
             let wasDrawing = self.isDrawing
             self.imageView?.disableTouch()
