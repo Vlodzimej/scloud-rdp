@@ -195,19 +195,19 @@ class SpiceSession: RemoteSession {
                         scrollUp: Bool, scrollDown: Bool) -> Int {
         var newButtonState: Int = 0
         if firstDown {
-            newButtonState = newButtonState | SpiceSession.SPICE_MOUSE_BUTTON_LEFT
+            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_LEFT.rawValue)
         } else {
-            newButtonState = newButtonState & ~SpiceSession.SPICE_MOUSE_BUTTON_LEFT
+            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_LEFT.rawValue)
         }
         if secondDown {
-            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE
+            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_MIDDLE.rawValue)
         } else {
-            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_MIDDLE
+            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_MIDDLE.rawValue)
         }
         if thirdDown {
-            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_RIGHT
+            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_RIGHT.rawValue)
         } else {
-            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_RIGHT
+            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_RIGHT.rawValue)
         }
         /*
         if scrollUp {
@@ -255,7 +255,7 @@ class SpiceSession: RemoteSession {
                                           thirdDown: thirdDown,
                                           scrollUp: scrollUp,
                                           scrollDown: scrollDown)
-        var message = ""
+        var message = "Motion event"
         if firstStateChanged {
             message = "Left button"
             stateChanged = 1
@@ -287,10 +287,10 @@ class SpiceSession: RemoteSession {
             buttonId = SpiceSession.SPICE_MOUSE_BUTTON_DOWN
         }
 
-        //print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", SpiceSession.SPICE_MOUSE_BUTTON_LEFT, "isDown:", isDown)
+        print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", buttonState, "isDown:", isDown)
         sendPointerEvent(Int32(remoteX), Int32(remoteY),
                          Int32(buttonId),
-                         0,
+                         Int32(buttonState),
                          Int32(stateChanged),
                          Int32(isDown))
     }

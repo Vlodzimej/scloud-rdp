@@ -194,6 +194,7 @@ void disconnectSpice() {
 
 void sendPointerEvent(int x, int y, int buttonId, int buttonState, int stateChanged, int isDown) {
     if (stateChanged) {
+        SpiceGlibGlueMotionEvent(x, y, (int16_t)buttonState);
         SpiceGlibGlueButtonEvent(x, y, (int16_t)buttonId, (int16_t)buttonState, (int16_t)isDown);
     } else {
         SpiceGlibGlueMotionEvent(x, y, (int16_t)buttonState);
