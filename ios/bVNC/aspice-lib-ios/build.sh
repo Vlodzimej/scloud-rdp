@@ -24,19 +24,20 @@ realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-#cpanm XML::Parser
-
 if git clone https://github.com/GStreamer/cerbero.git
 then
   pushd cerbero
+  sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
   git checkout d9e53dd16d6588961c13dffaf7b00b7534cfe816
   patch -p1 < ../cerbero.patch
   popd
 
-  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python3"
+  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python3 cpanm"
   brew install ${BREW_DEPS} || true
   brew unlink ${BREW_DEPS}
- brew link --overwrite ${BREW_DEPS}
+  brew link --overwrite ${BREW_DEPS}
+  cpanm XML::Parser
 fi
 
 echo "Get latest recipes for project"
