@@ -38,6 +38,7 @@ then
   brew unlink ${BREW_DEPS}
   brew link --overwrite ${BREW_DEPS}
   cpanm XML::Parser
+  /usr/local/bin/pip3 install six pyparsing
 fi
 
 echo "Get latest recipes for project"
