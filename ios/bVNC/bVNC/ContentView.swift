@@ -119,8 +119,10 @@ struct ContentView : View {
                      addressText: stateKeeper.selectedConnection["address"] ?? "",
                      portText: stateKeeper.selectedConnection["port"] ?? "5900",
                      tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "-1",
-                     certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
                      certSubjectText: stateKeeper.selectedConnection["certSubject"] ?? "",
+                     certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
+                     keyboardLayoutText: stateKeeper.selectedConnection["keyboardLayout"] ??
+                                        Constants.SPICE_DEFAULT_LAYOUT,
                      usernameText: stateKeeper.selectedConnection["username"] ?? "",
                      passwordText: stateKeeper.selectedConnection["password"] ?? "",
                      screenShotFile: stateKeeper.selectedConnection["screenShotFile"] ?? UUID().uuidString,
@@ -288,8 +290,9 @@ struct AddOrEditConnectionPage : View {
     @State var addressText: String
     @State var portText: String
     @State var tlsPortText: String
-    @State var certAuthorityText: String
     @State var certSubjectText: String
+    @State var certAuthorityText: String
+    @State var keyboardLayoutText: String
     @State var usernameText: String
     @State var passwordText: String
     @State var screenShotFile: String
@@ -298,6 +301,10 @@ struct AddOrEditConnectionPage : View {
     @State var allowPanning: Bool
     @State var showSshTunnelSettings: Bool
 
+    func getKeyboardLayouts() -> [String] {
+        return stateKeeper.keyboardLayouts.sorted()
+    }
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -323,6 +330,7 @@ struct AddOrEditConnectionPage : View {
                         selectedConnection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
                         selectedConnection["certSubject"] = self.certSubjectText.trimmingCharacters(in: .whitespacesAndNewlines)
                         selectedConnection["certAuthority"] = self.certAuthorityText.trimmingCharacters(in: .whitespacesAndNewlines)
+                        selectedConnection["keyboardLayout"] = self.keyboardLayoutText.trimmingCharacters(in: .whitespacesAndNewlines)
                     }
                     self.stateKeeper.saveConnection(connection: selectedConnection)
                 }) {
@@ -420,7 +428,11 @@ struct AddOrEditConnectionPage : View {
                             }
                             Divider()
                         }
-
+                        Picker("Keyboard Layout", selection: $keyboardLayoutText) {
+                            ForEach(self.getKeyboardLayouts(), id: \.self) {
+                                Text($0)
+                            }
+                        }
                     }.padding()
                 } else {
                     VStack {
@@ -706,7 +718,7 @@ struct YesNoDialog : View {
 
 struct ContentViewA_Previews : PreviewProvider {
     static var previews: some View {
-        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certAuthorityText: "", certSubjectText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
+        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certSubjectText: "", certAuthorityText: "", keyboardLayoutText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
     }
 }
 

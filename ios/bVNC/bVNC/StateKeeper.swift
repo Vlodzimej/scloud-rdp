@@ -146,6 +146,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         "disconnectButton": [ "title": "", "lx": 1*bW+0*bSp, "ly": 2*bH+1*bSp, "send": Int32(-1), "tgl": false, "top": false, "right": true, "image": "arrowshape.turn.up.left"],
         "keyboardButton": [ "title": "", "lx": 1*bW+0*bSp, "ly": 1*bH+0*bSp, "send": Int32(-1), "tgl": false, "top": false, "right": true, "image": "keyboard"]
     ]
+    
+    var keyboardLayouts: [String] = []
 
     @objc func reDraw() {
         UserInterface {
@@ -231,6 +233,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         modifierButtons = [:]
         topButtons = [:]
         cl = Array<UnsafeMutableRawPointer?>(repeating:UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment), count: maxClCapacity);
+        super.init()
+        if isSpice() {
+            self.keyboardLayouts = Utils.getResourcePathContents(path:
+                                        Constants.SPICE_LAYOUT_PATH)
+        }
     }
     
     func connectWithConsoleFile (consoleFile: String) {

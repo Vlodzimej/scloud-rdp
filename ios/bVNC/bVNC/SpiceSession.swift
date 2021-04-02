@@ -55,8 +55,7 @@ class SpiceSession: RemoteSession {
         XK_Right: 0x2192,
         XK_BackSpace: 0x0008,
     ]
-    
-    class var DEFAULT_LAYOUT: String { return "aSPICE-resources/Resources/layouts/English (US)" }
+
     class var SCANCODE_SHIFT_MASK: Int { return 0x10000 }
     class var SCANCODE_ALTGR_MASK: Int { return 0x20000 }
     class var SCANCODE_CIRCUMFLEX_MASK: Int { return 0x40000 }
@@ -92,11 +91,14 @@ class SpiceSession: RemoteSession {
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let certSubject = currentConnection["certSubject"] ?? ""
         let certAuthority = currentConnection["certAuthority"] ?? ""
+        let keyboardLayout = currentConnection["keyboardLayout"] ??
+                                Constants.SPICE_DEFAULT_LAYOUT
         let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
 
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
-        layoutMap = Utils.loadStringOfIntArraysToMap(source:
-                        Utils.getBundleFileContents(name: SpiceSession.DEFAULT_LAYOUT))
+        layoutMap = Utils.loadStringOfIntArraysToMap(
+                        source: Utils.getBundleFileContents(
+                            name: Constants.SPICE_LAYOUT_PATH + keyboardLayout))
         
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false
