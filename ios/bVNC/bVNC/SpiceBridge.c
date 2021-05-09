@@ -110,7 +110,6 @@ void *initializeSpice(int instance,
                    char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                    char* cert_subject, bool enable_sound) {
     client_log("Initializing SPICE session\n");
-    handle_signals();
         
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
@@ -154,7 +153,6 @@ void *initializeSpiceVv(int instance,
                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                    char* vv_file, bool enable_sound) {
     client_log("Initializing SPICE session from vv file\n");
-    handle_signals();
         
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
