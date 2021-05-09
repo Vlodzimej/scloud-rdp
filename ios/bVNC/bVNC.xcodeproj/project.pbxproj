@@ -252,8 +252,6 @@
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
-		AFF5043F2617AC91007C7644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
-		AFF504452617AC92007C7644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		AFF504462617AC92007C7644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		AFF6D39D260FE8B20077F6D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
 		AFF6D39E260FE8B20077F6D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
