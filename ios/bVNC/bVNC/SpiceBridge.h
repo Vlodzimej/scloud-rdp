@@ -22,8 +22,6 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include <glue-service.h>
-#include <glue-spice-widget.h>
 #include "Utility.h"
 
 typedef struct {
@@ -61,5 +59,7 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height);
 static void updateSpiceBuffer(int x, int y, int w, int h);
 
 void sendPointerEvent(int x, int y, int buttonId, int buttonState, int stateChanged, int isDown);
+
+int getButtonState(bool, bool, bool, bool, bool);
 
 #endif /* SpiceBridge_h */

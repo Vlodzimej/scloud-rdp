@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		165D67C826ADD24200E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		165D67CE26ADD24300E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		165D67CF26ADD24400E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE02552260E51C4005E851E /* libz.tbd */; };
 		AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
 		AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
 		AF043A1D23B3DADA00C43ED7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
@@ -252,7 +257,6 @@
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
-		AFF504462617AC92007C7644 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		AFF6D39D260FE8B20077F6D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
 		AFF6D39E260FE8B20077F6D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
 		AFF6D39F260FE8B20077F6D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
@@ -1048,6 +1052,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */,
 				AF30D1AA253396EF00BA7A62 /* superlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2289,7 +2294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFF5043F2617AC91007C7644 /* Constants.swift in Sources */,
+				165D67C826ADD24200E27D6E /* Constants.swift in Sources */,
 				AF7421F4241D58EB00C552A7 /* SshPortForwarder.c in Sources */,
 				AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */,
 				AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */,
@@ -2355,6 +2360,7 @@
 				AF30D1A0253396EF00BA7A62 /* SceneDelegate.swift in Sources */,
 				AF30D1A1253396EF00BA7A62 /* KeyboardObserving.swift in Sources */,
 				AFF6D39E260FE8B20077F6D2 /* Utils.swift in Sources */,
+				165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */,
 				AF30D1A2253396EF00BA7A62 /* StateKeeper.swift in Sources */,
 				AF30D1A3253396EF00BA7A62 /* VncBridge.c in Sources */,
 				AF30D1A4253396EF00BA7A62 /* ContentView.swift in Sources */,
@@ -2362,7 +2368,7 @@
 				AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */,
 				AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */,
 				AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */,
-				AFF504452617AC92007C7644 /* Constants.swift in Sources */,
+				165D67CE26ADD24300E27D6E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2370,7 +2376,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFF504462617AC92007C7644 /* Constants.swift in Sources */,
+				165D67CF26ADD24400E27D6E /* Constants.swift in Sources */,
 				AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */,
 				AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */,
 				AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */,
@@ -2765,6 +2771,7 @@
 		AF30D1B2253396EF00BA7A62 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = SimpleRemoteIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
@@ -2784,7 +2791,7 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
 				INFOPLIST_FILE = "Simple Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",
@@ -2798,8 +2805,6 @@
 				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.SimpleRemoteTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
@@ -2813,6 +2818,7 @@
 		AF30D1B3253396EF00BA7A62 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = SimpleRemoteIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
@@ -2832,7 +2838,7 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
 				INFOPLIST_FILE = "Simple Remote-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",
@@ -2851,8 +2857,6 @@
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.SimpleRemoteTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";

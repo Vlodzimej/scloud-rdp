@@ -203,39 +203,7 @@ class SpiceSession: RemoteSession {
             disconnectSpice()
         }
     }
-    
-    func getButtonState(firstDown: Bool, secondDown: Bool, thirdDown: Bool,
-                        scrollUp: Bool, scrollDown: Bool) -> Int {
-        var newButtonState: Int = 0
-        if firstDown {
-            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_LEFT.rawValue)
-        } else {
-            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_LEFT.rawValue)
-        }
-        if secondDown {
-            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_MIDDLE.rawValue)
-        } else {
-            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_MIDDLE.rawValue)
-        }
-        if thirdDown {
-            newButtonState |= Int(SPICE_MOUSE_BUTTON_MASK_RIGHT.rawValue)
-        } else {
-            newButtonState &= ~Int(SPICE_MOUSE_BUTTON_MASK_RIGHT.rawValue)
-        }
-        /*
-        if scrollUp {
-            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_UP
-        } else {
-            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_UP
-        }
-        if scrollDown {
-            newButtonState |= SpiceSession.SPICE_MOUSE_BUTTON_DOWN
-        } else {
-            newButtonState &= ~SpiceSession.SPICE_MOUSE_BUTTON_DOWN
-        }*/
-        return newButtonState
-    }
-    
+        
     func updateCurrentState(buttonId: Int, isDown: Bool) -> Bool {
         let currentState = buttonStateMap[buttonId]
         buttonStateMap[buttonId] = isDown
@@ -263,11 +231,8 @@ class SpiceSession: RemoteSession {
         let scrollDownStateChanged = updateCurrentState(
             buttonId: SpiceSession.SPICE_MOUSE_BUTTON_DOWN, isDown: scrollDown)
 
-        let buttonState = getButtonState(firstDown: firstDown,
-                                          secondDown: secondDown,
-                                          thirdDown: thirdDown,
-                                          scrollUp: scrollUp,
-                                          scrollDown: scrollDown)
+        let buttonState = getButtonState(firstDown, secondDown, thirdDown, scrollUp, scrollDown)
+        
         var message = "Motion event"
         if firstStateChanged {
             message = "Left button"

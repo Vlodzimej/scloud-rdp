@@ -23,6 +23,8 @@
 #include "glue-service.h"
 #include <glib.h>
 #include "glue-spice-widget-priv.h"
+#include <glue-service.h>
+#include <glue-spice-widget.h>
 
 SpiceConnectionParameters p;
 
@@ -208,4 +210,35 @@ void sendPointerEvent(int x, int y, int buttonId, int buttonState, int stateChan
     } else {
         SpiceGlibGlueMotionEvent(x, y, (int16_t)buttonState);
     }
+}
+
+int getButtonState(bool firstDown, bool secondDown, bool thirdDown, bool scrollUp, bool scrollDown) {
+    int newButtonState = 0;
+    if (firstDown) {
+        newButtonState |= SPICE_MOUSE_BUTTON_MASK_LEFT;
+    } else {
+        newButtonState &= ~SPICE_MOUSE_BUTTON_MASK_LEFT;
+    }
+    if (secondDown) {
+        newButtonState |= SPICE_MOUSE_BUTTON_MASK_MIDDLE;
+    } else {
+        newButtonState &= ~SPICE_MOUSE_BUTTON_MASK_MIDDLE;
+    }
+    if (thirdDown) {
+        newButtonState |= SPICE_MOUSE_BUTTON_MASK_RIGHT;
+    } else {
+        newButtonState &= ~SPICE_MOUSE_BUTTON_MASK_RIGHT;
+    }
+    /*
+    if (scrollUp) {
+        newButtonState |= SPICE_MOUSE_BUTTON_UP;
+    } else {
+        newButtonState &= ~SPICE_MOUSE_BUTTON_UP;
+    }
+    if (scrollDown) {
+        newButtonState |= SPICE_MOUSE_BUTTON_DOWN;
+    } else {
+        newButtonState &= ~SPICE_MOUSE_BUTTON_DOWN;
+    }*/
+    return newButtonState;
 }
