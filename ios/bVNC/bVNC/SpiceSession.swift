@@ -56,6 +56,7 @@ class SpiceSession: RemoteSession {
         XK_F11: 0xF70E,
         XK_F12: 0xF70F,
         XK_Escape: 0x001B,
+        XK_Tab: 0x0009,
         XK_Home: 0x21F1,
         XK_End: 0x21F2,
         XK_Page_Up: 0x21DE,
@@ -273,19 +274,32 @@ class SpiceSession: RemoteSession {
                          Int32(isDown))
     }
     
-    func getScanCodes(key: Int32) -> [Int] {
-        //print("sendSpecialKeyByXKeySym, key:", key)
-        let char = (specialXKeySymToUnicodeMap[key] ?? 0) | SpiceSession.UNICODE_MASK
-        //print("sendSpecialKeyByXKeySym, char", char)
-        let scanCodes = self.layoutMap[char] ?? []
-        //print("sendSpecialKeyByXKeySym, scancodes", scanCodes)
+    func getScanCodesOrSendKeyIfUnicode(key: Int32) -> [Int] {
+        var scanCodes: [Int] = []
+        let modifierScanCode = xKeySymToScanCode[key] ?? 0
+        if (modifierScanCode > 0) {
+            scanCodes = [modifierScanCode]
+            //print("getScanCodesOrSendKeyIfUnicode, modifier scancodes", scanCodes)
+        } else {
+            //print("getScanCodesOrSendKeyIfUnicode, key:", key)
+            let char = specialXKeySymToUnicodeMap[key] ?? 0
+            //print("getScanCodesOrSendKeyIfUnicode, char:", char)
+            sendUnicodeKeyEvent(char: char)
+            scanCodes = []
+        }
+
         return scanCodes
     }
     
     override func keyEvent(char: Unicode.Scalar) {
         let char = String(char.value)
-        let scanCodes = self.layoutMap[Int(char)! | SpiceSession.UNICODE_MASK] ?? []
-        //print("Unicode:", char, "converted to:", scanCodes)
+        let unicodeInt = Int(char)!
+        sendUnicodeKeyEvent(char: unicodeInt)
+    }
+    
+    func sendUnicodeKeyEvent(char: Int) {
+        let scanCodes = self.layoutMap[char | SpiceSession.UNICODE_MASK] ?? []
+        print("Unicode:", char, "converted to:", scanCodes)
         for scanCode in scanCodes {
             //Background {
                 var scode = scanCode
@@ -334,7 +348,7 @@ class SpiceSession: RemoteSession {
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
-        let scanCodes = getScanCodes(key: key)
+        let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         for scanCode in scanCodes {
             //Background {
                 spiceKeyEvent(1, Int32(scanCode))
@@ -344,7 +358,7 @@ class SpiceSession: RemoteSession {
     }
     
     @objc override func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
-        let scanCodes = getScanCodes(key: key)
+        let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         let d: Int16 = down ? 1 : 0
         for scanCode in scanCodes {
             //Background {
