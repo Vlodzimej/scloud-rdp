@@ -90,6 +90,11 @@ class PhysicalKeyboardHandler {
     }
     
     func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+        guard self.stateKeeper.getCurrentInstance() != nil else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+
         for p in presses {
             guard let key = p.key else {
                 continue

@@ -242,3 +242,7 @@ int getButtonState(bool firstDown, bool secondDown, bool thirdDown, bool scrollU
     }*/
     return newButtonState;
 }
+
+int32_t spiceKeyEvent(int16_t isDown, int32_t hardware_keycode) {
+    return SpiceGlibGlue_SpiceKeyEvent(isDown, hardware_keycode);
+}

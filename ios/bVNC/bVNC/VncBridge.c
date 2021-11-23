@@ -22,6 +22,7 @@
 #include "ucs2xkeysym.h"
 #include "SshPortForwarder.h"
 #include "Utility.h"
+#include <unistd.h>
 
 char* USERNAME = NULL;
 char* PASSWORD = NULL;
@@ -75,10 +76,11 @@ static char* get_password(rfbClient *cl){
     return p;
 }
 
-static void update(rfbClient *cl, int x, int y, int w, int h) {
-    if (!updateFramebuffer(cl->instance, cl->frameBuffer, x, y, w, h)) {
-        maintainConnection = false;
-        disconnectVnc(cl);
+static void update (rfbClient *cl, int x, int y, int w, int h) {
+    //rfbClientLog("Update received\n");
+    if (!framebuffer_update_callback(cl->instance, cl->frameBuffer, fbW, fbH, x, y, w, h)) {
+        // This session is a left-over backgrounded session and must quit.
+        rfbClientLog("Must quit background session with instance number %d\n", cl->instance);
     }
 }
 
@@ -101,8 +103,8 @@ static rfbBool resize(rfbClient *cl) {
 
 void disconnectVnc(void *c) {
     rfbClient *cl = (rfbClient *)c;
-    rfbClientLog("Setting maintainConnection to false\n");
     if (cl != NULL) {
+        rfbClientLog("Setting maintainConnection to false\n");
         maintainConnection = false;
         // Force force some communication with server in order to wake up the
         // background thread waiting for server messages.
@@ -243,10 +245,18 @@ void connectVnc(void *c) {
 
 void rfb_client_cleanup(rfbClient *cl) {
     if (cl != NULL) {
+        if (cl->sock != RFB_INVALID_SOCKET)
+        {
+            rfbCloseSocket(cl->sock);
+        }
+        if (cl->listenSock != RFB_INVALID_SOCKET)
+        {
+            rfbCloseSocket(cl->listenSock);
+        }
         if (cl->frameBuffer != NULL) {
             free(cl->frameBuffer);
         }
-        //rfbClientCleanup(cl);
+//        rfbClientCleanup(cl);
     }
 }
 

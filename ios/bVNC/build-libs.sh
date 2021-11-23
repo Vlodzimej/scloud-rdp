@@ -1,3 +1,4 @@
+#!/bin/bash -e
 #
 # Copyright (C) 2020- Morpheusly Inc.
 #
@@ -16,7 +17,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
 # USA.
 #
-#!/bin/bash -e
 
 . build-libs.conf
 
@@ -88,7 +88,7 @@ then
 EOF
   cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
         -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-        -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=12.0 \
+        -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.0 \
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DENABLE_BITCODE=OFF \
         -DENABLE_VISIBILITY=ON \
@@ -110,7 +110,7 @@ EOF
 EOF
   cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
         -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-        -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=10.15 \
+        -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=13.0 \
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
@@ -161,8 +161,9 @@ rsync -avP iSSH2/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined/
 rsync -avP iSSH2/openssl_iphoneos/ ./bVNC.xcodeproj/libs_combined/
 
 git clone https://github.com/iiordanov/libvncserver.git || true
-
 pushd libvncserver/
+git pull
+git checkout ${LIBVNCSERVER_VERSION}
 
 if [ -n "${CLEAN}" ]
 then
@@ -186,7 +187,7 @@ then
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DPLATFORM=SIMULATOR64 \
         -DBUILD_SHARED_LIBS=OFF -DENABLE_VISIBILITY=ON -DENABLE_ARC=OFF \
-        -DDEPLOYMENT_TARGET=12.0 \
+        -DDEPLOYMENT_TARGET=13.0 \
         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
         -DWITH_GCRYPT=OFF \
         -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
@@ -209,7 +210,7 @@ then
     cmake .. -G"Unix Makefiles" -DARCHS='arm64' \
         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
         -DPLATFORM=OS64 \
-        -DDEPLOYMENT_TARGET=12.0 \
+        -DDEPLOYMENT_TARGET=13.0 \
         -DENABLE_BITCODE=OFF \
         -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
         -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
@@ -236,7 +237,7 @@ then
     cmake .. -G"Unix Makefiles" -DARCHS='x86_64' \
         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
         -DPLATFORM=MAC_CATALYST \
-        -DDEPLOYMENT_TARGET=10.15 \
+        -DDEPLOYMENT_TARGET=13.0 \
         -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_BUILD_TYPE=MAC_CATALYST \

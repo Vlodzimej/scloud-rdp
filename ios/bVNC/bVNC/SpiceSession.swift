@@ -291,25 +291,25 @@ class SpiceSession: RemoteSession {
                 var scode = scanCode
                 if scanCode & SpiceSession.SCANCODE_SHIFT_MASK != 0 {
                     //print("Found SCANCODE_SHIFT_MASK, sending Shift down")
-                    SpiceGlibGlue_SpiceKeyEvent(1, Int32(SpiceSession.LSHIFT))
+                    spiceKeyEvent(1, Int32(SpiceSession.LSHIFT))
                     scode &= ~SpiceSession.SCANCODE_SHIFT_MASK
                 }
                 if scanCode & SpiceSession.SCANCODE_ALTGR_MASK != 0 {
                     //print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
-                    SpiceGlibGlue_SpiceKeyEvent(1, Int32(SpiceSession.RALT))
+                    spiceKeyEvent(1, Int32(SpiceSession.RALT))
                     scode &= ~SpiceSession.SCANCODE_ALTGR_MASK
                 }
                 
-                SpiceGlibGlue_SpiceKeyEvent(1, Int32(scode))
-                SpiceGlibGlue_SpiceKeyEvent(0, Int32(scode))
+                spiceKeyEvent(1, Int32(scode))
+                spiceKeyEvent(0, Int32(scode))
                 
                 if scanCode & SpiceSession.SCANCODE_SHIFT_MASK != 0 {
                     //print("Found SCANCODE_SHIFT_MASK, sending Shift up")
-                    SpiceGlibGlue_SpiceKeyEvent(0, Int32(SpiceSession.LSHIFT))
+                    spiceKeyEvent(0, Int32(SpiceSession.LSHIFT))
                 }
                 if scanCode & SpiceSession.SCANCODE_ALTGR_MASK != 0 {
                     //print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
-                    SpiceGlibGlue_SpiceKeyEvent(0, Int32(SpiceSession.RALT))
+                    spiceKeyEvent(0, Int32(SpiceSession.RALT))
                 }
             //}
         }
@@ -320,7 +320,7 @@ class SpiceSession: RemoteSession {
         if scode != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
             //print("SpiceSession: Sending modifier scancode", scode)
-            SpiceGlibGlue_SpiceKeyEvent(1, Int32(scode))
+            spiceKeyEvent(1, Int32(scode))
         }
     }
 
@@ -329,7 +329,7 @@ class SpiceSession: RemoteSession {
         if scode != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
             //print("SpiceSession: Releasing modifier scancode", scode)
-            SpiceGlibGlue_SpiceKeyEvent(0, Int32(scode))
+            spiceKeyEvent(0, Int32(scode))
         }
     }
     
@@ -337,8 +337,8 @@ class SpiceSession: RemoteSession {
         let scanCodes = getScanCodes(key: key)
         for scanCode in scanCodes {
             //Background {
-                SpiceGlibGlue_SpiceKeyEvent(1, Int32(scanCode))
-                SpiceGlibGlue_SpiceKeyEvent(0, Int32(scanCode))
+                spiceKeyEvent(1, Int32(scanCode))
+                spiceKeyEvent(0, Int32(scanCode))
             //}
         }
     }
@@ -348,7 +348,7 @@ class SpiceSession: RemoteSession {
         let d: Int16 = down ? 1 : 0
         for scanCode in scanCodes {
             //Background {
-                SpiceGlibGlue_SpiceKeyEvent(d, Int32(scanCode))
+                spiceKeyEvent(d, Int32(scanCode))
             //}
         }
     }

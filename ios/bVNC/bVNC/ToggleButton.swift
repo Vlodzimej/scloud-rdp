@@ -42,6 +42,10 @@ class ToggleButton: UIButton {
     }
     
     @objc func sendToggleText() {
+        guard let currentInstance = self.stateKeeper?.getCurrentInstance() else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
         AudioServicesPlaySystemSound(1100);
         down = !down
         log_callback_str(message: "ToggleButton: Toggled my xksysym: \(toSend!), down: \(down)")
@@ -58,9 +62,14 @@ class ToggleButton: UIButton {
     }
 
     @objc func sendText() {
+        guard let currentInstance = self.stateKeeper?.getCurrentInstance() else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        
         AudioServicesPlaySystemSound(1100);
         log_callback_str(message: "ToggleButton: Sending my xksysym: \(toSend!), up and then down.")
-        self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: XK_BackSpace)
+        self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: toSend!)
         self.stateKeeper?.toggleModifiersIfDown()
         self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
     }

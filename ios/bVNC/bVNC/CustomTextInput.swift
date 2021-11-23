@@ -53,7 +53,12 @@ class CustomTextInput: UIButton, UIKeyInput {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func insertText(_ text: String){
+    public func insertText(_ text: String) {
+        guard let currentInstance = self.stateKeeper?.getCurrentInstance() else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        
         //log_callback_str(message: "Sending: " + text + ", number of characters: " + String(text.count))
         for char in text.unicodeScalars {
             Background {
@@ -64,7 +69,12 @@ class CustomTextInput: UIButton, UIKeyInput {
         }
     }
     
-    public func deleteBackward(){
+    public func deleteBackward() {
+        guard let currentInstance = self.stateKeeper?.getCurrentInstance() else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        
         Background {
             self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: XK_BackSpace)
             self.stateKeeper?.toggleModifiersIfDown()

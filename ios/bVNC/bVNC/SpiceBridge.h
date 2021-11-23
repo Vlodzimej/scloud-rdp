@@ -62,4 +62,6 @@ void sendPointerEvent(int x, int y, int buttonId, int buttonState, int stateChan
 
 int getButtonState(bool, bool, bool, bool, bool);
 
+int32_t spiceKeyEvent(int16_t isDown, int32_t hardware_keycode);
+
 #endif /* SpiceBridge_h */
