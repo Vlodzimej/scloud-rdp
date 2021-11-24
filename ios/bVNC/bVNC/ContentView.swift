@@ -454,11 +454,11 @@ struct AddOrEditConnectionPage : View {
                 if self.showSshTunnelSettings {
                 VStack {
                     Text("SSH_TUNNEL_LABEL").font(.headline)
-                    TextField("SSH_SERVER_LABEL", text: $sshAddressText).autocapitalization(.none).font(.title)
-                    TextField("SSH_PORT_LABEL", text: $sshPortText).autocapitalization(.none).font(.title)
-                    TextField("SSH_USER_LABEL", text: $sshUserText).autocapitalization(.none).font(.title)
-                    SecureField("SSH_PASSWORD_LABEL", text: $sshPassText).autocapitalization(.none).font(.title)
-                    SecureField("SSH_PASSPHRASE_LABEL", text: $sshPassphraseText).autocapitalization(.none).font(.title)
+                    TextField(self.stateKeeper.localizedString(for: "SSH_SERVER_LABEL"), text: $sshAddressText).autocapitalization(.none).font(.title)
+                    TextField(self.stateKeeper.localizedString(for: "SSH_PORT_LABEL"), text: $sshPortText).autocapitalization(.none).font(.title)
+                    TextField(self.stateKeeper.localizedString(for: "SSH_USER_LABEL"), text: $sshUserText).autocapitalization(.none).font(.title)
+                    SecureField(self.stateKeeper.localizedString(for: "SSH_PASSWORD_LABEL"), text: $sshPassText).autocapitalization(.none).font(.title)
+                    SecureField(self.stateKeeper.localizedString(for: "SSH_PASSPHRASE_LABEL"), text: $sshPassphraseText).autocapitalization(.none).font(.title)
                     VStack {
                         Divider()
                         HStack {
@@ -475,12 +475,12 @@ struct AddOrEditConnectionPage : View {
                 if self.stateKeeper.isSpice() {
                     VStack {
                         Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
-                        TextField("ADDRESS_LABEL", text: $addressText).autocapitalization(.none).font(.title)
-                        TextField("PORT_LABEL", text: $portText).font(.title)
-                        TextField("TLS_PORT_LABEL", text: $tlsPortText).font(.title)
-                        TextField("USER_LABEL", text: $usernameText).autocapitalization(.none).font(.title)
-                        SecureField("PASSWORD_LABEL", text: $passwordText).font(.title)
-                        TextField("CERT_SUBJECT_LABEL", text: $certSubjectText).autocapitalization(.none).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+                        SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
                         VStack {
                             Divider()
                             HStack {
@@ -500,10 +500,10 @@ struct AddOrEditConnectionPage : View {
                 } else {
                     VStack {
                         Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
-                        TextField("ADDRESS_LABEL", text: $addressText).autocapitalization(.none).font(.title)
-                        TextField("PORT_LABEL", text: $portText).font(.title)
-                        TextField("USER_LABEL", text: $usernameText).autocapitalization(.none).font(.title)
-                        SecureField("PASSWORD_LABEL", text: $passwordText).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+                        TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+                        SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
                     }.padding()
                 }
                 
