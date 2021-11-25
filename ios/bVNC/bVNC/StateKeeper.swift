@@ -54,10 +54,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var yesNoDialogResponse: Int32 = 0
     var imageView: TouchEnabledUIImageView?
     var vncSession: RemoteSession?
-    var modifierButtons: [String: UIButton]
-    var keyboardButtons: [String: UIButton]
-    var topButtons: [String: UIButton]
-    var interfaceButtons: [String: UIButton]
+    var modifierButtons: [String: UIControl]
+    var keyboardButtons: [String: UIControl]
+    var topButtons: [String: UIControl]
+    var interfaceButtons: [String: UIControl]
     var keyboardHeight: CGFloat = 0.0
     var clientLog: [String] = []
     var sshForwardingLock: NSLock = NSLock()
@@ -563,7 +563,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
-    func setButtonsVisibility(buttons: [String: UIButton], isHidden: Bool) {
+    func setButtonsVisibility(buttons: [String: UIControl], isHidden: Bool) {
         buttons.forEach() { button in
             button.value.isHidden = isHidden
         }
@@ -668,8 +668,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
 
     }
     
-    func createButtonsFromData(populateDict: [String: UIButton], buttonData: [ String: [ String: Any ] ], width: CGFloat, height: CGFloat, spacing: CGFloat ) -> [String: UIButton] {
-        var newButtonDict: [ String: UIButton ] = [:]
+    func createButtonsFromData(populateDict: [String: UIControl], buttonData: [ String: [ String: Any ] ], width: CGFloat, height: CGFloat, spacing: CGFloat ) -> [String: UIControl] {
+        var newButtonDict: [ String: UIControl ] = [:]
         buttonData.forEach() { button in
             let b = button.value
             let title = b["title"] as! String
@@ -718,7 +718,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return newButtonDict
     }
 
-    func addButtons(buttons: [String: UIButton]) {
+    func addButtons(buttons: [String: UIControl]) {
         //log_callback_str(message: "Adding buttons to superview")
         buttons.forEach(){ button in
             globalWindow!.addSubview(button.value)

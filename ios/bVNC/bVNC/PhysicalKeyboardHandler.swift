@@ -57,6 +57,11 @@ class PhysicalKeyboardHandler {
                 UIKeyCommand.inputDownArrow: XK_Down,
                 UIKeyCommand.inputLeftArrow: XK_Left,
                 UIKeyCommand.inputRightArrow: XK_Right,
+                "\u{1E}": XK_Up,
+                "\u{1F}": XK_Down,
+                "\u{1C}": XK_Left,
+                "\u{1D}": XK_Right,
+                "\t": XK_Tab,
             ]
 
             self.keyCodeWithShiftModifierToString = [
@@ -96,6 +101,7 @@ class PhysicalKeyboardHandler {
         }
 
         for p in presses {
+            print (#function, p.key)
             guard let key = p.key else {
                 continue
             }
@@ -103,20 +109,24 @@ class PhysicalKeyboardHandler {
             var altOrCtrlDown = false
             if key.modifierFlags.contains(.control) {
                 altOrCtrlDown = true
+                print(#function, "Control")
                 self.stateKeeper.sendModifierIfNotDown(modifier: XK_Control_L)
             }
             if key.modifierFlags.contains(.alternate) {
                 altOrCtrlDown = true
+                print(#function, "Alt")
                 self.stateKeeper.sendModifierIfNotDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 shiftDown = true
+                print(#function, "Shift")
                 self.stateKeeper.sendModifierIfNotDown(modifier: XK_Shift_L)
             }
             if key.modifierFlags.contains(.alphaShift) {
+                print(#function, "CapsLock")
                 shiftDown = true
             }
-
+            
             if key.characters != "" {
                 var text = ""
 
@@ -136,8 +146,10 @@ class PhysicalKeyboardHandler {
                 }
                 if self.specialKeyToXKeySymMap[text] != nil {
                     let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
+                    print(#function, "sending xKeySym converted from text:", xKeySym)
                     self.stateKeeper.sendSpecialKeyByXKeySym(key: xKeySym)
                 } else {
+                    print(#function, "sending text:", text)
                     textInput?.insertText(text)
                 }
             }
@@ -150,18 +162,25 @@ class PhysicalKeyboardHandler {
             guard let key = p.key else {
                 continue
             }
+            // Only if the press ending is with just the modifier do we release modifiers
+            // to allow multiple modified characters to be sent with a single modifier press.
+            if (key.characters != "") {
+                continue
+            }
             if key.modifierFlags.contains(.control) {
+                print(#function, "Control")
                 self.stateKeeper.releaseModifierIfDown(modifier: XK_Control_L)
             }
             if key.modifierFlags.contains(.alternate) {
+                print(#function, "Alt")
                 self.stateKeeper.releaseModifierIfDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
+                print(#function, "Shift")
                 self.stateKeeper.releaseModifierIfDown(modifier: XK_Shift_L)
             }
         }
     }
-
 
     func pressesCancelled(_ presses: Set<UIPress>,
                                    with event: UIPressesEvent?) {
@@ -172,87 +191,83 @@ class PhysicalKeyboardHandler {
         if self.commands != nil {
             return self.commands
         }
-        self.commands = (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .shift], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .alternate], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .control], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .shift, .alternate], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .shift, .control], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .control, .alternate], action: #selector(captureCmd))})
-        commands! += (0...255).map({UIKeyCommand(input: String(UnicodeScalar($0)), modifierFlags: [.command, .control, .alternate, .shift], action: #selector(captureCmd))})
-        commands! += [
-            //UIKeyCommand(input: "", modifierFlags: [.command], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .shift], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .alternate], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .control], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .control, .shift], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .control, .alternate], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .alternate, .shift], action: #selector(captureCmd)),
-            UIKeyCommand(input: "", modifierFlags: [.command, .control, .alternate, .shift], action: #selector(captureCmd))
+
+        var chars = (0...255).map({String(UnicodeScalar($0))})
+        // This implementation is able to send a single Start/Super key command, but
+        // causes stray Start/Super key to be sent when Command-Tabbing away from the app.
+        // adding "" to chars enables this behavior.
+        chars += [
+            UIKeyCommand.inputUpArrow, UIKeyCommand.inputDownArrow, UIKeyCommand.inputLeftArrow, UIKeyCommand.inputRightArrow
         ]
+        let modifierPermutations: [UIKeyModifierFlags] = [ [.command], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift], [UIKeyModifierFlags.command, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.control], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.control], [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate, UIKeyModifierFlags.shift] ]
+        
+        commands = []
+        for mods in modifierPermutations {
+            commands! += chars.map({UIKeyCommand(input: $0, modifierFlags: mods, action: #selector(captureCmd))})
+        }
+        
+        for command in commands! {
+            if #available(iOS 15, *), ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 15 {
+                command.wantsPriorityOverSystemBehavior = true
+            }
+        }
         return self.commands
     }
     
     @objc func captureCmd(sender: UIKeyCommand) {
-        var anotherModifier = false
+        let text = sender.input!
+        var modifiers = [ false, false, false, false ]
         if sender.modifierFlags.contains(.control) {
+            print(#function, "Control")
             self.stateKeeper.sendModifierIfNotDown(modifier: XK_Control_L)
-            anotherModifier = true
+            modifiers[0] = true
         }
         if sender.modifierFlags.contains(.alternate) {
+            print(#function, "Alt")
             self.stateKeeper.sendModifierIfNotDown(modifier: XK_Alt_L)
-            anotherModifier = true
+            modifiers[1] = true
         }
         if sender.modifierFlags.contains(.shift) {
-            self.stateKeeper.modifiers[XK_Shift_L] = true
-            anotherModifier = true
+            print(#function, "Shift")
+            self.stateKeeper.sendModifierIfNotDown(modifier: XK_Shift_L)
+            modifiers[2] = true
         }
-
-        /*
-        // This implementation is able to send a single Start/Super key command, but
-        // causes stray Start/Super key to be sent when Command-Tabbing away from the app.
-        // UIKeyCommand(input: "", modifierFlags: [.command], action: #selector(captureCmd))
-        // needs to be added above
+        
         if sender.modifierFlags.contains(.command) {
+            print(#function, "Super")
             self.stateKeeper.sendModifierIfNotDown(modifier: XK_Super_L)
-            self.stateKeeper.rescheduleSuperKeyUpTimer()
+            modifiers[3] = true
         }
         
-        if sender.input != "" {
+        if self.specialKeyToXKeySymMap[text] != nil {
+            let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
+            print(#function, "sending xKeySym converted from text:", xKeySym)
+            self.stateKeeper.sendSpecialKeyByXKeySym(key: xKeySym)
+        } else {
             if self.stateKeeper.modifiers[XK_Shift_L]! {
-                textInput?.insertText(sender.input!.uppercased())
+                textInput?.insertText(text.uppercased())
+                print(#function, "sending text uppercased:", text.uppercased())
             } else {
-                textInput?.insertText(sender.input!.lowercased())
+                textInput?.insertText(text.lowercased())
+                print(#function, "sending text lowercased:", text.lowercased())
             }
-        } else if sender.input == "" && !anotherModifier {
+        }
+            
+        if (modifiers[0]) {
+            print(#function, "Releasing Control")
             self.stateKeeper.releaseModifierIfDown(modifier: XK_Control_L)
+        }
+        if (modifiers[1]) {
+            print(#function, "Releasing Alt")
             self.stateKeeper.releaseModifierIfDown(modifier: XK_Alt_L)
-            self.stateKeeper.modifiers[XK_Shift_L] = false
         }
-        */
-        
-        if sender.input != "" || anotherModifier {
-            if !self.stateKeeper.modifiers[XK_Super_L]! {
-                print("Super/command key not down and sent with a different modifier or key, sending Super down")
-                self.stateKeeper.sendModifierIfNotDown(modifier: XK_Super_L)
-            }
-            if sender.input != "" {
-                if self.stateKeeper.modifiers[XK_Shift_L]! {
-                    textInput?.insertText(sender.input!.uppercased())
-                } else {
-                    textInput?.insertText(sender.input!.lowercased())
-                }
-            }
+        if (modifiers[2]) {
+            print(#function, "Releasing Shift")
+            self.stateKeeper.releaseModifierIfDown(modifier: XK_Shift_L)
         }
-
-        if sender.input == "" && !anotherModifier {
-            if self.stateKeeper.modifiers[XK_Super_L]! {
-                print("Super/command key was previously marked as down, sending Super up")
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Super_L)
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Control_L)
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Alt_L)
-                self.stateKeeper.modifiers[XK_Shift_L] = false
-            }
+        if (modifiers[3]) {
+            print(#function, "Releasing Super")
+            self.stateKeeper.releaseModifierIfDown(modifier: XK_Super_L)
         }
     }
 }
