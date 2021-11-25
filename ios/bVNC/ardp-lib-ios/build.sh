@@ -45,3 +45,20 @@ then
   cmake --build .
   popd
 fi
+
+# Build one library with all architectures
+mkdir libs
+for f in $(find FreeRDP_iphoneos/ -name \*.a | sed 's/FreeRDP_iphoneos\///')
+do
+  lipo FreeRDP_iphoneos/$f FreeRDP_maccatalyst/$(echo $f | sed 's/Debug-iphoneos//') -output libs/$(basename $f) -create
+done
+
+/Library/Developer/CommandLineTools/usr/bin//libtool -static -o duperlib.a libs/*
+
+mv duperlib.a ../bVNC.xcodeproj/libs_combined/libs/
+
+# Make all include files available to the project
+for d in $(find FreeRDP_iphoneos/ -name include -type d)
+do
+  rsync -avP $d/ ../bVNC.xcodeproj/libs_combined/include/
+done
