@@ -17,13 +17,11 @@
  * USA.
  */
 
-//
-//  Use this file to import your target's public headers that you would like to expose to Swift.
-//
-#include "RemoteBridge.h"
-#include "SpiceBridge.h"
-#include "VncBridge.h"
-#include "RdpBridge.h"
-#include "SshPortForwarder.h"
-#include "SystemMonitor.h"
-#include "Utilities.h"
+import UIKit
+import SwiftUI
+
+// This class is here as a stand-in for the VNC targets to avoid needing the SPICE
+// dependencies for the VNC app. Note its "Target Membership"
+class RdpSession: RemoteSession {
+
+}

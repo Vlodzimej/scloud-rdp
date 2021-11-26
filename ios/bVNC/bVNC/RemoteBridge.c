@@ -26,6 +26,12 @@ bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int
 void (*framebuffer_resize_callback)(int, int fbW, int fbH);
 void (*failure_callback)(int, uint8_t *);
 
+pFrameBufferUpdateCallback frameBufferUpdateCallback;
+pFrameBufferResizeCallback frameBufferResizeCallback;
+pFailCallback failCallback;
+pClientLogCallback clientLogCallback;
+pYesNoCallback yesNoCallback;
+
 void signal_handler(int signal, siginfo_t *info, void *reserved) {
     client_log("Handling signal: %d", signal);
     failure_callback(-1, NULL);

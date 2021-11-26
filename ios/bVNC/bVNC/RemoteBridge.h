@@ -28,6 +28,18 @@
 
 extern int fbW;
 extern int fbH;
+
+typedef bool (*pFrameBufferUpdateCallback)(int instance, uint8_t *buffer, int fbW, int fbH, int x, int y, int w, int h);
+extern pFrameBufferUpdateCallback frameBufferUpdateCallback;
+typedef void (*pFrameBufferResizeCallback)(int instance, int fbW, int fbH);
+extern pFrameBufferResizeCallback frameBufferResizeCallback;
+typedef void (*pFailCallback)(int instance, uint8_t *);
+extern pFailCallback failCallback;
+typedef void (*pClientLogCallback)(int8_t *);
+extern pClientLogCallback clientLogCallback;
+typedef int (*pYesNoCallback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
+extern pYesNoCallback yesNoCallback;
+
 extern bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int y, int w, int h);
 extern void (*framebuffer_resize_callback)(int, int fbW, int fbH);
 extern void (*failure_callback)(int, uint8_t *);

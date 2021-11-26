@@ -15,11 +15,6 @@ then
         -DCMAKE_OSX_ARCHITECTURES="arm64" \
         -GXcode
 
-  echo "The FreeRDP project has been cloned to $(realpath .)"
-  echo "Open the project in xcode, and set a valid Development Team in the iFreeRDP Target under Signing & Capabilities."
-  echo "Press enter when you are done."
-  read continue
-
   cmake --build .
   popd
 fi
@@ -42,6 +37,7 @@ then
         -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
         -DWITH_NEON=OFF \
         -G"Unix Makefiles"
+
   cmake --build .
   popd
 fi
@@ -55,10 +51,10 @@ done
 
 /Library/Developer/CommandLineTools/usr/bin//libtool -static -o duperlib.a libs/*
 
-mv duperlib.a ../bVNC.xcodeproj/libs_combined/libs/
+mv duperlib.a ../bVNC.xcodeproj/libs_combined/lib/
 
 # Make all include files available to the project
-for d in $(find FreeRDP_iphoneos/ -name include -type d)
+for d in $(find FreeRDP_iphoneos/ -name include -type d) FreeRDP_iphoneos/client/iOS/FreeRDP/ FreeRDP_iphoneos/client/iOS/Misc/
 do
   rsync -avP $d/ ../bVNC.xcodeproj/libs_combined/include/
 done

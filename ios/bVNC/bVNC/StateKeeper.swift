@@ -283,6 +283,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return self.bundleID?.lowercased().contains("spice") ?? false
     }
 
+    func isRdp() -> Bool {
+        return self.bundleID?.lowercased().contains("rdp") ?? false
+    }
+
     /**
      Used to connect with an index from the list of saved connections
      */
@@ -315,6 +319,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.toggleModifiersIfDown()
         if self.isSpice() {
             self.vncSession = SpiceSession(instance: currInst, stateKeeper: self)
+        } else if self.isRdp() {
+            self.vncSession = RdpSession(instance: currInst, stateKeeper: self)
         } else {
             self.vncSession = VncSession(instance: currInst, stateKeeper: self)
         }

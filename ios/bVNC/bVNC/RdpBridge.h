@@ -17,13 +17,17 @@
  * USA.
  */
 
-//
-//  Use this file to import your target's public headers that you would like to expose to Swift.
-//
-#include "RemoteBridge.h"
-#include "SpiceBridge.h"
-#include "VncBridge.h"
-#include "RdpBridge.h"
-#include "SshPortForwarder.h"
-#include "SystemMonitor.h"
-#include "Utilities.h"
+#ifndef RdpBridge_h
+#define RdpBridge_h
+
+void *initializeRdp(int instance,
+                    pFrameBufferUpdateCallback fb_update_callback,
+                    pFrameBufferResizeCallback fb_resize_callback,
+                    pFailCallback fail_callback,
+                    pClientLogCallback cl_log_callback,
+                    pYesNoCallback y_n_callback,
+                    char* addr, char* port, char* user, char* password, bool enable_sound);
+
+void disconnectRdp(void *i);
+
+#endif /* RdpBridge_h */

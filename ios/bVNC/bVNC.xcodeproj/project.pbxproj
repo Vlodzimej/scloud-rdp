@@ -220,6 +220,7 @@
 		AF53DCB124022C8C00569F19 /* VncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB024022C8C00569F19 /* VncSession.swift */; };
 		AF53DCB32402391600569F19 /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
 		AF59A3D4242CE9E100658CE6 /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
+		AF5D23F02750890800974427 /* RdpBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D23EE275088E500974427 /* RdpBridge.m */; };
 		AF7421F4241D58EB00C552A7 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
 		AF8C9CD3255B2F07001563A0 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AF99997D243593C70018204F /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
@@ -252,6 +253,43 @@
 		AFB2C8ED26001F4D00E2859F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
 		AFB2C8EE26001F4D00E2859F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
 		AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
+		AFB39110274F564A0059F91F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
+		AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
+		AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
+		AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
+		AFB39115274F564A0059F91F /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
+		AFB39116274F564A0059F91F /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
+		AFB39117274F564A0059F91F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
+		AFB39118274F564A0059F91F /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		AFB39119274F564A0059F91F /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
+		AFB3911A274F564A0059F91F /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
+		AFB3911B274F564A0059F91F /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
+		AFB3911C274F564A0059F91F /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		AFB3911D274F564A0059F91F /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
+		AFB3911E274F564A0059F91F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
+		AFB3911F274F564A0059F91F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
+		AFB39121274F564A0059F91F /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
+		AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
+		AFB39123274F564A0059F91F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
+		AFB39124274F564A0059F91F /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
+		AFB39125274F564A0059F91F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AFB39127274F564A0059F91F /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
+		AFB39128274F564A0059F91F /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
+		AFB3912A274F564A0059F91F /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
+		AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
+		AFB391C9274F564A0059F91F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
+		AFB391CA274F564A0059F91F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
+		AFB391CB274F564A0059F91F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
+		AFB391CC274F564A0059F91F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
+		AFB391D8274F585C0059F91F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB391D7274F585C0059F91F /* libz.tbd */; };
+		AFB391DA274F586D0059F91F /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB391D9274F586D0059F91F /* duperlib.a */; };
+		AFB391DB274F58B60059F91F /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
+		AFB391DD274F59C90059F91F /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
+		AFB391DF274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
+		AFB391E0274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
+		AFB391E1274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
+		AFB391E6274F5A860059F91F /* RdpSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391E2274F5A820059F91F /* RdpSession.swift */; };
 		AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
 		AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE0251E260DBD2D005E851E /* liblz4.a */; };
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
@@ -988,6 +1026,8 @@
 		AF53DCB024022C8C00569F19 /* VncSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VncSession.swift; sourceTree = "<group>"; };
 		AF53DCB22402391600569F19 /* StateKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateKeeper.swift; sourceTree = "<group>"; };
 		AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserving.swift; sourceTree = "<group>"; };
+		AF5D23EE275088E500974427 /* RdpBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RdpBridge.m; sourceTree = "<group>"; };
+		AF5D23F227508A2700974427 /* RdpBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RdpBridge.h; sourceTree = "<group>"; };
 		AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SshPortForwarder.h; sourceTree = "<group>"; };
 		AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SshPortForwarder.c; sourceTree = "<group>"; };
 		AF8C75A1243AB46100AF0CF3 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined/lib/libcrypto.a; sourceTree = "<group>"; };
@@ -1014,6 +1054,12 @@
 		AFB2CA3E26002A9B00E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/libs_combined/lib/libjpeg.a; sourceTree = "<group>"; };
 		AFB2CA6626002B8700E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libjpeg.a"; sourceTree = "<group>"; };
 		AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.2.dylib"; sourceTree = "<group>"; };
+		AFB391D1274F564A0059F91F /* aRDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aRDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFB391D3274F56510059F91F /* aSPICE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE copy-Info.plist"; path = "/Users/iiordanov/software/remote-desktop-clients-butterflyit-secret/ios/bVNC/aSPICE copy-Info.plist"; sourceTree = "<absolute>"; };
+		AFB391D7274F585C0059F91F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		AFB391D9274F586D0059F91F /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined/lib/duperlib.a; sourceTree = "<group>"; };
+		AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSessionDummy.swift; sourceTree = "<group>"; };
+		AFB391E2274F5A820059F91F /* RdpSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSession.swift; sourceTree = "<group>"; };
 		AFBBBD7924C3C6CD00F64E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringKey.swift; sourceTree = "<group>"; };
 		AFE0251E260DBD2D005E851E /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = bVNC.xcodeproj/ios_universal/lib/liblz4.a; sourceTree = "<group>"; };
@@ -1227,6 +1273,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFB39129274F564A0059F91F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB391DB274F58B60059F91F /* superlib.a in Frameworks */,
+				AFB391DA274F586D0059F91F /* duperlib.a in Frameworks */,
+				AFB391D8274F585C0059F91F /* libz.tbd in Frameworks */,
+				AFB3912A274F564A0059F91F /* libssh2.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1240,6 +1297,7 @@
 				AF043A1623B3DADA00C43ED7 /* Products */,
 				AF48247C23B4783500826395 /* Frameworks */,
 				AFFFA867260E53590029384B /* Recovered References */,
+				AFB391D3274F56510059F91F /* aSPICE copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1251,6 +1309,7 @@
 				AF043A3623B3DADB00C43ED7 /* bVNCUITests.xctest */,
 				AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */,
 				AFB2C8F326001F4D00E2859F /* aSPICE.app */,
+				AFB391D1274F564A0059F91F /* aRDP.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1298,10 +1357,14 @@
 				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
 				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
 				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
+				AFB391E2274F5A820059F91F /* RdpSession.swift */,
 				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
+				AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */,
 				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
 				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
 				AFF5043D2617AC53007C7644 /* Constants.swift */,
+				AF5D23EE275088E500974427 /* RdpBridge.m */,
+				AF5D23F227508A2700974427 /* RdpBridge.h */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -1343,6 +1406,8 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AFB391D9274F586D0059F91F /* duperlib.a */,
+				AFB391D7274F585C0059F91F /* libz.tbd */,
 				AFE0251E260DBD2D005E851E /* liblz4.a */,
 				AF44CE6E2601A16600DAA44B /* libiconv.a */,
 				AF44CD8326018B1B00DAA44B /* GStreamer.framework */,
@@ -2124,6 +2189,24 @@
 			productReference = AFB2C8F326001F4D00E2859F /* aSPICE.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AFB3910E274F564A0059F91F /* aRDP */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "aRDP" */;
+			buildPhases = (
+				AFB3910F274F564A0059F91F /* Sources */,
+				AFB39129274F564A0059F91F /* Frameworks */,
+				AFB391C7274F564A0059F91F /* Resources */,
+				AFB391CD274F564A0059F91F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = aRDP;
+			productName = bVNC;
+			productReference = AFB391D1274F564A0059F91F /* aRDP.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2178,6 +2261,7 @@
 				AF043A3523B3DADB00C43ED7 /* bVNCUITests */,
 				AF30D194253396EF00BA7A62 /* SimpleRemoteTest */,
 				AFB2C8CD26001F4D00E2859F /* aSPICE */,
+				AFB3910E274F564A0059F91F /* aRDP */,
 			);
 		};
 /* End PBXProject section */
@@ -2242,6 +2326,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AFB391C7274F564A0059F91F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */,
+				AFB391C9274F564A0059F91F /* LaunchScreen.storyboard in Resources */,
+				AFB391CA274F564A0059F91F /* Localizable.strings in Resources */,
+				AFB391CB274F564A0059F91F /* Preview Assets.xcassets in Resources */,
+				AFB391CC274F564A0059F91F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -2263,6 +2359,23 @@
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
 		};
 		AFB2C8EF26001F4D00E2859F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
+		};
+		AFB391CD274F564A0059F91F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2327,6 +2440,7 @@
 				AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */,
 				AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */,
 				AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
+				AFB391DF274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */,
 				AFF6D39D260FE8B20077F6D2 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2377,6 +2491,7 @@
 				AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */,
 				AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */,
 				AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */,
+				AFB391E0274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */,
 				165D67CE26ADD24300E27D6E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2409,7 +2524,41 @@
 				AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */,
 				AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */,
 				AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */,
+				AFB391E1274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */,
 				AFB2C8E426001F4D00E2859F /* TouchEnabledUIImageView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB3910F274F564A0059F91F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB39110274F564A0059F91F /* Constants.swift in Sources */,
+				AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */,
+				AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */,
+				AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */,
+				AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */,
+				AFB391E6274F5A860059F91F /* RdpSession.swift in Sources */,
+				AFB39115274F564A0059F91F /* ucs2xkeysym.c in Sources */,
+				AFB39116274F564A0059F91F /* LocalizedStringKey.swift in Sources */,
+				AFB39117274F564A0059F91F /* Utils.swift in Sources */,
+				AFB39118274F564A0059F91F /* RemoteBridge.c in Sources */,
+				AFB39119274F564A0059F91F /* StoreReviewHelper.swift in Sources */,
+				AFB3911A274F564A0059F91F /* SystemMonitor.m in Sources */,
+				AFB3911B274F564A0059F91F /* PhysicalKeyboardHandler.swift in Sources */,
+				AFB3911C274F564A0059F91F /* RemoteSession.swift in Sources */,
+				AFB391DD274F59C90059F91F /* SpiceSessionDummy.swift in Sources */,
+				AFB3911D274F564A0059F91F /* LongTapDragUIImageView.swift in Sources */,
+				AFB3911E274F564A0059F91F /* AppDelegate.swift in Sources */,
+				AF5D23F02750890800974427 /* RdpBridge.m in Sources */,
+				AFB3911F274F564A0059F91F /* SceneDelegate.swift in Sources */,
+				AFB39121274F564A0059F91F /* KeyboardObserving.swift in Sources */,
+				AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */,
+				AFB39123274F564A0059F91F /* ContentView.swift in Sources */,
+				AFB39124274F564A0059F91F /* Utility.c in Sources */,
+				AFB39125274F564A0059F91F /* ShortTapDragUIImageView.swift in Sources */,
+				AFB39127274F564A0059F91F /* Utilities.m in Sources */,
+				AFB39128274F564A0059F91F /* TouchEnabledUIImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3003,6 +3152,125 @@
 			};
 			name = Release;
 		};
+		AFB391CF274F564A0059F91F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "aRDP-AppIcon";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 37;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "aSPICE copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 1.0.6;
+				OTHER_LDFLAGS = "-lresolv";
+				PRELINK_LIBS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AFB391D0274F564A0059F91F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "aRDP-AppIcon";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 37;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "aSPICE copy-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 1.0.6;
+				OTHER_LDFLAGS = "-lresolv";
+				PRELINK_LIBS = "";
+				"PRELINK_LIBS[arch=*]" = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3056,6 +3324,15 @@
 			buildConfigurations = (
 				AFB2C8F126001F4D00E2859F /* Debug */,
 				AFB2C8F226001F4D00E2859F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "aRDP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFB391CF274F564A0059F91F /* Debug */,
+				AFB391D0274F564A0059F91F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
