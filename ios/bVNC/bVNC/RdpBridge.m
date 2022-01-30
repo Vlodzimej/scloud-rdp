@@ -60,7 +60,7 @@ static BOOL end_paint(rdpContext* context) {
     printf("end_paint, instance %d\n", i);
 
     mfInfo *mfi = MFI_FROM_INSTANCE(context->instance);
-    uint8* pixels = CGBitmapContextGetData(mfi->bitmap_context);
+    uint8_t* pixels = CGBitmapContextGetData(mfi->bitmap_context);
     fbW = context->instance->settings->DesktopWidth;
     fbH = context->instance->settings->DesktopHeight;
 
@@ -86,7 +86,7 @@ static BOOL post_connect(freerdp *instance) {
         return false;
     }
 
-    if (!gdi_init(instance, PIXEL_FORMAT_ARGB32)) {
+    if (!gdi_init(instance, PIXEL_FORMAT_RGBA32)) {
         return false;
     }
 
