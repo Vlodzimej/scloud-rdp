@@ -68,7 +68,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var reDrawTimer: Timer = Timer()
     var superUpKeyTimer: Timer = Timer()
     var orientationTimer: Timer = Timer()
-    var screenUpdateTimer: Timer = Timer()
+    var fullScreenUpdateTimer: Timer = Timer()
+    var partialScreenUpdateTimer: Timer = Timer()
+    var recurringPartialScreenUpdateTimer: Timer = Timer()
     var disconnectTimer: Timer = Timer()
     var fbW: Int32 = 0
     var fbH: Int32 = 0
@@ -195,40 +197,42 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     @objc func requestFullScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a whole screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(wholeScreen: true)
+            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: false)
         }
     }
 
     @objc func requestPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a partial screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(wholeScreen: true)
+            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: true)
         }
     }
 
     @objc func requestRecurringPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a recurring partial screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(wholeScreen: false)
+            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: true)
             UserInterface {
-                self.rescheduleScreenUpdateRequest(timeInterval: 30, fullScreenUpdate: false, recurring: true)
+                self.rescheduleScreenUpdateRequest(timeInterval: 20, fullScreenUpdate: false, recurring: true)
             }
         }
     }
     
     func rescheduleScreenUpdateRequest(timeInterval: TimeInterval, fullScreenUpdate: Bool, recurring: Bool) {
         UserInterface {
-            self.screenUpdateTimer.invalidate()
             if (self.isDrawing) {
                 if (fullScreenUpdate) {
+                    self.fullScreenUpdateTimer.invalidate()
                     //print("Scheduling full screen update")
-                    self.screenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestFullScreenUpdate(sender:)), userInfo: self.currInst, repeats: false)
+                    self.fullScreenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestFullScreenUpdate(sender:)), userInfo: self.currInst, repeats: false)
                 } else if !recurring {
+                    self.partialScreenUpdateTimer.invalidate()
                     //print("Scheduling non-recurring partial screen update")
-                    self.screenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestRecurringPartialScreenUpdate), userInfo: self.currInst, repeats: false)
+                    self.partialScreenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestPartialScreenUpdate), userInfo: self.currInst, repeats: false)
                 } else {
+                    self.recurringPartialScreenUpdateTimer.invalidate()
                     //print("Scheduling recurring partial screen update")
-                    self.screenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestRecurringPartialScreenUpdate), userInfo: self.currInst, repeats: false)
+                    self.recurringPartialScreenUpdateTimer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.requestRecurringPartialScreenUpdate), userInfo: self.currInst, repeats: false)
                 }
             }
         }
@@ -368,7 +372,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.deregisterFromNotifications()
         self.orientationTimer.invalidate()
         self.reDrawTimer.invalidate()
-        self.screenUpdateTimer.invalidate()
+        self.fullScreenUpdateTimer.invalidate()
+        self.partialScreenUpdateTimer.invalidate()
+        self.recurringPartialScreenUpdateTimer.invalidate()
     }
 
     @objc func disconnect(sender: Timer) {
@@ -704,17 +710,27 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             // In either case, adjust the location of the button
             // Left and right buttons have different logic for calculating x position
             var locX = b["lx"] as! CGFloat
+            
+            // Adjust locX to be left of safe area
+            locX = locX + (globalWindow?.safeAreaInsets.left ?? 0)
+            
+            // Establish the right border
+            let rightBorder = (globalWindow?.safeAreaInsets.left ?? 0) + (globalWindow?.safeAreaLayoutGuide.layoutFrame.size.width ?? 0)
+
             if rightButton {
-                locX = globalWindow!.frame.width - (b["lx"] as! CGFloat)
+                locX = rightBorder - (b["lx"] as! CGFloat)
             }
             // Top and bottom buttons have different logic for when they go up and down.
             var locY = b["ly"] as! CGFloat + topButtonSpacing
             if !topButton {
-                locY = (globalWindow?.frame.height ?? 0) - (b["ly"] as! CGFloat) - self.keyboardHeight
+                locY = (globalWindow?.safeAreaInsets.top ?? 0) + (globalWindow?.safeAreaLayoutGuide.layoutFrame.size.height ?? 0) - (b["ly"] as! CGFloat) - self.keyboardHeight
             }
             // Top buttons can wrap around and go a row down if they are out of horizontal space.
-            let windowWidth = globalWindow?.frame.maxX ?? 0
-            if topButton && locX + width > globalWindow?.frame.maxX ?? 0 {
+            let windowWidth = globalWindow?.safeAreaLayoutGuide.layoutFrame.size.width ?? 0
+            if topButton {
+                locY = locY + (globalWindow?.safeAreaInsets.top ?? 0)
+            }
+            if topButton && locX + width > rightBorder {
                 //print ("Need to wrap button: \(title) to left and a row down")
                 locY = locY + height + spacing
                 locX = locX - windowWidth + width

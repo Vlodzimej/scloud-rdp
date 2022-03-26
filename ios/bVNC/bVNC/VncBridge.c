@@ -112,10 +112,10 @@ void disconnectVnc(void *c) {
     }
 }
 
-void sendWholeScreenUpdateRequest(void *c, bool fullScreenUpdate) {
+void sendWholeScreenUpdateRequest(void *c, bool incrementalUpdate) {
     rfbClient *cl = (rfbClient *)c;
     if (cl != NULL && maintainConnection) {
-        SendFramebufferUpdateRequest(cl, 0, 0, cl->width, cl->height, fullScreenUpdate);
+        SendFramebufferUpdateRequest(cl, 0, 0, cl->width, cl->height, incrementalUpdate);
     }
 }
 

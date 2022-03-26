@@ -339,7 +339,7 @@ class RemoteSession {
         preconditionFailure("This method must be overridden")
     }
     
-    @objc func sendScreenUpdateRequest(wholeScreen: Bool) {
+    @objc func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         preconditionFailure("This method must be overridden")
     }
 }

@@ -144,7 +144,7 @@ class RdpSession: RemoteSession {
 
     }
     
-    @objc override func sendScreenUpdateRequest(wholeScreen: Bool) {
+    @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
 
     }
 }

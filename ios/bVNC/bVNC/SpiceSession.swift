@@ -367,7 +367,7 @@ class SpiceSession: RemoteSession {
         }
     }
 
-    @objc override func sendScreenUpdateRequest(wholeScreen: Bool) {
+    @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         // Not used for SPICE
     }
 }

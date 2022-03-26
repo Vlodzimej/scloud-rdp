@@ -47,7 +47,9 @@ void sendPointerEventToServer(void *c, float totalX, float totalY, float x, floa
 void checkForError(rfbClient *cl, rfbBool res);
 void cleanup(rfbClient *cl, char* message);
 void rfb_client_cleanup(rfbClient *cl);
-void sendWholeScreenUpdateRequest(void *c, bool fullScreenUpdate);
+void (*lock_write_tls_callback)(int instance);
+void (*unlock_write_tls_callback)(int instance);
+void sendWholeScreenUpdateRequest(void *c, bool incrementalUpdate);
 void setMaintainConnection(void *c, int state);
 void keepSessionFresh(void *c);
 

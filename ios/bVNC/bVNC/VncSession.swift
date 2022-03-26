@@ -156,7 +156,7 @@ class VncSession: RemoteSession {
         }
     }
     
-    @objc override func sendScreenUpdateRequest(wholeScreen: Bool) {
-        sendWholeScreenUpdateRequest(self.cl, wholeScreen)
+    @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
+        sendWholeScreenUpdateRequest(self.cl, incrementalUpdate)
     }
 }

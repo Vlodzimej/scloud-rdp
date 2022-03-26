@@ -188,7 +188,8 @@ class PhysicalKeyboardHandler {
     }
     
     var keyCommands: [UIKeyCommand]? {
-        if self.commands != nil {
+        // Do not do all the additional work of trying to capture modifiers on iOS devices because it causes soft keyboard lag
+        if !self.isiOSAppOnMac() || self.commands != nil {
             return self.commands
         }
 
