@@ -1,20 +1,31 @@
-#!/bin/bash
+#!/bin/bash -e
 
 brew install coreutils
 
-if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
+if [ ! -f FreeRDP_iphoneos/libfreerdp/libfreerdp2.a ]
 then
-  pushd FreeRDP_iphoneos
-  git checkout stable-2.0
+  if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
+  then
+    pushd FreeRDP_iphoneos
+    git checkout stable-2.0
 
-# iOS Build
-  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
+    patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
+
+    # iOS Build
+    cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
         -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
         -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
         -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
         -DCMAKE_OSX_ARCHITECTURES="arm64" \
         -GXcode
 
+    echo "The first time this script runs, it will stop before building. You need to set a development"
+    echo "team in the iFreeRDP target of project FreeRDP. To do so, open the FreeRDP_iphoneos"
+    echo "directory with XCode, find the iFreeRDP Target, select Signing & Capabilities tab"
+    echo "and select your 'Team'. Then, rerun this script."
+    exit 0
+  fi
+  pushd FreeRDP_iphoneos
   cmake --build .
   popd
 fi
@@ -25,7 +36,7 @@ then
   pushd FreeRDP_maccatalyst
   git checkout stable-2.0
 
-  patch -p1 < ../maccatalyst.patch
+  patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
   cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
@@ -43,13 +54,13 @@ then
 fi
 
 # Build one library with all architectures
-mkdir libs
+mkdir -p libs
 for f in $(find FreeRDP_iphoneos/ -name \*.a | sed 's/FreeRDP_iphoneos\///')
 do
   lipo FreeRDP_iphoneos/$f FreeRDP_maccatalyst/$(echo $f | sed 's/Debug-iphoneos//') -output libs/$(basename $f) -create
 done
 
-/Library/Developer/CommandLineTools/usr/bin//libtool -static -o duperlib.a libs/*
+libtool -static -o duperlib.a libs/*
 
 mv duperlib.a ../bVNC.xcodeproj/libs_combined/lib/
 

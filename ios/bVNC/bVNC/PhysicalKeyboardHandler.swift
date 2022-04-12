@@ -187,6 +187,13 @@ class PhysicalKeyboardHandler {
         pressesEnded(presses, with: event)
     }
     
+    func isiOSAppOnMac() -> Bool {
+      if #available(iOS 14.0, *) {
+        return ProcessInfo.processInfo.isiOSAppOnMac
+      }
+      return false
+    }
+    
     var keyCommands: [UIKeyCommand]? {
         // Do not do all the additional work of trying to capture modifiers on iOS devices because it causes soft keyboard lag
         if !self.isiOSAppOnMac() || self.commands != nil {

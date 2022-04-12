@@ -914,7 +914,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func resizeWindow() {
         if currInst >= 0 {
-            resize_callback(instance: Int32(currInst), cl: cl[currInst], fbW: fbW, fbH: fbH)
+            resize_callback(instance: Int32(currInst), fbW: fbW, fbH: fbH)
             reDraw()
         }
     }
