@@ -134,7 +134,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         "pageDown": [ "title": "⇟", "lx": 14*tbW+14*tbSp, "ly": z, "send": XK_Page_Down, "tgl": false, "top": true, "right": false ],
         "home": [ "title": "⇤", "lx": 15*tbW+15*tbSp, "ly": z, "send": XK_Home, "tgl": false, "top": true, "right": false ],
         "end": [ "title": "⇥", "lx": 16*tbW+16*tbSp, "ly": z, "send": XK_End, "tgl": false, "top": true, "right": false ],
-
+        "del": [ "title": "Del", "lx": 17*tbW+17*tbSp, "ly": z, "send": XK_Delete, "tgl": false, "top": true, "right": false ],
     ]
 
     let modifierButtonData: [ String: [ String: Any ] ] = [
@@ -169,13 +169,15 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func rescheduleReDrawTimer(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
-        self.data = data
-        self.fbW = fbW
-        self.fbH = fbH
-        self.reDrawTimer.invalidate()
         if (self.isDrawing) {
             UserInterface{
-                self.reDrawTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.reDraw), userInfo: nil, repeats: false)
+                self.data = data
+                self.fbW = fbW
+                self.fbH = fbH
+                self.reDrawTimer.invalidate()
+                self.reDrawTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self,
+                                                        selector: #selector(self.reDraw),
+                                                        userInfo: nil, repeats: false)
             }
         }
     }
@@ -908,6 +910,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func setCurrentInstance(inst: UnsafeMutableRawPointer?) {
         self.cl[self.currInst] = inst
+    }
+    
+    func resizeWindow() {
+        if currInst >= 0 {
+            resize_callback(instance: Int32(currInst), cl: cl[currInst], fbW: fbW, fbH: fbH)
+            reDraw()
+        }
     }
     
 	/*
