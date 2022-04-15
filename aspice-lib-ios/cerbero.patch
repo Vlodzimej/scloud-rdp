@@ -156,10 +156,10 @@ index 0b3157ee..66a24683 100644
      files_libs = ['libgdk_pixbuf-2.0']
      files_bins = ['gdk-pixbuf-query-loaders', 'gdk-pixbuf-csource']
 diff --git a/recipes/gst-plugins-base-1.0.recipe b/recipes/gst-plugins-base-1.0.recipe
-index 4b2e9497..ebf7aa2b 100644
+index 4b2e9497..cdc49e81 100644
 --- a/recipes/gst-plugins-base-1.0.recipe
 +++ b/recipes/gst-plugins-base-1.0.recipe
-@@ -6,10 +6,10 @@ class Recipe(custom.GStreamer):
+@@ -6,20 +6,20 @@ class Recipe(custom.GStreamer):
      btype = BuildType.MESON
      tarball_checksum = '762abdd1a950809a1cea62fff7f86b5f7d6bd5f6841e3e585c700b823cdb7897'
      meson_options = {# enabled plugins
@@ -173,10 +173,14 @@ index 4b2e9497..ebf7aa2b 100644
 +                     'gl-jpeg': 'disabled',
                       'ogg': 'enabled',
                       'opus': 'enabled',
-                      'pango': 'enabled',
-@@ -19,7 +19,7 @@ class Recipe(custom.GStreamer):
+-                     'pango': 'enabled',
++                     'pango': 'disabled',
+                      'theora': 'enabled',
+                      'vorbis': 'enabled',
+                      # disabled plugins
                       'tremor': 'disabled'}
-     deps = ['glib', 'gstreamer-1.0', 'libogg', 'pango', 'libtheora',
+-    deps = ['glib', 'gstreamer-1.0', 'libogg', 'pango', 'libtheora',
++    deps = ['glib', 'gstreamer-1.0', 'libogg', 'libtheora',
              'libvorbis', 'zlib', 'orc', 'opus', 'graphene',
 -            'libjpeg-turbo', 'libpng']
 +            'libjpeg8', 'libpng']
