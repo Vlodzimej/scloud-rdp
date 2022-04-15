@@ -88,7 +88,7 @@ then
 EOF
   cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
         -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-        -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.0 \
+        -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.2 \
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DENABLE_BITCODE=OFF \
         -DENABLE_VISIBILITY=ON \
@@ -110,7 +110,7 @@ EOF
 EOF
   cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
         -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-        -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=13.0 \
+        -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=13.2 \
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
@@ -188,7 +188,7 @@ then
         -DCMAKE_INSTALL_PREFIX=./libs \
         -DPLATFORM=SIMULATOR64 \
         -DBUILD_SHARED_LIBS=OFF -DENABLE_VISIBILITY=ON -DENABLE_ARC=OFF \
-        -DDEPLOYMENT_TARGET=13.0 \
+        -DDEPLOYMENT_TARGET=13.2 \
         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
         -DWITH_GCRYPT=OFF \
         -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
@@ -211,7 +211,7 @@ then
     cmake .. -G"Unix Makefiles" -DARCHS='arm64' \
         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
         -DPLATFORM=OS64 \
-        -DDEPLOYMENT_TARGET=13.0 \
+        -DDEPLOYMENT_TARGET=13.2 \
         -DENABLE_BITCODE=OFF \
         -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
         -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
@@ -238,7 +238,7 @@ then
     cmake .. -G"Unix Makefiles" -DARCHS='x86_64' \
         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
         -DPLATFORM=MAC_CATALYST \
-        -DDEPLOYMENT_TARGET=13.0 \
+        -DDEPLOYMENT_TARGET=13.2 \
         -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
         -DCMAKE_BUILD_TYPE=MAC_CATALYST \
@@ -287,10 +287,20 @@ popd
 
 # Copy over SPICE layouts
 mkdir -p Sources/aSPICE-resources/Resources/
-rsync -avP ../../bVNC/src/main/assets/layouts Sources/aSPICE-resources/Resources/
+
+git clone https://github.com/iiordanov/remote-desktop-clients.git || true
+pushd remote-desktop-clients/
+git pull
+popd
+rsync -avP remote-desktop-clients/bVNC/src/main/assets/layouts Sources/aSPICE-resources/Resources/
 
 # Build SPICE dependencies
 pushd aspice-lib-ios
+./build.sh
+popd
+
+# Build SPICE dependencies
+pushd ardp-lib-ios
 ./build.sh
 popd
 
