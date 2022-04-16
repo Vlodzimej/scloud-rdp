@@ -10,3 +10,5 @@ iSSH2
 bVNC.xcodeproj/ios_universal
 aspice-lib-ios/recipes
 aspice-lib-ios/cerbero
+aspice-lib-ios/python
+remote-desktop-clients/

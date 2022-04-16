@@ -24,6 +24,9 @@ realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
+ln -sf /usr/local/bin/python3 ./python
+export PATH=$PATH:$(realpath .)
+
 if git clone https://github.com/GStreamer/cerbero.git
 then
   pushd cerbero
