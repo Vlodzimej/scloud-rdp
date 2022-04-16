@@ -92,7 +92,6 @@
 		AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE1260180D100DAA44B /* libgsttag-1.0.a */; };
 		AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEC260180D300DAA44B /* libgstvideo-1.0.a */; };
 		AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE4260180D200DAA44B /* libgthread-2.0.a */; };
-		AF44CDE2260197FA00DAA44B /* libharfbuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE6260180D200DAA44B /* libharfbuzz.a */; };
 		AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE0260180D100DAA44B /* libintl.a */; };
 		AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC18260180DD00DAA44B /* libjpeg.a */; };
 		AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC00260180D700DAA44B /* libjson-glib-1.0.a */; };
@@ -101,9 +100,6 @@
 		AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC03260180D800DAA44B /* libogg.a */; };
 		AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD7260180CF00DAA44B /* libopus.a */; };
 		AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEB260180D300DAA44B /* liborc-0.4.a */; };
-		AF44CDEC260197FA00DAA44B /* libpango-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC12260180DB00DAA44B /* libpango-1.0.a */; };
-		AF44CDED260197FA00DAA44B /* libpangocairo-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC15260180DC00DAA44B /* libpangocairo-1.0.a */; };
-		AF44CDEE260197FA00DAA44B /* libpangoft2-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0C260180DA00DAA44B /* libpangoft2-1.0.a */; };
 		AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFD260180D600DAA44B /* libpixman-1.a */; };
 		AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0A260180D900DAA44B /* libpng16.a */; };
 		AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD4260180CE00DAA44B /* libpsl.a */; };
@@ -178,7 +174,6 @@
 		AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD9260180A400DAA44B /* libgstopus.a */; };
 		AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CADC260180A500DAA44B /* libgstosxaudio.a */; };
 		AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFD260180A900DAA44B /* libgstoverlaycomposition.a */; };
-		AF44CECC2601A32B00DAA44B /* libgstpango.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9B2601809700DAA44B /* libgstpango.a */; };
 		AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB02260180AA00DAA44B /* libgstplayback.a */; };
 		AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1C260180AE00DAA44B /* libgstpng.a */; };
 		AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF3260180A800DAA44B /* libgstrawparse.a */; };
@@ -1167,7 +1162,6 @@
 				AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */,
 				AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */,
 				AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */,
-				AF44CECC2601A32B00DAA44B /* libgstpango.a in Frameworks */,
 				AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */,
 				AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */,
 				AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */,
@@ -1236,7 +1230,6 @@
 				AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */,
 				AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */,
 				AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */,
-				AF44CDE2260197FA00DAA44B /* libharfbuzz.a in Frameworks */,
 				AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */,
 				AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */,
 				AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */,
@@ -1245,9 +1238,6 @@
 				AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */,
 				AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */,
 				AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */,
-				AF44CDEC260197FA00DAA44B /* libpango-1.0.a in Frameworks */,
-				AF44CDED260197FA00DAA44B /* libpangocairo-1.0.a in Frameworks */,
-				AF44CDEE260197FA00DAA44B /* libpangoft2-1.0.a in Frameworks */,
 				AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */,
 				AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */,
 				AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */,
