@@ -20,7 +20,7 @@
 #ifndef RdpBridge_h
 #define RdpBridge_h
 
-void *initializeRdp(int instance,
+void *initializeRdp(int instance, int width, int height,
                     pFrameBufferUpdateCallback fb_update_callback,
                     pFrameBufferResizeCallback fb_resize_callback,
                     pFailCallback fail_callback,

@@ -296,12 +296,17 @@ func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int,
 class RemoteSession {
     let stateKeeper: StateKeeper
     var instance: Int
+    var width: Int
+    var height: Int
     var cl: UnsafeMutableRawPointer?
     
     init(instance: Int, stateKeeper: StateKeeper) {
         log_callback_str(message: "Initializing Remote Session instance: \(instance)")
         self.instance = instance
         self.stateKeeper = stateKeeper
+        let res = stateKeeper.resolution()
+        self.width = res[0]
+        self.height = res[1]
         self.cl = nil
     }
     

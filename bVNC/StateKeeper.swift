@@ -304,6 +304,17 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.selectedConnection = self.connections[index]
         self.connect(connection: self.selectedConnection)
     }
+    
+    func resolution() -> [Int] {
+        var screenWidth = (globalWindow?.frame.size.width ?? 0)
+        var screenHeight = (globalWindow?.frame.size.height ?? 0)
+        
+        if screenWidth <= 0 || screenHeight <= 0 {
+            screenWidth = 1920
+            screenHeight = 1200
+        }
+        return [Int(screenWidth), Int(screenHeight)]
+    }
 
     /**
      Used to connect with an individual connection, potentially specially crafted from a console file or URI

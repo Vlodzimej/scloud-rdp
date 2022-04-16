@@ -119,7 +119,7 @@ static DWORD verify_cert(freerdp* instance, const char* host, UINT16 port,
     return 1;
 }
 
-void *initializeRdp(int i,
+void *initializeRdp(int i, int width, int height,
                     pFrameBufferUpdateCallback fb_update_callback,
                     pFrameBufferResizeCallback fb_resize_callback,
                     pFailCallback fail_callback,
@@ -140,6 +140,8 @@ void *initializeRdp(int i,
     instance->context->settings->Username = user;
     instance->context->settings->Password = password;
     instance->context->settings->AudioPlayback = enable_sound;
+    instance->context->settings->DesktopWidth = width;
+    instance->context->settings->DesktopHeight = height;
 
     instance->update->DesktopResize = resize_window;
     instance->update->BitmapUpdate = bitmap_update;

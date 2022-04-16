@@ -94,14 +94,19 @@ class RdpSession: RemoteSession {
             }
             if continueConnecting {
                 log_callback_str(message: "Connecting RDP Session in the background...")
-                self.cl = initializeRdp(Int32(self.instance), update_callback,
-                                          resize_callback, failure_callback_swift,
-                       log_callback, yes_no_dialog_callback,
-                       UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                       UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
-                       UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
-                       UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
-                       true)
+                log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
+                self.cl = initializeRdp(Int32(self.instance),
+                                        Int32(self.width), Int32(self.height),
+                                        update_callback,
+                                        resize_callback,
+                                        failure_callback_swift,
+                                        log_callback,
+                                        yes_no_dialog_callback,
+                                        UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
+                                        true)
             }
             if self.cl != nil {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
