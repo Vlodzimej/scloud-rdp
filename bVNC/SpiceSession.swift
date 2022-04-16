@@ -168,24 +168,34 @@ class SpiceSession: RemoteSession {
                 log_callback_str(message: "Connecting SPICE Session in the background...")
                 if (consoleFile != "") {
                     log_callback_str(message: "\(#function): Connecting with console file \(consoleFile)")
-                    self.cl = initializeSpiceVv(Int32(self.instance), update_callback,
-                                              resize_callback, failure_callback_swift,
-                           log_callback, yes_no_dialog_callback,
-                           UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
-                           true)
+                    self.cl = initializeSpiceVv(Int32(self.instance),
+                                                Int32(self.width),
+                                                Int32(self.height),
+                                                update_callback,
+                                                resize_callback,
+                                                failure_callback_swift,
+                                                log_callback,
+                                                yes_no_dialog_callback,
+                                                UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
+                                                true)
                 } else {
                     log_callback_str(message: "\(#function): Connecting with selected connection parameters")
-                    self.cl = initializeSpice(Int32(self.instance), update_callback,
-                                              resize_callback, failure_callback_swift,
-                           log_callback, yes_no_dialog_callback,
-                           UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
-                           nil,
-                           UnsafeMutablePointer<Int8>(mutating: (tlsPort as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
-                           true)
+                    self.cl = initializeSpice(Int32(self.instance),
+                                              Int32(self.width),
+                                              Int32(self.height),
+                                              update_callback,
+                                              resize_callback,
+                                              failure_callback_swift,
+                                              log_callback,
+                                              yes_no_dialog_callback,
+                                              UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
+                                              nil,
+                                              UnsafeMutablePointer<Int8>(mutating: (tlsPort as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
+                                              true)
                 }
                 if self.cl != nil {
                     self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl

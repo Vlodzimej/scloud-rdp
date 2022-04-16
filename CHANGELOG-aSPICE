@@ -1,0 +1,11 @@
+1.0.9
+  - Support for .vv files
+  - Dynamic Resolution on Connection
+  - Japanese localization
+  - Simplified Chinese localization
+  - Traditional Chinese localization
+  - Korean localization
+  - Windows, Mac, Linux, BSD, or any other OS running in a KVM VM with SPICE display
+  - Scrolling with a two-finger gesture
+  - SSH tunneling
+  - SSH public/private (pubkey)

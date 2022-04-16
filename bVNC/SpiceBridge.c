@@ -32,6 +32,8 @@ pthread_t mainloop_worker;
 pthread_t spice_worker;
 extern int fbW;
 extern int fbH;
+int desiredFbW;
+int desiredFbH;
 
 static gint get_display_id(SpiceDisplay *display)
 {
@@ -103,7 +105,7 @@ void gst_init_and_register_static_plugins () {
     }
 }
 
-void *initializeSpice(int instance,
+void *initializeSpice(int instance, int width, int height,
                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
                    void (*fail_callback)(int instance, uint8_t *),
@@ -123,6 +125,9 @@ void *initializeSpice(int instance,
 
     fbW = 0;
     fbH = 0;
+    desiredFbW = width;
+    desiredFbH = height;
+    
     p.instance = instance;
     strncpy(p.vv_file, "", sizeof(p.vv_file));
     if (addr != NULL)
@@ -147,7 +152,7 @@ void *initializeSpice(int instance,
     return (void *)&p;
 }
 
-void *initializeSpiceVv(int instance,
+void *initializeSpiceVv(int instance, int width, int height,
                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
                    void (*fail_callback)(int instance, uint8_t *),
@@ -166,6 +171,9 @@ void *initializeSpiceVv(int instance,
 
     fbW = 0;
     fbH = 0;
+    desiredFbW = width;
+    desiredFbH = height;
+    
     p.instance = instance;
     if (vv_file != NULL)
         strncpy(p.vv_file, vv_file, sizeof(p.vv_file));
@@ -189,7 +197,8 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     if (fbW > 0 || fbH > 0) {
         framebuffer_resize_callback(p.instance, fbW, fbH);
         updateFramebuffer(p.instance, p.frameBuffer, 0, 0, fbW, fbH);
-        requestResolution(1680, 1050);
+        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
+        requestResolution(desiredFbW, desiredFbH);
     }
     if (oldFrameBuffer != NULL) {
         free(oldFrameBuffer);

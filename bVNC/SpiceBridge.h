@@ -38,7 +38,7 @@ typedef struct {
     uint8_t *frameBuffer;
 } SpiceConnectionParameters;
 
-void *initializeSpice(int instance,
+void *initializeSpice(int instance, int width, int height,
                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
                    void (*fail_callback)(int instance, uint8_t *),
@@ -46,7 +46,7 @@ void *initializeSpice(int instance,
                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                    char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                    char* cert_subject, bool enable_sound);
-void *initializeSpiceVv(int instance,
+void *initializeSpiceVv(int instance, int width, int height,
                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
                    void (*fail_callback)(int instance, uint8_t *),
