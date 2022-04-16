@@ -62,7 +62,7 @@ class CustomTextInput: UIButton, UIKeyInput {
         //log_callback_str(message: "Sending: " + text + ", number of characters: " + String(text.count))
         for char in text.unicodeScalars {
             Background {
-                self.stateKeeper?.vncSession?.keyEvent(char: char)
+                self.stateKeeper?.remoteSession?.keyEvent(char: char)
                 self.stateKeeper?.toggleModifiersIfDown()
             }
             self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
@@ -76,7 +76,7 @@ class CustomTextInput: UIButton, UIKeyInput {
         }
         
         Background {
-            self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: XK_BackSpace)
+            self.stateKeeper?.remoteSession?.sendSpecialKeyByXKeySym(key: XK_BackSpace)
             self.stateKeeper?.toggleModifiersIfDown()
         }
         self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)

@@ -215,7 +215,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         //let timeDiff = timeNow - self.timeLast
         if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
             synced(self) {
-                stateKeeper?.vncSession?.pointerEvent(
+                stateKeeper?.remoteSession?.pointerEvent(
                     totalX: Float32(self.width), totalY: Float32(self.height),
                     x: Float32(self.newX), y: Float32(self.newY),
                     firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,

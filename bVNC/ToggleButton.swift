@@ -49,7 +49,7 @@ class ToggleButton: UIButton {
         AudioServicesPlaySystemSound(1100);
         down = !down
         log_callback_str(message: "ToggleButton: Toggled my xksysym: \(toSend!), down: \(down)")
-        self.stateKeeper?.vncSession?.sendUniDirectionalSpecialKeyByXKeySym(key: toSend!, down: down)
+        self.stateKeeper?.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: toSend!, down: down)
         self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
         UserInterface {
             if self.down {
@@ -69,7 +69,7 @@ class ToggleButton: UIButton {
         
         AudioServicesPlaySystemSound(1100);
         log_callback_str(message: "ToggleButton: Sending my xksysym: \(toSend!), up and then down.")
-        self.stateKeeper?.vncSession?.sendSpecialKeyByXKeySym(key: toSend!)
+        self.stateKeeper?.remoteSession?.sendSpecialKeyByXKeySym(key: toSend!)
         self.stateKeeper?.toggleModifiersIfDown()
         self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
     }

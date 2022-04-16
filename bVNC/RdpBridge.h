@@ -27,7 +27,9 @@ void *initializeRdp(int instance, int width, int height,
                     pClientLogCallback cl_log_callback,
                     pYesNoCallback y_n_callback,
                     char* addr, char* port, char* user, char* password, bool enable_sound);
-
+void connectRdpInstance(void *instance);
+void cursorEvent(void *instance, int x, int y, int flags);
+void unicodeKeyEvent(void *instance, int flags, int code);
 void disconnectRdp(void *i);
 
 #endif /* RdpBridge_h */

@@ -43,6 +43,8 @@
 "SSH_TUNNEL_TIMEOUT_TITLE" = "SSH 터널 확립 TimeOut";
 "SSH_TUNNEL_CONNECTION_FAILURE_TITLE" = "SSH 터널 확립에 실패했습니다";
 "VNC_CONNECTION_FAILURE_TITLE" = "VNC 서버에 연결하는 데 실패했습니다";
+"SPICE_CONNECTION_FAILURE_TITLE" = "SPICE 서버에 연결하는 데 실패했습니다";
+"RDP_CONNECTION_FAILURE_TITLE" = "RDP 서버에 연결하는 데 실패했습니다";
 "RFB_CLIENT_OBJECT_NOT_INITIALIZED" = "RFB 클라이언트 오브젝트가 초기화되지 않았습니다";
 "FAILED_TO_SEND_MESSAGE_TO_SERVER" = "서버에 메시지 전송에 실패했습니다";
 "FAILED_TO_INIT_CONNECTION_TO_SERVER" = "서버에 연결 초기화에 실패했습니다";

@@ -22,6 +22,20 @@ import SwiftUI
 
 
 class RdpSession: RemoteSession {
+    
+    class var PTRFLAGS_WHEEL: Int32 { return 0x0200 }
+    class var PTRFLAGS_WHEEL_NEGATIVE: Int32 { return 0x0100 }
+    class var PTRFLAGS_DOWN: Int32 { return 0x8000 }
+    
+    class var MOUSE_BUTTON_NONE: Int32 { return 0x0000 }
+    class var MOUSE_BUTTON_MOVE: Int32 { return 0x0800 }
+    class var MOUSE_BUTTON_LEFT: Int32 { return 0x1000 }
+    class var MOUSE_BUTTON_RIGHT: Int32 { return 0x2000 }
+    
+    class var MOUSE_BUTTON_MIDDLE: Int32 { return 0x4000 }
+    class var MOUSE_BUTTON_SCROLL_UP: Int32 { return PTRFLAGS_WHEEL|0x0078 }
+    class var MOUSE_BUTTON_SCROLL_DOWN: Int32 { return PTRFLAGS_WHEEL|PTRFLAGS_WHEEL_NEGATIVE|0x0088 }
+    
     override func connect(currentConnection: [String:String]) {
         let sshAddress = currentConnection["sshAddress"] ?? ""
         let sshPort = currentConnection["sshPort"] ?? ""
@@ -95,6 +109,7 @@ class RdpSession: RemoteSession {
             if continueConnecting {
                 log_callback_str(message: "Connecting RDP Session in the background...")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
+                
                 self.cl = initializeRdp(Int32(self.instance),
                                         Int32(self.width), Int32(self.height),
                                         update_callback,
@@ -110,8 +125,11 @@ class RdpSession: RemoteSession {
             }
             if self.cl != nil {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
+                connectRdpInstance(self.cl)
             } else {
-                title = "SPICE_CONNECTION_FAILURE_TITLE"
+                // FIXME: Show RDP failure when a failure callback is called, not when
+                // FIXME: Initialization failed.
+                title = "RDP_CONNECTION_FAILURE_TITLE"
                 failure_callback_str(instance: self.instance, title: title)
             }
         }
@@ -126,19 +144,25 @@ class RdpSession: RemoteSession {
     override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-
+        // FIXME: Handle different pointer events properly.
+        // FIXME: Send modifier keys when appropriate.
+        cursorEvent(self.cl, Int32(x), Int32(y), RdpSession.MOUSE_BUTTON_MOVE|RdpSession.PTRFLAGS_DOWN)
     }
     
     override func keyEvent(char: Unicode.Scalar) {
-
-    }
+        // FIXME: Send key events mapped to vkcodes
+        // FIXME: If send unicode setting is enabled, send unicode instead
+        let char = String(char.value)
+        let unicodeInt = Int(char)!
+        unicodeKeyEvent(self.cl, 0, Int32(unicodeInt))
+   }
     
     @objc override func sendModifierIfNotDown(modifier: Int32) {
-
+        // FIXME: Implement
     }
 
     @objc override func releaseModifierIfDown(modifier: Int32) {
-
+        // FIXME: Implement
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
@@ -150,6 +174,6 @@ class RdpSession: RemoteSession {
     }
     
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
-
+        // Not used for RDP
     }
 }

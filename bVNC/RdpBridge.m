@@ -148,7 +148,7 @@ void *initializeRdp(int i, int width, int height,
     instance->update->BeginPaint = begin_paint;
     instance->update->EndPaint = end_paint;
 
-    //TODO: Implement
+    //FIXME: Implement RDP gateway support
     //instance->context->settings->GatewayUsername
     //instance->context->settings->GatewayPassword
     //instance->GatewayAuthenticate
@@ -156,9 +156,22 @@ void *initializeRdp(int i, int width, int height,
     instance->PostConnect = post_connect;
     instance->VerifyCertificateEx = verify_cert;
     instance->VerifyChangedCertificateEx = verify_changed_cert;
-    
-    ios_run_freerdp(instance);
+
     return (void *)instance;
+}
+
+void connectRdpInstance(void *instance) {
+    ios_run_freerdp((freerdp *)instance);
+}
+
+void cursorEvent(void *instance, int x, int y, int flags) {
+    mfInfo *mfi = MFI_FROM_INSTANCE((freerdp *)instance);
+    mfi->instance->input->MouseEvent(mfi->instance->input, flags, x, y);
+}
+
+void unicodeKeyEvent(void *instance, int flags, int code) {
+    mfInfo *mfi = MFI_FROM_INSTANCE((freerdp *)instance);
+    mfi->instance->input->UnicodeKeyboardEvent(mfi->instance->input, flags, code);
 }
 
 void disconnectRdp(void *i) {

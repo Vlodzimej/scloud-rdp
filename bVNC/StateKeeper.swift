@@ -53,7 +53,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var yesNoDialogLock: NSLock = NSLock()
     var yesNoDialogResponse: Int32 = 0
     var imageView: TouchEnabledUIImageView?
-    var vncSession: RemoteSession?
+    var remoteSession: RemoteSession?
     var modifierButtons: [String: UIControl]
     var keyboardButtons: [String: UIControl]
     var topButtons: [String: UIControl]
@@ -193,7 +193,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             return
         }
         
-        self.vncSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Super_L, down: false)
+        self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Super_L, down: false)
         self.modifiers[XK_Super_L] = false
         self.rescheduleScreenUpdateRequest(timeInterval: 0.2, fullScreenUpdate: false, recurring: false)
     }
@@ -201,21 +201,21 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     @objc func requestFullScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a whole screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: false)
+            self.remoteSession?.sendScreenUpdateRequest(incrementalUpdate: false)
         }
     }
 
     @objc func requestPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a partial screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: true)
+            self.remoteSession?.sendScreenUpdateRequest(incrementalUpdate: true)
         }
     }
 
     @objc func requestRecurringPartialScreenUpdate(sender: Timer) {
         if self.isDrawing && (sender.userInfo as! Int) == self.currInst {
             //print("Firing off a recurring partial screen update request.")
-            self.vncSession?.sendScreenUpdateRequest(incrementalUpdate: true)
+            self.remoteSession?.sendScreenUpdateRequest(incrementalUpdate: true)
             UserInterface {
                 self.rescheduleScreenUpdateRequest(timeInterval: 20, fullScreenUpdate: false, recurring: true)
             }
@@ -337,13 +337,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         isDrawing = true;
         self.toggleModifiersIfDown()
         if self.isSpice() {
-            self.vncSession = SpiceSession(instance: currInst, stateKeeper: self)
+            self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
         } else if self.isRdp() {
-            self.vncSession = RdpSession(instance: currInst, stateKeeper: self)
+            self.remoteSession = RdpSession(instance: currInst, stateKeeper: self)
         } else {
-            self.vncSession = VncSession(instance: currInst, stateKeeper: self)
+            self.remoteSession = VncSession(instance: currInst, stateKeeper: self)
         }
-        self.vncSession!.connect(currentConnection: connection)
+        self.remoteSession!.connect(currentConnection: connection)
         createAndRepositionButtons()
     }
     
@@ -404,7 +404,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
         log_callback_str(message: "wasDrawing(): \(wasDrawing)")
         if (wasDrawing) {
-            self.vncSession?.disconnect()
+            self.remoteSession?.disconnect()
             UserInterface {
                 self.removeButtons()
                 self.hideKeyboard()
@@ -832,7 +832,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
-        self.vncSession?.sendModifierIfNotDown(modifier: modifier)
+        self.remoteSession?.sendModifierIfNotDown(modifier: modifier)
     }
 
     @objc func releaseModifierIfDown(modifier: Int32) {
@@ -840,7 +840,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
-        self.vncSession?.releaseModifierIfDown(modifier: modifier)
+        self.remoteSession?.releaseModifierIfDown(modifier: modifier)
     }
     
     @objc func sendSpecialKeyByXKeySym(key: Int32) {
@@ -848,7 +848,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
-        self.vncSession?.sendSpecialKeyByXKeySym(key: key)
+        self.remoteSession?.sendSpecialKeyByXKeySym(key: key)
     }
     
     func toggleModifiersIfDown() {

@@ -43,6 +43,8 @@
 "SSH_TUNNEL_TIMEOUT_TITLE" = "SSHトンネル確立のタイムアウト";
 "SSH_TUNNEL_CONNECTION_FAILURE_TITLE" = "SSHトンネル確立に失敗しました";
 "VNC_CONNECTION_FAILURE_TITLE" = "VNCサーバーへの接続に失敗しました";
+"SPICE_CONNECTION_FAILURE_TITLE" = "SPICEサーバーへの接続に失敗しました";
+"RDP_CONNECTION_FAILURE_TITLE" = "RDPサーバーへの接続に失敗しました";
 "RFB_CLIENT_OBJECT_NOT_INITIALIZED" = "RFBクライアントオブジェクトが初期化されていません";
 "FAILED_TO_SEND_MESSAGE_TO_SERVER" = "サーバーへのメッセージ送信に失敗しました";
 "FAILED_TO_INIT_CONNECTION_TO_SERVER" = "サーバーへの接続初期化に失敗しました";
