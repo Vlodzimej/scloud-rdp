@@ -325,8 +325,8 @@ class RemoteSession {
     func resolution() -> [Int] {
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
-        var newScreenWidth = 0.0
-        var newScreenHeight = 0.0
+        var newScreenWidth = screenWidth
+        var newScreenHeight = screenHeight
         if (screenWidth <= 768 || screenHeight <= 768) {
             // If width or height are too small, set a minimum
             if (screenWidth < screenHeight) {
