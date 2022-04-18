@@ -9,3 +9,5 @@
   - Scrolling with a two-finger gesture
   - SSH tunneling
   - SSH public/private (pubkey)
+  - Local window resizing
+  - Rotation on main screen bugfix
