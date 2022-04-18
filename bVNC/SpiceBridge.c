@@ -25,6 +25,7 @@
 #include "glue-spice-widget-priv.h"
 #include <glue-service.h>
 #include <glue-spice-widget.h>
+#include <stdio.h>
 
 SpiceConnectionParameters p;
 
@@ -197,8 +198,10 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     if (fbW > 0 || fbH > 0) {
         framebuffer_resize_callback(p.instance, fbW, fbH);
         updateFramebuffer(p.instance, p.frameBuffer, 0, 0, fbW, fbH);
-        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
-        requestResolution(desiredFbW, desiredFbH);
+        if (fbW != desiredFbW || fbH != desiredFbH) {
+            client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
+            requestResolution(desiredFbW, desiredFbH);
+        }
     }
     if (oldFrameBuffer != NULL) {
         free(oldFrameBuffer);

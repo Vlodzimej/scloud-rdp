@@ -299,15 +299,35 @@ class RemoteSession {
     var width: Int
     var height: Int
     var cl: UnsafeMutableRawPointer?
-    
+
     init(instance: Int, stateKeeper: StateKeeper) {
         log_callback_str(message: "Initializing Remote Session instance: \(instance)")
         self.instance = instance
         self.stateKeeper = stateKeeper
-        let res = stateKeeper.resolution()
+        self.width = 0
+        self.height = 0
+        self.cl = nil
+
+        let res = self.resolution()
         self.width = res[0]
         self.height = res[1]
-        self.cl = nil
+    }
+    
+    func resolution() -> [Int] {
+        var screenWidth = (globalWindow?.frame.size.width ?? 0)
+        var screenHeight = (globalWindow?.frame.size.height ?? 0)
+        
+        if (screenWidth <= 768 || screenHeight <= 768) {
+            // If width or height are too small, set a minimum
+            if (screenWidth < screenHeight) {
+                screenWidth = 1050
+                screenHeight = 1680
+            } else {
+                screenWidth = 1680
+                screenHeight = 1050
+            }
+        }
+        return [Int(screenWidth), Int(screenHeight)]
     }
     
     func connect(currentConnection: [String:String]) {

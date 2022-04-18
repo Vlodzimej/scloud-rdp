@@ -35,6 +35,23 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
+    func connectWithConsoleFile(url: URL) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if (url.startAccessingSecurityScopedResource()) {
+            if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
+                let destPath = String(format: "%@/%@", docsPath, "console.vv")
+                do {
+                    try FileManager.default.copyItem(atPath: url.path, toPath: destPath)
+                } catch (let error) {
+                    log_callback_str(message: "Cannot copy item at \(url) to \(destPath): \(error)")
+                }
+                log_callback_str(message: "\(#function): \(destPath)")
+                appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: destPath)
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -59,17 +76,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = connectionOptions.urlContexts.first?.url else {
             return
         }
-        log_callback_str(message: "\(#function): \(url.path)")
-        appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: url.path)
+        self.connectWithConsoleFile(url: url)
     }
     
     func scene(_ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>) {
-
         let url = URLContexts.first!.url
         log_callback_str(message: "\(#function): \(url)")
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: url.path)
+        self.connectWithConsoleFile(url: url)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
