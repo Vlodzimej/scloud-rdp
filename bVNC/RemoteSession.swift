@@ -320,11 +320,11 @@ class RemoteSession {
         if (screenWidth <= 768 || screenHeight <= 768) {
             // If width or height are too small, set a minimum
             if (screenWidth < screenHeight) {
-                screenWidth = 1050
-                screenHeight = 1680
+                screenWidth = 1200
+                screenHeight = 1200 * (screenHeight / screenWidth)
             } else {
-                screenWidth = 1680
-                screenHeight = 1050
+                screenWidth = 1200 * (screenWidth / screenHeight)
+                screenHeight = 1200
             }
         }
         return [Int(screenWidth), Int(screenHeight)]
