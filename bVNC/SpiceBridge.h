@@ -36,6 +36,8 @@ typedef struct {
     char cert_subj[4096];
     int32_t enable_sound;
     uint8_t *frameBuffer;
+    uint8_t *oldFrameBuffer;
+    int resolutionRequested;
 } SpiceConnectionParameters;
 
 void *initializeSpice(int instance, int width, int height,

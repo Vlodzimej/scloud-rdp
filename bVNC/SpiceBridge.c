@@ -85,6 +85,10 @@ static void updateSpiceBuffer(int x, int y, int w, int h) {
     if (!updateFramebuffer(p.instance, p.frameBuffer, x, y, w, h)) {
         disconnectSpice();
     }
+    if (p.oldFrameBuffer != NULL) {
+        free(p.oldFrameBuffer);
+        p.oldFrameBuffer = NULL;
+    }
 }
 
 /* Declaration of static plugins */
@@ -129,6 +133,7 @@ void *initializeSpice(int instance, int width, int height,
     desiredFbW = width;
     desiredFbH = height;
     
+    p.resolutionRequested = 0;
     p.instance = instance;
     strncpy(p.vv_file, "", sizeof(p.vv_file));
     if (addr != NULL)
@@ -175,6 +180,7 @@ void *initializeSpiceVv(int instance, int width, int height,
     desiredFbW = width;
     desiredFbH = height;
     
+    p.resolutionRequested = 0;
     p.instance = instance;
     if (vv_file != NULL)
         strncpy(p.vv_file, vv_file, sizeof(p.vv_file));
@@ -195,20 +201,21 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     uint8_t *oldFrameBuffer = p.frameBuffer;
     int pixel_buffer_size = bytesPerPixel*fbW*fbH*sizeof(char);
     p.frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-    if (fbW > 0 || fbH > 0) {
+    if (fbW > 0 && fbH > 0) {
         framebuffer_resize_callback(p.instance, fbW, fbH);
         updateFramebuffer(p.instance, p.frameBuffer, 0, 0, fbW, fbH);
-        if (fbW != desiredFbW || fbH != desiredFbH) {
-            client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
-            requestResolution(desiredFbW, desiredFbH);
-        }
-    }
-    if (oldFrameBuffer != NULL) {
-        free(oldFrameBuffer);
     }
     SpiceGlibGlueLockDisplayBuffer(&width, &height);
     SpiceGlibGlueSetDisplayBuffer((uint32_t *)p.frameBuffer, width, height);
     SpiceGlibGlueUnlockDisplayBuffer();
+    
+    if (fbW > 0 && fbH > 0 &&
+        (fbW != desiredFbW || fbH != desiredFbH) &&
+        p.resolutionRequested == 0) {
+        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
+        requestResolution(desiredFbW, desiredFbH);
+        p.resolutionRequested = 1;
+    }
 }
 
 void disconnectSpice() {

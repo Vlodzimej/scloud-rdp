@@ -162,9 +162,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
 
     @objc func reDraw() {
         UserInterface {
-            if (self.isDrawing) {
-                self.imageView?.image = UIImage(cgImage: imageFromARGB32Bitmap(pixels: self.data, withWidth: Int(self.fbW), withHeight: Int(self.fbH))!)
-            }
+            draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
         }
     }
     

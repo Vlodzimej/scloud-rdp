@@ -204,10 +204,11 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
         log_callback_str(message: "Current inst \(globalStateKeeper!.currInst) discarding resize_callback, inst \(instance)")
         return
     }
-    globalStateKeeper?.fbW = fbW
-    globalStateKeeper?.fbH = fbH
+
     UserInterface {
         autoreleasepool {
+            globalStateKeeper?.fbW = fbW
+            globalStateKeeper?.fbH = fbH
             globalStateKeeper?.imageView?.removeFromSuperview()
             globalStateKeeper?.imageView?.image = nil
             globalStateKeeper?.imageView = nil
@@ -236,11 +237,16 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
     globalStateKeeper?.keepSessionRefreshed()
 }
 
-func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
+func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
     UserInterface {
         autoreleasepool {
-            globalStateKeeper?.imageView?.image = UIImage(cgImage: imageFromARGB32Bitmap(pixels: data, withWidth: Int(fbW), withHeight: Int(fbH))!)
-            lastUpdate = CACurrentMediaTime()
+            if (globalStateKeeper?.isDrawing ?? false) {
+                globalStateKeeper?.imageView?.image =
+                                UIImage(cgImage: imageFromARGB32Bitmap(pixels: data,
+                                                                       withWidth: Int(fbW),
+                                                                       withHeight: Int(fbH))!)
+                lastUpdate = CACurrentMediaTime()
+            }
         }
     }
 }
@@ -255,13 +261,16 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
         return false
     }
     
+    globalStateKeeper?.fbW = fbW
+    globalStateKeeper?.fbH = fbH
+    globalStateKeeper?.data = data
     let timeNow = CACurrentMediaTime()
     if (timeNow - lastUpdate < 0.032) {
         //print("Last frame drawn less than 50ms ago, discarding frame, scheduling redraw")
         globalStateKeeper!.rescheduleReDrawTimer(data: data, fbW: fbW, fbH: fbH)
     } else {
         //print("Drawing a frame normally.")
-        draw(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
+        draw(data: data, fbW: fbW, fbH: fbH)
     }
     return true
 }
@@ -314,20 +323,21 @@ class RemoteSession {
     }
     
     func resolution() -> [Int] {
-        var screenWidth = (globalWindow?.frame.size.width ?? 0)
-        var screenHeight = (globalWindow?.frame.size.height ?? 0)
-        
+        let screenWidth = (globalWindow?.frame.size.width ?? 0)
+        let screenHeight = (globalWindow?.frame.size.height ?? 0)
+        var newScreenWidth = 0.0
+        var newScreenHeight = 0.0
         if (screenWidth <= 768 || screenHeight <= 768) {
             // If width or height are too small, set a minimum
             if (screenWidth < screenHeight) {
-                screenWidth = 1200
-                screenHeight = 1200 * (screenHeight / screenWidth)
+                newScreenWidth = 1200.0
+                newScreenHeight = 1200 * (screenHeight / screenWidth)
             } else {
-                screenWidth = 1200 * (screenWidth / screenHeight)
-                screenHeight = 1200
+                newScreenWidth = 1200 * (screenWidth / screenHeight)
+                newScreenHeight = 1200.0
             }
         }
-        return [Int(screenWidth), Int(screenHeight)]
+        return [Int(newScreenWidth), Int(newScreenHeight)]
     }
     
     func connect(currentConnection: [String:String]) {
