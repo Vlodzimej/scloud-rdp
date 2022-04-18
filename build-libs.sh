@@ -35,9 +35,9 @@ function check_dependencies() {
     echo "You must have cmake installed, use 'brew install nasm'"
     exit 1
   fi
-  if ! which nasm
+  if [ -f /usr/local/bin/nasm ]
   then
-    echo "You must have nasm installed, use 'brew install nasm'"
+    echo "You have nasm installed, you must unlink it. Use 'brew unlink nasm'"
     exit 1
   fi
 }
