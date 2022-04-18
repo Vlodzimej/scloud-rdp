@@ -32,7 +32,12 @@ function usage() {
 function check_dependencies() {
   if ! which cmake
   then
-    echo "You must have cmake installed."
+    echo "You must have cmake installed, use 'brew install nasm'"
+    exit 1
+  fi
+  if ! which nasm
+  then
+    echo "You must have nasm installed, use 'brew install nasm'"
     exit 1
   fi
 }
@@ -56,7 +61,11 @@ then
 fi
 
 CLEAN=$2
-
+if [ -n "${CLEAN}" ]
+then
+  rm -rf ios-cmake libjpeg-turbo iSSH2 libvncserver remote-desktop-clients
+  exit 0
+fi
 
 if git clone https://github.com/leetal/ios-cmake.git
 then
@@ -72,15 +81,20 @@ fi
 # Clone and build libjpeg-turbo
 if git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
 then
+  echo "libjpeg-turbo iPhone build"
+
   pushd libjpeg-turbo
   git checkout ${LIBJPEG_TURBO_VERSION}
 
   mkdir -p build_iphoneos
   pushd build_iphoneos
 
-  IOS_PLATFORMDIR=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform
-  IOS_SYSROOT=($IOS_PLATFORMDIR/Developer/SDKs/iPhoneOS*.sdk)
+  IOS_SYSROOT=$(xcrun --sdk iphoneos --show-sdk-path)
   export CFLAGS="-Wall -arch arm64 -miphoneos-version-min=8.0 -funwind-tables"
+  export ASMFLAGS=""
+  export LDFLAGS=""
+  export NASM=/usr/local/bin/nasm
+
   cat <<EOF >toolchain.cmake
     set(CMAKE_SYSTEM_NAME Darwin)
     set(CMAKE_SYSTEM_PROCESSOR aarch64)
@@ -97,8 +111,12 @@ EOF
   make install
   popd
 
-  mkdir -p build_maccatalyst
-  pushd build_maccatalyst
+  mkdir -p build_maccatalyst_or_simulator
+  pushd build_maccatalyst_or_simulator
+
+  if [ -z "${SIMULATOR_BUILD}" ]
+  then
+    echo "libjpeg-turbo Mac Catalyst build"
 
   IOS_PLATFORMDIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
   IOS_SYSROOT=($IOS_PLATFORMDIR/Developer/SDKs/MacOSX*.sdk)
@@ -118,6 +136,24 @@ EOF
         -DENABLE_BITCODE=OFF \
         -DENABLE_VISIBILITY=ON \
         -DENABLE_ARC=OFF ..
+  else
+    echo "libjpeg-turbo Simulator build"
+    IOS_SIMULATOR_SYSROOT=$(xcrun --sdk iphonesimulator --show-sdk-path)
+    export CFLAGS="-arch x86_64 -miphonesimulator-version-min=8.0 -isysroot $IOS_SIMULATOR_SYSROOT"
+    export ASMFLAGS=""
+    export LDFLAGS=""
+    export NASM=/usr/local/bin/nasm
+
+    cat <<EOF >toolchain.cmake
+set(CMAKE_SYSTEM_NAME Darwin)
+set(CMAKE_SYSTEM_PROCESSOR x86_64)
+set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
+EOF
+
+    cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
+      -DCMAKE_OSX_SYSROOT=${IOS_SIMULATOR_SYSROOT[0]} ..
+  fi
+
   make -j 12
   make install
   popd
@@ -128,14 +164,13 @@ else
   sleep 2
 fi
 
-
 # Lipo together the architectures for libjpeg-turbo and copy them to the common directory.
 mkdir -p libjpeg-turbo/libs_combined/lib/
 rsync -avP libjpeg-turbo/build_iphoneos/libs/include libjpeg-turbo/libs_combined/
 for lib in libjpeg.a libturbojpeg.a
 do
   echo "Running lipo to create ${lib}"
-  lipo libjpeg-turbo/build_maccatalyst/libs/lib/libturbojpeg.a libjpeg-turbo/build_iphoneos/libs/lib/libturbojpeg.a \
+  lipo libjpeg-turbo/build_maccatalyst_or_simulator/libs/lib/libturbojpeg.a libjpeg-turbo/build_iphoneos/libs/lib/libturbojpeg.a \
         -output libjpeg-turbo/libs_combined/lib/${lib} -create
 done
 rsync -avP libjpeg-turbo/libs_combined/ ./bVNC.xcodeproj/libs_combined/
@@ -147,15 +182,21 @@ if git clone https://github.com/Jan-E/iSSH2.git
 then
   pushd iSSH2
   git checkout ${ISSH2_VERSION}
-  echo "Patching Jan-E/iSSH2"
-  patch -p1 < ../iSSH2.patch
-  ./catalyst.sh
+  if [ -z "${SIMULATOR_BUILD}" ]
+  then
+    echo "libssh2 Mac Catalyst build"
+    echo "Patching Jan-E/iSSH2"
+    patch -p1 < ../iSSH2.patch
+    ./catalyst.sh
+  else
+    echo "libssh2 Simulator build"
+    ./build.sh
+  fi
   popd
 else
   echo "Found libssh2 directory, assuming it is built, please remove with 'rm -rf iSSH2' to rebuild"
   sleep 2
 fi
-
 
 # Copy SSH libs and header files to project
 rsync -avP iSSH2/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined/
@@ -168,20 +209,50 @@ git checkout ${LIBVNCSERVER_VERSION}
 
 if [ -n "${CLEAN}" ]
 then
-  rm -rf build_simulator64 build_iphone build_maccatalyst
+  rm -rf build_iphone build_maccatalyst_or_simulator
 fi
 
-if [ -n "${SIMULATOR_BUILD}" -a ! -d build_simulator64 ]
+echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC' > ${TYPE}.xcconfig
+if [ ! -d build_iphone ]
 then
-  echo "Simulator build"
+  echo "iPhone build"
+  mkdir -p build_iphone
+  pushd build_iphone
+  cmake .. -G"Unix Makefiles" -DARCHS='arm64' \
+      -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
+      -DPLATFORM=OS64 \
+      -DDEPLOYMENT_TARGET=13.2 \
+      -DENABLE_BITCODE=OFF \
+      -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
+      -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
+      -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
+      -DCMAKE_INSTALL_PREFIX=./libs \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DENABLE_VISIBILITY=ON \
+      -DENABLE_ARC=OFF \
+      -DWITH_SASL=OFF \
+      -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+      -DWITH_GCRYPT=OFF \
+      -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
+  popd
+fi
+pushd build_iphone
+make -j 12
+make install
+popd
 
-  if [ ! -d build_simulator64 ]
+if [ -n "${SIMULATOR_BUILD}" -a ! -d build_maccatalyst_or_simulator ]
+then
+  echo "libvncserver Simulator build"
+
+  if [ ! -d build_maccatalyst_or_simulator ]
   then
-    mkdir -p build_simulator64
-    pushd build_simulator64
-    cmake .. -G"Unix Makefiles" -DENABLE_BITCODE=OFF -DARCHS='x86_64' \
+    mkdir -p build_maccatalyst_or_simulator
+    pushd build_maccatalyst_or_simulator
+    cmake .. -G"Unix Makefiles" -DARCHS='x86_64' \
         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
         -DCMAKE_C_FLAGS='-D OPENSSL_MIN_API=0x00908000L -D OPENSSL_API_COMPAT=0x00908000L' \
+        -DENABLE_BITCODE=OFF \
         -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
         -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
         -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
@@ -192,75 +263,43 @@ then
         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
         -DWITH_GCRYPT=OFF \
         -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
-     popd
+    popd
   fi
-  pushd build_simulator64
+  pushd build_maccatalyst_or_simulator
   cmake --build . --config ${TYPE} --target install || true
   popd
 fi
 
-echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC' > ${TYPE}.xcconfig
-if [ -z "${SIMULATOR_BUILD}" ]
+if [ -z "${SIMULATOR_BUILD}" -a ! -d build_maccatalyst_or_simulator ]
 then
-  echo "Non-simulator build"
-
-  if [ ! -d build_iphone ]
-  then
-    mkdir -p build_iphone
-    pushd build_iphone
-    cmake .. -G"Unix Makefiles" -DARCHS='arm64' \
-        -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
-        -DPLATFORM=OS64 \
-        -DDEPLOYMENT_TARGET=13.2 \
-        -DENABLE_BITCODE=OFF \
-        -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
-        -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
-        -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
-        -DCMAKE_INSTALL_PREFIX=./libs \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DENABLE_VISIBILITY=ON \
-        -DENABLE_ARC=OFF \
-        -DWITH_SASL=OFF \
-        -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
-        -DWITH_GCRYPT=OFF \
-        -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
-    popd
-  fi
-  pushd build_iphone
-  make -j 12
-  make install
-  popd
-
-  if [ ! -d build_maccatalyst ]
-  then
-    mkdir -p build_maccatalyst
-    pushd build_maccatalyst
-    cmake .. -G"Unix Makefiles" -DARCHS='x86_64' \
-        -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
-        -DPLATFORM=MAC_CATALYST \
-        -DDEPLOYMENT_TARGET=13.2 \
-        -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
-        -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
-        -DCMAKE_BUILD_TYPE=MAC_CATALYST \
-        -DENABLE_BITCODE=OFF \
-        -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
-        -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
-        -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
-        -DCMAKE_INSTALL_PREFIX=./libs \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DENABLE_VISIBILITY=ON \
-        -DENABLE_ARC=OFF \
-        -DWITH_SASL=OFF \
-        -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
-        -DWITH_GCRYPT=OFF \
-        -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
-    popd
-  fi
-  pushd build_maccatalyst
-  make -j 12
-  make install
+  echo "libvncserver Mac Catalyst build"
+  mkdir -p build_maccatalyst_or_simulator
+  pushd build_maccatalyst_or_simulator
+  cmake .. -G"Unix Makefiles" -DARCHS='x86_64' \
+      -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
+      -DPLATFORM=MAC_CATALYST \
+      -DDEPLOYMENT_TARGET=13.2 \
+      -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
+      -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target x86_64-apple-ios13.2-macabi" \
+      -DCMAKE_BUILD_TYPE=MAC_CATALYST \
+      -DENABLE_BITCODE=OFF \
+      -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
+      -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
+      -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
+      -DCMAKE_INSTALL_PREFIX=./libs \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DENABLE_VISIBILITY=ON \
+      -DENABLE_ARC=OFF \
+      -DWITH_SASL=OFF \
+      -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+      -DWITH_GCRYPT=OFF \
+      -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
   popd
 fi
+pushd build_maccatalyst_or_simulator
+make -j 12
+make install
+popd
 
 # Lipo together the architectures for libvncserver and copy them to the common directory.
 rsync -avP build_iphone/libs/ libs_combined/
@@ -268,12 +307,7 @@ pushd libs_combined
 for lib in lib/lib*.a
 do
   echo "Running lipo for ${lib}"
-  if [ -z "${SIMULATOR_BUILD}" ]
-  then
-    lipo ../build_maccatalyst/libs/${lib} ../build_iphone/libs/${lib} -output ${lib} -create
-  else
-    lipo ../build_simulator64/libs/${lib} -output ${lib} -create
-  fi
+  lipo ../build_maccatalyst_or_simulator/libs/${lib} ../build_iphone/libs/${lib} -output ${lib} -create
 done
 popd
 popd
