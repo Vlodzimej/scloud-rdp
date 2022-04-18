@@ -31,6 +31,12 @@ class SpiceSession: RemoteSession {
     class var LWIN: Int { return 347 }
     class var RWIN: Int { return 348 }
     
+    class var PAGE_UP: Int { return 73 }
+    class var PAGE_DOWN: Int { return 81 }
+    class var HOME: Int { return 327 }
+    class var END: Int { return 335 }
+    class var DEL: Int { return 83 }
+
     var xKeySymToScanCode: [Int32: Int] = [
         XK_Super_L: SpiceSession.LWIN,
         XK_Super_R: SpiceSession.RWIN,
@@ -39,7 +45,12 @@ class SpiceSession: RemoteSession {
         XK_Alt_L: SpiceSession.LALT,
         XK_Alt_R: SpiceSession.RALT,
         XK_Shift_L: SpiceSession.LSHIFT,
-        XK_Shift_R: SpiceSession.RSHIFT
+        XK_Shift_R: SpiceSession.RSHIFT,
+        XK_Page_Up: SpiceSession.PAGE_UP,
+        XK_Page_Down: SpiceSession.PAGE_DOWN,
+        XK_Home: SpiceSession.HOME,
+        XK_End: SpiceSession.END,
+        XK_Delete: SpiceSession.DEL
     ]
     
     var specialXKeySymToUnicodeMap: [Int32: Int] = [
