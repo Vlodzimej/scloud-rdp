@@ -1,8 +1,16 @@
 # IOS Remote Desktop Clients
 
-## bVNC
+## Intro
 
-VNC client for iOS.
+bVNC is a VNC client for iOS and Mac OS X. aSPICE is a SPICE Client for iOS and Mac OS X.
+
+## Links to Apple App Store
+
+bVNC Pro is available at [bVNC Pro](https://apps.apple.com/ca/app/bvnc-pro/id1506461202).
+
+aSPICE Pro is available at [aSPICE Pro](https://apps.apple.com/ca/app/aspice-pro/id1560593107).
+
+## Building
 
 ### Building Libraries
 First, build dependent libraries, optionally providing the type of build as a parameter:
