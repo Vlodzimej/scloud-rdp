@@ -20,6 +20,8 @@
 "MAIN_CONNECTION_SETTINGS_LABEL" = "Main Connection Settings";
 "ADDRESS_LABEL" = "Address";
 "PORT_LABEL" = "Port";
+"DOMAIN_LABEL" = "Domain";
+"MANDATORY_USER_LABEL" = "User";
 "USER_LABEL" = "User (if required)";
 "PASSWORD_LABEL" = "Password";
 "USER_INTERFACE_SETTINGS_LABEL" = "User Interface Settings";

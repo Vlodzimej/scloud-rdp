@@ -20,6 +20,8 @@
 "MAIN_CONNECTION_SETTINGS_LABEL" = "연결 설정(메인)";
 "ADDRESS_LABEL" = "주소";
 "PORT_LABEL" = "포트";
+"DOMAIN_LABEL" = "도메인";
+"MANDATORY_USER_LABEL" = "사용자";
 "USER_LABEL" = "사용자 (필요한 경우)";
 "PASSWORD_LABEL" = "비밀번호";
 "USER_INTERFACE_SETTINGS_LABEL" = "사용자 인터페이스 설정";

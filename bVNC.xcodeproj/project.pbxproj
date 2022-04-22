@@ -22,7 +22,6 @@
 		AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */; };
 		AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
 		AF05186026115FE900B64D95 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
-		AF09BD4726126EBF00D1A1D7 /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
 		AF09BD4D26126EC200D1A1D7 /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
 		AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
 		AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
@@ -2274,7 +2273,6 @@
 				AF043A2523B3DADB00C43ED7 /* LaunchScreen.storyboard in Resources */,
 				AFF808412487533C00A6B35E /* Localizable.strings in Resources */,
 				AF043A2223B3DADB00C43ED7 /* Preview Assets.xcassets in Resources */,
-				AF09BD4726126EBF00D1A1D7 /* aSPICE-resources in Resources */,
 				AF043A1F23B3DADB00C43ED7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

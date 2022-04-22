@@ -91,14 +91,14 @@ class RdpSession: RemoteSession {
         let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
-                                Constants.SPICE_DEFAULT_LAYOUT
+                                Constants.DEFAULT_LAYOUT
         
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
         
         var addressAndPort = address + ":" + port
         layoutMap = Utils.loadStringOfIntArraysToMap(
                         source: Utils.getBundleFileContents(
-                            name: Constants.SPICE_LAYOUT_PATH + keyboardLayout))
+                            name: Constants.LAYOUT_PATH + keyboardLayout))
         
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false
@@ -127,10 +127,9 @@ class RdpSession: RemoteSession {
             addressAndPort = "127.0.0.1" + ":" + sshForwardPort
         }
         
+        let domain = currentConnection["domain"] ?? ""
         let user = currentConnection["username"] ?? ""
         let pass = currentConnection["password"] ?? ""
-        // TODO: Write out CA to a file if keeping it
-        //let cert = currentConnection["cert"] ?? ""
 
         Background {
             // Make it highly probable the SSH thread would obtain the lock before the RDP one does.
@@ -169,6 +168,7 @@ class RdpSession: RemoteSession {
                                         yes_no_dialog_callback,
                                         UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (domain as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
                                         true)

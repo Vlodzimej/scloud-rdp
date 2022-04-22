@@ -20,6 +20,6 @@
 import Foundation
 
 class Constants {
-    class var SPICE_DEFAULT_LAYOUT: String { return "English (US)" }
-    class var SPICE_LAYOUT_PATH: String { return "aSPICE-resources/Resources/layouts/" }
+    class var DEFAULT_LAYOUT: String { return "English (US)" }
+    class var LAYOUT_PATH: String { return "aSPICE-resources/Resources/layouts/" }
 }

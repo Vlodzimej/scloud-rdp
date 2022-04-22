@@ -124,7 +124,7 @@ void *initializeRdp(int i, int width, int height,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
                     pYesNoCallback y_n_callback,
-                    char* addr, char* port, char* user, char* password, bool enable_sound) {
+                    char* addr, char* port, char* domain, char* user, char* password, bool enable_sound) {
 
     frameBufferUpdateCallback = fb_update_callback;
     frameBufferResizeCallback = fb_resize_callback;
@@ -136,6 +136,7 @@ void *initializeRdp(int i, int width, int height,
     instance->context->argc = i;
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
+    instance->context->settings->Domain = domain;
     instance->context->settings->Username = user;
     instance->context->settings->Password = password;
     instance->context->settings->AudioPlayback = enable_sound;

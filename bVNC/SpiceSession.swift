@@ -51,13 +51,13 @@ class SpiceSession: RemoteSession {
         let certSubject = currentConnection["certSubject"] ?? ""
         let certAuthority = currentConnection["certAuthority"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
-                                Constants.SPICE_DEFAULT_LAYOUT
+                                Constants.DEFAULT_LAYOUT
         let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
 
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
         layoutMap = Utils.loadStringOfIntArraysToMap(
                         source: Utils.getBundleFileContents(
-                            name: Constants.SPICE_LAYOUT_PATH + keyboardLayout))
+                            name: Constants.LAYOUT_PATH + keyboardLayout))
         
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false

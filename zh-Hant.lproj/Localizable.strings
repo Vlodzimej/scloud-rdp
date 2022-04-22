@@ -20,6 +20,8 @@
 "MAIN_CONNECTION_SETTINGS_LABEL" = "連接設定";
 "ADDRESS_LABEL" = "位址";
 "PORT_LABEL" = "埠";
+"DOMAIN_LABEL" = "域";
+"MANDATORY_USER_LABEL" = "用戶";
 "USER_LABEL" = "用戶（如果需要）";
 "PASSWORD_LABEL" = "密碼";
 "USER_INTERFACE_SETTINGS_LABEL" = "用戶介面設定";

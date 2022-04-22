@@ -255,9 +255,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         topButtons = [:]
         cl = Array<UnsafeMutableRawPointer?>(repeating:UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment), count: maxClCapacity);
         super.init()
-        if isSpice() {
+        if isSpice() || isRdp() {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
-                                        Constants.SPICE_LAYOUT_PATH)
+                                        Constants.LAYOUT_PATH)
         }
     }
     
@@ -289,8 +289,16 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return self.bundleID?.lowercased().contains("spice") ?? false
     }
 
+    func isVnc() -> Bool {
+        return self.bundleID?.lowercased().contains("vnc") ?? false
+    }
+
     func isRdp() -> Bool {
         return self.bundleID?.lowercased().contains("rdp") ?? false
+    }
+    
+    func getDefaultPort() -> String {
+        return isRdp() ? "3389" : "5900"
     }
 
     /**

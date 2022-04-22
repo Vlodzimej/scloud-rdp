@@ -20,6 +20,8 @@
 "MAIN_CONNECTION_SETTINGS_LABEL" = "メイン接続設定";
 "ADDRESS_LABEL" = "アドレス";
 "PORT_LABEL" = "ポート";
+"DOMAIN_LABEL" = "ドメイン";
+"MANDATORY_USER_LABEL" = "ユーザー";
 "USER_LABEL" = "ユーザー(必要な場合)";
 "PASSWORD_LABEL" = "パスワード";
 "USER_INTERFACE_SETTINGS_LABEL" = "ユーザーインターフェース設定";

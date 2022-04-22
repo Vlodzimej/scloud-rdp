@@ -128,12 +128,13 @@ struct ContentView : View {
                      sshPassphraseText: stateKeeper.selectedConnection["sshPassphrase"] ?? "",
                      sshPrivateKeyText: stateKeeper.selectedConnection["sshPrivateKey"] ?? "",
                      addressText: stateKeeper.selectedConnection["address"] ?? "",
-                     portText: stateKeeper.selectedConnection["port"] ?? "5900",
+                     portText: stateKeeper.selectedConnection["port"] ?? self.stateKeeper.getDefaultPort(),
                      tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "-1",
                      certSubjectText: stateKeeper.selectedConnection["certSubject"] ?? "",
                      certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
                      keyboardLayoutText: stateKeeper.selectedConnection["keyboardLayout"] ??
-                                        Constants.SPICE_DEFAULT_LAYOUT,
+                                        Constants.DEFAULT_LAYOUT,
+                     domainText: stateKeeper.selectedConnection["domain"] ?? "",
                      usernameText: stateKeeper.selectedConnection["username"] ?? "",
                      passwordText: stateKeeper.selectedConnection["password"] ?? "",
                      screenShotFile: stateKeeper.selectedConnection["screenShotFile"] ?? UUID().uuidString,
@@ -180,6 +181,7 @@ struct ConnectionsList : View {
     }
     
     func buildTitle(i: Int) -> String {
+        let defaultPort = self.stateKeeper.getDefaultPort()
         let connection = self.elementAt(index: i)
         var title = ""
         if connection["sshAddress"] != "" {
@@ -191,9 +193,9 @@ struct ConnectionsList : View {
             if port == nil || port == "-1" {
                 port = connection["port"]
             }
-            title += "SPICE\t\(connection["address"] ?? ""):\(port ?? "5900")"
+            title += "SPICE\t\(connection["address"] ?? ""):\(port ?? defaultPort)"
         } else {
-            title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? "5900")"
+            title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? defaultPort)"
         }
         return title
     }
@@ -299,6 +301,7 @@ struct AddOrEditConnectionPage : View {
     @State var certSubjectText: String
     @State var certAuthorityText: String
     @State var keyboardLayoutText: String
+    @State var domainText: String
     @State var usernameText: String
     @State var passwordText: String
     @State var screenShotFile: String
@@ -317,6 +320,7 @@ struct AddOrEditConnectionPage : View {
             "sshPrivateKey": self.sshPrivateKeyText.trimmingCharacters(in: .whitespacesAndNewlines),
             "address": self.addressText.trimmingCharacters(in: .whitespacesAndNewlines),
             "port": self.portText.trimmingCharacters(in: .whitespacesAndNewlines),
+            "domain": self.domainText.trimmingCharacters(in: .whitespacesAndNewlines),
             "username": self.usernameText.trimmingCharacters(in: .whitespacesAndNewlines),
             "password": self.passwordText.trimmingCharacters(in: .whitespacesAndNewlines),
             "screenShotFile": self.screenShotFile.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -328,6 +332,8 @@ struct AddOrEditConnectionPage : View {
             connection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
             connection["certSubject"] = self.certSubjectText.trimmingCharacters(in: .whitespacesAndNewlines)
             connection["certAuthority"] = self.certAuthorityText.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        if self.stateKeeper.isSpice() || self.stateKeeper.isRdp() {
             connection["keyboardLayout"] = self.keyboardLayoutText.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return connection
@@ -440,15 +446,28 @@ struct AddOrEditConnectionPage : View {
                     }
                 }.padding()
                 }
-
-                if self.stateKeeper.isSpice() {
-                    VStack {
-                        Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
-                        TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
-                        TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+                
+                VStack {
+                    Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
+                    TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
+                    TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+                    if self.stateKeeper.isSpice() {
                         TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
+                    }
+                }.padding()
+
+                VStack {
+                    if self.stateKeeper.isRdp() {
+                        TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
+                    }
+                    if self.stateKeeper.isVnc() {
                         TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
-                        SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
+                    } else if self.stateKeeper.isRdp() {
+                        TextField(self.stateKeeper.localizedString(for: "MANDATORY_USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+                    }
+                    SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
+                    
+                    if self.stateKeeper.isSpice() {
                         TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
                         VStack {
                             Divider()
@@ -460,21 +479,16 @@ struct AddOrEditConnectionPage : View {
                             }
                             Divider()
                         }
+                    }
+                    
+                    if self.stateKeeper.isSpice() || self.stateKeeper.isRdp() {
                         Picker("Keyboard Layout", selection: $keyboardLayoutText) {
                             ForEach(self.getKeyboardLayouts(), id: \.self) {
                                 Text($0)
                             }
                         }
-                    }.padding()
-                } else {
-                    VStack {
-                        Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
-                        TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
-                        TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
-                        TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
-                        SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
-                    }.padding()
-                }
+                    }
+                }.padding()
                 
                 VStack {
                     Text("USER_INTERFACE_SETTINGS_LABEL").font(.headline)
@@ -752,7 +766,7 @@ struct YesNoDialog : View {
 
 struct ContentViewA_Previews : PreviewProvider {
     static var previews: some View {
-        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certSubjectText: "", certAuthorityText: "", keyboardLayoutText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
+        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certSubjectText: "", certAuthorityText: "", keyboardLayoutText: "", domainText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
     }
 }
 
