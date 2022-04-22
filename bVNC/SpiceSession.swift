@@ -225,18 +225,12 @@ class SpiceSession: RemoteSession {
             disconnectSpice()
         }
     }
-        
-    func updateCurrentState(buttonId: Int, isDown: Bool) -> Bool {
-        let currentState = buttonStateMap[buttonId]
-        buttonStateMap[buttonId] = isDown
-        return currentState != isDown
-    }
     
     override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-        let remoteX = Float(globalStateKeeper!.fbW) * x / totalX
-        let remoteY = Float(globalStateKeeper!.fbH) * y / totalY
+        let remoteX = Float(self.stateKeeper.fbW) * x / totalX
+        let remoteY = Float(self.stateKeeper.fbH) * y / totalY
         
         var isDown = 0
         var buttonId = 0
@@ -288,6 +282,8 @@ class SpiceSession: RemoteSession {
         }
 
         print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", buttonState, "isDown:", isDown)
+
+        // FIXME: Send modifier keys when appropriate.
         sendPointerEvent(Int32(remoteX), Int32(remoteY),
                          Int32(buttonId),
                          Int32(buttonState),

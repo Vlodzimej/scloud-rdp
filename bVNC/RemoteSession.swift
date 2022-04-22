@@ -36,6 +36,7 @@ var globalContentView: Image?
 var globalImageView: TouchEnabledUIImageView?
 var lastUpdate: Double = 0.0
 var isDrawing: Bool = false
+var buttonStateMap: [Int: Bool] = [:]
 
 func lock_write_tls_callback_swift(instance: Int32) -> Void {
     if (instance != globalStateKeeper!.currInst) {
@@ -308,6 +309,19 @@ class RemoteSession {
     var width: Int
     var height: Int
     var cl: UnsafeMutableRawPointer?
+    class var LCONTROL: Int { return -1 }
+    class var RCONTROL: Int { return -1 }
+    class var LALT: Int { return -1 }
+    class var RALT: Int { return -1 }
+    class var LSHIFT: Int { return -1 }
+    class var RSHIFT: Int { return -1 }
+    class var LWIN: Int { return -1 }
+    class var RWIN: Int { return -1 }
+    class var PAGE_UP: Int { return -1 }
+    class var PAGE_DOWN: Int { return -1 }
+    class var HOME: Int { return -1 }
+    class var END: Int { return -1 }
+    class var DEL: Int { return -1 }
 
     init(instance: Int, stateKeeper: StateKeeper) {
         log_callback_str(message: "Initializing Remote Session instance: \(instance)")
@@ -338,6 +352,12 @@ class RemoteSession {
             }
         }
         return [Int(newScreenWidth), Int(newScreenHeight)]
+    }
+    
+    func updateCurrentState(buttonId: Int, isDown: Bool) -> Bool {
+        let currentState = buttonStateMap[buttonId]
+        buttonStateMap[buttonId] = isDown
+        return currentState != isDown
     }
     
     func connect(currentConnection: [String:String]) {

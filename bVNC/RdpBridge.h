@@ -30,6 +30,7 @@ void *initializeRdp(int instance, int width, int height,
 void connectRdpInstance(void *instance);
 void cursorEvent(void *instance, int x, int y, int flags);
 void unicodeKeyEvent(void *instance, int flags, int code);
+void vkKeyEvent(void *instance, int flags, int code);
 void disconnectRdp(void *i);
 
 #endif /* RdpBridge_h */

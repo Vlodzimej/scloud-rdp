@@ -27,3 +27,7 @@
 #include "SshPortForwarder.h"
 #include "SystemMonitor.h"
 #include "Utilities.h"
+#ifdef RDP
+#include "freerdp/api.h"
+#include "freerdp/input.h"
+#endif

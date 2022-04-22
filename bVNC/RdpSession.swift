@@ -22,19 +22,64 @@ import SwiftUI
 
 
 class RdpSession: RemoteSession {
+    class var KBD_FLAGS_EXTENDED: Int { return 0x0100 }
+    class var KBD_FLAGS_EXTENDED1: Int { return 0x0200 }
+    class var KBD_FLAGS_DOWN: Int { return 0x4000 }
+    class var KBD_FLAGS_RELEASE: Int { return 0x8000 }
+
+    class var PTRFLAGS_WHEEL: Int { return 0x0200 }
+    class var PTRFLAGS_WHEEL_NEGATIVE: Int { return 0x0100 }
+    class var PTRFLAGS_DOWN: Int { return 0x8000 }
     
-    class var PTRFLAGS_WHEEL: Int32 { return 0x0200 }
-    class var PTRFLAGS_WHEEL_NEGATIVE: Int32 { return 0x0100 }
-    class var PTRFLAGS_DOWN: Int32 { return 0x8000 }
+    class var MOUSE_BUTTON_NONE: Int { return 0x0000 }
+    class var MOUSE_BUTTON_MOVE: Int { return 0x0800 }
+    class var MOUSE_BUTTON_LEFT: Int { return 0x1000 }
+    class var MOUSE_BUTTON_RIGHT: Int { return 0x2000 }
     
-    class var MOUSE_BUTTON_NONE: Int32 { return 0x0000 }
-    class var MOUSE_BUTTON_MOVE: Int32 { return 0x0800 }
-    class var MOUSE_BUTTON_LEFT: Int32 { return 0x1000 }
-    class var MOUSE_BUTTON_RIGHT: Int32 { return 0x2000 }
+    class var MOUSE_BUTTON_MIDDLE: Int { return 0x4000 }
+    class var MOUSE_BUTTON_SCROLL_UP: Int { return PTRFLAGS_WHEEL|0x0078 }
+    class var MOUSE_BUTTON_SCROLL_DOWN: Int { return PTRFLAGS_WHEEL|PTRFLAGS_WHEEL_NEGATIVE|0x0088 }
     
-    class var MOUSE_BUTTON_MIDDLE: Int32 { return 0x4000 }
-    class var MOUSE_BUTTON_SCROLL_UP: Int32 { return PTRFLAGS_WHEEL|0x0078 }
-    class var MOUSE_BUTTON_SCROLL_DOWN: Int32 { return PTRFLAGS_WHEEL|PTRFLAGS_WHEEL_NEGATIVE|0x0088 }
+    var buttonStateMap: [Int: Bool] = [
+        MOUSE_BUTTON_LEFT: false,
+        MOUSE_BUTTON_MIDDLE: false,
+        MOUSE_BUTTON_RIGHT: false,
+        MOUSE_BUTTON_SCROLL_UP: false,
+        MOUSE_BUTTON_SCROLL_DOWN: false,
+    ]
+    
+    override class var LCONTROL: Int { return 0xA2 }
+    override class var RCONTROL: Int { return 0xA3 }
+    override class var LALT: Int { return 0xA4 }
+    override class var RALT: Int { return 0xA5 }
+    override class var LSHIFT: Int { return 0xA0 }
+    override class var RSHIFT: Int { return 0xA1 }
+    override class var LWIN: Int { return 0x5B }
+    override class var RWIN: Int { return 0x5C }
+    override class var PAGE_UP: Int { return 0x21 }
+    override class var PAGE_DOWN: Int { return 0x22 }
+    override class var HOME: Int { return 0x24 }
+    override class var END: Int { return 0x23 }
+    override class var DEL: Int { return 0x2E }
+    
+    // FIXME: Make a configuration value
+    var preferSendingUnicode = true
+    
+    var xKeySymToProtocolCode: [Int32: Int] = [
+        XK_Super_L: RdpSession.LWIN,
+        XK_Super_R: RdpSession.RWIN,
+        XK_Control_L: RdpSession.LCONTROL,
+        XK_Control_R: RdpSession.RCONTROL,
+        XK_Alt_L: RdpSession.LALT,
+        XK_Alt_R: RdpSession.RALT,
+        XK_Shift_L: RdpSession.LSHIFT,
+        XK_Shift_R: RdpSession.RSHIFT,
+        XK_Page_Up: RdpSession.PAGE_UP,
+        XK_Page_Down: RdpSession.PAGE_DOWN,
+        XK_Home: RdpSession.HOME,
+        XK_End: RdpSession.END,
+        XK_Delete: RdpSession.DEL
+    ]
     
     override func connect(currentConnection: [String:String]) {
         let sshAddress = currentConnection["sshAddress"] ?? ""
@@ -144,33 +189,128 @@ class RdpSession: RemoteSession {
     override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-        // FIXME: Handle different pointer events properly.
+        // TODO: Try implementing composite button support.
+        
+        let remoteX = Float(self.stateKeeper.fbW) * x / totalX
+        let remoteY = Float(self.stateKeeper.fbH) * y / totalY
+        
+        var buttonId = RdpSession.MOUSE_BUTTON_MOVE
+        
+        let firstStateChanged = updateCurrentState(
+            buttonId: RdpSession.MOUSE_BUTTON_LEFT, isDown: firstDown)
+        let secondStateChanged = updateCurrentState(
+            buttonId: RdpSession.MOUSE_BUTTON_MIDDLE, isDown: secondDown)
+        let thirdStateChanged = updateCurrentState(
+            buttonId: RdpSession.MOUSE_BUTTON_RIGHT, isDown: thirdDown)
+        let scrollUpStateChanged = updateCurrentState(
+            buttonId: RdpSession.MOUSE_BUTTON_SCROLL_UP, isDown: scrollUp)
+        let scrollDownStateChanged = updateCurrentState(
+            buttonId: RdpSession.MOUSE_BUTTON_SCROLL_DOWN, isDown: scrollDown)
+        
+        var message = "Motion event"
+        if firstStateChanged {
+            message = "Left button"
+            buttonId = RdpSession.MOUSE_BUTTON_LEFT
+            if (firstDown) {
+                buttonId |= RdpSession.PTRFLAGS_DOWN
+            }
+        }
+        if secondStateChanged {
+            message = "Middle button"
+            buttonId = RdpSession.MOUSE_BUTTON_MIDDLE
+            if (secondDown) {
+                buttonId |= RdpSession.PTRFLAGS_DOWN
+            }
+        }
+        if thirdStateChanged {
+            message = "Right button"
+            buttonId = RdpSession.MOUSE_BUTTON_RIGHT
+            if (thirdDown) {
+                buttonId |= RdpSession.PTRFLAGS_DOWN
+            }
+        }
+        if scrollUpStateChanged {
+            message = "ScrollUp action"
+            buttonId = RdpSession.MOUSE_BUTTON_SCROLL_UP
+            if (scrollUp) {
+                buttonId |= RdpSession.PTRFLAGS_DOWN
+            }
+        }
+        if scrollDownStateChanged {
+            message = "ScrollDown action"
+            buttonId = RdpSession.MOUSE_BUTTON_SCROLL_DOWN
+            if (scrollDown) {
+                buttonId |= RdpSession.PTRFLAGS_DOWN
+            }
+        }
+
+        print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId)
+        
         // FIXME: Send modifier keys when appropriate.
-        cursorEvent(self.cl, Int32(x), Int32(y), RdpSession.MOUSE_BUTTON_MOVE|RdpSession.PTRFLAGS_DOWN)
+        cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))
+
     }
     
     override func keyEvent(char: Unicode.Scalar) {
-        // FIXME: Send key events mapped to vkcodes
-        // FIXME: If send unicode setting is enabled, send unicode instead
-        let char = String(char.value)
-        let unicodeInt = Int(char)!
-        unicodeKeyEvent(self.cl, 0, Int32(unicodeInt))
+        // FIXME: Send unicode only if a preferSendingUnicode setting is enabled
+        // FIXME: Implement support for sending key events mapped to vkcodes
+        if (preferSendingUnicode) {
+            let char = String(char.value)
+            let unicodeInt = Int(char)!
+            unicodeKeyEvent(self.cl, 0, Int32(unicodeInt))
+        } else {
+            log_callback_str(message: "Sending virtual keycodes not supported yet")
+        }
+        
    }
     
     @objc override func sendModifierIfNotDown(modifier: Int32) {
-        // FIXME: Implement
+        let code = xKeySymToProtocolCode[modifier] ?? 0
+        if code != 0 && !self.stateKeeper.modifiers[modifier]! {
+            self.stateKeeper.modifiers[modifier] = true
+            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
+            var keyFlags = RdpSession.KBD_FLAGS_DOWN
+            keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            print("RdpSession: sendModifierIfNotDown: ", scode)
+            vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
+        }
     }
 
     @objc override func releaseModifierIfDown(modifier: Int32) {
-        // FIXME: Implement
+        let code = xKeySymToProtocolCode[modifier] ?? 0
+        if code != 0 && self.stateKeeper.modifiers[modifier]! {
+            self.stateKeeper.modifiers[modifier] = false
+            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
+            var keyFlags = RdpSession.KBD_FLAGS_RELEASE
+            keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            print("RdpSession: releaseModifierIfDown: ", scode)
+            vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
+        }
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
-
+        let code = xKeySymToProtocolCode[key] ?? 0
+        if code != 0 {
+            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
+            let keyFlags = ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            print("RdpSession: sendSpecialKeyByXKeySym: ", scode)
+            vkKeyEvent(self.cl, Int32(keyFlags|RdpSession.KBD_FLAGS_DOWN), Int32(scode))
+            vkKeyEvent(self.cl, Int32(keyFlags|RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
+        }
     }
     
     @objc override func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
-
+        let code = xKeySymToProtocolCode[key] ?? 0
+        if code != 0 {
+            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
+            var keyFlags = ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            if down {
+                keyFlags |= RdpSession.KBD_FLAGS_DOWN
+            } else {
+                keyFlags |= RdpSession.KBD_FLAGS_RELEASE
+            }
+            vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
+        }
     }
     
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {

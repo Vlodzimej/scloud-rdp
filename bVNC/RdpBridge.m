@@ -22,7 +22,6 @@
 #include "freerdp/gdi/gdi.h"
 #include "RemoteBridge.h"
 
-
 static void reallocate_buffer(mfInfo *mfi) {
     CGContextRef old_context = mfi->bitmap_context;
     mfi->bitmap_context = NULL;
@@ -172,6 +171,11 @@ void cursorEvent(void *instance, int x, int y, int flags) {
 void unicodeKeyEvent(void *instance, int flags, int code) {
     mfInfo *mfi = MFI_FROM_INSTANCE((freerdp *)instance);
     mfi->instance->input->UnicodeKeyboardEvent(mfi->instance->input, flags, code);
+}
+
+void vkKeyEvent(void *instance, int flags, int code) {
+    mfInfo *mfi = MFI_FROM_INSTANCE((freerdp *)instance);
+    mfi->instance->input->KeyboardEvent(mfi->instance->input, flags, code);
 }
 
 void disconnectRdp(void *i) {
