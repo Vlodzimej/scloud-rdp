@@ -63,9 +63,9 @@ class RdpSession: RemoteSession {
     override class var DEL: Int { return 0x2E }
     
     // FIXME: Make a configuration value
-    var preferSendingUnicode = true
+    var preferSendingUnicode = false
     
-    var xKeySymToProtocolCode: [Int32: Int] = [
+    var xKeySymToKeyCode: [Int32: Int] = [
         XK_Super_L: RdpSession.LWIN,
         XK_Super_R: RdpSession.RWIN,
         XK_Control_L: RdpSession.LCONTROL,
@@ -90,11 +90,16 @@ class RdpSession: RemoteSession {
         let address = currentConnection["address"] ?? ""
         let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
-
+        let keyboardLayout = currentConnection["keyboardLayout"] ??
+                                Constants.SPICE_DEFAULT_LAYOUT
+        
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
         
         var addressAndPort = address + ":" + port
-
+        layoutMap = Utils.loadStringOfIntArraysToMap(
+                        source: Utils.getBundleFileContents(
+                            name: Constants.SPICE_LAYOUT_PATH + keyboardLayout))
+        
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false
             Background {
@@ -248,24 +253,55 @@ class RdpSession: RemoteSession {
         
         // FIXME: Send modifier keys when appropriate.
         cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))
-
     }
     
     override func keyEvent(char: Unicode.Scalar) {
-        // FIXME: Send unicode only if a preferSendingUnicode setting is enabled
-        // FIXME: Implement support for sending key events mapped to vkcodes
+        let char = String(char.value)
+        let unicodeInt = Int(char)!
         if (preferSendingUnicode) {
-            let char = String(char.value)
-            let unicodeInt = Int(char)!
             unicodeKeyEvent(self.cl, 0, Int32(unicodeInt))
         } else {
-            log_callback_str(message: "Sending virtual keycodes not supported yet")
+            sendUnicodeKeyEvent(char: unicodeInt)
         }
+    }
+    
+    override func sendUnicodeKeyEvent(char: Int) {
+        let scanCodes = self.layoutMap[char | RemoteSession.UNICODE_MASK] ?? []
+        print("Unicode:", char, "converted to:", scanCodes)
+        for scanCode in scanCodes {
+            var scode = scanCode
+            if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
+                print("Found SCANCODE_SHIFT_MASK, sending Shift down")
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
+                           Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.LSHIFT), 4) & 0xFF))
+                scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
+            }
+            if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
+                           Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.RALT), 4) & 0xFF))
+                scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
+            }
         
-   }
+            print("RdpSession: sendUnicodeKeyEvent: ", scode)
+            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
+            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
+            
+            if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
+                print("Found SCANCODE_SHIFT_MASK, sending Shift up")
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
+                           Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.LSHIFT), 4) & 0xFF))
+            }
+            if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
+                           Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.RALT), 4) & 0xFF))
+            }
+        }
+    }
     
     @objc override func sendModifierIfNotDown(modifier: Int32) {
-        let code = xKeySymToProtocolCode[modifier] ?? 0
+        let code = xKeySymToKeyCode[modifier] ?? 0
         if code != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
             let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
@@ -277,7 +313,7 @@ class RdpSession: RemoteSession {
     }
 
     @objc override func releaseModifierIfDown(modifier: Int32) {
-        let code = xKeySymToProtocolCode[modifier] ?? 0
+        let code = xKeySymToKeyCode[modifier] ?? 0
         if code != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
             let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
@@ -289,27 +325,19 @@ class RdpSession: RemoteSession {
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
-        let code = xKeySymToProtocolCode[key] ?? 0
-        if code != 0 {
-            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
-            let keyFlags = ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
-            print("RdpSession: sendSpecialKeyByXKeySym: ", scode)
-            vkKeyEvent(self.cl, Int32(keyFlags|RdpSession.KBD_FLAGS_DOWN), Int32(scode))
-            vkKeyEvent(self.cl, Int32(keyFlags|RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
+        let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
+        for scode in scanCodes {
+            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
+            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
         }
     }
     
     @objc override func sendUniDirectionalSpecialKeyByXKeySym(key: Int32, down: Bool) {
-        let code = xKeySymToProtocolCode[key] ?? 0
-        if code != 0 {
-            let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
-            var keyFlags = ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
-            if down {
-                keyFlags |= RdpSession.KBD_FLAGS_DOWN
-            } else {
-                keyFlags |= RdpSession.KBD_FLAGS_RELEASE
-            }
-            vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
+        let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
+        let d: Int = down ? RdpSession.KBD_FLAGS_DOWN : RdpSession.KBD_FLAGS_RELEASE
+        for scode in scanCodes {
+            print("RdpSession: sendSpecialKeyByXKeySym: ", scode)
+            vkKeyEvent(self.cl, Int32(d), Int32(scode))
         }
     }
     

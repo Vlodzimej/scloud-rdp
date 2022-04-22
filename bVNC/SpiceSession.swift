@@ -21,70 +21,6 @@ import UIKit
 import SwiftUI
 
 class SpiceSession: RemoteSession {
-    
-    class var LCONTROL: Int { return 29 }
-    class var RCONTROL: Int { return 285 }
-    class var LALT: Int { return 56 }
-    class var RALT: Int { return 312 }
-    class var LSHIFT: Int { return 42 }
-    class var RSHIFT: Int { return 54 }
-    class var LWIN: Int { return 347 }
-    class var RWIN: Int { return 348 }
-    
-    class var PAGE_UP: Int { return 73 }
-    class var PAGE_DOWN: Int { return 81 }
-    class var HOME: Int { return 327 }
-    class var END: Int { return 335 }
-    class var DEL: Int { return 83 }
-
-    var xKeySymToScanCode: [Int32: Int] = [
-        XK_Super_L: SpiceSession.LWIN,
-        XK_Super_R: SpiceSession.RWIN,
-        XK_Control_L: SpiceSession.LCONTROL,
-        XK_Control_R: SpiceSession.RCONTROL,
-        XK_Alt_L: SpiceSession.LALT,
-        XK_Alt_R: SpiceSession.RALT,
-        XK_Shift_L: SpiceSession.LSHIFT,
-        XK_Shift_R: SpiceSession.RSHIFT,
-        XK_Page_Up: SpiceSession.PAGE_UP,
-        XK_Page_Down: SpiceSession.PAGE_DOWN,
-        XK_Home: SpiceSession.HOME,
-        XK_End: SpiceSession.END,
-        XK_Delete: SpiceSession.DEL
-    ]
-    
-    var specialXKeySymToUnicodeMap: [Int32: Int] = [
-        XK_F1: 0xF704,
-        XK_F2: 0xF705,
-        XK_F3: 0xF706,
-        XK_F4: 0xF707,
-        XK_F5: 0xF708,
-        XK_F6: 0xF709,
-        XK_F7: 0xF70A,
-        XK_F8: 0xF70B,
-        XK_F9: 0xF70C,
-        XK_F10: 0xF70D,
-        XK_F11: 0xF70E,
-        XK_F12: 0xF70F,
-        XK_Escape: 0x001B,
-        XK_Tab: 0x0009,
-        XK_Home: 0x21F1,
-        XK_End: 0x21F2,
-        XK_Page_Up: 0x21DE,
-        XK_Page_Down: 0x21DF,
-        XK_Up: 0x2191,
-        XK_Down: 0x2193,
-        XK_Left: 0x2190,
-        XK_Right: 0x2192,
-        XK_BackSpace: 0x0008,
-    ]
-
-    class var SCANCODE_SHIFT_MASK: Int { return 0x10000 }
-    class var SCANCODE_ALTGR_MASK: Int { return 0x20000 }
-    class var SCANCODE_CIRCUMFLEX_MASK: Int { return 0x40000 }
-    class var SCANCODE_DIAERESIS_MASK: Int { return 0x80000 }
-    class var UNICODE_MASK: Int { return 0x100000 }
-    var layoutMap: [Int: [Int]] = [:]
 
     class var SPICE_MOUSE_BUTTON_MOVE: Int { return 0 }
     class var SPICE_MOUSE_BUTTON_LEFT: Int { return 1 }
@@ -291,54 +227,37 @@ class SpiceSession: RemoteSession {
                          Int32(isDown))
     }
     
-    func getScanCodesOrSendKeyIfUnicode(key: Int32) -> [Int] {
-        var scanCodes: [Int] = []
-        let modifierScanCode = xKeySymToScanCode[key] ?? 0
-        if (modifierScanCode > 0) {
-            scanCodes = [modifierScanCode]
-            //print("getScanCodesOrSendKeyIfUnicode, modifier scancodes", scanCodes)
-        } else {
-            //print("getScanCodesOrSendKeyIfUnicode, key:", key)
-            let char = specialXKeySymToUnicodeMap[key] ?? 0
-            //print("getScanCodesOrSendKeyIfUnicode, char:", char)
-            sendUnicodeKeyEvent(char: char)
-            scanCodes = []
-        }
-
-        return scanCodes
-    }
-    
     override func keyEvent(char: Unicode.Scalar) {
         let char = String(char.value)
         let unicodeInt = Int(char)!
         sendUnicodeKeyEvent(char: unicodeInt)
     }
     
-    func sendUnicodeKeyEvent(char: Int) {
-        let scanCodes = self.layoutMap[char | SpiceSession.UNICODE_MASK] ?? []
+    override func sendUnicodeKeyEvent(char: Int) {
+        let scanCodes = self.layoutMap[char | RemoteSession.UNICODE_MASK] ?? []
         print("Unicode:", char, "converted to:", scanCodes)
         for scanCode in scanCodes {
             //Background {
                 var scode = scanCode
-                if scanCode & SpiceSession.SCANCODE_SHIFT_MASK != 0 {
+                if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                     //print("Found SCANCODE_SHIFT_MASK, sending Shift down")
                     spiceKeyEvent(1, Int32(SpiceSession.LSHIFT))
-                    scode &= ~SpiceSession.SCANCODE_SHIFT_MASK
+                    scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
                 }
-                if scanCode & SpiceSession.SCANCODE_ALTGR_MASK != 0 {
+                if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                     //print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
                     spiceKeyEvent(1, Int32(SpiceSession.RALT))
-                    scode &= ~SpiceSession.SCANCODE_ALTGR_MASK
+                    scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
                 }
                 
                 spiceKeyEvent(1, Int32(scode))
                 spiceKeyEvent(0, Int32(scode))
                 
-                if scanCode & SpiceSession.SCANCODE_SHIFT_MASK != 0 {
+                if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                     //print("Found SCANCODE_SHIFT_MASK, sending Shift up")
                     spiceKeyEvent(0, Int32(SpiceSession.LSHIFT))
                 }
-                if scanCode & SpiceSession.SCANCODE_ALTGR_MASK != 0 {
+                if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                     //print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
                     spiceKeyEvent(0, Int32(SpiceSession.RALT))
                 }

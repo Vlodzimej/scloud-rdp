@@ -309,20 +309,70 @@ class RemoteSession {
     var width: Int
     var height: Int
     var cl: UnsafeMutableRawPointer?
-    class var LCONTROL: Int { return -1 }
-    class var RCONTROL: Int { return -1 }
-    class var LALT: Int { return -1 }
-    class var RALT: Int { return -1 }
-    class var LSHIFT: Int { return -1 }
-    class var RSHIFT: Int { return -1 }
-    class var LWIN: Int { return -1 }
-    class var RWIN: Int { return -1 }
-    class var PAGE_UP: Int { return -1 }
-    class var PAGE_DOWN: Int { return -1 }
-    class var HOME: Int { return -1 }
-    class var END: Int { return -1 }
-    class var DEL: Int { return -1 }
+    
+    class var LCONTROL: Int { return 29 }
+    class var RCONTROL: Int { return 285 }
+    class var LALT: Int { return 56 }
+    class var RALT: Int { return 312 }
+    class var LSHIFT: Int { return 42 }
+    class var RSHIFT: Int { return 54 }
+    class var LWIN: Int { return 347 }
+    class var RWIN: Int { return 348 }
+    class var PAGE_UP: Int { return 73 }
+    class var PAGE_DOWN: Int { return 81 }
+    class var HOME: Int { return 327 }
+    class var END: Int { return 335 }
+    class var DEL: Int { return 83 }
+    
+    var layoutMap: [Int: [Int]] = [:]
+    class var UNICODE_MASK: Int { return 0x100000 }
+    class var SCANCODE_SHIFT_MASK: Int { return 0x10000 }
+    class var SCANCODE_ALTGR_MASK: Int { return 0x20000 }
+    class var SCANCODE_CIRCUMFLEX_MASK: Int { return 0x40000 }
+    class var SCANCODE_DIAERESIS_MASK: Int { return 0x80000 }
 
+    var specialXKeySymToUnicodeMap: [Int32: Int] = [
+        XK_F1: 0xF704,
+        XK_F2: 0xF705,
+        XK_F3: 0xF706,
+        XK_F4: 0xF707,
+        XK_F5: 0xF708,
+        XK_F6: 0xF709,
+        XK_F7: 0xF70A,
+        XK_F8: 0xF70B,
+        XK_F9: 0xF70C,
+        XK_F10: 0xF70D,
+        XK_F11: 0xF70E,
+        XK_F12: 0xF70F,
+        XK_Escape: 0x001B,
+        XK_Tab: 0x0009,
+        XK_Home: 0x21F1,
+        XK_End: 0x21F2,
+        XK_Page_Up: 0x21DE,
+        XK_Page_Down: 0x21DF,
+        XK_Up: 0x2191,
+        XK_Down: 0x2193,
+        XK_Left: 0x2190,
+        XK_Right: 0x2192,
+        XK_BackSpace: 0x0008,
+    ]
+    
+    var xKeySymToScanCode: [Int32: Int] = [
+        XK_Super_L: SpiceSession.LWIN,
+        XK_Super_R: SpiceSession.RWIN,
+        XK_Control_L: SpiceSession.LCONTROL,
+        XK_Control_R: SpiceSession.RCONTROL,
+        XK_Alt_L: SpiceSession.LALT,
+        XK_Alt_R: SpiceSession.RALT,
+        XK_Shift_L: SpiceSession.LSHIFT,
+        XK_Shift_R: SpiceSession.RSHIFT,
+        XK_Page_Up: SpiceSession.PAGE_UP,
+        XK_Page_Down: SpiceSession.PAGE_DOWN,
+        XK_Home: SpiceSession.HOME,
+        XK_End: SpiceSession.END,
+        XK_Delete: SpiceSession.DEL
+    ]
+    
     init(instance: Int, stateKeeper: StateKeeper) {
         log_callback_str(message: "Initializing Remote Session instance: \(instance)")
         self.instance = instance
@@ -360,6 +410,22 @@ class RemoteSession {
         return currentState != isDown
     }
     
+    func getScanCodesOrSendKeyIfUnicode(key: Int32) -> [Int] {
+        var scanCodes: [Int] = []
+        let modifierScanCode = xKeySymToScanCode[key] ?? 0
+        if (modifierScanCode > 0) {
+            scanCodes = [modifierScanCode]
+            //print("getScanCodesOrSendKeyIfUnicode, modifier scancodes", scanCodes)
+        } else {
+            //print("getScanCodesOrSendKeyIfUnicode, key:", key)
+            let char = specialXKeySymToUnicodeMap[key] ?? 0
+            //print("getScanCodesOrSendKeyIfUnicode, char:", char)
+            sendUnicodeKeyEvent(char: char)
+            scanCodes = []
+        }
+        return scanCodes
+    }
+    
     func connect(currentConnection: [String:String]) {
         preconditionFailure("This method must be overridden") 
     }
@@ -371,6 +437,10 @@ class RemoteSession {
     func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                       firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                       scrollUp: Bool, scrollDown: Bool) {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    func sendUnicodeKeyEvent(char: Int) {
         preconditionFailure("This method must be overridden")
     }
     
