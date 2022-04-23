@@ -313,4 +313,9 @@ class SpiceSession: RemoteSession {
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         // Not used for SPICE
     }
+    
+    override func requestRemoteResolution(x: Int, y: Int) {
+        log_callback_str(message: "Requesting remote resolution to be \(x)x\(y)")
+        requestResolution(Int32(x), Int32(y));
+    }
 }

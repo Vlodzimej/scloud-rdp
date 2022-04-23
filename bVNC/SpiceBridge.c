@@ -49,7 +49,7 @@ static gint get_display_id(SpiceDisplay *display)
     return d->channel_id;
 }
 
-static void requestResolution(int w, int h) {
+void requestResolution(int w, int h) {
     SpiceDisplay* display = global_display();
     SpiceDisplayPrivate *d = SPICE_DISPLAY_GET_PRIVATE(display);
     spice_main_channel_update_display_enabled(d->main, get_display_id(display), TRUE, FALSE);

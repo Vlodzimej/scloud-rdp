@@ -32,5 +32,6 @@ void cursorEvent(void *instance, int x, int y, int flags);
 void unicodeKeyEvent(void *instance, int flags, int code);
 void vkKeyEvent(void *instance, int flags, int code);
 void disconnectRdp(void *i);
+void resizeRemoteRdpDesktop(void *instance, int x, int y);
 
 #endif /* RdpBridge_h */

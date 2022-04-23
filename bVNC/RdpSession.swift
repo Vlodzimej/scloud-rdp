@@ -161,7 +161,6 @@ class RdpSession: RemoteSession {
                 log_callback_str(message: "Connecting RDP Session in the background...")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
                 
-                // FIXME: Request resolution
                 self.cl = initializeRdp(Int32(self.instance),
                                         Int32(self.width), Int32(self.height),
                                         update_callback,
@@ -354,5 +353,13 @@ class RdpSession: RemoteSession {
     
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         // Not used for RDP
+    }
+    
+    override func requestRemoteResolution(x: Int, y: Int) {
+        log_callback_str(message: "Requesting remote resolution to be \(x)x\(y)")
+        Background {
+            resizeRemoteRdpDesktop(self.cl, Int32(x), Int32(y))
+            self.stateKeeper.reDraw()
+        }
     }
 }

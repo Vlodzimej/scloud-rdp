@@ -19,6 +19,7 @@
 
 #import <Foundation/Foundation.h>
 #include "ios_freerdp.h"
+#include "freerdp/freerdp.h"
 #include "freerdp/gdi/gdi.h"
 #include "RemoteBridge.h"
 
@@ -72,12 +73,12 @@ static BOOL end_paint(rdpContext* context) {
 }
 
 static BOOL post_connect(freerdp *instance) {
-    int i = instance->context->argc;
-    printf("post_connect, instance %d\n", i);
-
     if (!instance) {
         return false;
     }
+    
+    int i = instance->context->argc;
+    printf("post_connect, instance %d\n", i);
 
     mfInfo *mfi = MFI_FROM_INSTANCE(instance);
 
@@ -140,8 +141,10 @@ void *initializeRdp(int i, int width, int height,
     instance->context->settings->Username = user;
     instance->context->settings->Password = password;
     instance->context->settings->AudioPlayback = enable_sound;
+    printf("Requesting initial remote resolution to be %dx%d\n", width, height);
     instance->context->settings->DesktopWidth = width;
     instance->context->settings->DesktopHeight = height;
+    instance->context->settings->DynamicResolutionUpdate = TRUE;
 
     instance->update->DesktopResize = resize_window;
     instance->update->BitmapUpdate = bitmap_update;
@@ -179,5 +182,10 @@ void vkKeyEvent(void *instance, int flags, int code) {
     mfi->instance->input->KeyboardEvent(mfi->instance->input, flags, code);
 }
 
-void disconnectRdp(void *i) {
+void disconnectRdp(void *instance) {
+    freerdp_abort_connect((freerdp *)instance);
+}
+
+void resizeRemoteRdpDesktop(void *i, int x, int y) {
+    // FIXME: Implement
 }

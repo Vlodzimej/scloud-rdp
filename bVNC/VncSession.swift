@@ -159,4 +159,12 @@ class VncSession: RemoteSession {
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         sendWholeScreenUpdateRequest(self.cl, incrementalUpdate)
     }
+    
+    override func syncRemoteToLocalResolution() {
+        // Not used
+    }
+    
+    override func requestRemoteResolution(x: Int, y: Int) {
+        self.stateKeeper.reDraw()
+    }
 }

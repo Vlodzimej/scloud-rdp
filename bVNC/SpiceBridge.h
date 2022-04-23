@@ -66,4 +66,6 @@ int getButtonState(bool, bool, bool, bool, bool);
 
 int32_t spiceKeyEvent(int16_t isDown, int32_t hardware_keycode);
 
+void requestResolution(int w, int h);
+
 #endif /* SpiceBridge_h */

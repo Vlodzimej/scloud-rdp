@@ -236,6 +236,7 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
         }
     }
     globalStateKeeper?.keepSessionRefreshed()
+    globalStateKeeper?.reDraw()
 }
 
 func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
@@ -391,14 +392,17 @@ class RemoteSession {
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
         var newScreenWidth = screenWidth
         var newScreenHeight = screenHeight
-        if (screenWidth <= 768 || screenHeight <= 768) {
-            // If width or height are too small, set a minimum
-            if (screenWidth < screenHeight) {
-                newScreenWidth = 1200.0
-                newScreenHeight = 1200 * (screenHeight / screenWidth)
-            } else {
-                newScreenWidth = 1200 * (screenWidth / screenHeight)
-                newScreenHeight = 1200.0
+        
+        if self.stateKeeper.macOs {
+            #if targetEnvironment(macCatalyst)
+            globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
+            #endif
+        } else {
+            if (screenWidth <= Constants.MIN_RESOLUTION_IOS ||
+                screenHeight <= Constants.MIN_RESOLUTION_IOS) {
+                // If width or height are too small, scale dimensions up when requesting remote resolution
+                newScreenWidth = screenWidth * Constants.MIN_RESOLUTION_SCALE_UP_FACTOR
+                newScreenHeight = screenHeight * Constants.MIN_RESOLUTION_SCALE_UP_FACTOR
             }
         }
         return [Int(newScreenWidth), Int(newScreenHeight)]
@@ -424,6 +428,17 @@ class RemoteSession {
             scanCodes = []
         }
         return scanCodes
+    }
+    
+    func syncRemoteToLocalResolution() {
+        let res = self.resolution()
+        self.width = res[0]
+        self.height = res[1]
+        requestRemoteResolution(x: self.width, y: self.height)
+    }
+    
+    func requestRemoteResolution(x: Int, y: Int) {
+        preconditionFailure("This method must be overridden")
     }
     
     func connect(currentConnection: [String:String]) {
