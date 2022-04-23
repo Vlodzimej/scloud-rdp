@@ -89,6 +89,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var currInst: Int = -1
     
     var cl: [UnsafeMutableRawPointer?]
+    var clAuthAttempted: Int = 0
     var maxClCapacity = 1000
     
     var isDrawing: Bool = false;
@@ -253,7 +254,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         keyboardButtons = [:]
         modifierButtons = [:]
         topButtons = [:]
-        cl = Array<UnsafeMutableRawPointer?>(repeating:UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment), count: maxClCapacity);
+        cl = Array<UnsafeMutableRawPointer?>(
+            repeating: UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment),
+            count: maxClCapacity);
+
         super.init()
         if isSpice() || isRdp() {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
@@ -317,7 +321,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func connect(connection: [String: String]) {
         showConnectionInProgress()
         log_callback_str(message: "Connecting and navigating to the connection screen")
-        yesNoDialogResponse = 0
+        self.yesNoDialogResponse = 0
         self.isKeptFresh = false
         self.clientLog = []
         self.clientLog.append("\n\n")
@@ -328,8 +332,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         //let contentView = ContentView(stateKeeper: self)
         //globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
         globalWindow!.makeKeyAndVisible()
-        currInst = (currInst + 1) % maxClCapacity
-        isDrawing = true;
+        self.currInst = (currInst + 1) % maxClCapacity
+        self.clAuthAttempted = 0
+        self.isDrawing = true;
         self.toggleModifiersIfDown()
         if self.isSpice() {
             self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
@@ -906,6 +911,25 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    func getDomain() -> UnsafeMutablePointer<Int8>? {
+        self.clAuthAttempted = 1
+        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["domain"]! as NSString).utf8String)
+    }
+    
+    func getUsername() -> UnsafeMutablePointer<Int8>? {
+        self.clAuthAttempted = 1
+        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["username"]! as NSString).utf8String)
+    }
+    
+    func getPassword() -> UnsafeMutablePointer<Int8>? {
+        self.clAuthAttempted = 1
+        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["password"]! as NSString).utf8String)
+    }
+    
+    func authenticationAttempted() -> Int {
+        return self.clAuthAttempted
+    }
+
     func getCurrentInstance() -> UnsafeMutableRawPointer? {
         if (self.currInst >= 0 && self.cl.endIndex > self.currInst) {
             return self.cl[self.currInst]
@@ -921,7 +945,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func resizeWindow() {
         if currInst >= 0 && isDrawing {
             resize_callback(instance: Int32(currInst), fbW: fbW, fbH: fbH)
-            //reDraw()
         }
         // FIXME: Make a config option
         let syncRemoteToLocalResolution = true

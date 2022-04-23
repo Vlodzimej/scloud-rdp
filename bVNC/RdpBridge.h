@@ -26,7 +26,11 @@ void *initializeRdp(int instance, int width, int height,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
                     pYesNoCallback y_n_callback,
-                    char* addr, char* port, char* domain, char* user, char* password, bool enable_sound);
+                    pGetDomainCallback get_domain_callback,
+                    pGetUsernameCallback get_username_callback,
+                    pGetPasswordCallback get_password_callback,
+                    pAuthAttempted auth_attempted_callback,
+                    char* addr, char* port, bool enable_sound);
 void connectRdpInstance(void *instance);
 void cursorEvent(void *instance, int x, int y, int flags);
 void unicodeKeyEvent(void *instance, int flags, int code);

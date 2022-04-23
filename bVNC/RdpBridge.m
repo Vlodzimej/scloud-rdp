@@ -22,6 +22,7 @@
 #include "freerdp/freerdp.h"
 #include "freerdp/gdi/gdi.h"
 #include "RemoteBridge.h"
+#include "Utility.h"
 
 static void reallocate_buffer(mfInfo *mfi) {
     CGContextRef old_context = mfi->bitmap_context;
@@ -97,6 +98,31 @@ static BOOL post_connect(freerdp *instance) {
     return true;
 }
 
+enum CLIENT_CONNECTION_STATE
+{
+    CLIENT_STATE_INITIAL,
+    CLIENT_STATE_PRECONNECT_PASSED,
+    CLIENT_STATE_POSTCONNECT_PASSED
+};
+
+static void ios_post_disconnect(freerdp *instance) {
+    printf("ios_post_disconnect\n");
+    if (instance->ConnectionCallbackState == CLIENT_STATE_INITIAL ||
+        instance->ConnectionCallbackState == CLIENT_STATE_PRECONNECT_PASSED) {
+        if (authAttempted()) {
+            clientLogCallback((int8_t*)"Authentication failed\n");
+            failCallback(instance->context->argc, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
+        } else {
+            clientLogCallback((int8_t*)"Could not connect to remote server\n");
+            failCallback(instance->context->argc, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+        }
+    } else if (instance->ConnectionCallbackState == CLIENT_STATE_POSTCONNECT_PASSED) {
+        clientLogCallback((int8_t*)"Connection to remote server was interrupted\n");
+        failCallback(instance->context->argc, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+    }
+    gdi_free(instance);
+}
+
 static BOOL resize_window(rdpContext *context) {
     printf("resize_window, instance %d\n", context->instance->context->argc);
     post_connect(context->instance);
@@ -109,6 +135,7 @@ static DWORD verify_changed_cert(freerdp* instance, const char* host, UINT16 por
                                   const char* old_subject, const char* old_issuer,
                                   const char* old_fingerprint, DWORD flags) {
     printf("verify_changed_cert, instance %d\n", instance->context->argc);
+    // FIXME: Implement
     return 1;
 }
 
@@ -116,7 +143,16 @@ static DWORD verify_cert(freerdp* instance, const char* host, UINT16 port,
                                 const char* common_name, const char* subject,
                                 const char* issuer, const char* fingerprint, DWORD flags) {
     printf("verify_cert, instance %d\n", instance->context->argc);
+    // FIXME: Implement
     return 1;
+}
+
+static BOOL authenticate(freerdp* instance, char** username, char** password,
+                         char** domain) {
+    *username = (char *)getUsernameCallback();
+    *password = (char *)getPasswordCallback();
+    *domain = (char *)getDomainCallback();
+    return TRUE;
 }
 
 void *initializeRdp(int i, int width, int height,
@@ -125,21 +161,26 @@ void *initializeRdp(int i, int width, int height,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
                     pYesNoCallback y_n_callback,
-                    char* addr, char* port, char* domain, char* user, char* password, bool enable_sound) {
+                    pGetDomainCallback get_domain_callback,
+                    pGetUsernameCallback get_username_callback,
+                    pGetPasswordCallback get_password_callback,
+                    pAuthAttempted auth_attempted_callback,
+                    char* addr, char* port, bool enable_sound) {
 
     frameBufferUpdateCallback = fb_update_callback;
     frameBufferResizeCallback = fb_resize_callback;
     failCallback = fail_callback;
     clientLogCallback = cl_log_callback;
     yesNoCallback = y_n_callback;
-
+    getDomainCallback = get_domain_callback;
+    getUsernameCallback = get_username_callback;
+    getPasswordCallback = get_password_callback;
+    authAttempted = auth_attempted_callback;
+    
     freerdp* instance = ios_freerdp_new();
     instance->context->argc = i;
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
-    instance->context->settings->Domain = domain;
-    instance->context->settings->Username = user;
-    instance->context->settings->Password = password;
     instance->context->settings->AudioPlayback = enable_sound;
     printf("Requesting initial remote resolution to be %dx%d\n", width, height);
     instance->context->settings->DesktopWidth = width;
@@ -156,7 +197,12 @@ void *initializeRdp(int i, int width, int height,
     //instance->context->settings->GatewayPassword
     //instance->GatewayAuthenticate
 
+    instance->Authenticate = authenticate;
+    instance->PostDisconnect = ios_post_disconnect;
     instance->PostConnect = post_connect;
+    
+    // FIXME: Implement certificate verification
+    //instance->VerifyX509Certificate;
     instance->VerifyCertificateEx = verify_cert;
     instance->VerifyChangedCertificateEx = verify_changed_cert;
 

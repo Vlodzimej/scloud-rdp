@@ -304,6 +304,23 @@ func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int,
      */
 }
 
+func get_domain_callback() -> UnsafeMutablePointer<Int8>? {
+    return globalStateKeeper?.getDomain()
+}
+
+func get_username_callback() -> UnsafeMutablePointer<Int8>? {
+    return globalStateKeeper?.getUsername()
+}
+
+func get_password_callback() -> UnsafeMutablePointer<Int8>? {
+    return globalStateKeeper?.getPassword()
+}
+
+func auth_attempted_callback() -> Int32 {
+    return Int32(globalStateKeeper?.authenticationAttempted() ?? 0)
+}
+
+
 class RemoteSession {
     let stateKeeper: StateKeeper
     var instance: Int

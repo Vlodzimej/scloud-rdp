@@ -168,22 +168,18 @@ class RdpSession: RemoteSession {
                                         failure_callback_swift,
                                         log_callback,
                                         yes_no_dialog_callback,
+                                        get_domain_callback,
+                                        get_username_callback,
+                                        get_password_callback,
+                                        auth_attempted_callback,
                                         UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (domain as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
                                         true)
             }
             if self.cl != nil {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
                 connectRdpInstance(self.cl)
-            } else {
-                // FIXME: Implement failure call-back support
-                // FIXME: Show RDP failure when a failure callback is called, not when
-                // FIXME: Initialization failed.
-                title = "RDP_CONNECTION_FAILURE_TITLE"
-                failure_callback_str(instance: self.instance, title: title)
+                // FIXME: Detect that connection has exited here and react accordingly.
             }
         }
     }
@@ -259,6 +255,7 @@ class RdpSession: RemoteSession {
     }
     
     override func keyEvent(char: Unicode.Scalar) {
+        // FIXME: Do not send keyboard events for any protocol unless connection is ongoing.
         let char = String(char.value)
         let unicodeInt = Int(char)!
         // FIXME: Do not send unicode when Control key is pressed in order to be able to send control characters

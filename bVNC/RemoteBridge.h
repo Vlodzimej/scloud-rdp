@@ -39,6 +39,14 @@ typedef void (*pClientLogCallback)(int8_t *);
 extern pClientLogCallback clientLogCallback;
 typedef int (*pYesNoCallback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
 extern pYesNoCallback yesNoCallback;
+typedef int8_t * (*pGetDomainCallback)(void);
+extern pGetDomainCallback getDomainCallback;
+typedef int8_t * (*pGetUsernameCallback)(void);
+extern pGetUsernameCallback getUsernameCallback;
+typedef int8_t * (*pGetPasswordCallback)(void);
+extern pGetPasswordCallback getPasswordCallback;
+typedef int (*pAuthAttempted)(void);
+extern pAuthAttempted authAttempted;
 
 extern bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int y, int w, int h);
 extern void (*framebuffer_resize_callback)(int, int fbW, int fbH);

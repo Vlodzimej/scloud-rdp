@@ -47,6 +47,9 @@
 "VNC_CONNECTION_FAILURE_TITLE" = "Failed to establish connection to VNC server";
 "SPICE_CONNECTION_FAILURE_TITLE" = "Failed to establish connection to SPICE server";
 "RDP_CONNECTION_FAILURE_TITLE" = "Failed to establish connection to RDP server";
+"VNC_AUTHENTICATION_FAILED_TITLE" = "VNC authentication failed! Check VNC password (and user if applicable).";
+"RDP_AUTHENTICATION_FAILED_TITLE" = "RDP Authentication failed! Please check the RDP username and password and try again.";
+"SPICE_AUTHENTICATION_FAILED_TITLE" = "SPICE Authentication failed! Please check the SPCE password and try again.";
 "RFB_CLIENT_OBJECT_NOT_INITIALIZED" = "RFB Client Object not Initialized";
 "FAILED_TO_SEND_MESSAGE_TO_SERVER" = "Failed to Send Message to Server";
 "FAILED_TO_INIT_CONNECTION_TO_SERVER" = "Failed to Initialize Connection to Server";

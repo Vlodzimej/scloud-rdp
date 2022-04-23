@@ -31,6 +31,10 @@ pFrameBufferResizeCallback frameBufferResizeCallback;
 pFailCallback failCallback;
 pClientLogCallback clientLogCallback;
 pYesNoCallback yesNoCallback;
+pGetDomainCallback getDomainCallback;
+pGetUsernameCallback getUsernameCallback;
+pGetPasswordCallback getPasswordCallback;
+pAuthAttempted authAttempted;
 
 void signal_handler(int signal, siginfo_t *info, void *reserved) {
     client_log("Handling signal: %d", signal);
