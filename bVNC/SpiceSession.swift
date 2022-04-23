@@ -43,9 +43,9 @@ class SpiceSession: RemoteSession {
         let sshPort = currentConnection["sshPort"] ?? ""
         let sshUser = currentConnection["sshUser"] ?? ""
         let sshPass = currentConnection["sshPass"] ?? ""
-        let port = currentConnection["port"] ?? ""
+        var port = currentConnection["port"] ?? ""
         let tlsPort = currentConnection["tlsPort"] ?? ""
-        let address = currentConnection["address"] ?? ""
+        var address = currentConnection["address"] ?? ""
         let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let certSubject = currentConnection["certSubject"] ?? ""
@@ -66,6 +66,13 @@ class SpiceSession: RemoteSession {
                 self.stateKeeper.sshForwardingLock.lock()
                 self.stateKeeper.sshTunnelingStarted = true
                 log_callback_str(message: "Setting up SSH forwarding")
+                
+                // FIXME: Forward to whichever port is not -1 preferring TLS port
+                // FIXME: Forward to both ports if both are not -1
+                let forwardToAddress = address
+                let forwardToPort = port
+                address = "127.0.0.1"
+                port = sshForwardPort
                 setupSshPortForward(
                     Int32(self.stateKeeper.currInst),
                     ssh_forward_success,
@@ -80,8 +87,8 @@ class SpiceSession: RemoteSession {
                     UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String))
+                    UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
             }
         }
         

@@ -194,6 +194,8 @@ struct ConnectionsList : View {
                 port = connection["port"]
             }
             title += "SPICE\t\(connection["address"] ?? ""):\(port ?? defaultPort)"
+        } else if self.stateKeeper.isRdp() {
+            title += "RDP\t\(connection["address"] ?? ""):\(connection["port"] ?? defaultPort)"
         } else {
             title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? defaultPort)"
         }

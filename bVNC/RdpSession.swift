@@ -86,8 +86,8 @@ class RdpSession: RemoteSession {
         let sshPort = currentConnection["sshPort"] ?? ""
         let sshUser = currentConnection["sshUser"] ?? ""
         let sshPass = currentConnection["sshPass"] ?? ""
-        let port = currentConnection["port"] ?? ""
-        let address = currentConnection["address"] ?? ""
+        var port = currentConnection["port"] ?? ""
+        var address = currentConnection["address"] ?? ""
         let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
@@ -95,18 +95,21 @@ class RdpSession: RemoteSession {
         
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
         
-        var addressAndPort = address + ":" + port
         layoutMap = Utils.loadStringOfIntArraysToMap(
                         source: Utils.getBundleFileContents(
                             name: Constants.LAYOUT_PATH + keyboardLayout))
         
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false
+            let forwardToAddress = address
+            let forwardToPort = port
+            address = "127.0.0.1"
+            port = sshForwardPort
             Background {
                 self.stateKeeper.sshForwardingLock.unlock()
                 self.stateKeeper.sshForwardingLock.lock()
                 self.stateKeeper.sshTunnelingStarted = true
-                log_callback_str(message: "Setting up SSH forwarding")
+                log_callback_str(message: "Setting up SSH forwarding to \(address):\(port)")
                 setupSshPortForward(
                     Int32(self.stateKeeper.currInst),
                     ssh_forward_success,
@@ -121,10 +124,9 @@ class RdpSession: RemoteSession {
                     UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String))
+                    UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
             }
-            addressAndPort = "127.0.0.1" + ":" + sshForwardPort
         }
         
         let domain = currentConnection["domain"] ?? ""
@@ -159,6 +161,7 @@ class RdpSession: RemoteSession {
                 log_callback_str(message: "Connecting RDP Session in the background...")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
                 
+                // FIXME: Request resolution
                 self.cl = initializeRdp(Int32(self.instance),
                                         Int32(self.width), Int32(self.height),
                                         update_callback,
@@ -177,6 +180,7 @@ class RdpSession: RemoteSession {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
                 connectRdpInstance(self.cl)
             } else {
+                // FIXME: Implement failure call-back support
                 // FIXME: Show RDP failure when a failure callback is called, not when
                 // FIXME: Initialization failed.
                 title = "RDP_CONNECTION_FAILURE_TITLE"
@@ -258,6 +262,7 @@ class RdpSession: RemoteSession {
     override func keyEvent(char: Unicode.Scalar) {
         let char = String(char.value)
         let unicodeInt = Int(char)!
+        // FIXME: Do not send unicode when Control key is pressed in order to be able to send control characters
         if (preferSendingUnicode) {
             unicodeKeyEvent(self.cl, 0, Int32(unicodeInt))
         } else {
@@ -272,12 +277,14 @@ class RdpSession: RemoteSession {
             var scode = scanCode
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 print("Found SCANCODE_SHIFT_MASK, sending Shift down")
+                // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
                            Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.LSHIFT), 4) & 0xFF))
                 scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                 print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
+                // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
                            Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.RALT), 4) & 0xFF))
                 scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
@@ -289,11 +296,13 @@ class RdpSession: RemoteSession {
             
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 print("Found SCANCODE_SHIFT_MASK, sending Shift up")
+                // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
                            Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.LSHIFT), 4) & 0xFF))
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                 print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
+                // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
                            Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(RdpSession.RALT), 4) & 0xFF))
             }
@@ -304,6 +313,7 @@ class RdpSession: RemoteSession {
         let code = xKeySymToKeyCode[modifier] ?? 0
         if code != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
+            // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
             let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
             var keyFlags = RdpSession.KBD_FLAGS_DOWN
             keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
@@ -316,6 +326,7 @@ class RdpSession: RemoteSession {
         let code = xKeySymToKeyCode[modifier] ?? 0
         if code != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
+            // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
             let scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
             var keyFlags = RdpSession.KBD_FLAGS_RELEASE
             keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
