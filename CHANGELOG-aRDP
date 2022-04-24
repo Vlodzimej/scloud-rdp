@@ -1,0 +1,13 @@
+1.0.11
+  - Dynamic Resolution on Connection
+  - Japanese localization
+  - Simplified Chinese localization 
+  - Traditional Chinese localization
+  - Korean localization
+  - Windows and Linux xrdp support
+  - Scrolling with a two-finger gesture
+  - SSH tunneling
+  - SSH public/private (pubkey)
+  - Local window resizing
+  - Transparent titlebar
+
