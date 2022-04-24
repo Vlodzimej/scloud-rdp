@@ -24,13 +24,7 @@
 #include "RemoteBridge.h"
 #include "Utility.h"
 
-static void reallocate_buffer(mfInfo *mfi) {
-    CGContextRef old_context = mfi->bitmap_context;
-    mfi->bitmap_context = NULL;
-    if (old_context != NULL) {
-        CGContextRelease(old_context);
-    }
-        
+static CGContextRef reallocate_buffer(mfInfo *mfi) {
     rdpGdi *gdi = mfi->instance->context->gdi;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef bc;
@@ -42,8 +36,8 @@ static void reallocate_buffer(mfInfo *mfi) {
         bc = CGBitmapContextCreate(gdi->primary_buffer, gdi->width, gdi->height, 8, gdi->stride,
                                    colorSpace, kCGBitmapByteOrder32Big | kCGImageAlphaNoneSkipLast);
     }
-    mfi->bitmap_context = bc;
     CGColorSpaceRelease(colorSpace);
+    return bc;
 }
 
 static BOOL bitmap_update(rdpContext* context, const BITMAP_UPDATE* bitmap) {
@@ -91,10 +85,14 @@ static BOOL post_connect(freerdp *instance) {
         return false;
     }
 
-    reallocate_buffer(mfi);
+    CGContextRef old_context = mfi->bitmap_context;
+    mfi->bitmap_context = reallocate_buffer(mfi);
     fbW = instance->settings->DesktopWidth;
     fbH = instance->settings->DesktopHeight;
     frameBufferResizeCallback(i, fbW, fbH);
+    if (old_context != NULL) {
+        CGContextRelease(old_context);
+    }
     return true;
 }
 
@@ -107,6 +105,7 @@ enum CLIENT_CONNECTION_STATE
 
 static void ios_post_disconnect(freerdp *instance) {
     printf("ios_post_disconnect\n");
+    gdi_free(instance);
     if (instance->ConnectionCallbackState == CLIENT_STATE_INITIAL ||
         instance->ConnectionCallbackState == CLIENT_STATE_PRECONNECT_PASSED) {
         if (authAttempted()) {
@@ -120,7 +119,6 @@ static void ios_post_disconnect(freerdp *instance) {
         clientLogCallback((int8_t*)"Connection to remote server was interrupted\n");
         failCallback(instance->context->argc, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
     }
-    gdi_free(instance);
 }
 
 static BOOL resize_window(rdpContext *context) {
@@ -178,6 +176,9 @@ void *initializeRdp(int i, int width, int height,
     authAttempted = auth_attempted_callback;
     
     freerdp* instance = ios_freerdp_new();
+    if (!instance) {
+        return NULL;
+    }
     instance->context->argc = i;
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);

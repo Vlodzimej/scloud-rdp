@@ -180,6 +180,9 @@ class RdpSession: RemoteSession {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
                 connectRdpInstance(self.cl)
                 // FIXME: Detect that connection has exited here and react accordingly.
+            } else {
+                title = "RDP_CONNECTION_FAILURE_TITLE"
+                failure_callback_str(instance: self.instance, title: title)
             }
         }
     }

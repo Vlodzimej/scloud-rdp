@@ -236,7 +236,6 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
         }
     }
     globalStateKeeper?.keepSessionRefreshed()
-    globalStateKeeper?.reDraw()
 }
 
 func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
@@ -405,6 +404,11 @@ class RemoteSession {
     }
     
     func resolution() -> [Int] {
+        let top = globalWindow?.safeAreaInsets.top
+        let bottom = globalWindow?.safeAreaInsets.top
+        let left = globalWindow?.safeAreaInsets.left
+        let right = globalWindow?.safeAreaInsets.right
+        
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
         var newScreenWidth = screenWidth
