@@ -20,6 +20,14 @@
 import UIKit
 import SwiftUI
 
+@discardableResult
+public func synchronized<T>(_ lock: AnyObject, closure:() -> T) -> T {
+    objc_sync_enter(lock)
+    defer { objc_sync_exit(lock) }
+
+    return closure()
+}
+
 func Background(_ block: @escaping ()->Void) {
     DispatchQueue.global(qos: .userInteractive).async(execute: block)
 }
@@ -66,7 +74,7 @@ func ssh_forward_failure() -> Void {
     globalStateKeeper?.sshForwardingLock.unlock()
 }
 
-func failure_callback_str(instance: Int, title: String?) {
+func failure_callback_str(instance: Int, title: String?, errorPage: String = "dismissableErrorMessage") {
     if (instance != globalStateKeeper!.currInst) {
         log_callback_str(message: "Current inst \(globalStateKeeper!.currInst) discarding failure_callback_str, inst \(instance)")
         return
@@ -80,7 +88,7 @@ func failure_callback_str(instance: Int, title: String?) {
         globalStateKeeper?.scheduleDisconnectTimer(interval: 0, wasDrawing: wasDrawing)
         if title != nil {
             log_callback_str(message: "Connection failure, showing error with title \(title!).")
-            globalStateKeeper?.showError(title: LocalizedStringKey(title!))
+            globalStateKeeper?.showError(title: LocalizedStringKey(title!), errorPage: errorPage)
         } else {
             log_callback_str(message: "Successful exit, no error was reported.")
             globalStateKeeper?.showConnections()
@@ -302,23 +310,6 @@ func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int,
                              intent: .defaultIntent)
      */
 }
-
-func get_domain_callback() -> UnsafeMutablePointer<Int8>? {
-    return globalStateKeeper?.getDomain()
-}
-
-func get_username_callback() -> UnsafeMutablePointer<Int8>? {
-    return globalStateKeeper?.getUsername()
-}
-
-func get_password_callback() -> UnsafeMutablePointer<Int8>? {
-    return globalStateKeeper?.getPassword()
-}
-
-func auth_attempted_callback() -> Int32 {
-    return Int32(globalStateKeeper?.authenticationAttempted() ?? 0)
-}
-
 
 class RemoteSession {
     let stateKeeper: StateKeeper

@@ -21,6 +21,7 @@
 #include "ios_freerdp.h"
 #include "freerdp/freerdp.h"
 #include "freerdp/gdi/gdi.h"
+#include "freerdp/error.h"
 #include "RemoteBridge.h"
 #include "Utility.h"
 
@@ -41,18 +42,18 @@ static CGContextRef reallocate_buffer(mfInfo *mfi) {
 }
 
 static BOOL bitmap_update(rdpContext* context, const BITMAP_UPDATE* bitmap) {
-    printf("bitmap_update, instance %d\n", context->instance->context->argc);
+    //printf("bitmap_update, instance %d\n", context->instance->context->argc);
     return true;
 }
 
 static BOOL begin_paint(rdpContext* context) {
-    printf("begin_paint, instance %d\n", context->instance->context->argc);
+    //printf("begin_paint, instance %d\n", context->instance->context->argc);
     return true;
 }
 
 static BOOL end_paint(rdpContext* context) {
     int i = context->instance->context->argc;
-    printf("end_paint, instance %d\n", i);
+    //printf("end_paint, instance %d\n", i);
 
     mfInfo *mfi = MFI_FROM_INSTANCE(context->instance);
     uint8_t* pixels = CGBitmapContextGetData(mfi->bitmap_context);
@@ -105,19 +106,45 @@ enum CLIENT_CONNECTION_STATE
 
 static void ios_post_disconnect(freerdp *instance) {
     printf("ios_post_disconnect\n");
+
+    int last_error = freerdp_get_last_error(instance->context);
+    int connection_state = instance->ConnectionCallbackState;
+
+    int i = instance->context->argc;
     gdi_free(instance);
-    if (instance->ConnectionCallbackState == CLIENT_STATE_INITIAL ||
-        instance->ConnectionCallbackState == CLIENT_STATE_PRECONNECT_PASSED) {
-        if (authAttempted()) {
+    
+    switch(last_error) {
+        case FREERDP_ERROR_CONNECT_LOGON_FAILURE:
+        case FREERDP_ERROR_AUTHENTICATION_FAILED:
+        case FREERDP_ERROR_CONNECT_WRONG_PASSWORD:
+        case FREERDP_ERROR_CONNECT_NO_OR_MISSING_CREDENTIALS:
             clientLogCallback((int8_t*)"Authentication failed\n");
-            failCallback(instance->context->argc, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
-        } else {
+            failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+            return;
+        case FREERDP_ERROR_CONNECT_CANCELLED:
+            clientLogCallback((int8_t*)"Connection cancelled\n");
+            failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
+            break;
+        case FREERDP_ERROR_NONE:
+            break;
+        default:
+            clientLogCallback((int8_t*)"Unhandled error value after disconnection\n");
+            break;
+    }
+
+    switch (connection_state) {
+        case CLIENT_STATE_INITIAL:
+        case CLIENT_STATE_PRECONNECT_PASSED:
             clientLogCallback((int8_t*)"Could not connect to remote server\n");
-            failCallback(instance->context->argc, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
-        }
-    } else if (instance->ConnectionCallbackState == CLIENT_STATE_POSTCONNECT_PASSED) {
-        clientLogCallback((int8_t*)"Connection to remote server was interrupted\n");
-        failCallback(instance->context->argc, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+            failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+            return;
+        case CLIENT_STATE_POSTCONNECT_PASSED:
+            clientLogCallback((int8_t*)"Connection to remote server was interrupted\n");
+            failCallback(i, (uint8_t*)"CONNECTION_INTERRUPTED_TITLE");
+            return;
+        default:
+            clientLogCallback((int8_t*)"Unhandled connection state after disconnection\n");
+            return;
     }
 }
 
@@ -145,41 +172,35 @@ static DWORD verify_cert(freerdp* instance, const char* host, UINT16 port,
     return 1;
 }
 
-static BOOL authenticate(freerdp* instance, char** username, char** password,
-                         char** domain) {
-    *username = (char *)getUsernameCallback();
-    *password = (char *)getPasswordCallback();
-    *domain = (char *)getDomainCallback();
-    return TRUE;
-}
-
 void *initializeRdp(int i, int width, int height,
                     pFrameBufferUpdateCallback fb_update_callback,
                     pFrameBufferResizeCallback fb_resize_callback,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
                     pYesNoCallback y_n_callback,
-                    pGetDomainCallback get_domain_callback,
-                    pGetUsernameCallback get_username_callback,
-                    pGetPasswordCallback get_password_callback,
-                    pAuthAttempted auth_attempted_callback,
-                    char* addr, char* port, bool enable_sound) {
+                    char *addr,
+                    char *port,
+                    char *domain,   
+                    char *user,
+                    char *pass,
+                    bool enable_sound) {
 
     frameBufferUpdateCallback = fb_update_callback;
     frameBufferResizeCallback = fb_resize_callback;
     failCallback = fail_callback;
     clientLogCallback = cl_log_callback;
     yesNoCallback = y_n_callback;
-    getDomainCallback = get_domain_callback;
-    getUsernameCallback = get_username_callback;
-    getPasswordCallback = get_password_callback;
-    authAttempted = auth_attempted_callback;
     
     freerdp* instance = ios_freerdp_new();
     if (!instance) {
+        clientLogCallback((int8_t*)"Could not initialize new freerdp instance\n");
         return NULL;
     }
+    
     instance->context->argc = i;
+    instance->context->settings->Domain = domain;
+    instance->context->settings->Username = user;
+    instance->context->settings->Password = pass;
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
     instance->context->settings->AudioPlayback = enable_sound;
@@ -198,7 +219,6 @@ void *initializeRdp(int i, int width, int height,
     //instance->context->settings->GatewayPassword
     //instance->GatewayAuthenticate
 
-    instance->Authenticate = authenticate;
     instance->PostDisconnect = ios_post_disconnect;
     instance->PostConnect = post_connect;
     

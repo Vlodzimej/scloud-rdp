@@ -168,12 +168,11 @@ class RdpSession: RemoteSession {
                                         failure_callback_swift,
                                         log_callback,
                                         yes_no_dialog_callback,
-                                        get_domain_callback,
-                                        get_username_callback,
-                                        get_password_callback,
-                                        auth_attempted_callback,
                                         UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (domain as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
+                                        UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
                                         true)
             }
             if self.cl != nil {
@@ -181,14 +180,14 @@ class RdpSession: RemoteSession {
                 connectRdpInstance(self.cl)
                 // FIXME: Detect that connection has exited here and react accordingly.
             } else {
-                title = "RDP_CONNECTION_FAILURE_TITLE"
-                failure_callback_str(instance: self.instance, title: title)
+                title = "APP_MUST_EXIT_TITLE"
+                failure_callback_str(instance: self.instance, title: title, errorPage: "mustExitErrorMessage")
             }
         }
     }
         
     override func disconnect() {
-        Background {
+        synchronized(self) {
             disconnectRdp(self.cl)
         }
     }

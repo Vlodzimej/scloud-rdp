@@ -149,6 +149,8 @@ struct ContentView : View {
                 ConnectedSessionPage()
             } else if stateKeeper.currentPage == "dismissableErrorMessage" {
                 DismissableLogDialog(stateKeeper: stateKeeper)
+            } else if stateKeeper.currentPage == "mustExitErrorMessage" {
+                DismissableLogDialog(stateKeeper: stateKeeper, dismissAction: "exit")
             } else if stateKeeper.currentPage == "dismissableMessage" {
                 DismissableMessageDialog(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "helpDialog" {
@@ -628,7 +630,8 @@ struct BlankPage : View {
 
 struct DismissableLogDialog : View {
     @ObservedObject var stateKeeper: StateKeeper
-    
+    var dismissAction: String = "default"
+
     func getTitle() -> LocalizedStringKey {
         return stateKeeper.localizedTitle ?? ""
     }
@@ -651,7 +654,12 @@ struct DismissableLogDialog : View {
                 }
             }
             Button(action: {
-                self.stateKeeper.showConnections()
+                if self.dismissAction == "exit" {
+                    self.stateKeeper.exitNow()
+                } else {
+                    self.stateKeeper.showConnections()
+
+                }
             }) {
                 HStack(spacing: 10) {
                     Image(systemName: "arrowshape.turn.up.left")

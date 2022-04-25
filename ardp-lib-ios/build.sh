@@ -10,6 +10,7 @@ then
     git checkout stable-2.0
 
     patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
+    patch -p1 < ../disable_freerdp_context_free.patch
 
     # iOS Build
     cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
@@ -37,6 +38,7 @@ then
   git checkout stable-2.0
 
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
+  patch -p1 < ../disable_freerdp_context_free.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
   cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \

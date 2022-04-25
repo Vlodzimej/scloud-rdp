@@ -89,7 +89,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var currInst: Int = -1
     
     var cl: [UnsafeMutableRawPointer?]
-    var clAuthAttempted: Int = 0
     var maxClCapacity = 1000
     
     var isDrawing: Bool = false;
@@ -333,7 +332,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         //globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
         globalWindow!.makeKeyAndVisible()
         self.currInst = (currInst + 1) % maxClCapacity
-        self.clAuthAttempted = 0
         self.isDrawing = true;
         self.toggleModifiersIfDown()
         if self.isSpice() {
@@ -543,10 +541,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
-    func showError(title: LocalizedStringKey) {
+    func showError(title: LocalizedStringKey, errorPage: String) {
         self.localizedTitle = title
         UserInterface {
-            self.currentPage = "dismissableErrorMessage"
+            self.currentPage = errorPage
         }
     }
 
@@ -910,25 +908,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             return false
         }
     }
-    
-    func getDomain() -> UnsafeMutablePointer<Int8>? {
-        self.clAuthAttempted = 1
-        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["domain"]! as NSString).utf8String)
-    }
-    
-    func getUsername() -> UnsafeMutablePointer<Int8>? {
-        self.clAuthAttempted = 1
-        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["username"]! as NSString).utf8String)
-    }
-    
-    func getPassword() -> UnsafeMutablePointer<Int8>? {
-        self.clAuthAttempted = 1
-        return UnsafeMutablePointer<Int8>(mutating: (self.selectedConnection["password"]! as NSString).utf8String)
-    }
-    
-    func authenticationAttempted() -> Int {
-        return self.clAuthAttempted
-    }
 
     func getCurrentInstance() -> UnsafeMutableRawPointer? {
         if (self.currInst >= 0 && self.cl.endIndex > self.currInst) {
@@ -951,6 +930,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if syncRemoteToLocalResolution {
             self.remoteSession?.syncRemoteToLocalResolution()
         }
+    }
+    
+    func exitNow() {
+        exit(0)
     }
     
 	/*

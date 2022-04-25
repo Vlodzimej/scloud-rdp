@@ -47,6 +47,7 @@
 "VNC_CONNECTION_FAILURE_TITLE" = "VNCサーバーへの接続に失敗しました";
 "SPICE_CONNECTION_FAILURE_TITLE" = "SPICEサーバーへの接続に失敗しました";
 "RDP_CONNECTION_FAILURE_TITLE" = "RDPサーバーへの接続に失敗しました";
+"CONNECTION_INTERRUPTED_TITLE" = "接続が中断されました";
 "VNC_AUTHENTICATION_FAILED_TITLE" = "VNC認証に失敗しました！VNCパスワードとユーザー名が適切か確認してください。";
 "RDP_AUTHENTICATION_FAILED_TITLE" = "RDP認証に失敗しました！RDPユーザー名とパスワードを確認後、再試行してください。";
 "SPICE_AUTHENTICATION_FAILED_TITLE" = "SPICE認証に失敗しました！SPICEパスワードとユーザー名が適切か確認してください。";

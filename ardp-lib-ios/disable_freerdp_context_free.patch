@@ -1,0 +1,13 @@
+diff --git a/libfreerdp/core/freerdp.c b/libfreerdp/core/freerdp.c
+index 7d9eba428..9d1213c5b 100644
+--- a/libfreerdp/core/freerdp.c
++++ b/libfreerdp/core/freerdp.c
+@@ -730,7 +730,7 @@ BOOL freerdp_context_new(freerdp* instance)
+ 		return TRUE;
+ 
+ fail:
+-	freerdp_context_free(instance);
++	//freerdp_context_free(instance);
+ 	return FALSE;
+ }
+ 
