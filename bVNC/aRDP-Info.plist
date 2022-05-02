@@ -7,20 +7,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>aRDP Pro</string>
 	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>vv</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.vv</string>
-			</array>
-		</dict>
-	</array>
+	<array></array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -83,58 +70,8 @@
 	<key>UISupportsDocumentBrowser</key>
 	<false/>
 	<key>UTExportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.data</string>
-				<string>public.archive</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>vv</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeIdentifier</key>
-			<string>com.vv</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>vv</string>
-				</array>
-				<key>public.mime-type</key>
-				<array>
-					<string>application/x-virt-viewer</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
+	<array></array>
 	<key>UTImportedTypeDeclarations</key>
-	<array>
-		<dict>
-			<key>UTTypeConformsTo</key>
-			<array>
-				<string>public.data</string>
-				<string>public.archive</string>
-			</array>
-			<key>UTTypeDescription</key>
-			<string>vv</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
-			<key>UTTypeIdentifier</key>
-			<string>com.vv</string>
-			<key>UTTypeTagSpecification</key>
-			<dict>
-				<key>public.filename-extension</key>
-				<array>
-					<string>vv</string>
-				</array>
-				<key>public.mime-type</key>
-				<array>
-					<string>application/x-virt-viewer</string>
-				</array>
-			</dict>
-		</dict>
-	</array>
+	<array></array>
 </dict>
 </plist>

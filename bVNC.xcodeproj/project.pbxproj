@@ -12,6 +12,9 @@
 		165D67CF26ADD24400E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
 		165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE02552260E51C4005E851E /* libz.tbd */; };
+		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
+		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
+		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
 		AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
 		AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
 		AF043A1D23B3DADA00C43ED7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
@@ -320,6 +323,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
+		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
+		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
 		690C707F2693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		690C70802693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		690C708526937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -332,7 +338,7 @@
 		AF043A1C23B3DADA00C43ED7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AF043A2623B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "bVNC-Info.plist"; sourceTree = "<group>"; };
 		AF043A2B23B3DADB00C43ED7 /* bVNCTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bVNCTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF043A2F23B3DADB00C43ED7 /* bVNCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bVNCTests.swift; sourceTree = "<group>"; };
 		AF043A3123B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1040,7 +1046,6 @@
 		AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSession.swift; sourceTree = "<group>"; };
 		AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpiceSession.swift; sourceTree = "<group>"; };
 		AFB2C8F326001F4D00E2859F /* aSPICE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aSPICE.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFB2C8F926001F5800E2859F /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "/Users/iiordanov/software/remote-desktop-clients/ios/bVNC/aSPICE-Info.plist"; sourceTree = "<absolute>"; };
 		AFB2C90626001FF900E2859F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		AFB2C91E2600210B00E2859F /* spicelib_no_jpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib_no_jpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/spicelib_no_jpeg.a"; sourceTree = "<group>"; };
 		AFB2C9252600217F00E2859F /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
@@ -1049,7 +1054,6 @@
 		AFB2CA6626002B8700E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libjpeg.a"; sourceTree = "<group>"; };
 		AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.2.dylib"; sourceTree = "<group>"; };
 		AFB391D1274F564A0059F91F /* aRDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aRDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFB391D3274F56510059F91F /* aSPICE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE copy-Info.plist"; path = "/Users/iiordanov/software/remote-desktop-clients-butterflyit-secret/ios/bVNC/aSPICE copy-Info.plist"; sourceTree = "<absolute>"; };
 		AFB391D7274F585C0059F91F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		AFB391D9274F586D0059F91F /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined/lib/duperlib.a; sourceTree = "<group>"; };
 		AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSessionDummy.swift; sourceTree = "<group>"; };
@@ -1286,7 +1290,6 @@
 				AF043A1623B3DADA00C43ED7 /* Products */,
 				AF48247C23B4783500826395 /* Frameworks */,
 				AFFFA867260E53590029384B /* Recovered References */,
-				AFB391D3274F56510059F91F /* aSPICE copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1318,8 +1321,10 @@
 				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
 				AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */,
 				AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */,
-				AF043A2623B3DADB00C43ED7 /* Info.plist */,
-				AFB2C8F926001F5800E2859F /* aSPICE-Info.plist */,
+				AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */,
+				16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */,
+				16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */,
+				16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */,
 				AF53DCB024022C8C00569F19 /* VncSession.swift */,
 				AF05184926115F3B00B64D95 /* VncSessionDummy.swift */,
 				AF48283023B47EC300826395 /* VncBridge.h */,
@@ -2270,10 +2275,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */,
 				AF043A2523B3DADB00C43ED7 /* LaunchScreen.storyboard in Resources */,
 				AFF808412487533C00A6B35E /* Localizable.strings in Resources */,
 				AF043A2223B3DADB00C43ED7 /* Preview Assets.xcassets in Resources */,
 				AF043A1F23B3DADB00C43ED7 /* Assets.xcassets in Resources */,
+				16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */,
+				16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2720,7 +2728,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2741,7 +2749,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = bVNC/Info.plist;
+				INFOPLIST_FILE = bVNC/bVNC-Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -2753,7 +2761,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
 				PRELINK_LIBS = "";
@@ -2781,7 +2789,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2799,7 +2807,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = bVNC/Info.plist;
+				INFOPLIST_FILE = bVNC/bVNC-Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -2815,7 +2823,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
@@ -2935,7 +2943,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2952,7 +2960,7 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
-				INFOPLIST_FILE = "Simple Remote-Info.plist";
+				INFOPLIST_FILE = "bVNC/Simple Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -2964,7 +2972,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.SimpleRemoteTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
@@ -2986,7 +2994,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3000,7 +3008,7 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
-				INFOPLIST_FILE = "Simple Remote-Info.plist";
+				INFOPLIST_FILE = "bVNC/Simple Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -3016,7 +3024,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				ONLY_ACTIVE_ARCH = YES;
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.SimpleRemoteTest;
@@ -3040,7 +3048,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3062,7 +3070,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/aSPICE-Info.plist";
+				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -3074,7 +3082,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
@@ -3101,7 +3109,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3120,7 +3128,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/aSPICE-Info.plist";
+				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -3136,7 +3144,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
@@ -3164,7 +3172,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3186,7 +3194,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = "aSPICE copy-Info.plist";
+				INFOPLIST_FILE = "bVNC/aRDP-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -3198,7 +3206,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
@@ -3225,7 +3233,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3244,7 +3252,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = "aSPICE copy-Info.plist";
+				INFOPLIST_FILE = "bVNC/aRDP-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -3260,7 +3268,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.0.11;
+				MARKETING_VERSION = 1.0.12;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
