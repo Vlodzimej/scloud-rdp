@@ -47,6 +47,36 @@ extension UIImage {
     }
 }
 
+extension UIImage {
+
+    static func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int, withHeight: Int) -> CGImage? {
+        guard withWidth > 0 && withHeight > 0 else { return nil }
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Big)
+        let bitsPerComponent = 8
+
+        guard let context: CGContext = CGContext(data: pixels, width: withWidth, height: withHeight, bitsPerComponent: bitsPerComponent, bytesPerRow: 4*withWidth, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
+            log_callback_str(message: "Could not create CGContext")
+            return nil
+        }
+        return context.makeImage()
+        /*
+        let bitsPerPixel = 32
+        return CGImage(width: withWidth,
+                                 height: withHeight,
+                                 bitsPerComponent: bitsPerComponent,
+                                 bitsPerPixel: bitsPerPixel,
+                                 bytesPerRow: 4*withWidth,
+                                 space: colorSpace,
+                                 bitmapInfo: bitmapInfo,
+                                 provider: CGDataProvider(data: NSData(bytes: pixels, length: withWidth*withHeight*4))!,
+                                 decode: nil,
+                                 shouldInterpolate: true,
+                                 intent: .defaultIntent)
+         */
+    }
+}
+
 class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     var fingers = [UITouch?](repeating: nil, count:5)
     var width: CGFloat = 0.0

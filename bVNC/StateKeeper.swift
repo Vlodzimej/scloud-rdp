@@ -162,7 +162,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
 
     @objc func reDraw() {
         UserInterface {
-            draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
+            self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
         }
     }
     
@@ -934,6 +934,50 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func exitNow() {
         exit(0)
+    }
+    
+    func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
+        UserInterface {
+            autoreleasepool {
+                self.fbW = fbW
+                self.fbH = fbH
+                self.data = data
+                if self.isDrawing {
+                    self.imageView?.image =
+                        UIImage(cgImage: UIImage.imageFromARGB32Bitmap(
+                            pixels: data, withWidth: Int(fbW), withHeight: Int(fbH))!)
+                }
+            }
+        }
+    }
+
+    func remoteResized(fbW: Int32, fbH: Int32) {
+        self.fbW = fbW
+        self.fbH = fbH
+        self.imageView?.removeFromSuperview()
+        self.imageView?.image = nil
+        self.imageView = nil
+        let minScale = getMinimumScale(fbW: CGFloat(fbW), fbH: CGFloat(fbH))
+        self.correctTopSpacingForOrientation()
+        let leftSpacing = self.leftSpacing
+        let topSpacing = self.topSpacing
+        if self.macOs == true {
+            log_callback_str(message: "Running on MacOS")
+            self.imageView = ShortTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+        } else {
+            log_callback_str(message: "Running on iOS")
+            self.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+        }
+        //self.imageView?.backgroundColor = UIColor.gray
+        self.imageView?.enableGestures()
+        self.imageView?.enableTouch()
+        globalWindow!.addSubview(self.imageView!)
+        self.createAndRepositionButtons()
+        if !(self.macOs) {
+            self.addButtons(buttons: self.interfaceButtons)
+        }
+        self.showConnectedSession()
+        self.keepSessionRefreshed()
     }
     
 	/*

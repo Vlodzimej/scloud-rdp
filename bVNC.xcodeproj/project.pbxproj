@@ -2749,7 +2749,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = bVNC/bVNC-Info.plist;
+				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
@@ -2807,7 +2807,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
-				INFOPLIST_FILE = bVNC/bVNC-Info.plist;
+				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",

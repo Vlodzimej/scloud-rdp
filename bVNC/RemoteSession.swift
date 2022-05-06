@@ -216,46 +216,7 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
 
     UserInterface {
         autoreleasepool {
-            globalStateKeeper?.fbW = fbW
-            globalStateKeeper?.fbH = fbH
-            globalStateKeeper?.imageView?.removeFromSuperview()
-            globalStateKeeper?.imageView?.image = nil
-            globalStateKeeper?.imageView = nil
-            let minScale = getMinimumScale(fbW: CGFloat(fbW), fbH: CGFloat(fbH))
-            globalStateKeeper?.correctTopSpacingForOrientation()
-            let leftSpacing = globalStateKeeper?.leftSpacing ?? 0
-            let topSpacing = globalStateKeeper?.topSpacing ?? 0
-            if globalStateKeeper?.macOs == true {
-                log_callback_str(message: "Running on MacOS")
-                globalStateKeeper?.imageView = ShortTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: globalStateKeeper)
-            } else {
-                log_callback_str(message: "Running on iOS")
-                globalStateKeeper?.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: globalStateKeeper)
-            }
-            //globalStateKeeper?.imageView?.backgroundColor = UIColor.gray
-            globalStateKeeper?.imageView?.enableGestures()
-            globalStateKeeper?.imageView?.enableTouch()
-            globalWindow!.addSubview(globalStateKeeper!.imageView!)
-            globalStateKeeper?.createAndRepositionButtons()
-            if !(globalStateKeeper?.macOs ?? false) {
-                globalStateKeeper?.addButtons(buttons: globalStateKeeper?.interfaceButtons ?? [:])
-            }
-            globalStateKeeper?.showConnectedSession()
-        }
-    }
-    globalStateKeeper?.keepSessionRefreshed()
-}
-
-func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
-    UserInterface {
-        autoreleasepool {
-            if (globalStateKeeper?.isDrawing ?? false) {
-                globalStateKeeper?.imageView?.image =
-                                UIImage(cgImage: imageFromARGB32Bitmap(pixels: data,
-                                                                       withWidth: Int(fbW),
-                                                                       withHeight: Int(fbH))!)
-                lastUpdate = CACurrentMediaTime()
-            }
+            globalStateKeeper?.remoteResized(fbW: fbW, fbH: fbH)
         }
     }
 }
@@ -270,45 +231,16 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
         return false
     }
     
-    globalStateKeeper?.fbW = fbW
-    globalStateKeeper?.fbH = fbH
-    globalStateKeeper?.data = data
     let timeNow = CACurrentMediaTime()
     if (timeNow - lastUpdate < 0.032) {
         //print("Last frame drawn less than 50ms ago, discarding frame, scheduling redraw")
-        globalStateKeeper!.rescheduleReDrawTimer(data: data, fbW: fbW, fbH: fbH)
+        globalStateKeeper?.rescheduleReDrawTimer(data: data, fbW: fbW, fbH: fbH)
     } else {
         //print("Drawing a frame normally.")
-        draw(data: data, fbW: fbW, fbH: fbH)
+        globalStateKeeper?.draw(data: data, fbW: fbW, fbH: fbH)
+        lastUpdate = CACurrentMediaTime()
     }
     return true
-}
-
-func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int, withHeight: Int) -> CGImage? {
-    guard withWidth > 0 && withHeight > 0 else { return nil }
-    let colorSpace = CGColorSpaceCreateDeviceRGB()
-    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Big)
-    let bitsPerComponent = 8
-
-    guard let context: CGContext = CGContext(data: pixels, width: withWidth, height: withHeight, bitsPerComponent: bitsPerComponent, bytesPerRow: 4*withWidth, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
-        log_callback_str(message: "Could not create CGContext")
-        return nil
-    }
-    return context.makeImage()
-    /*
-    let bitsPerPixel = 32
-    return CGImage(width: withWidth,
-                             height: withHeight,
-                             bitsPerComponent: bitsPerComponent,
-                             bitsPerPixel: bitsPerPixel,
-                             bytesPerRow: 4*withWidth,
-                             space: colorSpace,
-                             bitmapInfo: bitmapInfo,
-                             provider: CGDataProvider(data: NSData(bytes: pixels, length: withWidth*withHeight*4))!,
-                             decode: nil,
-                             shouldInterpolate: true,
-                             intent: .defaultIntent)
-     */
 }
 
 class RemoteSession {

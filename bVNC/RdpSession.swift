@@ -250,7 +250,7 @@ class RdpSession: RemoteSession {
             }
         }
 
-        print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId)
+        //print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId)
         
         // FIXME: Send modifier keys when appropriate.
         cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))

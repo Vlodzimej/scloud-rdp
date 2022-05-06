@@ -224,7 +224,7 @@ class SpiceSession: RemoteSession {
             buttonId = SpiceSession.SPICE_MOUSE_BUTTON_DOWN
         }
 
-        print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", buttonState, "isDown:", isDown)
+        //print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId, "buttonState:", buttonState, "isDown:", isDown)
 
         // FIXME: Send modifier keys when appropriate.
         sendPointerEvent(Int32(remoteX), Int32(remoteY),
