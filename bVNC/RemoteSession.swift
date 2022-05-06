@@ -214,11 +214,7 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
         return
     }
 
-    UserInterface {
-        autoreleasepool {
-            globalStateKeeper?.remoteResized(fbW: fbW, fbH: fbH)
-        }
-    }
+    globalStateKeeper?.remoteResized(fbW: fbW, fbH: fbH)
 }
 
 func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) -> Bool {
