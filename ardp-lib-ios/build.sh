@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+FREERDP_VERSION=0a6b999c5655d07b5653894b24a840c08838e304
+
 brew install coreutils
 
 if [ ! -f FreeRDP_iphoneos/libfreerdp/libfreerdp2.a ]
@@ -7,7 +9,7 @@ then
   if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
   then
     pushd FreeRDP_iphoneos
-    git checkout stable-2.0
+    git checkout ${FREERDP_VERSION}
 
     patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
     patch -p1 < ../disable_freerdp_context_free.patch
@@ -35,7 +37,7 @@ if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_maccatalyst
 then
 # Mac Catalyst build
   pushd FreeRDP_maccatalyst
-  git checkout stable-2.0
+  git checkout ${FREERDP_VERSION}
 
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch

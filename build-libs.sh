@@ -30,9 +30,14 @@ function usage() {
 }
 
 function check_dependencies() {
+  if ! which brew
+  then
+    echo "You need to install brew from https://brew.sh"
+    exit 1
+  fi
   if ! which cmake
   then
-    echo "You must have cmake installed, use 'brew install nasm'"
+    echo "You must have cmake installed, use 'brew install cmake'"
     exit 1
   fi
   if [ -f /usr/local/bin/nasm ]
