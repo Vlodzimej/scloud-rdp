@@ -12,6 +12,10 @@
 		165D67CF26ADD24400E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
 		165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE02552260E51C4005E851E /* libz.tbd */; };
+		167176C62838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		167176C72838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		167176C82838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		167176C92838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
 		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
 		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
 		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
@@ -326,6 +330,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
@@ -1314,11 +1319,12 @@
 			children = (
 				AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */,
 				AF94A6B3251663C000AA2A25 /* bVNC Pro.entitlements */,
+				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
 				AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */,
 				AF99997C243593C70018204F /* LongTapDragUIImageView.swift */,
+				167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */,
 				AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */,
 				AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */,
-				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
 				AFF244E12407985E00F5839B /* CustomTextInput.swift */,
 				AF043A1C23B3DADA00C43ED7 /* ContentView.swift */,
 				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
@@ -2427,6 +2433,7 @@
 				AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */,
 				AF9E8F99242AE4E900752FC2 /* SystemMonitor.m in Sources */,
 				AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */,
+				167176C62838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
 				AFB2C8C125FFCEC000E2859F /* RemoteSession.swift in Sources */,
 				AF99997D243593C70018204F /* LongTapDragUIImageView.swift in Sources */,
 				AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */,
@@ -2479,6 +2486,7 @@
 				AF30D19D253396EF00BA7A62 /* SystemMonitor.m in Sources */,
 				AF8C9CD3255B2F07001563A0 /* PhysicalKeyboardHandler.swift in Sources */,
 				AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */,
+				167176C72838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
 				AF30D19E253396EF00BA7A62 /* LongTapDragUIImageView.swift in Sources */,
 				AF30D19F253396EF00BA7A62 /* AppDelegate.swift in Sources */,
 				AF30D1A0253396EF00BA7A62 /* SceneDelegate.swift in Sources */,
@@ -2513,6 +2521,7 @@
 				AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */,
 				AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */,
 				AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */,
+				167176C82838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
 				AFB2C8D826001F4D00E2859F /* PhysicalKeyboardHandler.swift in Sources */,
 				AFB2C8D926001F4D00E2859F /* RemoteSession.swift in Sources */,
 				AFB2C8DA26001F4D00E2859F /* LongTapDragUIImageView.swift in Sources */,
@@ -2547,6 +2556,7 @@
 				AFB39117274F564A0059F91F /* Utils.swift in Sources */,
 				AFB39118274F564A0059F91F /* RemoteBridge.c in Sources */,
 				AFB39119274F564A0059F91F /* StoreReviewHelper.swift in Sources */,
+				167176C92838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
 				AFB3911A274F564A0059F91F /* SystemMonitor.m in Sources */,
 				AFB3911B274F564A0059F91F /* PhysicalKeyboardHandler.swift in Sources */,
 				AFB3911C274F564A0059F91F /* RemoteSession.swift in Sources */,

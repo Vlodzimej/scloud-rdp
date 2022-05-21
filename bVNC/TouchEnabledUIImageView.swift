@@ -200,7 +200,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         return true
     }
     
-    func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false) {
+    func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false, gestureBegan: Bool=false) {
         //log_callback_str(message: #function)
         self.width = touchView.frame.width
         self.height = touchView.frame.height
@@ -318,7 +318,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                         self.firstDown = true
                         // Record location only for first index
                         if let touchView = touch.view {
-                            self.setViewParameters(point: touch.location(in: touchView), touchView: touchView)
+                            self.setViewParameters(point: touch.location(in: touchView), touchView: touchView, gestureBegan: true)
                         }
                     }
                     if index == 1 && !self.thirdDown {
@@ -483,7 +483,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 let timeNow = CACurrentMediaTime()
                 if timeNow - tapLast > doubleTapTimeThreshold {
                     log_callback_str(message: "Single tap detected.")
-                    self.setViewParameters(point: sender.location(in: touchView), touchView: touchView, setDoubleTapCoordinates: true)
+                    self.setViewParameters(point: sender.location(in: touchView), touchView: touchView, setDoubleTapCoordinates: true, gestureBegan: true)
                 } else if self.pendingDoubleTap {
                     log_callback_str(message: "Potential double tap detected.")
                     self.pendingDoubleTap = false
@@ -506,7 +506,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         }
     }
 
-    func panView(sender: UIPanGestureRecognizer) -> Void {
+    func panView(sender: UIPanGestureRecognizer, newCX: CGFloat = -1.0, newCY: CGFloat = -1.0) -> Void {
         log_callback_str(message: #function)
         var tempVerticalOnlyPan = false
         if !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
@@ -526,6 +526,10 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             self.inPanning = true
             var newCenterX = view.center.x + scaleX*translation.x
             var newCenterY = view.center.y + scaleY*translation.y
+            if (newCX >= 0 && newCY >= 0) {
+                newCenterX = newCX
+                newCenterY = newCY
+            }
             let scaledWidth = sender.view!.frame.width/scaleX
             let scaledHeight = sender.view!.frame.height/scaleY
             
@@ -590,5 +594,41 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
 
     @objc private func handleSecondaryClick(_ sender: UITapGestureRecognizer) {
         log_callback_str(message: #function)
+    }
+    
+    func scroll(translation: CGPoint, viewTransform: CGAffineTransform, scaleX: CGFloat, scaleY: CGFloat, gesturePoint: CGPoint, restorePointerPosition: Bool) -> Bool {
+        var consumed = false
+        if (!self.inPanDragging && !self.inPanning && self.thirdDown &&
+            (self.inScrolling || abs(scaleY*translation.y)/abs(scaleX*translation.x) > 1.2 )) {
+            consumed = true
+
+            // If tolerance for scrolling was just exceeded, begin scroll event
+            if (!self.inScrolling) {
+                self.inScrolling = true
+                self.viewTransform = viewTransform
+                self.newX = gesturePoint.x*viewTransform.a
+                self.newY = gesturePoint.y*viewTransform.d
+            }
+            
+            let oX = lastX
+            let oY = lastY
+            
+            if translation.y > 20 {
+                //print("\(#function), scroll up")
+                sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: true, fifthDown: false)
+            } else if translation.y < -20 {
+                //print("\(#function), scroll down")
+                sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: true)
+            }
+            
+            if restorePointerPosition {
+                // keep pointer where it was when the scroll event started
+                lastX = oX
+                lastY = oY
+                newX = oX
+                newY = oY
+            }
+        }
+        return consumed
     }
 }
