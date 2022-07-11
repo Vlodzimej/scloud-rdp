@@ -922,7 +922,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func resizeWindow() {
-        if currInst >= 0 && isDrawing {
+        if currInst >= 0 && isDrawing && self.imageView?.image != nil {
             resize_callback(instance: Int32(currInst), fbW: fbW, fbH: fbH)
         }
         // FIXME: Make a config option
