@@ -41,13 +41,13 @@ void setMaintainConnection(void *c, int state) {
 }
 
 static rfbCredential* get_credential(rfbClient *cl, int credentialType){
-    rfbClientLog("VeNCrypt authentication callback called\n\n");
-    rfbCredential *c = malloc(sizeof(rfbCredential));
+    rfbClientLog("User and password or x509 certificate authentication callback called\n\n");
+    rfbCredential *c = calloc(1, sizeof(rfbCredential));
     
     if(credentialType == rfbCredentialTypeUser) {
         rfbClientLog("Username and password requested for authentication, initializing now\n");
-        c->userCredential.username = malloc(RFB_BUF_SIZE);
-        c->userCredential.password = malloc(RFB_BUF_SIZE);
+        c->userCredential.username = calloc(1, RFB_BUF_SIZE);
+        c->userCredential.password = calloc(1, RFB_BUF_SIZE);
         strcpy(c->userCredential.username, USERNAME);
         strcpy(c->userCredential.password, PASSWORD);
         /* remove trailing newlines */
@@ -72,7 +72,6 @@ static char* get_password(rfbClient *cl){
     rfbClientLog("Password requested for authentication\n");
     strcpy(p, PASSWORD);
     
-    /* remove trailing newlines */
     return p;
 }
 
