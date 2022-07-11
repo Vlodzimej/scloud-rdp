@@ -1,3 +1,5 @@
+1.0.13
+  - Fix for crash on resizing window on Mac OS X while connecting
 1.0.12
   - Bugfix to remove unnecessary handling of .vv files
 1.0.11
