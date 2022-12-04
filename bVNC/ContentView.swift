@@ -113,34 +113,37 @@ struct MultilineTextView: UIViewRepresentable {
 
 struct ContentView : View {
     @ObservedObject var stateKeeper: StateKeeper
+    @State var searchConnectionText: String
+    @State var filteredConnections: [Dictionary<String, String>]
 
     var body: some View {
+        let selectedConnection = stateKeeper.connections.selectedConnection
         VStack {
             if stateKeeper.currentPage == "connectionsList" {
-                ConnectionsList(stateKeeper: stateKeeper)
+                ConnectionsList(stateKeeper: stateKeeper, searchConnectionText: searchConnectionText, connections: filteredConnections)
             } else if stateKeeper.currentPage == "addOrEditConnection" {
                 AddOrEditConnectionPage(
                      stateKeeper: stateKeeper,
-                     sshAddressText: stateKeeper.selectedConnection["sshAddress"] ?? "",
-                     sshPortText: stateKeeper.selectedConnection["sshPort"] ?? "22",
-                     sshUserText: stateKeeper.selectedConnection["sshUser"] ?? "",
-                     sshPassText: stateKeeper.selectedConnection["sshPass"] ?? "",
-                     sshPassphraseText: stateKeeper.selectedConnection["sshPassphrase"] ?? "",
-                     sshPrivateKeyText: stateKeeper.selectedConnection["sshPrivateKey"] ?? "",
-                     addressText: stateKeeper.selectedConnection["address"] ?? "",
-                     portText: stateKeeper.selectedConnection["port"] ?? self.stateKeeper.getDefaultPort(),
-                     tlsPortText: stateKeeper.selectedConnection["tlsPort"] ?? "-1",
-                     certSubjectText: stateKeeper.selectedConnection["certSubject"] ?? "",
-                     certAuthorityText: stateKeeper.selectedConnection["certAuthority"] ?? "",
-                     keyboardLayoutText: stateKeeper.selectedConnection["keyboardLayout"] ??
+                     sshAddressText: selectedConnection["sshAddress"] ?? "",
+                     sshPortText: selectedConnection["sshPort"] ?? "22",
+                     sshUserText: selectedConnection["sshUser"] ?? "",
+                     sshPassText: selectedConnection["sshPass"] ?? "",
+                     sshPassphraseText: selectedConnection["sshPassphrase"] ?? "",
+                     sshPrivateKeyText: selectedConnection["sshPrivateKey"] ?? "",
+                     addressText: selectedConnection["address"] ?? "",
+                     portText: selectedConnection["port"] ?? Utils.getDefaultPort(),
+                     tlsPortText: selectedConnection["tlsPort"] ?? "-1",
+                     certSubjectText: selectedConnection["certSubject"] ?? "",
+                     certAuthorityText: selectedConnection["certAuthority"] ?? "",
+                     keyboardLayoutText: selectedConnection["keyboardLayout"] ??
                                         Constants.DEFAULT_LAYOUT,
-                     domainText: stateKeeper.selectedConnection["domain"] ?? "",
-                     usernameText: stateKeeper.selectedConnection["username"] ?? "",
-                     passwordText: stateKeeper.selectedConnection["password"] ?? "",
-                     screenShotFile: stateKeeper.selectedConnection["screenShotFile"] ?? UUID().uuidString,
-                     allowZooming: Bool(stateKeeper.selectedConnection["allowZooming"] ?? "true") ?? true,
-                     allowPanning: Bool(stateKeeper.selectedConnection["allowPanning"] ?? "true") ?? true,
-                     showSshTunnelSettings: Bool(stateKeeper.selectedConnection["showSshTunnelSettings"] ?? "false")! || (stateKeeper.selectedConnection["sshAddress"] ?? "") != "")
+                     domainText: selectedConnection["domain"] ?? "",
+                     usernameText: selectedConnection["username"] ?? "",
+                     passwordText: selectedConnection["password"] ?? "",
+                     screenShotFile: selectedConnection["screenShotFile"] ?? UUID().uuidString,
+                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
+                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
+                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "")
             } else if stateKeeper.currentPage == "genericProgressPage" {
                 ProgressPage(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "connectionInProgress" {
@@ -166,42 +169,24 @@ struct ContentView : View {
 
 struct ConnectionsList : View {
     @ObservedObject var stateKeeper: StateKeeper
+    @State var searchConnectionText: String
+    @State var connections: [Dictionary<String, String>]
 
     func connect(index: Int) {
         if self.stateKeeper.currentPage != "connectionInProgress" {
             self.stateKeeper.currentPage = "connectionInProgress"
-            self.stateKeeper.connect(index: index)
+            let connection = self.elementAt(index: index)
+            self.stateKeeper.connectSaved(connection: connection)
         }
     }
 
     func edit(index: Int) {
-        self.stateKeeper.editConnection(index: index)
+        let connection = self.elementAt(index: index)
+        self.stateKeeper.editConnection(connection: connection)
     }
     
     func elementAt(index: Int) -> [String: String] {
-        return self.stateKeeper.connections[index]
-    }
-    
-    func buildTitle(i: Int) -> String {
-        let defaultPort = self.stateKeeper.getDefaultPort()
-        let connection = self.elementAt(index: i)
-        var title = ""
-        if connection["sshAddress"] != "" {
-            let user = "\(connection["sshUser"] ?? "")"
-            title = "SSH\t\(user)@\(connection["sshAddress"] ?? ""):\(connection["sshPort"] ?? "22")\n"
-        }
-        if self.stateKeeper.isSpice() {
-            var port = connection["tlsPort"]
-            if port == nil || port == "-1" {
-                port = connection["port"]
-            }
-            title += "SPICE\t\(connection["address"] ?? ""):\(port ?? defaultPort)"
-        } else if self.stateKeeper.isRdp() {
-            title += "RDP\t\(connection["address"] ?? ""):\(connection["port"] ?? defaultPort)"
-        } else {
-            title += "VNC\t\(connection["address"] ?? ""):\(connection["port"] ?? defaultPort)"
-        }
-        return title
+        return self.connections[index]
     }
     
     func getSavedImage(named: String) -> UIImage? {
@@ -210,11 +195,31 @@ struct ConnectionsList : View {
         }
         return nil
     }
-
+    
     var body: some View {
+        let binding = Binding<String>(get: {
+            self.searchConnectionText
+        }, set: {
+            self.searchConnectionText = $0
+            self.stateKeeper.connections.setSearchConnectionText(searchConnectionText: searchConnectionText)
+        })
+        
         ScrollView {
             VStack {
                 HStack() {
+                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding).autocapitalization(.none).font(.title).padding(50)
+
+                    Button(action: {
+                        self.stateKeeper.showConnections()
+                    }) {
+                        VStack(spacing: 10) {
+                            Image(systemName: "magnifyingglass")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 32, height: 32)
+                        }.padding()
+                    }
+                    
                     Button(action: {
                         self.stateKeeper.addNewConnection()
                     }) {
@@ -226,6 +231,7 @@ struct ConnectionsList : View {
                             Text("NEW_LABEL")
                         }.padding()
                     }
+                    
                     Button(action: {
                         self.stateKeeper.showHelp(messages: [ LocalizedStringKey(self.stateKeeper.localizedString(for: "MAIN_HELP_TEXT")) ])
                     }) {
@@ -252,16 +258,16 @@ struct ConnectionsList : View {
                     }
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
                 
-                ForEach(0 ..< stateKeeper.connections.count) { i in
+                ForEach(0 ..< self.connections.count) { i in
                     Button(action: {
                     }) {
                         VStack {
-                            Image(uiImage: self.getSavedImage(named: self.stateKeeper.connections[i]["screenShotFile"] ?? "") ?? UIImage())
+                            Image(uiImage: self.getSavedImage(named: self.connections[i]["screenShotFile"] ?? "") ?? UIImage())
                                 .resizable()
                                 .scaledToFit()
                                 .cornerRadius(5)
                                 .frame(maxWidth: 600, maxHeight: 200)
-                            Text(self.buildTitle(i: i))
+                            Text(self.stateKeeper.connections.buildTitle(connection: self.connections[i]))
                                 .font(.headline)
                                 .padding(5)
                                 .background(Color.black)
@@ -332,12 +338,12 @@ struct AddOrEditConnectionPage : View {
             "allowPanning": String(self.allowPanning),
             "showSshTunnelSettings": String(self.showSshTunnelSettings)
         ]
-        if self.stateKeeper.isSpice() {
+        if Utils.isSpice() {
             connection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
             connection["certSubject"] = self.certSubjectText.trimmingCharacters(in: .whitespacesAndNewlines)
             connection["certAuthority"] = self.certAuthorityText.trimmingCharacters(in: .whitespacesAndNewlines)
         }
-        if self.stateKeeper.isSpice() || self.stateKeeper.isRdp() {
+        if Utils.isSpice() || Utils.isRdp() {
             connection["keyboardLayout"] = self.keyboardLayoutText.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return connection
@@ -353,7 +359,7 @@ struct AddOrEditConnectionPage : View {
                 HStack(spacing: 5) {
                     Button(action: {
                         let selectedConnection: [String : String] = self.retrieveConnectionDetails()
-                        self.stateKeeper.saveConnection(connection: selectedConnection)
+                        self.stateKeeper.connections.saveConnection(connection: selectedConnection)
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "folder.badge.plus")
@@ -369,7 +375,7 @@ struct AddOrEditConnectionPage : View {
                     }
                     
                     Button(action: {
-                        self.stateKeeper.deleteCurrentConnection()
+                        self.stateKeeper.connections.deleteCurrentConnection()
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "trash")
@@ -405,7 +411,7 @@ struct AddOrEditConnectionPage : View {
                         if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
                             help_messages_list.insert("SSH_CONNECTION_SETUP_HELP_TEXT", at: 0)
                         }
-                        self.stateKeeper.setEditedConnection(connection: self.retrieveConnectionDetails())
+                        self.stateKeeper.connections.edit(connection: self.retrieveConnectionDetails())
                         self.stateKeeper.showHelp(messages: help_messages_list)
                     }) {
                         VStack(spacing: 10) {
@@ -455,23 +461,23 @@ struct AddOrEditConnectionPage : View {
                     Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
                     TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
                     TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
-                    if self.stateKeeper.isSpice() {
+                    if Utils.isSpice() {
                         TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
                     }
                 }.padding()
 
                 VStack {
-                    if self.stateKeeper.isRdp() {
+                    if Utils.isRdp() {
                         TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
                     }
-                    if self.stateKeeper.isVnc() {
+                    if Utils.isVnc() {
                         TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
-                    } else if self.stateKeeper.isRdp() {
+                    } else if Utils.isRdp() {
                         TextField(self.stateKeeper.localizedString(for: "MANDATORY_USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
                     }
                     SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
                     
-                    if self.stateKeeper.isSpice() {
+                    if Utils.isSpice() {
                         TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
                         VStack {
                             Divider()
@@ -485,7 +491,7 @@ struct AddOrEditConnectionPage : View {
                         }
                     }
                     
-                    if self.stateKeeper.isSpice() || self.stateKeeper.isRdp() {
+                    if Utils.isSpice() || Utils.isRdp() {
                         Picker("Keyboard Layout", selection: $keyboardLayoutText) {
                             ForEach(self.getKeyboardLayouts(), id: \.self) {
                                 Text($0)
@@ -800,6 +806,6 @@ struct ConnectedSessionPage_Previews : PreviewProvider {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(stateKeeper: StateKeeper())
+        ContentView(stateKeeper: StateKeeper(), searchConnectionText: "", filteredConnections: [])
     }
 }

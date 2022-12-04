@@ -41,10 +41,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     let sshAppIds = ["com.iiordanov.bVNC", "com.iiordanov.freebVNC", "com.iiordanov.aRDP",
                      "com.iiordanov.freeaRDP", "com.iiordanov.aSPICE", "com.iiordanov.freeaSPICE"]
     
-    var selectedConnection: [String: String]
-    var editedConnection: [String: String]
-    var connections: [Dictionary<String, String>]
-    var connectionIndex: Int
+    var connections: FilterableConnections = FilterableConnections(stateKeeper: nil)
     var settings = UserDefaults.standard
     var title: String?
     var localizedTitle: LocalizedStringKey?
@@ -76,7 +73,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var fbH: Int32 = 0
     var data: UnsafeMutablePointer<UInt8>?
     var minScale: CGFloat = 0
-    var macOs: Bool = false;
+    var macOs: Bool = false
     
     var topSpacing: CGFloat = bH
     var topButtonSpacing: CGFloat = 0.0
@@ -186,7 +183,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func sendSuperKeyUp() {
-        guard let currentInstance = self.getCurrentInstance() else {
+        guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -245,10 +242,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.macOs = true
         #endif
         // Load settings for current connection
-        connectionIndex = -1
-        selectedConnection = [:]
-        editedConnection = [:]
-        connections = self.settings.array(forKey: "connections") as? [Dictionary<String, String>] ?? []
         interfaceButtons = [:]
         keyboardButtons = [:]
         modifierButtons = [:]
@@ -258,7 +251,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             count: maxClCapacity);
 
         super.init()
-        if isSpice() || isRdp() {
+        connections = FilterableConnections(stateKeeper: self)
+        if Utils.isSpice() || Utils.isRdp() {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
                                         Constants.LAYOUT_PATH)
         }
@@ -288,30 +282,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.imageView = imageView
     }
     
-    func isSpice() -> Bool {
-        return self.bundleID?.lowercased().contains("spice") ?? false
-    }
-
-    func isVnc() -> Bool {
-        return self.bundleID?.lowercased().contains("vnc") ?? false
-    }
-
-    func isRdp() -> Bool {
-        return self.bundleID?.lowercased().contains("rdp") ?? false
-    }
-    
-    func getDefaultPort() -> String {
-        return isRdp() ? "3389" : "5900"
-    }
-
     /**
      Used to connect with an index from the list of saved connections
      */
-    func connect(index: Int) {
+    func connectSaved(connection: [String: String]) {
         self.connectedWithConsoleFileOrUri = false
-        self.connectionIndex = index
-        self.selectedConnection = self.connections[index]
-        self.connect(connection: self.selectedConnection)
+        self.connections.select(connection: connection)
+        self.connect(connection: connection)
     }
     
     /**
@@ -326,17 +303,17 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clientLog.append("\n\n")
         self.registerForNotifications()
         // Needed in case we need to save a certificate during connection or change settings.
-        self.allowZooming = Bool(selectedConnection["allowZooming"] ?? "true") ?? true && !macOs
-        self.allowPanning = Bool(selectedConnection["allowPanning"] ?? "true") ?? true && !macOs
+        self.allowZooming = connections.selectedConnectionAllowsZoomingOrPanning(setting: "allowZooming")
+        self.allowPanning = connections.selectedConnectionAllowsZoomingOrPanning(setting: "allowPanning")
         //let contentView = ContentView(stateKeeper: self)
         //globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
         globalWindow!.makeKeyAndVisible()
         self.currInst = (currInst + 1) % maxClCapacity
         self.isDrawing = true;
         self.toggleModifiersIfDown()
-        if self.isSpice() {
+        if Utils.isSpice() {
             self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
-        } else if self.isRdp() {
+        } else if Utils.isRdp() {
             self.remoteSession = RdpSession(instance: currInst, stateKeeper: self)
         } else {
             self.remoteSession = VncSession(instance: currInst, stateKeeper: self)
@@ -361,7 +338,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if disconnectedDueToBackgrounding && !self.connectedWithConsoleFileOrUri {
             log_callback_str(message: "Reconnecting after previous disconnect due to backgrounding")
             disconnectedDueToBackgrounding = false
-            connect(index: self.connectionIndex)
+            connectSaved(connection: self.connections.selectedConnection)
         } else if !self.isDrawing {
             self.showConnections()
         }
@@ -444,15 +421,18 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func addNewConnection() {
         log_callback_str(message: "Adding new connection and navigating to connection setup screen")
-        self.connectionIndex = -1
-        self.selectedConnection = [:]
+        self.connections.deselectConnection()
         UserInterface {
             self.currentPage = "addOrEditConnection"
         }
     }
     
-    func setEditedConnection(connection: [String: String]) {
-        self.editedConnection = connection
+    func editConnection(connection: Dictionary<String, String>) {
+        log_callback_str(message: "Editing connection and navigating to setup screen")
+        self.connections.edit(connection: connection)
+        UserInterface {
+            self.currentPage = "addOrEditConnection"
+        }
     }
     
     func showHelp(messages: [ LocalizedStringKey ]) {
@@ -465,21 +445,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func dismissHelp() {
         log_callback_str(message: "Dismissing help screen")
-        if (self.editedConnection.isEmpty) {
+        if (self.connections.editedConnection.isEmpty) {
             self.showConnections()
         }
         else {
-            self.selectedConnection = self.editedConnection
             self.addOrEditConnection()
-        }
-    }
-    
-    func editConnection(index: Int) {
-        log_callback_str(message: "Editing connection at index \(index) and navigating to setup screen")
-        self.connectionIndex = index
-        self.selectedConnection = connections[index]
-        UserInterface {
-            self.currentPage = "addOrEditConnection"
         }
     }
     
@@ -489,51 +459,22 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.currentPage = "addOrEditConnection"
         }
     }
-
-    func deleteCurrentConnection() {
-        log_callback_str(message: "Deleting connection at index \(self.connectionIndex) and navigating to list of connections screen")
-        // Do something only if we were not adding a new connection.
-        if connectionIndex >= 0 {
-            log_callback_str(message: "Deleting connection with index \(connectionIndex)")
-            let deleteScreenshotResult = deleteFile(name: connections[self.connectionIndex]["screenShotFile"]!)
-            log_callback_str(message: "Deleting connection screenshot \(deleteScreenshotResult)")
-            self.connections.remove(at: self.connectionIndex)
-            self.selectedConnection = [:]
-            self.connectionIndex = -1
-            self.saveSettings()
-        } else {
-            log_callback_str(message: "We were adding a new connection, so not deleting anything")
-        }
-        self.showConnections()
-    }
     
     func saveSettings() {
         log_callback_str(message: "Saving settings")
-        if connectionIndex >= 0 {
-            self.connections[connectionIndex] = selectedConnection
-        }
-        self.settings.set(self.connections, forKey: "connections")
+        connections.saveConnections()
     }
     
-    func saveConnection(connection: [String: String]) {
-        // Negative index indicates we are adding a connection, otherwise we are editing one.
-        if (connectionIndex < 0) {
-            log_callback_str(message: "Saving a new connection and navigating to list of connections")
-            self.connections.append(connection)
-        } else {
-            log_callback_str(message: "Saving a connection at index \(self.connectionIndex) and navigating to list of connections")
-            connection.forEach() { setting in // Iterate through new settings to avoid losing e.g. ssh and x509 fingerprints
-                self.selectedConnection[setting.key] = setting.value
-            }
-        }
-        self.saveSettings()
+    @objc func showConnectionsSelector(sender: Timer) {
         self.showConnections()
     }
     
     func showConnections() {
-        self.editedConnection = [:]
+        self.connections.edit(connection: [:])
         UserInterface {
-            let contentView = ContentView(stateKeeper: self)
+            let contentView = ContentView(stateKeeper: self,
+                                          searchConnectionText: self.connections.getSearchConnectionText(),
+                                          filteredConnections: self.connections.filteredConnections)
             globalWindow!.rootViewController = MyUIHostingController(rootView: contentView)
             globalWindow!.makeKeyAndVisible()
             self.spinner.removeFromSuperview()
@@ -826,7 +767,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func sendModifierIfNotDown(modifier: Int32) {
-        guard let currentInstance = self.getCurrentInstance() else {
+        guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -834,7 +775,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
 
     @objc func releaseModifierIfDown(modifier: Int32) {
-        guard let currentInstance = self.getCurrentInstance() else {
+        guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -842,7 +783,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func sendSpecialKeyByXKeySym(key: Int32) {
-        guard let currentInstance = self.getCurrentInstance() else {
+        guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -888,20 +829,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             return false
         }
         do {
-            try data.write(to: directory.appendingPathComponent(String(self.selectedConnection["screenShotFile"] ?? "default"))!)
-            return true
-        } catch {
-            log_callback_str(message: error.localizedDescription)
-            return false
-        }
-    }
-    
-    func deleteFile(name: String) -> Bool {
-        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
-            return false
-        }
-        do {
-            try FileManager.default.removeItem(at: directory.appendingPathComponent(name)!)
+            try data.write(to: directory.appendingPathComponent(String(self.connections.selectedConnection["screenShotFile"] ?? "default"))!)
             return true
         } catch {
             log_callback_str(message: error.localizedDescription)

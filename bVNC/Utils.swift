@@ -21,6 +21,8 @@ import Foundation
 import StoreKit
 
 struct Utils {
+    static let bundleID = Bundle.main.bundleIdentifier
+
     static func getBundleFileContents(name: String) -> String {
         if let fileURL = Bundle.main.url(forResource: name, withExtension: nil) {
             if let fileContents = try? String(contentsOf: fileURL) {
@@ -64,4 +66,34 @@ struct Utils {
         }
         return filename.path
     }
+    
+    static func deleteFile(name: String) -> Bool {
+        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
+            return false
+        }
+        do {
+            try FileManager.default.removeItem(at: directory.appendingPathComponent(name)!)
+            return true
+        } catch {
+            log_callback_str(message: error.localizedDescription)
+            return false
+        }
+    }
+    
+    static func isSpice() -> Bool {
+        return self.bundleID?.lowercased().contains("spice") ?? false
+    }
+
+    static func isVnc() -> Bool {
+        return self.bundleID?.lowercased().contains("vnc") ?? false
+    }
+
+    static func isRdp() -> Bool {
+        return self.bundleID?.lowercased().contains("rdp") ?? false
+    }
+    
+    static func getDefaultPort() -> String {
+        return isRdp() ? "3389" : "5900"
+    }
+
 }

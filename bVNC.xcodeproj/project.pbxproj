@@ -15,6 +15,10 @@
 		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
 		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
 		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
+		16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		16CF04EA293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
 		AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
 		AF043A1D23B3DADA00C43ED7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* ContentView.swift */; };
@@ -326,6 +330,7 @@
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
+		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
 		690C707F2693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		690C70802693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		690C708526937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1333,6 +1338,7 @@
 				AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */,
 				AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */,
 				AF53DCB22402391600569F19 /* StateKeeper.swift */,
+				16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */,
 				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
 				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
 				AF291AD4242418A200DCD383 /* ToggleButton.swift */,
@@ -2429,6 +2435,7 @@
 				AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */,
 				AF59A3D4242CE9E100658CE6 /* KeyboardObserving.swift in Sources */,
 				AF53DCB32402391600569F19 /* StateKeeper.swift in Sources */,
+				16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
 				AF48283223B47EC300826395 /* VncBridge.c in Sources */,
 				AF043A1D23B3DADA00C43ED7 /* ContentView.swift in Sources */,
 				AF9E8F932427F3B500752FC2 /* Utility.c in Sources */,
@@ -2480,6 +2487,7 @@
 				AF30D1A1253396EF00BA7A62 /* KeyboardObserving.swift in Sources */,
 				AFF6D39E260FE8B20077F6D2 /* Utils.swift in Sources */,
 				165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */,
+				16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
 				AF30D1A2253396EF00BA7A62 /* StateKeeper.swift in Sources */,
 				AF30D1A3253396EF00BA7A62 /* VncBridge.c in Sources */,
 				AF30D1A4253396EF00BA7A62 /* ContentView.swift in Sources */,
@@ -2513,6 +2521,7 @@
 				AFB2C8DB26001F4D00E2859F /* AppDelegate.swift in Sources */,
 				AFB2C8DC26001F4D00E2859F /* SceneDelegate.swift in Sources */,
 				AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */,
+				16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
 				AFB2C8DD26001F4D00E2859F /* KeyboardObserving.swift in Sources */,
 				AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */,
 				AFB2C8E026001F4D00E2859F /* ContentView.swift in Sources */,
@@ -2546,6 +2555,7 @@
 				AFB391DD274F59C90059F91F /* SpiceSessionDummy.swift in Sources */,
 				AFB3911D274F564A0059F91F /* LongTapDragUIImageView.swift in Sources */,
 				AFB3911E274F564A0059F91F /* AppDelegate.swift in Sources */,
+				16CF04EA293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
 				AF5D23F02750890800974427 /* RdpBridge.m in Sources */,
 				AFB3911F274F564A0059F91F /* SceneDelegate.swift in Sources */,
 				AFB39121274F564A0059F91F /* KeyboardObserving.swift in Sources */,

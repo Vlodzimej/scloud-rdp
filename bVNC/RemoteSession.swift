@@ -144,12 +144,12 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
     
     // Check for a match
     if fingerprintType == "SSH" &&
-       fingerPrint1Str == globalStateKeeper?.selectedConnection["sshFingerprintSha256"] {
+        fingerPrint1Str == globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] {
         print ("Found matching saved SHA256 SSH host key fingerprint, continuing.")
         return 1
     } else if fingerprintType == "X509" &&
-       fingerPrint1Str == globalStateKeeper?.selectedConnection["x509FingerprintSha256"] &&
-       fingerPrint2Str == globalStateKeeper?.selectedConnection["x509FingerprintSha512"] {
+       fingerPrint1Str == globalStateKeeper?.connections.selectedConnection["x509FingerprintSha256"] &&
+       fingerPrint2Str == globalStateKeeper?.connections.selectedConnection["x509FingerprintSha512"] {
        print ("Found matching saved SHA256 and SHA512 X509 key fingerprints, continuing.")
        return 1
     }
@@ -173,11 +173,11 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
 
     // Check for a mismatch if keys were already set
     if fingerprintType == "SSH" &&
-        globalStateKeeper?.selectedConnection["sshFingerprintSha256"] != nil {
+        globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] != nil {
         messages.append("WARNING_SSH_KEY_CHANGED_TEXT")
     } else if fingerprintType == "X509" &&
-       (globalStateKeeper?.selectedConnection["sshFingerprintSha256"] != nil ||
-        globalStateKeeper?.selectedConnection["sshFingerprintSha512"] != nil) {
+       (globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] != nil ||
+        globalStateKeeper?.connections.selectedConnection["sshFingerprintSha512"] != nil) {
         messages.append("WARNING_X509_KEY_CHANGED_TEXT")
     }
 
@@ -185,11 +185,11 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
         title: titleStr, messages: messages, nonLocalizedMessage: additionalMessageStr) ?? 0
     
     if res == 1 && fingerprintType == "SSH" {
-        globalStateKeeper?.selectedConnection["sshFingerprintSha256"] = fingerPrint1Str
+        globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] = fingerPrint1Str
         globalStateKeeper?.saveSettings()
     } else if res == 1 && fingerprintType == "X509" {
-        globalStateKeeper?.selectedConnection["x509FingerprintSha256"] = fingerPrint1Str
-        globalStateKeeper?.selectedConnection["x509FingerprintSha512"] = fingerPrint2Str
+        globalStateKeeper?.connections.selectedConnection["x509FingerprintSha256"] = fingerPrint1Str
+        globalStateKeeper?.connections.selectedConnection["x509FingerprintSha512"] = fingerPrint2Str
         globalStateKeeper?.saveSettings()
     }
     return res
@@ -323,11 +323,6 @@ class RemoteSession {
     }
     
     func resolution() -> [Int] {
-        let top = globalWindow?.safeAreaInsets.top
-        let bottom = globalWindow?.safeAreaInsets.top
-        let left = globalWindow?.safeAreaInsets.left
-        let right = globalWindow?.safeAreaInsets.right
-        
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
         var newScreenWidth = screenWidth
