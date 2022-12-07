@@ -1,3 +1,5 @@
+1.0.14
+  - Search connections
 1.0.13
   - Fix for crash on resizing window on Mac OS X while connecting
 1.0.12
