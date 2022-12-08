@@ -88,6 +88,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var cl: [UnsafeMutableRawPointer?]
     var maxClCapacity = 1000
     
+    var receivedUpdate: Bool = false;
     var isDrawing: Bool = false;
     var isKeptFresh: Bool = false;
     
@@ -156,7 +157,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     ]
     
     var keyboardLayouts: [String] = []
-
+    var contentView: ContentView?
+    
     @objc func reDraw() {
         UserInterface {
             self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
@@ -286,8 +288,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
      Used to connect with an index from the list of saved connections
      */
     func connectSaved(connection: [String: String]) {
+        log_callback_str(message: #function)
         self.connectedWithConsoleFileOrUri = false
-        self.connections.select(connection: connection)
         self.connect(connection: connection)
     }
     
@@ -295,21 +297,21 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
      Used to connect with an individual connection, potentially specially crafted from a console file or URI
      */
     func connect(connection: [String: String]) {
+        log_callback_str(message: #function)
         showConnectionInProgress()
+        self.receivedUpdate = false
+        self.connections.select(connection: connection)
         log_callback_str(message: "Connecting and navigating to the connection screen")
         self.yesNoDialogResponse = 0
         self.isKeptFresh = false
         self.clientLog = []
         self.clientLog.append("\n\n")
         self.registerForNotifications()
-        // Needed in case we need to save a certificate during connection or change settings.
         self.allowZooming = connections.selectedConnectionAllowsZoomingOrPanning(setting: "allowZooming")
         self.allowPanning = connections.selectedConnectionAllowsZoomingOrPanning(setting: "allowPanning")
-        //let contentView = ContentView(stateKeeper: self)
-        //globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
         globalWindow!.makeKeyAndVisible()
         self.currInst = (currInst + 1) % maxClCapacity
-        self.isDrawing = true;
+        self.isDrawing = true
         self.toggleModifiersIfDown()
         if Utils.isSpice() {
             self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
@@ -371,8 +373,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: "\(#function) called")
         self.currInst = (currInst + 1) % maxClCapacity
         let wasDrawing = (sender.userInfo as! Bool)
-        if !disconnectedDueToBackgrounding {
-            _ = self.saveImage(image: self.captureScreen(imageView: self.imageView ?? UIImageView()))
+        if !self.disconnectedDueToBackgrounding && self.receivedUpdate {
+            _ = self.connections.saveImage(image: self.captureScreen(imageView: self.imageView ?? UIImageView()))
         }
         UserInterface {
             self.toggleModifiersIfDown()
@@ -398,7 +400,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     @objc func scheduleDisconnectTimerFromButton() {
         self.scheduleDisconnectTimer(interval: 1, wasDrawing: self.isDrawing)
-        self.showConnections()
+        self.showDisconnectionPage()
     }
     
     @objc func scheduleDisconnectTimer(interval: Double = 1, wasDrawing: Bool) {
@@ -469,16 +471,29 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.showConnections()
     }
     
-    func showConnections() {
-        self.connections.edit(connection: [:])
+    func recreateContentView() {
+        self.contentView = ContentView(stateKeeper: self,
+                                      searchConnectionText: self.connections.getSearchConnectionText(),
+                                      filteredConnections: self.connections.filteredConnections)
+        globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
+        globalWindow!.makeKeyAndVisible()
+        self.spinner.removeFromSuperview()
+    }
+    
+    func showDisconnectionPage() {
         UserInterface {
-            let contentView = ContentView(stateKeeper: self,
-                                          searchConnectionText: self.connections.getSearchConnectionText(),
-                                          filteredConnections: self.connections.filteredConnections)
-            globalWindow!.rootViewController = MyUIHostingController(rootView: contentView)
-            globalWindow!.makeKeyAndVisible()
-            self.spinner.removeFromSuperview()
+            self.localizedTitle = ""
+            self.message = ""
+            self.currentPage = "dismissableBlankPage"
+            self.recreateContentView()
+        }
+    }
+    
+    func showConnections() {
+        UserInterface {
+            self.connections.loadConnections()
             self.currentPage = "connectionsList"
+            self.recreateContentView()
         }
     }
     
@@ -821,22 +836,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return image!
     }
     
-    func saveImage(image: UIImage) -> Bool {
-        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
-            return false
-        }
-        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
-            return false
-        }
-        do {
-            try data.write(to: directory.appendingPathComponent(String(self.connections.selectedConnection["screenShotFile"] ?? "default"))!)
-            return true
-        } catch {
-            log_callback_str(message: error.localizedDescription)
-            return false
-        }
-    }
-
     func getCurrentInstance() -> UnsafeMutableRawPointer? {
         if (self.currInst >= 0 && self.cl.endIndex > self.currInst) {
             return self.cl[self.currInst]
@@ -882,6 +881,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func remoteResized(fbW: Int32, fbH: Int32) {
         UserInterface {
             autoreleasepool {
+                self.receivedUpdate = true
                 self.reDrawTimer.invalidate()
                 self.fbW = fbW
                 self.fbH = fbH

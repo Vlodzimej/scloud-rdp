@@ -39,21 +39,23 @@ int desiredFbH;
 static gint get_display_id(SpiceDisplay *display)
 {
     SpiceDisplayPrivate *d = SPICE_DISPLAY_GET_PRIVATE(display);
-
+    
     /* supported monitor_id only with display channel #0 */
     if (d->channel_id == 0 && d->monitor_id >= 0)
         return d->monitor_id;
-
+    
     g_return_val_if_fail(d->monitor_id <= 0, -1);
-
+    
     return d->channel_id;
 }
 
 void requestResolution(int w, int h) {
     SpiceDisplay* display = global_display();
     SpiceDisplayPrivate *d = SPICE_DISPLAY_GET_PRIVATE(display);
-    spice_main_channel_update_display_enabled(d->main, get_display_id(display), TRUE, FALSE);
-    spice_main_channel_update_display(d->main, get_display_id(display), 0, 0, w, h, TRUE);
+    if (d != NULL) {
+        spice_main_channel_update_display_enabled(d->main, get_display_id(display), TRUE, FALSE);
+        spice_main_channel_update_display(d->main, get_display_id(display), 0, 0, w, h, TRUE);
+    }
 }
 
 void spiceConnectionFailure() {
@@ -102,7 +104,7 @@ void gst_init_and_register_static_plugins () {
     
     GST_PLUGIN_STATIC_REGISTER(coreelements);  GST_PLUGIN_STATIC_REGISTER(coretracers);  GST_PLUGIN_STATIC_REGISTER(adder);  GST_PLUGIN_STATIC_REGISTER(app);  GST_PLUGIN_STATIC_REGISTER(audioconvert);  GST_PLUGIN_STATIC_REGISTER(audiomixer);  GST_PLUGIN_STATIC_REGISTER(audiorate);  GST_PLUGIN_STATIC_REGISTER(audioresample);  GST_PLUGIN_STATIC_REGISTER(audiotestsrc);  GST_PLUGIN_STATIC_REGISTER(compositor);  GST_PLUGIN_STATIC_REGISTER(gio);  GST_PLUGIN_STATIC_REGISTER(overlaycomposition);  GST_PLUGIN_STATIC_REGISTER(rawparse);  GST_PLUGIN_STATIC_REGISTER(typefindfunctions);  GST_PLUGIN_STATIC_REGISTER(videoconvert);  GST_PLUGIN_STATIC_REGISTER(videorate); GST_PLUGIN_STATIC_REGISTER(videoscale);  GST_PLUGIN_STATIC_REGISTER(videotestsrc);  GST_PLUGIN_STATIC_REGISTER(volume);  GST_PLUGIN_STATIC_REGISTER(autodetect);  GST_PLUGIN_STATIC_REGISTER(videofilter);  GST_PLUGIN_STATIC_REGISTER(opus);  GST_PLUGIN_STATIC_REGISTER(jpeg);
     GST_PLUGIN_STATIC_REGISTER(osxaudio);
-
+    
     if (gst_is_initialized()) {
         client_log("GStreamer successfully initialized");
     } else {
@@ -111,23 +113,23 @@ void gst_init_and_register_static_plugins () {
 }
 
 void *initializeSpice(int instance, int width, int height,
-                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
-                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
-                   void (*fail_callback)(int instance, uint8_t *),
-                   void (*cl_log_callback)(int8_t *),
-                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                   char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
-                   char* cert_subject, bool enable_sound) {
+                      bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                      void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                      void (*fail_callback)(int instance, uint8_t *),
+                      void (*cl_log_callback)(int8_t *),
+                      int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                      char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
+                      char* cert_subject, bool enable_sound) {
     client_log("Initializing SPICE session\n");
-        
+    
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
     client_log_callback = cl_log_callback;
     yes_no_callback = y_n_callback;
-
+    
     gst_init_and_register_static_plugins();
-
+    
     fbW = 0;
     fbH = 0;
     desiredFbW = width;
@@ -159,22 +161,22 @@ void *initializeSpice(int instance, int width, int height,
 }
 
 void *initializeSpiceVv(int instance, int width, int height,
-                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
-                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
-                   void (*fail_callback)(int instance, uint8_t *),
-                   void (*cl_log_callback)(int8_t *),
-                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                   char* vv_file, bool enable_sound) {
+                        bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                        void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                        void (*fail_callback)(int instance, uint8_t *),
+                        void (*cl_log_callback)(int8_t *),
+                        int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                        char* vv_file, bool enable_sound) {
     client_log("Initializing SPICE session from vv file\n");
-        
+    
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
     client_log_callback = cl_log_callback;
     yes_no_callback = y_n_callback;
-
+    
     gst_init_and_register_static_plugins();
-
+    
     fbW = 0;
     fbH = 0;
     desiredFbW = width;
@@ -249,16 +251,16 @@ int getButtonState(bool firstDown, bool secondDown, bool thirdDown, bool scrollU
         newButtonState &= ~SPICE_MOUSE_BUTTON_MASK_RIGHT;
     }
     /*
-    if (scrollUp) {
-        newButtonState |= SPICE_MOUSE_BUTTON_UP;
-    } else {
-        newButtonState &= ~SPICE_MOUSE_BUTTON_UP;
-    }
-    if (scrollDown) {
-        newButtonState |= SPICE_MOUSE_BUTTON_DOWN;
-    } else {
-        newButtonState &= ~SPICE_MOUSE_BUTTON_DOWN;
-    }*/
+     if (scrollUp) {
+     newButtonState |= SPICE_MOUSE_BUTTON_UP;
+     } else {
+     newButtonState &= ~SPICE_MOUSE_BUTTON_UP;
+     }
+     if (scrollDown) {
+     newButtonState |= SPICE_MOUSE_BUTTON_DOWN;
+     } else {
+     newButtonState &= ~SPICE_MOUSE_BUTTON_DOWN;
+     }*/
     return newButtonState;
 }
 

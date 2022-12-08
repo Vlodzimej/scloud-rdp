@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FilterableConnections {
+class FilterableConnections : ObservableObject {
     var allConnections: [Dictionary<String, String>]
     var filteredConnections: [Dictionary<String, String>]
     var stateKeeper: StateKeeper?
@@ -22,8 +22,15 @@ class FilterableConnections {
     
     init(stateKeeper: StateKeeper?) {
         self.stateKeeper = stateKeeper
+        self.allConnections = []
+        self.filteredConnections = self.allConnections
+        self.loadConnections()
+    }
+    
+    func loadConnections() {
         self.allConnections = self.settings.array(forKey: "connections") as? [Dictionary<String, String>] ?? []
         self.filteredConnections = self.allConnections
+        self.filterConnections()
     }
     
     func connectionCount() -> Int {
@@ -33,6 +40,9 @@ class FilterableConnections {
     func setSearchConnectionText(searchConnectionText: String) {
         self.searchConnectionText = searchConnectionText
         self.filterConnections()
+        if searchConnectionText == "" {
+            self.stateKeeper?.showConnections()
+        }
     }
     
     func getSearchConnectionText() -> String {
@@ -62,20 +72,20 @@ class FilterableConnections {
     
     func filterConnections() {
         self.filteredConnections = allConnections.filter({ (connection) -> Bool in searchConnectionText == "" || buildTitle(connection: connection).contains(searchConnectionText)})
-        if searchConnectionText == "" {
-            self.stateKeeper?.showConnections()
-        }
     }
     
     func edit(connection: Dictionary<String, String>) -> Void {
+        log_callback_str(message: #function)
         self.editedConnection = connection
         self.select(connection: connection)
     }
     
     func select(connection: Dictionary<String, String>) -> Void {
+        log_callback_str(message: #function)
         self.selectedConnection = connection
         self.selectedFilteredConnectionIndex = filteredConnections.firstIndex(of: connection) ?? -1
         self.selectedUnfilteredConnectionIndex = allConnections.firstIndex(of: connection) ?? -1
+        log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
     }
     
     func get(at: Int) -> Dictionary<String, String> {
@@ -83,7 +93,7 @@ class FilterableConnections {
     }
     
     func removeSelected() -> Void {
-        var selectedConnection = filteredConnections[selectedFilteredConnectionIndex]
+        let selectedConnection = filteredConnections[selectedFilteredConnectionIndex]
         self.allConnections.removeAll { connection in
             selectedConnection == connection
         }
@@ -91,7 +101,7 @@ class FilterableConnections {
     }
     
     func saveConnections() {
-        log_callback_str(message: "saveConnections")
+        log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
         if selectedUnfilteredConnectionIndex >= 0 {
             self.allConnections[selectedUnfilteredConnectionIndex] = selectedConnection
         }
@@ -99,9 +109,11 @@ class FilterableConnections {
     }
     
     func deselectConnection() {
+        log_callback_str(message: "\(#function)")
         self.selectedFilteredConnectionIndex = -1
         self.selectedUnfilteredConnectionIndex = -1
         self.selectedConnection = [:]
+        self.editedConnection = [:]
     }
     
     func deleteCurrentConnection() {
@@ -134,10 +146,32 @@ class FilterableConnections {
         }
         self.saveConnections()
         self.filterConnections()
+        self.deselectConnection()
         self.stateKeeper?.showConnections()
     }
     
     func selectedConnectionAllowsZoomingOrPanning(setting: String) -> Bool {
         return Bool(selectedConnection[setting] ?? "true") ?? true && !(self.stateKeeper?.macOs ?? false)
+    }
+    
+    func saveImage(image: UIImage) -> Bool {
+        log_callback_str(message: #function)
+        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
+            return false
+        }
+        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
+            return false
+        }
+        do {
+            let fileName = self.selectedConnection["screenShotFile"] ?? "default"
+            log_callback_str(message: "\(#function): fileName: \(fileName)")
+            try data.write(to: directory.appendingPathComponent(String(fileName))!)
+            self.saveConnections()
+            self.stateKeeper?.showConnections()
+            return true
+        } catch {
+            log_callback_str(message: #function + error.localizedDescription)
+            return false
+        }
     }
 }

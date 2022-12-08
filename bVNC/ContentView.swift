@@ -115,7 +115,11 @@ struct ContentView : View {
     @ObservedObject var stateKeeper: StateKeeper
     @State var searchConnectionText: String
     @State var filteredConnections: [Dictionary<String, String>]
-
+    
+    func updateConnections(filteredConnections: [Dictionary<String, String>]) {
+        self.filteredConnections = filteredConnections
+    }
+    
     var body: some View {
         let selectedConnection = stateKeeper.connections.selectedConnection
         VStack {
@@ -160,8 +164,8 @@ struct ContentView : View {
                 HelpDialog(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "yesNoMessage" {
                 YesNoDialog(stateKeeper: stateKeeper)
-            } else if stateKeeper.currentPage == "blankPage" {
-                BlankPage()
+            } else if stateKeeper.currentPage == "dismissableBlankPage" {
+                DismissableBlankPage(stateKeeper: stateKeeper)
             }
         }
     }
@@ -196,6 +200,10 @@ struct ConnectionsList : View {
         return nil
     }
     
+    func search() {
+        self.stateKeeper.showConnections()
+    }
+    
     var body: some View {
         let binding = Binding<String>(get: {
             self.searchConnectionText
@@ -207,10 +215,12 @@ struct ConnectionsList : View {
         ScrollView {
             VStack {
                 HStack() {
-                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding).autocapitalization(.none).font(.title).padding(50)
+                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding, onCommit: {
+                        self.search()
+                    }).autocapitalization(.none).font(.title).padding(50)
 
                     Button(action: {
-                        self.stateKeeper.showConnections()
+                        self.search()
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "magnifyingglass")
@@ -350,6 +360,7 @@ struct AddOrEditConnectionPage : View {
     }
 
     func getKeyboardLayouts() -> [String] {
+        
         return stateKeeper.keyboardLayouts.sorted()
     }
     
@@ -360,6 +371,7 @@ struct AddOrEditConnectionPage : View {
                     Button(action: {
                         let selectedConnection: [String : String] = self.retrieveConnectionDetails()
                         self.stateKeeper.connections.saveConnection(connection: selectedConnection)
+                        self.stateKeeper.connections.deselectConnection()
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "folder.badge.plus")
@@ -376,6 +388,7 @@ struct AddOrEditConnectionPage : View {
                     
                     Button(action: {
                         self.stateKeeper.connections.deleteCurrentConnection()
+                        self.stateKeeper.connections.deselectConnection()
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "trash")
@@ -391,6 +404,7 @@ struct AddOrEditConnectionPage : View {
                     }
                     
                     Button(action: {
+                        self.stateKeeper.connections.deselectConnection()
                         self.stateKeeper.showConnections()
                     }) {
                         VStack(spacing: 10) {
@@ -628,9 +642,25 @@ struct HelpDialog : View {
 }
 
 
-struct BlankPage : View {
+struct DismissableBlankPage : View {
+    @ObservedObject var stateKeeper: StateKeeper
+
     var body: some View {
-        Text("")
+        VStack {
+            HStack {
+                Button(action: {
+                    self.stateKeeper.showConnections()
+                }) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "arrowshape.turn.up.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 32, height: 32)
+                        Text("DISMISS_LABEL")
+                    }.padding()
+                }
+            }
+        }
     }
 }
 

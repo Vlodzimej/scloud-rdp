@@ -75,7 +75,6 @@
 		AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD6260180CE00DAA44B /* libFLAC.a */; };
 		AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC04260180D800DAA44B /* libfontconfig.a */; };
 		AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC01260180D700DAA44B /* libfreetype.a */; };
-		AF44CDCB260197FA00DAA44B /* libfribidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC05260180D800DAA44B /* libfribidi.a */; };
 		AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD0260180CD00DAA44B /* libgdk_pixbuf-2.0.a */; };
 		AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDC260180D000DAA44B /* libgio-2.0.a */; };
 		AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC10260180DB00DAA44B /* libglib-2.0.a */; };
@@ -1215,7 +1214,6 @@
 				AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */,
 				AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */,
 				AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */,
-				AF44CDCB260197FA00DAA44B /* libfribidi.a in Frameworks */,
 				AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */,
 				AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */,
 				AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */,
