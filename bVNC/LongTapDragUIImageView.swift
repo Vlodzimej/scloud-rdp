@@ -28,6 +28,7 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         panGesture?.minimumNumberOfTouches = 1
         panGesture?.maximumNumberOfTouches = 2
+        
         longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
     }
@@ -47,7 +48,7 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
             let scaleX = sender.view!.transform.a
             let scaleY = sender.view!.transform.d
             
-            //print ("abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
+            //print ("inPanDragging: \(inPanDragging), inPanning: \(inPanning), thirdDown: \(thirdDown), abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
             // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
             if (!self.inPanDragging && !self.inPanning && self.thirdDown &&
                 (self.inScrolling || abs(scaleY*translation.y)/abs(scaleX*translation.x) > 1.4 )) {

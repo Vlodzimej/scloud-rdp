@@ -19,6 +19,7 @@
 
 import Foundation
 import UIKit
+import GameController
 
 let insetDimension: CGFloat = 0
 
@@ -119,6 +120,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     var tapGestureDetected = false
     
     var stateKeeper: StateKeeper?
+    var physicalMouseAttached = false
 
     func initialize() {
         isMultipleTouchEnabled = true
@@ -128,7 +130,9 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         tapGesture?.numberOfTapsRequired = 1
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
         hoverGesture = UIHoverGestureRecognizer(target: self, action: #selector(handleHovering(_:)))
-        
+        if #available(iOS 14.0, *) {
+            physicalMouseAttached = GCMouse.current != nil
+        }
         if #available(iOS 13.4, *) {
             /*
             // Primary and secondary click gesture
@@ -139,7 +143,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             */
             // Pan gesture to recognize mouse-wheel scrolling
             scrollWheelGesture = UIPanGestureRecognizer(target: self, action: #selector(handleScroll(_:)))
-            scrollWheelGesture?.allowedScrollTypesMask = UIScrollTypeMask.discrete
+            scrollWheelGesture?.allowedScrollTypesMask = UIScrollTypeMask.all
             scrollWheelGesture?.maximumNumberOfTouches = 0;
         }
         
@@ -149,7 +153,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         
         // Method of detecting two-finger tap/click on trackpad. Not adding unless this is running on a Mac
         // because it also captures long-taps on a touch screen
-        if self.stateKeeper?.macOs == true {
+        if physicalMouseAttached || self.stateKeeper?.macOs == true {
             let interaction = UIContextMenuInteraction(delegate: self)
             self.addInteraction(interaction)
         }
