@@ -115,6 +115,30 @@ class CustomTextInput: UIButton, UIKeyInput {
         return true
     }
     
+    override func pressesBegan(_ presses: Set<UIPress>,
+                               with event: UIPressesEvent?) {
+        self.stateKeeper?.physicalKeyboardHandler?.pressesBegan(presses, with: event)
+    }
+
+    override func pressesEnded(_ presses: Set<UIPress>,
+                               with event: UIPressesEvent?) {
+        self.stateKeeper?.physicalKeyboardHandler?.pressesEnded(presses, with: event)
+    }
+
+
+    override func pressesCancelled(_ presses: Set<UIPress>,
+                                   with event: UIPressesEvent?) {
+        pressesEnded(presses, with: event)
+    }
+
+    override var keyCommands: [UIKeyCommand]? {
+        return self.stateKeeper?.physicalKeyboardHandler?.keyCommands
+    }
+    
+    @objc func captureCmd(sender: UIKeyCommand) {
+        self.stateKeeper?.physicalKeyboardHandler?.captureCmd(sender: sender)
+    }
+    
     override var canBecomeFirstResponder: Bool {
         return self.stateKeeper?.macOs != true
     }

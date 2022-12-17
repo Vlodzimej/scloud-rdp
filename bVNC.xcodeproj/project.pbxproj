@@ -2758,7 +2758,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",
@@ -2816,7 +2816,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",
@@ -3079,7 +3079,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",
@@ -3137,7 +3137,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",

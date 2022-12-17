@@ -20,19 +20,17 @@
 import Foundation
 import UIKit
 
-var globalTextInput: CustomTextInput?
 
 class PhysicalKeyboardHandler {
     var specialKeyToXKeySymMap: [String: Int32]
     var keyCodeWithShiftModifierToString: [Int: String]
-    var stateKeeper = StateKeeper()
+    var stateKeeper: StateKeeper?
     var textInput: CustomTextInput?
     var commands: [UIKeyCommand]?
 
     init(stateKeeper: StateKeeper) {
         self.stateKeeper = stateKeeper
         self.textInput = CustomTextInput(stateKeeper: stateKeeper)
-        globalTextInput = textInput
 
         if #available(iOS 13.4, *) {
             self.specialKeyToXKeySymMap = [
@@ -95,7 +93,7 @@ class PhysicalKeyboardHandler {
     }
     
     func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
-        guard self.stateKeeper.getCurrentInstance() != nil else {
+        guard self.stateKeeper?.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -110,17 +108,21 @@ class PhysicalKeyboardHandler {
             if key.modifierFlags.contains(.control) {
                 altOrCtrlDown = true
                 print(#function, "Control")
-                self.stateKeeper.sendModifierIfNotDown(modifier: XK_Control_L)
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Control_L)
             }
             if key.modifierFlags.contains(.alternate) {
                 altOrCtrlDown = true
                 print(#function, "Alt")
-                self.stateKeeper.sendModifierIfNotDown(modifier: XK_Alt_L)
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 shiftDown = true
                 print(#function, "Shift")
-                self.stateKeeper.sendModifierIfNotDown(modifier: XK_Shift_L)
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Shift_L)
+            }
+            if key.modifierFlags.contains(.command) {
+                print(#function, "Super")
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Super_L)
             }
             if key.modifierFlags.contains(.alphaShift) {
                 print(#function, "CapsLock")
@@ -147,7 +149,7 @@ class PhysicalKeyboardHandler {
                 if self.specialKeyToXKeySymMap[text] != nil {
                     let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
                     print(#function, "sending xKeySym converted from text:", xKeySym)
-                    self.stateKeeper.sendSpecialKeyByXKeySym(key: xKeySym)
+                    self.stateKeeper?.sendSpecialKeyByXKeySym(key: xKeySym)
                 } else {
                     print(#function, "sending text:", text)
                     textInput?.insertText(text)
@@ -169,15 +171,19 @@ class PhysicalKeyboardHandler {
             }
             if key.modifierFlags.contains(.control) {
                 print(#function, "Control")
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Control_L)
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
             }
             if key.modifierFlags.contains(.alternate) {
                 print(#function, "Alt")
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Alt_L)
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 print(#function, "Shift")
-                self.stateKeeper.releaseModifierIfDown(modifier: XK_Shift_L)
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Shift_L)
+            }
+            if key.modifierFlags.contains(.command) {
+                print(#function, "Command")
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Super_L)
             }
         }
     }
@@ -195,8 +201,8 @@ class PhysicalKeyboardHandler {
     }
     
     var keyCommands: [UIKeyCommand]? {
-        // Do not do all the additional work of trying to capture modifiers on iOS devices because it causes soft keyboard lag
-        if !self.isiOSAppOnMac() || self.commands != nil {
+        // Do not capture all permutations on iOS devices because it causes soft keyboard lag
+        if !isiOSAppOnMac() || self.commands != nil {
             return self.commands
         }
 
@@ -207,7 +213,17 @@ class PhysicalKeyboardHandler {
         chars += [
             UIKeyCommand.inputUpArrow, UIKeyCommand.inputDownArrow, UIKeyCommand.inputLeftArrow, UIKeyCommand.inputRightArrow
         ]
-        let modifierPermutations: [UIKeyModifierFlags] = [ [.command], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift], [UIKeyModifierFlags.command, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.control], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.control], [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate], [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate, UIKeyModifierFlags.shift] ]
+        
+        let modifierPermutations: [UIKeyModifierFlags] = [
+            [UIKeyModifierFlags.command],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.shift],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.alternate],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.control],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.alternate],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.control],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate],
+            [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate, UIKeyModifierFlags.shift]
+        ]
         
         commands = []
         for mods in modifierPermutations {
@@ -227,32 +243,32 @@ class PhysicalKeyboardHandler {
         var modifiers = [ false, false, false, false ]
         if sender.modifierFlags.contains(.control) {
             print(#function, "Control")
-            self.stateKeeper.sendModifierIfNotDown(modifier: XK_Control_L)
+            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Control_L)
             modifiers[0] = true
         }
         if sender.modifierFlags.contains(.alternate) {
             print(#function, "Alt")
-            self.stateKeeper.sendModifierIfNotDown(modifier: XK_Alt_L)
+            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
             modifiers[1] = true
         }
         if sender.modifierFlags.contains(.shift) {
             print(#function, "Shift")
-            self.stateKeeper.sendModifierIfNotDown(modifier: XK_Shift_L)
+            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Shift_L)
             modifiers[2] = true
         }
-        
         if sender.modifierFlags.contains(.command) {
             print(#function, "Super")
-            self.stateKeeper.sendModifierIfNotDown(modifier: XK_Super_L)
+            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Super_L)
             modifiers[3] = true
         }
         
         if self.specialKeyToXKeySymMap[text] != nil {
             let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
             print(#function, "sending xKeySym converted from text:", xKeySym)
-            self.stateKeeper.sendSpecialKeyByXKeySym(key: xKeySym)
+            self.stateKeeper?.sendSpecialKeyByXKeySym(key: xKeySym)
         } else {
-            if self.stateKeeper.modifiers[XK_Shift_L]! {
+            let isShiftDown = self.stateKeeper?.modifiers[XK_Shift_L] ?? false
+            if (isShiftDown) {
                 textInput?.insertText(text.uppercased())
                 print(#function, "sending text uppercased:", text.uppercased())
             } else {
@@ -263,19 +279,19 @@ class PhysicalKeyboardHandler {
             
         if (modifiers[0]) {
             print(#function, "Releasing Control")
-            self.stateKeeper.releaseModifierIfDown(modifier: XK_Control_L)
+            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
         }
         if (modifiers[1]) {
             print(#function, "Releasing Alt")
-            self.stateKeeper.releaseModifierIfDown(modifier: XK_Alt_L)
+            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
         }
         if (modifiers[2]) {
             print(#function, "Releasing Shift")
-            self.stateKeeper.releaseModifierIfDown(modifier: XK_Shift_L)
+            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Shift_L)
         }
         if (modifiers[3]) {
             print(#function, "Releasing Super")
-            self.stateKeeper.releaseModifierIfDown(modifier: XK_Super_L)
+            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Super_L)
         }
     }
 }

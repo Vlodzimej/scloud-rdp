@@ -25,13 +25,11 @@ var globalStateKeeper: StateKeeper?
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var stateKeeper: StateKeeper = StateKeeper()
-    var physicalKeyboardHandler: PhysicalKeyboardHandler?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         StoreReviewHelper.incrementAppOpenedCount()
         globalStateKeeper = stateKeeper
-        physicalKeyboardHandler = PhysicalKeyboardHandler(stateKeeper: stateKeeper)
         return true
     }
 
@@ -85,15 +83,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
              }
         }
     }
-
+    
     override func pressesBegan(_ presses: Set<UIPress>,
                                with event: UIPressesEvent?) {
-        self.physicalKeyboardHandler?.pressesBegan(presses, with: event)
+        self.stateKeeper.physicalKeyboardHandler?.pressesBegan(presses, with: event)
     }
 
     override func pressesEnded(_ presses: Set<UIPress>,
                                with event: UIPressesEvent?) {
-        self.physicalKeyboardHandler?.pressesEnded(presses, with: event)
+        self.stateKeeper.physicalKeyboardHandler?.pressesEnded(presses, with: event)
     }
 
 
@@ -101,20 +99,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                    with event: UIPressesEvent?) {
         pressesEnded(presses, with: event)
     }
-    
-    func isiOSAppOnMac() -> Bool {
-      if #available(iOS 14.0, *) {
-        return ProcessInfo.processInfo.isiOSAppOnMac
-      }
-      return false
-    }
 
     override var keyCommands: [UIKeyCommand]? {
-        return self.physicalKeyboardHandler?.keyCommands
+        return self.stateKeeper.physicalKeyboardHandler?.keyCommands
     }
     
     @objc func captureCmd(sender: UIKeyCommand) {
-        self.physicalKeyboardHandler?.captureCmd(sender: sender)
+        self.stateKeeper.physicalKeyboardHandler?.captureCmd(sender: sender)
     }
 }
 

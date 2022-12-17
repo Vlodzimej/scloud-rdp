@@ -20,6 +20,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import GameController
 
 class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     static let bH = CGFloat(30.0)
@@ -158,7 +159,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     var keyboardLayouts: [String] = []
     var contentView: ContentView?
-    
+    var physicalKeyboardHandler: PhysicalKeyboardHandler?
+
     @objc func reDraw() {
         UserInterface {
             self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
@@ -254,6 +256,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
 
         super.init()
         connections = FilterableConnections(stateKeeper: self)
+        physicalKeyboardHandler = PhysicalKeyboardHandler(stateKeeper: self)
         if Utils.isSpice() || Utils.isRdp() {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
                                         Constants.LAYOUT_PATH)
@@ -624,12 +627,24 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: "Set image rect to: \(newRect)")
     }
     
-    func createAndRepositionButtons() {
-        log_callback_str(message: "Ensuring buttons are initialized, and positioning them where they should be")
-        if (self.interfaceButtons["keyboardButton"] == nil) {
-            guard let b = globalTextInput else {
-                return
-            }
+    func createKeyboardButtonOrActivateInputForExternalKeyboard() {
+        log_callback_str(message: "\(#function) Creating keyboard button")
+        guard let b = self.physicalKeyboardHandler?.textInput else {
+            return
+        }
+        let keyboardButton = self.interfaceButtons["keyboardButton"]
+        var externalKeyboardPresent = false
+        if #available(iOS 14.0, *) {
+            log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(GCKeyboard.coalesced)")
+            externalKeyboardPresent = GCKeyboard.coalesced != nil
+        }
+        if externalKeyboardPresent {
+            b.becomeFirstResponder()
+            log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
+            keyboardButton?.isHidden = true
+        }
+        log_callback_str(message: "\(#function) Initializing keyboard button")
+        if (keyboardButton == nil) {
             b.addTarget(b, action: #selector(b.toggleFirstResponder), for: .touchDown)
             if let imageName = interfaceButtonData["keyboardButton"]!["image"] {
                 if let image = UIImage(systemName: imageName as! String) {
@@ -640,13 +655,17 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             }
             self.interfaceButtons["keyboardButton"] = b
         }
+    }
+    
+    func createAndRepositionButtons() {
+        log_callback_str(message: "Ensuring buttons are initialized, and positioning them where they should be")
+        createKeyboardButtonOrActivateInputForExternalKeyboard()
         interfaceButtons = createButtonsFromData(populateDict: interfaceButtons, buttonData: interfaceButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
         interfaceButtons["disconnectButton"]?.addTarget(self, action: #selector(self.scheduleDisconnectTimerFromButton), for: .touchDown)
 
         topButtons = createButtonsFromData(populateDict: topButtons, buttonData: topButtonData, width: StateKeeper.tbW, height: StateKeeper.bH, spacing: StateKeeper.tbSp)
         modifierButtons = createButtonsFromData(populateDict: modifierButtons, buttonData: modifierButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
         keyboardButtons = createButtonsFromData(populateDict: keyboardButtons, buttonData: keyboardButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
-
     }
     
     func createButtonsFromData(populateDict: [String: UIControl], buttonData: [ String: [ String: Any ] ], width: CGFloat, height: CGFloat, spacing: CGFloat ) -> [String: UIControl] {
