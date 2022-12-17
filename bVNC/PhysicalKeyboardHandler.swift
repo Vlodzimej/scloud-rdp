@@ -182,7 +182,7 @@ class PhysicalKeyboardHandler {
                 self.stateKeeper?.releaseModifierIfDown(modifier: XK_Shift_L)
             }
             if key.modifierFlags.contains(.command) {
-                print(#function, "Command")
+                print(#function, "Super")
                 self.stateKeeper?.releaseModifierIfDown(modifier: XK_Super_L)
             }
         }
