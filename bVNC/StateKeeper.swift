@@ -534,7 +534,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func keyboardWillHide() {
         log_callback_str(message: "Keyboard will be hidden, height: \(self.keyboardHeight)")
-        if !self.allowPanning {
+        if !self.allowPanning && self.originalImageRect != CGRect() {
             self.setImageRect(newRect: self.originalImageRect)
         }
         
