@@ -627,27 +627,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: "Set image rect to: \(newRect)")
     }
     
-    func createKeyboardButtonOrActivateInputForExternalKeyboard() {
-        log_callback_str(message: "\(#function) Creating keyboard button")
+    fileprivate func initializeKeyboardButtonIfNotInitialized() {
         guard let b = self.physicalKeyboardHandler?.textInput else {
             return
         }
         let keyboardButton = self.interfaceButtons["keyboardButton"]
-        var externalKeyboardPresent = false
-        if #available(iOS 14.0, *) {
-            log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(GCKeyboard.coalesced)")
-            externalKeyboardPresent = GCKeyboard.coalesced != nil
-        }
-        if externalKeyboardPresent {
-            b.becomeFirstResponder()
-            log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
-            keyboardButton?.isHidden = true
-        } else {
-            log_callback_str(message: "\(#function) Showing keyboard button because external keyboard was not found")
-            keyboardButton?.isHidden = false
-        }
-        log_callback_str(message: "\(#function) Initializing keyboard button")
         if (keyboardButton == nil) {
+            log_callback_str(message: "\(#function) Initializing keyboard button")
             b.addTarget(b, action: #selector(b.toggleFirstResponder), for: .touchDown)
             if let imageName = interfaceButtonData["keyboardButton"]!["image"] {
                 if let image = UIImage(systemName: imageName as! String) {
@@ -657,12 +643,36 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 }
             }
             self.interfaceButtons["keyboardButton"] = b
+        } else {
+            log_callback_str(message: "\(#function) Keyboard button already initialized")
         }
+    }
+    
+    fileprivate func showOrHideKeyboardButtonDueToExternalKeyboard() {
+        var externalKeyboardPresent = false
+        if #available(iOS 14.0, *) {
+            log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(GCKeyboard.coalesced)")
+            externalKeyboardPresent = GCKeyboard.coalesced != nil
+        }
+        if externalKeyboardPresent {
+            self.physicalKeyboardHandler?.textInput?.becomeFirstResponder()
+            log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
+            self.interfaceButtons["keyboardButton"]?.isHidden = true
+        } else {
+            log_callback_str(message: "\(#function) Showing keyboard button because external keyboard was not found")
+            self.interfaceButtons["keyboardButton"]?.isHidden = false
+        }
+    }
+    
+    fileprivate func initAndShowOrHideKeyboardButtonDueToExternalKeyboard() {
+        log_callback_str(message: "\(#function) Creating keyboard button")
+        initializeKeyboardButtonIfNotInitialized()
+        showOrHideKeyboardButtonDueToExternalKeyboard()
     }
     
     func createAndRepositionButtons() {
         log_callback_str(message: "Ensuring buttons are initialized, and positioning them where they should be")
-        createKeyboardButtonOrActivateInputForExternalKeyboard()
+        initAndShowOrHideKeyboardButtonDueToExternalKeyboard()
         interfaceButtons = createButtonsFromData(populateDict: interfaceButtons, buttonData: interfaceButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
         interfaceButtons["disconnectButton"]?.addTarget(self, action: #selector(self.scheduleDisconnectTimerFromButton), for: .touchDown)
 
