@@ -642,6 +642,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             b.becomeFirstResponder()
             log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
             keyboardButton?.isHidden = true
+        } else {
+            log_callback_str(message: "\(#function) Showing keyboard button because external keyboard was not found")
+            keyboardButton?.isHidden = false
         }
         log_callback_str(message: "\(#function) Initializing keyboard button")
         if (keyboardButton == nil) {
