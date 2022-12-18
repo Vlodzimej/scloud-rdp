@@ -1,4 +1,5 @@
 1.0.16
+  - Bugfix for capturing Command key combinations on MacOS
   - Bugfix for blank screen with allow panning disabled on iOS
   - Physical keyboard support on iOS
   - Physical mouse support on iOS
