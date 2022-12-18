@@ -255,6 +255,7 @@ class PhysicalKeyboardHandler {
             modifiers[3] = true
         }
         
+        usleep(5000)
         if self.specialKeyToXKeySymMap[text] != nil {
             let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
             print(#function, "sending xKeySym converted from text:", xKeySym)
@@ -269,7 +270,8 @@ class PhysicalKeyboardHandler {
                 print(#function, "sending text lowercased:", text.lowercased())
             }
         }
-            
+        usleep(5000)
+
         if (modifiers[0]) {
             print(#function, "Releasing Control")
             self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
