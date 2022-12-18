@@ -194,10 +194,7 @@ class PhysicalKeyboardHandler {
     }
     
     func isiOSAppOnMac() -> Bool {
-      if #available(iOS 14.0, *) {
-        return ProcessInfo.processInfo.isiOSAppOnMac
-      }
-      return false
+        return self.stateKeeper?.macOs ?? false
     }
     
     var keyCommands: [UIKeyCommand]? {
@@ -219,10 +216,6 @@ class PhysicalKeyboardHandler {
             [UIKeyModifierFlags.command, UIKeyModifierFlags.shift],
             [UIKeyModifierFlags.command, UIKeyModifierFlags.alternate],
             [UIKeyModifierFlags.command, UIKeyModifierFlags.control],
-            [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.alternate],
-            [UIKeyModifierFlags.command, UIKeyModifierFlags.shift, UIKeyModifierFlags.control],
-            [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate],
-            [UIKeyModifierFlags.command, UIKeyModifierFlags.control, UIKeyModifierFlags.alternate, UIKeyModifierFlags.shift]
         ]
         
         commands = []
