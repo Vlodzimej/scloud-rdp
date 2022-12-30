@@ -651,7 +651,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     fileprivate func showOrHideKeyboardButtonDueToExternalKeyboard() {
         var externalKeyboardPresent = false
         if #available(iOS 14.0, *) {
-            log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(GCKeyboard.coalesced)")
+            log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(String(describing: GCKeyboard.coalesced))")
             externalKeyboardPresent = GCKeyboard.coalesced != nil
         }
         if externalKeyboardPresent {

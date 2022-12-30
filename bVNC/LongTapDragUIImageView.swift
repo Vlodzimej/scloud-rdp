@@ -34,12 +34,18 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
     }
             
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
+        //log_callback_str(message: #function)
         if sender.state == .ended {
+            log_callback_str(message: "\(#function): state ended")
+            if (inPanDragging) {
+                sendMouseEventsAndResetButtonState()
+            }
             self.inPanDragging = false
             if !inPanning {
                 // If there was actual pointer interaction to the server, request a refresh
                 self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
             }
+            return
         }
         
         let translation = sender.translation(in: sender.view)
@@ -50,11 +56,12 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
             
             //print ("inPanDragging: \(inPanDragging), inPanning: \(inPanning), thirdDown: \(thirdDown), abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
             // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
-            if (!self.inPanDragging && !self.inPanning && self.thirdDown &&
+            if (!self.inPanDragging && !self.inPanning && indexes == 2 &&
                 (self.inScrolling || abs(scaleY*translation.y)/abs(scaleX*translation.x) > 1.4 )) {
 
                 // If tolerance for scrolling was just exceeded, begin scroll event
                 if (!self.inScrolling) {
+                    resetButtonState()
                     self.inScrolling = true
                     let point = sender.location(in: view)
                     self.viewTransform = view.transform
@@ -71,7 +78,7 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
                 }
                 return
             } else if self.secondDown || self.thirdDown {
-                //print("\(#function), second or third dragging")
+                print("\(#function), second or third dragging")
                 self.inPanDragging = true
                 if let touchView = sender.view {
                     self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
@@ -80,12 +87,14 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
                 }
                 return
             } else if abs(scaleY*translation.y) > 0.25 || abs(scaleX*translation.x) > 0.25 {
+                resetButtonState()
                 panView(sender: sender)
             }
         }
     }
     
     @objc private func handleLongTap(_ sender: UILongPressGestureRecognizer) {
+        log_callback_str(message: #function)
         if let touchView = sender.view {
             if sender.state == .began {
                 AudioServicesPlaySystemSound(1100);

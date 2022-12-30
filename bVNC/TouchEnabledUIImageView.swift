@@ -121,6 +121,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     
     var stateKeeper: StateKeeper?
     var physicalMouseAttached = false
+    var indexes = 0
 
     func initialize() {
         isMultipleTouchEnabled = true
@@ -200,7 +201,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false) {
-        //print(#function)
+        //log_callback_str(message: #function)
         self.width = touchView.frame.width
         self.height = touchView.frame.height
         self.viewTransform = touchView.transform
@@ -223,7 +224,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 if ((!moving && !scrolling) || (moving || scrolling) && timeDiff >= self.timeThreshold) {
                     self.sendPointerEvent(scrolling: scrolling, moving: moving, firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown, fourthDown: fourthDown, fifthDown: fifthDown)
                     if (!moving) {
-                        //print ("Sleeping \(self.timeThreshhold)s before sending up event.")
+                        //log_callback_str(message: "Sleeping \(self.timeThreshhold)s before sending up event.")
                         Thread.sleep(forTimeInterval: self.timeThreshold)
                         self.sendPointerEvent(scrolling: scrolling, moving: moving, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: false)
                     }
@@ -240,7 +241,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     func sendPointerEvent(scrolling: Bool, moving: Bool, firstDown: Bool, secondDown: Bool, thirdDown: Bool, fourthDown: Bool, fifthDown: Bool) {
-        guard let currentInstance = self.stateKeeper?.getCurrentInstance() else {
+        guard (self.stateKeeper?.getCurrentInstance()) != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
@@ -249,6 +250,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         //let timeDiff = timeNow - self.timeLast
         if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
             synced(self) {
+                log_callback_str(message: "sendPointerEvent: sending scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 stateKeeper?.remoteSession?.pointerEvent(
                     totalX: Float32(self.width), totalY: Float32(self.height),
                     x: Float32(self.newX), y: Float32(self.newY),
@@ -284,6 +286,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        log_callback_str(message: #function)
         super.touchesBegan(touches, with: event)
         for touch in touches {
             if let touchView = touch.view {
@@ -295,35 +298,38 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 log_callback_str(message: "Could not unwrap touch.view, sending event at last coordinates.")
             }
             
+            self.moveEventsSinceFingerDown = 0
             for (index, finger)  in self.fingers.enumerated() {
+                indexes = index + 1
                 if finger == nil {
                     self.fingerLock.lock()
                     self.fingers[index] = touch
                     self.fingerLock.unlock()
-                    if index == 0 {
+                    if self.thirdDown {
                         self.inScrolling = false
                         self.inPanning = false
-                        self.moveEventsSinceFingerDown = 0
+                        log_callback_str(message: "Right-click already initiated, skipping first and second index detection")
+                    }
+                    if index == 0 && !self.thirdDown {
+                        self.inScrolling = false
+                        self.inPanning = false
                         log_callback_str(message: "Single index detected, marking this a left-click")
+                        resetButtonState()
                         self.firstDown = true
-                        self.secondDown = false
-                        self.thirdDown = false
                         // Record location only for first index
                         if let touchView = touch.view {
                             self.setViewParameters(point: touch.location(in: touchView), touchView: touchView)
                         }
                     }
-                    if index == 1 {
+                    if index == 1 && !self.thirdDown {
                         log_callback_str(message: "Two indexes detected, marking this a right-click")
-                        self.firstDown = false
-                        self.secondDown = false
+                        resetButtonState()
                         self.thirdDown = true
                     }
                     if index == 2 {
                         log_callback_str(message: "Three indexes detected, marking this a middle-click")
-                        self.firstDown = false
+                        resetButtonState()
                         self.secondDown = true
-                        self.thirdDown = false
                     }
                     break
                 }
@@ -332,6 +338,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        log_callback_str(message: #function)
         super.touchesMoved(touches, with: event)
         for touch in touches {
             if let touchView = touch.view {
@@ -346,12 +353,12 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             for (index, finger) in self.fingers.enumerated() {
                 if let finger = finger, finger == touch {
                     if index == 0 {
-                        if stateKeeper!.macOs || moveEventsSinceFingerDown > 8 {
+                        if stateKeeper!.macOs || moveEventsSinceFingerDown > 12 {
                             //log_callback_str(message: "\(#function) +\(self.firstDown) + \(self.secondDown) + \(self.thirdDown)")
                             self.inPanDragging = true
                             self.sendDownThenUpEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown:     self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
                         } else {
-                            //print("Discarding some touch events")
+                            log_callback_str(message: "Discarding some touch events")
                             moveEventsSinceFingerDown += 1
                         }
                         // Record location only for first index
@@ -365,7 +372,19 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         }
     }
     
+    func resetButtonState() {
+        self.firstDown = false
+        self.secondDown = false
+        self.thirdDown = false
+    }
+    
+    func sendMouseEventsAndResetButtonState() {
+        self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
+        resetButtonState()
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        log_callback_str(message: #function)
         super.touchesEnded(touches, with: event)
         for touch in touches {
             if let touchView = touch.view {
@@ -383,14 +402,18 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                     self.fingers[index] = nil
                     self.fingerLock.unlock()
                     if (index == 0) {
-                        if (self.inLeftDragging || self.tapGestureDetected || self.panGesture?.state == .began || self.pinchGesture?.state == .began) {
-                            log_callback_str(message: "Currently left-dragging, single or double-tapping, panning or zooming and first finger lifted, not sending mouse events.")
+                        if (self.inLeftDragging) {
+                            log_callback_str(message: "Currently left-dragging and first finger lifted, not sending mouse events")
+                        } else if (self.tapGestureDetected && !self.secondDown) {
+                            log_callback_str(message: "Currently single or double-tapping, not middle-clicking and first finger lifted, not sending mouse events")
+                        } else if (self.panGesture?.state == .began) {
+                            log_callback_str(message: "Currently panning and first finger lifted, not sending mouse events")
+                        } else if (self.pinchGesture?.state == .began) {
+                            resetButtonState()
+                            log_callback_str(message: "Currently zooming, not sending mouse events, resetting button state")
                         } else {
-                            log_callback_str(message: "Not panning or zooming and first finger lifted, sending mouse events.")
-                            self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
-                            self.firstDown = false
-                            self.secondDown = false
-                            self.thirdDown = false
+                            log_callback_str(message: "Not panning or zooming and first finger lifted, sending mouse events")
+                            sendMouseEventsAndResetButtonState()
                         }
                         self.tapGestureDetected = false
                     } else {
@@ -400,16 +423,23 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 }
             }
         }
+        /*
+        if (self.thirdDown) {
+            log_callback_str(message: "Right-click was previously initiated, sending right mouse up event.")
+            self.thirdDown = false
+            self.sendPointerEvent(scrolling: false, moving: false, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
+        }*/
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
+        log_callback_str(message: #function)
         super.touchesCancelled(touches!, with: event)
         guard let touches = touches else { return }
         self.touchesEnded(touches, with: event)
     }
     
     @objc func handleHovering(_ sender: UIHoverGestureRecognizer) {
-        //print(#function)
+        log_callback_str(message: "\(#function) scrolling: false, moving: true, firstDown: \(self.firstDown), secondDown: \(self.secondDown), thirdDown: \(self.thirdDown), fourthDown: false, fifthDown: false, inLeftDragging: \(self.inLeftDragging)")
         sendPointerEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
         if let touchView = sender.view {
             self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
@@ -419,6 +449,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
 
     @objc func handleZooming(_ sender: UIPinchGestureRecognizer) {
+        log_callback_str(message: #function)
         if (self.stateKeeper?.allowZooming != true || self.secondDown || self.inScrolling || self.inPanning) {
             return
         }
@@ -443,11 +474,11 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     @objc private func handleTap(_ sender: UITapGestureRecognizer) {
+        log_callback_str(message: #function)
         if !self.secondDown && !self.thirdDown {
             self.tapGestureDetected = true
+            resetButtonState()
             self.firstDown = true
-            self.secondDown = false
-            self.thirdDown = false
             if let touchView = sender.view {
                 let timeNow = CACurrentMediaTime()
                 if timeNow - tapLast > doubleTapTimeThreshold {
@@ -468,9 +499,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 }
                 self.tapLast = timeNow
                 self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
-                self.firstDown = false
-                self.secondDown = false
-                self.thirdDown = false
+                resetButtonState()
             }
         } else {
             log_callback_str(message: "Other fingers were down, not acting on single tap")
@@ -478,6 +507,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
 
     func panView(sender: UIPanGestureRecognizer) -> Void {
+        log_callback_str(message: #function)
         var tempVerticalOnlyPan = false
         if !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
             // Panning is disallowed and keyboard is not up, not doing anything
@@ -492,7 +522,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             let scaleY = sender.view!.transform.d
             let translation = sender.translation(in: sender.view)
 
-            //print("\(#function), panning")
+            //log_callback_str(message: "\(#function), panning")
             self.inPanning = true
             var newCenterX = view.center.x + scaleX*translation.x
             var newCenterY = view.center.y + scaleY*translation.y
@@ -515,10 +545,17 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-        //print(#function, interaction)
+        log_callback_str(message: #function)
+        if self.firstDown {
+            return nil
+        }
         if let view = interaction.view {
             self.setViewParameters(point: interaction.location(in: view), touchView: view, setDoubleTapCoordinates: true)
-            self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: false, secondDown: false, thirdDown: true, fourthDown: false, fifthDown: false)
+            if stateKeeper?.macOs == true {
+                self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: false, secondDown: false, thirdDown: true, fourthDown: false, fifthDown: false)
+            } else {
+                self.thirdDown = true
+            }
         } else {
             log_callback_str(message: "Could not unwrap interaction.view, sending event at last coordinates.")
         }
@@ -526,7 +563,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
 
     @objc func handleDrag(_ sender: UILongPressGestureRecognizer) {
-        //print(#function, sender)
+        log_callback_str(message: #function)
         if let view = sender.view {
             self.setViewParameters(point: sender.location(in: view), touchView: view, setDoubleTapCoordinates: false)
             switch sender.state {
@@ -548,10 +585,10 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
 
     @objc private func handlePrimaryClick(_ sender: UITapGestureRecognizer) {
-        print(#function, sender)
+        log_callback_str(message: #function)
     }
 
     @objc private func handleSecondaryClick(_ sender: UITapGestureRecognizer) {
-        print(#function, sender)
+        log_callback_str(message: #function)
     }
 }
