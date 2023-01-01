@@ -546,16 +546,14 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         log_callback_str(message: #function)
+        if self.firstDown {
+            return nil
+        }
         if let view = interaction.view {
             self.setViewParameters(point: interaction.location(in: view), touchView: view, setDoubleTapCoordinates: true)
-            if stateKeeper?.macOs == true || self.firstDown {
-                // If this is a Mac or the context event comes after touchesBegan (long-click for context), then we immediately
-                // send right-click down/up event.
-                self.firstDown = false
+            if stateKeeper?.macOs == true {
                 self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: false, secondDown: false, thirdDown: true, fourthDown: false, fifthDown: false)
             } else {
-                // Otherwise, this is a multi-touch context event which happened immediately, without a long-click, so
-                // we treat it as a right-click gesture
                 self.thirdDown = true
             }
         } else {
