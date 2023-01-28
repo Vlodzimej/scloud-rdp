@@ -60,3 +60,4 @@
 "APP_NAME" = " ";
 "COMPANY_NAME" = " ";
 "SEARCH_CONNECTION_TEXT" = "연결 검색";
+"DEFAULT_SETTINGS_LABEL" = "기본 설정 편집";

@@ -20,6 +20,9 @@
 import Foundation
 
 class Constants {
+    class var DEFAULT_SETTINGS_FLAG: Int { return -777 }
+    class var SAVED_CONNECTIONS_KEY: String { return "connections" }
+    class var SAVED_DEFAULT_SETTINGS_KEY: String { return "defaults" }
     class var DEFAULT_LAYOUT: String { return "English (US)" }
     class var LAYOUT_PATH: String { return "aSPICE-resources/Resources/layouts/" }
     class var MIN_RESOLUTION_IOS: Double { return 768.0 }

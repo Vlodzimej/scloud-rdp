@@ -175,7 +175,7 @@ struct ConnectionsList : View {
     @ObservedObject var stateKeeper: StateKeeper
     @State var searchConnectionText: String
     @State var connections: [Dictionary<String, String>]
-
+    
     func connect(index: Int) {
         if self.stateKeeper.currentPage != "connectionInProgress" {
             self.stateKeeper.currentPage = "connectionInProgress"
@@ -183,7 +183,7 @@ struct ConnectionsList : View {
             self.stateKeeper.connectSaved(connection: connection)
         }
     }
-
+    
     func edit(index: Int) {
         let connection = self.elementAt(index: index)
         self.stateKeeper.editConnection(connection: connection)
@@ -215,21 +215,6 @@ struct ConnectionsList : View {
         ScrollView {
             VStack {
                 HStack() {
-                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding, onCommit: {
-                        self.search()
-                    }).autocapitalization(.none).font(.title).padding(50)
-
-                    Button(action: {
-                        self.search()
-                    }) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "magnifyingglass")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 32, height: 32)
-                        }.padding()
-                    }
-                    
                     Button(action: {
                         self.stateKeeper.addNewConnection()
                     }) {
@@ -266,8 +251,37 @@ struct ConnectionsList : View {
                             Text("LOG_LABEL")
                         }.padding()
                     }
+                    
+                    Button(action: {
+                        self.stateKeeper.editDefaultSetting()
+                    }) {
+                        VStack(spacing: 10) {
+                            Image(systemName: "gearshape")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 32, height: 32)
+                            Text("DEFAULT_SETTINGS_LABEL")
+                        }.padding()
+                    }
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
                 
+                HStack() {
+                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding, onCommit: {
+                        self.search()
+                    }).autocapitalization(.none).font(.title).padding(50)
+
+                    Button(action: {
+                        self.search()
+                    }) {
+                        VStack(spacing: 10) {
+                            Image(systemName: "magnifyingglass")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 32, height: 32)
+                        }.padding()
+                    }
+                }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
+
                 ForEach(0 ..< self.connections.count) { i in
                     Button(action: {
                     }) {

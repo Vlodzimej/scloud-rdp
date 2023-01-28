@@ -64,3 +64,4 @@
 "COMPANY_NAME" = " ";
 "APP_MUST_EXIT_TITLE" = "Due to an unexpected error, the application must exit. Please restart and try again.";
 "SEARCH_CONNECTION_TEXT" = "Search Connections";
+"DEFAULT_SETTINGS_LABEL" = "Edit Default Settings";

@@ -265,8 +265,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func connectWithConsoleFile (consoleFile: String) {
         self.connectedWithConsoleFileOrUri = true
-        let connection: [String: String] = ["consoleFile": consoleFile,
-                                            "screenShotFile": ""]
+        var connection: [String: String] = self.connections.defaultSettings
+        connection["consoleFile"] = consoleFile
+        connection["screenShotFile"] = ""
         self.connect(connection: connection)
     }
 
@@ -426,7 +427,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func addNewConnection() {
         log_callback_str(message: "Adding new connection and navigating to connection setup screen")
-        self.connections.deselectConnection()
+        self.connections.addNewConnection()
         UserInterface {
             self.currentPage = "addOrEditConnection"
         }
@@ -435,6 +436,14 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func editConnection(connection: Dictionary<String, String>) {
         log_callback_str(message: "Editing connection and navigating to setup screen")
         self.connections.edit(connection: connection)
+        UserInterface {
+            self.currentPage = "addOrEditConnection"
+        }
+    }
+    
+    func editDefaultSetting() {
+        log_callback_str(message: "Editing default settings and navigating to setup screen")
+        self.connections.editDefaultSettings()
         UserInterface {
             self.currentPage = "addOrEditConnection"
         }

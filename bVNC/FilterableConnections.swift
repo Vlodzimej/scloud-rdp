@@ -16,6 +16,7 @@ class FilterableConnections : ObservableObject {
     private var searchConnectionText = ""
     var selectedFilteredConnectionIndex = -1
     var selectedUnfilteredConnectionIndex = -1
+    var defaultSettings: Dictionary<String, String> = [:]
     var selectedConnection: Dictionary<String, String> = [:]
     var editedConnection: Dictionary<String, String> = [:]
     
@@ -28,7 +29,10 @@ class FilterableConnections : ObservableObject {
     }
     
     func loadConnections() {
-        self.allConnections = self.settings.array(forKey: "connections") as? [Dictionary<String, String>] ?? []
+        self.defaultSettings = self.settings.object(
+            forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY) as? Dictionary<String, String> ?? [:]
+        self.allConnections = self.settings.array(
+            forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
         self.filteredConnections = self.allConnections
         self.filterConnections()
     }
@@ -71,13 +75,24 @@ class FilterableConnections : ObservableObject {
     }
     
     func filterConnections() {
-        self.filteredConnections = allConnections.filter({ (connection) -> Bool in searchConnectionText == "" || buildTitle(connection: connection).contains(searchConnectionText)})
+        self.filteredConnections = allConnections.filter(
+            { (connection) -> Bool in
+                searchConnectionText == "" || buildTitle(connection: connection).contains(searchConnectionText)
+            })
     }
     
     func edit(connection: Dictionary<String, String>) -> Void {
         log_callback_str(message: #function)
         self.editedConnection = connection
         self.select(connection: connection)
+    }
+    
+    func editDefaultSettings() -> Void {
+        log_callback_str(message: #function)
+        selectedFilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
+        selectedUnfilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
+        self.selectedConnection = defaultSettings
+        self.editedConnection = defaultSettings
     }
     
     func select(connection: Dictionary<String, String>) -> Void {
@@ -105,7 +120,8 @@ class FilterableConnections : ObservableObject {
         if selectedUnfilteredConnectionIndex >= 0 {
             self.allConnections[selectedUnfilteredConnectionIndex] = selectedConnection
         }
-        self.settings.set(self.allConnections, forKey: "connections")
+        self.settings.set(self.allConnections, forKey: Constants.SAVED_CONNECTIONS_KEY)
+        self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
     }
     
     func deselectConnection() {
@@ -114,6 +130,12 @@ class FilterableConnections : ObservableObject {
         self.selectedUnfilteredConnectionIndex = -1
         self.selectedConnection = [:]
         self.editedConnection = [:]
+    }
+    
+    func addNewConnection() {
+        log_callback_str(message: "\(#function)")
+        self.deselectConnection()
+        self.copyConnectionIntoSelectedConnection(connection: self.defaultSettings)
     }
     
     func deleteCurrentConnection() {
@@ -135,19 +157,27 @@ class FilterableConnections : ObservableObject {
     
     func saveConnection(connection: Dictionary<String, String>) {
         // Negative index indicates we are adding a connection, otherwise we are editing one.
-        if (selectedFilteredConnectionIndex < 0) {
+        if (selectedFilteredConnectionIndex == Constants.DEFAULT_SETTINGS_FLAG) {
+            log_callback_str(message: "Saving default settings")
+            self.defaultSettings = connection
+        } else if (selectedFilteredConnectionIndex < 0) {
             log_callback_str(message: "Saving a new connection and navigating to list of connections")
             self.allConnections.append(connection)
         } else {
-            log_callback_str(message: "Saving a connection at index \(self.selectedFilteredConnectionIndex) and navigating to list of connections")
-            connection.forEach() { setting in // Iterate through new settings to avoid losing e.g. ssh and x509 fingerprints
-                self.selectedConnection[setting.key] = setting.value
-            }
+            log_callback_str(message: "Saving a connection at index \(self.selectedFilteredConnectionIndex) " +
+                             "and navigating to list of connections")
+            copyConnectionIntoSelectedConnection(connection: connection)
         }
         self.saveConnections()
         self.filterConnections()
         self.deselectConnection()
         self.stateKeeper?.showConnections()
+    }
+    
+    func copyConnectionIntoSelectedConnection(connection: Dictionary<String, String>) {
+        connection.forEach() { setting in // Iterate through new settings to avoid losing e.g. ssh and x509 fingerprints
+            self.selectedConnection[setting.key] = setting.value
+        }
     }
     
     func selectedConnectionAllowsZoomingOrPanning(setting: String) -> Bool {
@@ -159,7 +189,9 @@ class FilterableConnections : ObservableObject {
         guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
             return false
         }
-        guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
+        guard let directory = try? FileManager.default.url(
+            for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
+        ) as NSURL else {
             return false
         }
         do {
