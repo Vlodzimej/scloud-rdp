@@ -460,13 +460,13 @@ struct AddOrEditConnectionPage : View {
                     VStack {
                         Toggle(isOn: $showSshTunnelSettings) {
                             Text("SHOW_SSH_TUNNEL_SETTINGS_LABEL")
-                        }
+                        }.font(.title)
                     }.padding()
                 }
 
                 if self.showSshTunnelSettings {
                 VStack {
-                    Text("SSH_TUNNEL_LABEL").font(.headline)
+                    Text("SSH_TUNNEL_LABEL").font(.title)
                     TextField(self.stateKeeper.localizedString(for: "SSH_SERVER_LABEL"), text: $sshAddressText).autocapitalization(.none).font(.title)
                     TextField(self.stateKeeper.localizedString(for: "SSH_PORT_LABEL"), text: $sshPortText).autocapitalization(.none).font(.title)
                     TextField(self.stateKeeper.localizedString(for: "SSH_USER_LABEL"), text: $sshUserText).autocapitalization(.none).font(.title)
@@ -475,7 +475,7 @@ struct AddOrEditConnectionPage : View {
                     VStack {
                         Divider()
                         HStack {
-                            Text("SSH_KEY_LABEL").font(.headline)
+                            Text("SSH_KEY_LABEL").font(.title)
                             Divider()
                             MultilineTextView(placeholder: "", text: $sshPrivateKeyText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
                             Divider()
@@ -486,7 +486,7 @@ struct AddOrEditConnectionPage : View {
                 }
                 
                 VStack {
-                    Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.headline)
+                    Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.title)
                     TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
                     TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
                     if Utils.isSpice() {
@@ -494,7 +494,7 @@ struct AddOrEditConnectionPage : View {
                     }
                 }.padding()
 
-                VStack {
+                VStack(alignment: .leading) {
                     if Utils.isRdp() {
                         TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
                     }
@@ -505,12 +505,23 @@ struct AddOrEditConnectionPage : View {
                     }
                     SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
                     
+                    if Utils.isSpice() || Utils.isRdp() {
+                        HStack {
+                            Text("KEYBOARD_LAYOUT_LABEL").font(.title)
+                            Picker("", selection: $keyboardLayoutText) {
+                                ForEach(self.getKeyboardLayouts(), id: \.self) {
+                                    Text($0).font(.title)
+                                }
+                            }.font(.title).padding()
+                        }
+                    }
+                    
                     if Utils.isSpice() {
                         TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
                         VStack {
                             Divider()
                             HStack {
-                                Text("CERT_AUTHORITY_LABEL").font(.headline)
+                                Text("CERT_AUTHORITY_LABEL").font(.title)
                                 Divider()
                                 MultilineTextView(placeholder: "", text: $certAuthorityText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
                                 Divider()
@@ -518,23 +529,15 @@ struct AddOrEditConnectionPage : View {
                             Divider()
                         }
                     }
-                    
-                    if Utils.isSpice() || Utils.isRdp() {
-                        Picker("Keyboard Layout", selection: $keyboardLayoutText) {
-                            ForEach(self.getKeyboardLayouts(), id: \.self) {
-                                Text($0)
-                            }
-                        }
-                    }
                 }.padding()
                 
                 VStack {
-                    Text("USER_INTERFACE_SETTINGS_LABEL").font(.headline)
+                    Text("USER_INTERFACE_SETTINGS_LABEL").font(.title)
                     Toggle(isOn: $allowZooming) {
-                        Text("ALLOW_DESKTOP_ZOOMING_LABEL")
+                        Text("ALLOW_DESKTOP_ZOOMING_LABEL").font(.title)
                     }
                     Toggle(isOn: $allowPanning) {
-                        Text("ALLOW_DESKTOP_PANNING_LABEL")
+                        Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
                     }
                 }.padding()
             }
