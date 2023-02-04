@@ -1,3 +1,8 @@
+1.0.19
+  - Labeled Keyboard Layout Picker
+  - Adjusted font sizes in connection settings
+  - Fix for window not redrawing as it is being resized
+  - Fix for unnecessary empty space at the bottom of connection settings
 1.0.18
   - Ability to edit Default Settings
 1.0.17
