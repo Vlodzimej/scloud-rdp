@@ -325,6 +325,8 @@ class RemoteSession {
     func resolution() -> [Int] {
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
+        log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
+        
         var newScreenWidth = screenWidth
         var newScreenHeight = screenHeight
         
@@ -333,11 +335,15 @@ class RemoteSession {
             globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
             #endif
         } else {
-            if (screenWidth <= Constants.MIN_RESOLUTION_IOS ||
-                screenHeight <= Constants.MIN_RESOLUTION_IOS) {
+            log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
+            if (screenWidth > Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS ||
+                screenHeight > Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS) {
+                log_callback_str(message: "Not scaling resolution up. At least one side is > \(Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS)")
+            } else {
                 // If width or height are too small, scale dimensions up when requesting remote resolution
                 newScreenWidth = screenWidth * Constants.MIN_RESOLUTION_SCALE_UP_FACTOR
                 newScreenHeight = screenHeight * Constants.MIN_RESOLUTION_SCALE_UP_FACTOR
+                log_callback_str(message: "Automatically scaled iOS resolution up to \(newScreenWidth)x\(newScreenHeight)")
             }
         }
         return [Int(newScreenWidth), Int(newScreenHeight)]

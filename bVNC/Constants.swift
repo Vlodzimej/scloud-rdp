@@ -25,6 +25,6 @@ class Constants {
     class var SAVED_DEFAULT_SETTINGS_KEY: String { return "defaults" }
     class var DEFAULT_LAYOUT: String { return "English (US)" }
     class var LAYOUT_PATH: String { return "aSPICE-resources/Resources/layouts/" }
-    class var MIN_RESOLUTION_IOS: Double { return 768.0 }
+    class var MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS: Double { return 2000.0 }
     class var MIN_RESOLUTION_SCALE_UP_FACTOR: Double { return 1.5 }
 }
