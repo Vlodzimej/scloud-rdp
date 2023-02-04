@@ -536,7 +536,6 @@ struct AddOrEditConnectionPage : View {
                     Toggle(isOn: $allowPanning) {
                         Text("ALLOW_DESKTOP_PANNING_LABEL")
                     }
-                    Text("").padding(.bottom, 1000)
                 }.padding()
             }
         }
