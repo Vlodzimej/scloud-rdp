@@ -950,6 +950,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 }
                 self.showConnectedSession()
                 self.keepSessionRefreshed()
+                self.reDraw()
             }
         }
     }
