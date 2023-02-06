@@ -1,3 +1,7 @@
+1.0.20
+  - Fix for arrow keys in several keyboard layouts.
+  - Support for RAlt / AltGr
+  - Fix for modifier keys released after text sent.
 1.0.19
   - Labeled Keyboard Layout Picker
   - Adjusted font sizes in connection settings
