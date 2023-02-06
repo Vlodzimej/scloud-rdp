@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -126,7 +126,7 @@
 		AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDF260180D100DAA44B /* libvorbisenc.a */; };
 		AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC13260180DC00DAA44B /* libvorbisfile.a */; };
 		AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF8260180D500DAA44B /* libvorbisidec.a */; };
-		AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0D260180DA00DAA44B /* libvpx.a */; };
+		AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0D260180DA00DAA44B /* libvpx.a */; platformFilter = ios; };
 		AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC16260180DD00DAA44B /* libwavpack.a */; };
 		AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0E260180DA00DAA44B /* libxml2.a */; };
 		AF44CE03260197FA00DAA44B /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC1A260180DD00DAA44B /* libz.a */; };
@@ -1266,11 +1266,11 @@
 				AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */,
 				AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */,
 				AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */,
-				AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */,
 				AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */,
 				AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */,
 				AF44CE03260197FA00DAA44B /* libz.a in Frameworks */,
 				AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */,
+				AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
