@@ -112,8 +112,13 @@ class PhysicalKeyboardHandler {
             }
             if key.modifierFlags.contains(.alternate) {
                 altOrCtrlDown = true
-                print(#function, "Alt")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
+                if key.keyCode == .keyboardRightAlt {
+                    print(#function, "RAlt")
+                    self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_R)
+                } else {
+                    print(#function, "LAlt")
+                    self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
+                }
             }
             if key.modifierFlags.contains(.shift) {
                 shiftDown = true
@@ -174,8 +179,13 @@ class PhysicalKeyboardHandler {
                 self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
             }
             if key.modifierFlags.contains(.alternate) {
-                print(#function, "Alt")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
+                if key.keyCode == .keyboardRightAlt {
+                    print(#function, "RAlt")
+                    self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_R)
+                } else {
+                    print(#function, "LAlt")
+                    self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
+                }
             }
             if key.modifierFlags.contains(.shift) {
                 print(#function, "Shift")
