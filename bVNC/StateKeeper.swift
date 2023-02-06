@@ -847,10 +847,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func toggleModifiersIfDown() {
-        modifiers.forEach {
-            releaseModifierIfDown(modifier: $0.key)
-        }
-
         self.modifierButtons.forEach() { button in
             //print ("Toggling \(button.key) if down")
             (button.value as! ToggleButton).sendUpIfToggled()
