@@ -259,7 +259,7 @@ class RemoteSession {
     class var HOME: Int { return 327 }
     class var END: Int { return 335 }
     class var DEL: Int { return 83 }
-    
+
     var layoutMap: [Int: [Int]] = [:]
     class var UNICODE_MASK: Int { return 0x100000 }
     class var SCANCODE_SHIFT_MASK: Int { return 0x10000 }
@@ -294,19 +294,19 @@ class RemoteSession {
     ]
     
     var xKeySymToScanCode: [Int32: Int] = [
-        XK_Super_L: SpiceSession.LWIN,
-        XK_Super_R: SpiceSession.RWIN,
-        XK_Control_L: SpiceSession.LCONTROL,
-        XK_Control_R: SpiceSession.RCONTROL,
-        XK_Alt_L: SpiceSession.LALT,
-        XK_Alt_R: SpiceSession.RALT,
-        XK_Shift_L: SpiceSession.LSHIFT,
-        XK_Shift_R: SpiceSession.RSHIFT,
-        XK_Page_Up: SpiceSession.PAGE_UP,
-        XK_Page_Down: SpiceSession.PAGE_DOWN,
-        XK_Home: SpiceSession.HOME,
-        XK_End: SpiceSession.END,
-        XK_Delete: SpiceSession.DEL
+        XK_Super_L: RemoteSession.LWIN,
+        XK_Super_R: RemoteSession.RWIN,
+        XK_Control_L: RemoteSession.LCONTROL,
+        XK_Control_R: RemoteSession.RCONTROL,
+        XK_Alt_L: RemoteSession.LALT,
+        XK_Alt_R: RemoteSession.RALT,
+        XK_Shift_L: RemoteSession.LSHIFT,
+        XK_Shift_R: RemoteSession.RSHIFT,
+        XK_Page_Up: RemoteSession.PAGE_UP,
+        XK_Page_Down: RemoteSession.PAGE_DOWN,
+        XK_Home: RemoteSession.HOME,
+        XK_End: RemoteSession.END,
+        XK_Delete: RemoteSession.DEL
     ]
     
     init(instance: Int, stateKeeper: StateKeeper) {
@@ -422,5 +422,13 @@ class RemoteSession {
     
     @objc func sendScreenUpdateRequest(incrementalUpdate: Bool) {
         preconditionFailure("This method must be overridden")
+    }
+    
+    func getScanCodesForUnicodeChar(char: Int)-> [Int] {
+        let layoutMapKey = char | RemoteSession.UNICODE_MASK
+        //log_callback_str(message: "Unicode char: \(char) converts to layoutMapKey: \(layoutMapKey)")
+        let scanCodes = self.layoutMap[layoutMapKey] ?? []
+        //log_callback_str(message: "Unicode char: \(char) looked up to scanCodes: \(scanCodes)")
+        return scanCodes
     }
 }

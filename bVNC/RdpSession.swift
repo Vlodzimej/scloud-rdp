@@ -269,34 +269,33 @@ class RdpSession: RemoteSession {
     }
     
     override func sendUnicodeKeyEvent(char: Int) {
-        let scanCodes = self.layoutMap[char | RemoteSession.UNICODE_MASK] ?? []
-        print("Unicode:", char, "converted to:", scanCodes)
+        let scanCodes = getScanCodesForUnicodeChar(char: char)
         for scanCode in scanCodes {
             var scode = scanCode
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
-                print("Found SCANCODE_SHIFT_MASK, sending Shift down")
+                log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift down")
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
                            Int32(getVirtualScanCode(code: RdpSession.LSHIFT)))
                 scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
-                print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
+                log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr down")
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
                            Int32(getVirtualScanCode(code: RdpSession.RALT)))
                 scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
             }
         
-            print("RdpSession: sendUnicodeKeyEvent: ", scode)
+            //log_callback_str(message: "RdpSession: sendUnicodeKeyEvent: \(scode)")
             vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
             vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
             
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
-                print("Found SCANCODE_SHIFT_MASK, sending Shift up")
+                log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift up")
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
                            Int32(getVirtualScanCode(code: RdpSession.LSHIFT)))
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
-                print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
+                log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr up")
                 vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
                            Int32(getVirtualScanCode(code: RdpSession.RALT)))
             }
@@ -321,7 +320,7 @@ class RdpSession: RemoteSession {
             let scode = getVirtualScanCode(code: code)
             var keyFlags = RdpSession.KBD_FLAGS_DOWN
             keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
-            print("RdpSession: sendModifierIfNotDown, code: \(code), scode: \(scode)")
+            log_callback_str(message: "RdpSession: sendModifierIfNotDown, code: \(code), scode: \(scode)")
             vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
         }
     }
@@ -333,7 +332,7 @@ class RdpSession: RemoteSession {
             let scode = getVirtualScanCode(code: code)
             var keyFlags = RdpSession.KBD_FLAGS_RELEASE
             keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
-            print("RdpSession: releaseModifierIfDown, code: \(code), scode: \(scode)")
+            log_callback_str(message: "RdpSession: releaseModifierIfDown, code: \(code), scode: \(scode)")
             vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
         }
     }
@@ -350,7 +349,7 @@ class RdpSession: RemoteSession {
         let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         let d: Int = down ? RdpSession.KBD_FLAGS_DOWN : RdpSession.KBD_FLAGS_RELEASE
         for scode in scanCodes {
-            print("RdpSession: sendSpecialKeyByXKeySym: ", scode)
+            log_callback_str(message: "RdpSession: sendSpecialKeyByXKeySym: \(scode)")
             vkKeyEvent(self.cl, Int32(d), Int32(scode))
         }
     }

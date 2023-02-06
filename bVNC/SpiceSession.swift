@@ -241,34 +241,31 @@ class SpiceSession: RemoteSession {
     }
     
     override func sendUnicodeKeyEvent(char: Int) {
-        let scanCodes = self.layoutMap[char | RemoteSession.UNICODE_MASK] ?? []
-        print("Unicode:", char, "converted to:", scanCodes)
+        let scanCodes = getScanCodesForUnicodeChar(char: char)
         for scanCode in scanCodes {
-            //Background {
-                var scode = scanCode
-                if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
-                    //print("Found SCANCODE_SHIFT_MASK, sending Shift down")
-                    spiceKeyEvent(1, Int32(SpiceSession.LSHIFT))
-                    scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
-                }
-                if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
-                    //print("Found SCANCODE_ALTGR_MASK, sending AltGr down")
-                    spiceKeyEvent(1, Int32(SpiceSession.RALT))
-                    scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
-                }
-                
-                spiceKeyEvent(1, Int32(scode))
-                spiceKeyEvent(0, Int32(scode))
-                
-                if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
-                    //print("Found SCANCODE_SHIFT_MASK, sending Shift up")
-                    spiceKeyEvent(0, Int32(SpiceSession.LSHIFT))
-                }
-                if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
-                    //print("Found SCANCODE_ALTGR_MASK, sending AltGr up")
-                    spiceKeyEvent(0, Int32(SpiceSession.RALT))
-                }
-            //}
+            var scode = scanCode
+            if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
+                log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift down")
+                spiceKeyEvent(1, Int32(SpiceSession.LSHIFT))
+                scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
+            }
+            if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr down")
+                spiceKeyEvent(1, Int32(SpiceSession.RALT))
+                scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
+            }
+            
+            spiceKeyEvent(1, Int32(scode))
+            spiceKeyEvent(0, Int32(scode))
+            
+            if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
+                log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift up")
+                spiceKeyEvent(0, Int32(SpiceSession.LSHIFT))
+            }
+            if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr up")
+                spiceKeyEvent(0, Int32(SpiceSession.RALT))
+            }
         }
     }
     
@@ -276,7 +273,7 @@ class SpiceSession: RemoteSession {
         let scode = xKeySymToScanCode[modifier] ?? 0
         if scode != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
-            //print("SpiceSession: Sending modifier scancode", scode)
+            log_callback_str(message: "SpiceSession: Sending modifier scancode \(scode)")
             spiceKeyEvent(1, Int32(scode))
         }
     }
@@ -285,7 +282,7 @@ class SpiceSession: RemoteSession {
         let scode = xKeySymToScanCode[modifier] ?? 0
         if scode != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
-            //print("SpiceSession: Releasing modifier scancode", scode)
+            log_callback_str(message: "SpiceSession: Releasing modifier scancode \(scode)")
             spiceKeyEvent(0, Int32(scode))
         }
     }
@@ -293,10 +290,8 @@ class SpiceSession: RemoteSession {
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
         let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         for scanCode in scanCodes {
-            //Background {
-                spiceKeyEvent(1, Int32(scanCode))
-                spiceKeyEvent(0, Int32(scanCode))
-            //}
+            spiceKeyEvent(1, Int32(scanCode))
+            spiceKeyEvent(0, Int32(scanCode))
         }
     }
     
@@ -304,9 +299,7 @@ class SpiceSession: RemoteSession {
         let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         let d: Int16 = down ? 1 : 0
         for scanCode in scanCodes {
-            //Background {
-                spiceKeyEvent(d, Int32(scanCode))
-            //}
+            spiceKeyEvent(d, Int32(scanCode))
         }
     }
 
