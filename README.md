@@ -6,9 +6,11 @@ bVNC is a VNC client for iOS and Mac OS X. aSPICE is a SPICE Client for iOS and 
 
 ## Links to Apple App Store
 
-bVNC Pro is available at [bVNC Pro](https://apps.apple.com/ca/app/bvnc-pro/id1506461202).
+bVNC Pro is available at [bVNC Pro](https://apps.apple.com/app/bvnc-pro/id1506461202).
 
-aSPICE Pro is available at [aSPICE Pro](https://apps.apple.com/ca/app/aspice-pro/id1560593107).
+aSPICE Pro is available at [aSPICE Pro](https://apps.apple.com/app/aspice-pro/id1560593107).
+
+aRDP is available at [aRDP Pro](https://apps.apple.com/app/ardp-pro/id1620745523)
 
 ## Building
 
