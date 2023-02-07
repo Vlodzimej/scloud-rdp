@@ -12,12 +12,15 @@ aSPICE Pro is available at [aSPICE Pro](https://apps.apple.com/ca/app/aspice-pro
 
 ## Building
 
+The libraries that come bundled with this projects have been verified to build up to Big Sur with XCode 13.4.1.
+
+Your contributions with fixes for later MacOS versions and XCode are welcome.
+
 ### Building Libraries
 First, build dependent libraries, optionally providing the type of build as a parameter:
 
 ```bash
 ./build-libs.sh Debug
-
 ```
 
 ### Gotchas
