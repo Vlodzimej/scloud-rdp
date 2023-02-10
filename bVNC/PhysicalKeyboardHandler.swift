@@ -110,15 +110,14 @@ class PhysicalKeyboardHandler {
                 print(#function, "Control")
                 self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Control_L)
             }
-            if key.modifierFlags.contains(.alternate) {
+            if key.keyCode == .keyboardRightAlt {
                 altOrCtrlDown = true
-                if key.keyCode == .keyboardRightAlt {
-                    print(#function, "RAlt")
-                    self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_R)
-                } else {
-                    print(#function, "LAlt")
-                    self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
-                }
+                print(#function, "RAlt")
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_R)
+            } else if key.keyCode == .keyboardLeftAlt {
+                altOrCtrlDown = true
+                print(#function, "LAlt")
+                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 shiftDown = true
@@ -151,12 +150,13 @@ class PhysicalKeyboardHandler {
                 } else {
                     text = key.charactersIgnoringModifiers
                 }
+                print(#function, "Text extracted from event: \(text)")
                 if self.specialKeyToXKeySymMap[text] != nil {
                     let xKeySym = self.specialKeyToXKeySymMap[text] ?? 0
-                    print(#function, "sending xKeySym converted from text:", xKeySym)
+                    print(#function, "Sending text \(text) converted to xKeySym \(xKeySym) with specialKeyToXKeySymMap")
                     self.stateKeeper?.sendSpecialKeyByXKeySym(key: xKeySym)
                 } else {
-                    print(#function, "sending text:", text)
+                    print(#function, "Sending text: \(text)")
                     textInput?.insertText(text)
                 }
             }
@@ -165,6 +165,11 @@ class PhysicalKeyboardHandler {
 
     func pressesEnded(_ presses: Set<UIPress>,
                                with event: UIPressesEvent?) {
+        guard self.stateKeeper?.getCurrentInstance() != nil else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        
         for p in presses {
             guard let key = p.key else {
                 continue
@@ -178,14 +183,12 @@ class PhysicalKeyboardHandler {
                 print(#function, "Control")
                 self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
             }
-            if key.modifierFlags.contains(.alternate) {
-                if key.keyCode == .keyboardRightAlt {
-                    print(#function, "RAlt")
-                    self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_R)
-                } else {
-                    print(#function, "LAlt")
-                    self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
-                }
+            if key.keyCode == .keyboardRightAlt {
+                print(#function, "RAlt")
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_R)
+            } else if key.keyCode == .keyboardLeftAlt {
+                print(#function, "LAlt")
+                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 print(#function, "Shift")
