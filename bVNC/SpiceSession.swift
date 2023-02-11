@@ -237,11 +237,11 @@ class SpiceSession: RemoteSession {
     override func keyEvent(char: Unicode.Scalar) {
         let char = String(char.value)
         let unicodeInt = Int(char)!
-        sendUnicodeKeyEvent(char: unicodeInt)
+        sendUnicodeKeyEvent(char: unicodeInt | RemoteSession.UNICODE_MASK)
     }
     
     override func sendUnicodeKeyEvent(char: Int) {
-        let scanCodes = getScanCodesForUnicodeChar(char: char)
+        let scanCodes = getScanCodesForKeyCodeChar(char: char)
         for scanCode in scanCodes {
             var scode = scanCode
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {

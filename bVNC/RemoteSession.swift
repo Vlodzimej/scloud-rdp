@@ -267,30 +267,30 @@ class RemoteSession {
     class var SCANCODE_CIRCUMFLEX_MASK: Int { return 0x40000 }
     class var SCANCODE_DIAERESIS_MASK: Int { return 0x80000 }
 
-    var specialXKeySymToUnicodeMap: [Int32: Int] = [
-        XK_F1: 0xF704,
-        XK_F2: 0xF705,
-        XK_F3: 0xF706,
-        XK_F4: 0xF707,
-        XK_F5: 0xF708,
-        XK_F6: 0xF709,
-        XK_F7: 0xF70A,
-        XK_F8: 0xF70B,
-        XK_F9: 0xF70C,
-        XK_F10: 0xF70D,
-        XK_F11: 0xF70E,
-        XK_F12: 0xF70F,
-        XK_Escape: 0x001B,
-        XK_Tab: 0x0009,
-        XK_Home: 0x21F1,
-        XK_End: 0x21F2,
-        XK_Page_Up: 0x21DE,
-        XK_Page_Down: 0x21DF,
-        XK_Up: 0x2191,
-        XK_Down: 0x2193,
-        XK_Left: 0x2190,
-        XK_Right: 0x2192,
-        XK_BackSpace: 0x0008,
+    var specialXKeySymToLayoutMapKey: [Int32: Int] = [
+        XK_F1: 0xF704 | RemoteSession.UNICODE_MASK,
+        XK_F2: 0xF705 | RemoteSession.UNICODE_MASK,
+        XK_F3: 0xF706 | RemoteSession.UNICODE_MASK,
+        XK_F4: 0xF707 | RemoteSession.UNICODE_MASK,
+        XK_F5: 0xF708 | RemoteSession.UNICODE_MASK,
+        XK_F6: 0xF709 | RemoteSession.UNICODE_MASK,
+        XK_F7: 0xF70A | RemoteSession.UNICODE_MASK,
+        XK_F8: 0xF70B | RemoteSession.UNICODE_MASK,
+        XK_F9: 0xF70C | RemoteSession.UNICODE_MASK,
+        XK_F10: 0xF70D | RemoteSession.UNICODE_MASK,
+        XK_F11: 0xF70E | RemoteSession.UNICODE_MASK,
+        XK_F12: 0xF70F | RemoteSession.UNICODE_MASK,
+        XK_Escape: 0x001B | RemoteSession.UNICODE_MASK,
+        XK_Tab: 0x0009 | RemoteSession.UNICODE_MASK,
+        XK_Home: 0x21F1 | RemoteSession.UNICODE_MASK,
+        XK_End: 0x21F2 | RemoteSession.UNICODE_MASK,
+        XK_Page_Up: 0x21DE | RemoteSession.UNICODE_MASK,
+        XK_Page_Down: 0x21DF | RemoteSession.UNICODE_MASK,
+        XK_Pointer_Up: 19,
+        XK_Pointer_Down: 20,
+        XK_Pointer_Left: 21,
+        XK_Pointer_Right: 22,
+        XK_BackSpace: 0x0008 | RemoteSession.UNICODE_MASK,
     ]
     
     var xKeySymToScanCode: [Int32: Int] = [
@@ -360,12 +360,12 @@ class RemoteSession {
         let modifierScanCode = xKeySymToScanCode[key] ?? 0
         if (modifierScanCode > 0) {
             scanCodes = [modifierScanCode]
-            //print("getScanCodesOrSendKeyIfUnicode, modifier scancodes", scanCodes)
+            print("getScanCodesOrSendKeyIfUnicode, modifier scancodes", scanCodes)
         } else {
-            //print("getScanCodesOrSendKeyIfUnicode, key:", key)
-            let char = specialXKeySymToUnicodeMap[key] ?? 0
-            //print("getScanCodesOrSendKeyIfUnicode, char:", char)
-            sendUnicodeKeyEvent(char: char)
+            print("getScanCodesOrSendKeyIfUnicode, key:", key)
+            let layoutMapKey = specialXKeySymToLayoutMapKey[key] ?? 0
+            print("getScanCodesOrSendKeyIfUnicode, char:", layoutMapKey)
+            sendUnicodeKeyEvent(char: layoutMapKey)
             scanCodes = []
         }
         return scanCodes
@@ -424,11 +424,9 @@ class RemoteSession {
         preconditionFailure("This method must be overridden")
     }
     
-    func getScanCodesForUnicodeChar(char: Int)-> [Int] {
-        let layoutMapKey = char | RemoteSession.UNICODE_MASK
-        //log_callback_str(message: "Unicode char: \(char) converts to layoutMapKey: \(layoutMapKey)")
-        let scanCodes = self.layoutMap[layoutMapKey] ?? []
-        //log_callback_str(message: "Unicode char: \(char) looked up to scanCodes: \(scanCodes)")
+    func getScanCodesForKeyCodeChar(char: Int)-> [Int] {
+        let scanCodes = self.layoutMap[char] ?? []
+        print("getScanCodesForKeyCodeChar: \(char) looked up to scanCodes: \(scanCodes)")
         return scanCodes
     }
 }
