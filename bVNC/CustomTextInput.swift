@@ -46,7 +46,7 @@ class CustomTextInput: UIButton, UIKeyInput {
     
     init(stateKeeper: StateKeeper?) {
         super.init(frame: CGRect())
-        self.stateKeeper = stateKeeper;
+        self.stateKeeper = stateKeeper
     }
     
     required init?(coder: NSCoder) {
@@ -94,9 +94,6 @@ class CustomTextInput: UIButton, UIKeyInput {
     @objc func hideKeyboard() -> Bool {
         log_callback_str(message: "Hiding keyboard.")
         becomeFirstResponder()
-        if stateKeeper?.macOs == true {
-            return true
-        }
         return resignFirstResponder()
     }
 
@@ -140,6 +137,10 @@ class CustomTextInput: UIButton, UIKeyInput {
     }
     
     override var canBecomeFirstResponder: Bool {
-        return self.stateKeeper?.macOs != true
+        return true
+    }
+    
+    override var canBecomeFocused: Bool {
+        return true
     }
 }

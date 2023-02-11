@@ -221,10 +221,42 @@ class PhysicalKeyboardHandler {
         // causes stray Start/Super key to be sent when Command-Tabbing away from the app.
         // adding "" to chars enables this behavior.
         chars += [
-            UIKeyCommand.inputUpArrow, UIKeyCommand.inputDownArrow, UIKeyCommand.inputLeftArrow, UIKeyCommand.inputRightArrow
+            UIKeyCommand.inputUpArrow,
+            UIKeyCommand.inputDownArrow,
+            UIKeyCommand.inputLeftArrow,
+            UIKeyCommand.inputRightArrow,
+            UIKeyCommand.f1,
+            UIKeyCommand.f2,
+            UIKeyCommand.f3,
+            UIKeyCommand.f4,
+            UIKeyCommand.f5,
+            UIKeyCommand.f6,
+            UIKeyCommand.f7,
+            UIKeyCommand.f8,
+            UIKeyCommand.f9,
+            UIKeyCommand.f10,
+            UIKeyCommand.f11,
+            UIKeyCommand.f12,
+            UIKeyCommand.inputHome,
+            UIKeyCommand.inputEnd,
+            UIKeyCommand.inputEscape,
+            UIKeyCommand.inputPageUp,
+            UIKeyCommand.inputPageDown,
+            "\u{0009}" // tab
         ]
+        if #available(iOS 15.0, *) {
+            chars += [
+                UIKeyCommand.inputDelete,
+            ]
+        }
         
         let modifierPermutations: [UIKeyModifierFlags] = [
+            [UIKeyModifierFlags.control],
+            [UIKeyModifierFlags.alternate],
+            [UIKeyModifierFlags.alternate, UIKeyModifierFlags.shift],
+            [UIKeyModifierFlags.control, UIKeyModifierFlags.shift],
+            [UIKeyModifierFlags.control, UIKeyModifierFlags.alternate],
+            [UIKeyModifierFlags.shift],
             [UIKeyModifierFlags.command],
             [UIKeyModifierFlags.command, UIKeyModifierFlags.shift],
             [UIKeyModifierFlags.command, UIKeyModifierFlags.alternate],

@@ -152,7 +152,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         "upButton": [ "title": "↑", "lx": 3*bW+2*bSp, "ly": 2*bH+1*bSp, "send": XK_Up, "tgl": false, "top": false, "right": true ],
     ]
 
-    let interfaceButtonData: [ String: [ String: Any ] ] = [
+    var interfaceButtonData: [ String: [ String: Any ] ] = [
         "disconnectButton": [ "title": "", "lx": 1*bW+0*bSp, "ly": 2*bH+1*bSp, "send": Int32(-1), "tgl": false, "top": false, "right": true, "image": "clear.fill"],
         "keyboardButton": [ "title": "", "lx": 1*bW+0*bSp, "ly": 1*bH+0*bSp, "send": Int32(-1), "tgl": false, "top": false, "right": true, "image": "keyboard"]
     ]
@@ -637,7 +637,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     fileprivate func initializeKeyboardButtonIfNotInitialized() {
-        guard let b = self.physicalKeyboardHandler?.textInput else {
+        guard let b: CustomTextInput = self.physicalKeyboardHandler?.textInput else {
             return
         }
         let keyboardButton = self.interfaceButtons["keyboardButton"]
@@ -657,6 +657,14 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    fileprivate func setUpFirstResponderDepedingOnOS() {
+        if macOs {
+            self.interfaceButtons["keyboardButton"]?.resignFirstResponder()
+        } else {
+            self.interfaceButtons["keyboardButton"]?.becomeFirstResponder()
+        }
+    }
+    
     fileprivate func showOrHideKeyboardButtonDueToExternalKeyboard() {
         var externalKeyboardPresent = false
         if #available(iOS 14.0, *) {
@@ -664,7 +672,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             externalKeyboardPresent = GCKeyboard.coalesced != nil
         }
         if externalKeyboardPresent {
-            self.physicalKeyboardHandler?.textInput?.becomeFirstResponder()
+            setUpFirstResponderDepedingOnOS()
             log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
             self.interfaceButtons["keyboardButton"]?.isHidden = true
         } else {
@@ -679,8 +687,23 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         showOrHideKeyboardButtonDueToExternalKeyboard()
     }
     
+    func overrideInterfaceButtonDataForMacOs() {
+        if self.macOs {
+            self.interfaceButtonData["keyboardButton"]?["lx"] = CGFloat(0.001)
+            self.interfaceButtonData["keyboardButton"]?["ly"] = CGFloat(0.001)
+        }
+    }
+    
+    func overrideButtonVisibilityForMacOs() {
+        if self.macOs {
+            self.interfaceButtons["disconnectButton"]?.isHidden = true
+            self.interfaceButtons["keyboardButton"]?.isHidden = false
+        }
+    }
+    
     func createAndRepositionButtons() {
         log_callback_str(message: "Ensuring buttons are initialized, and positioning them where they should be")
+        overrideInterfaceButtonDataForMacOs()
         initAndShowOrHideKeyboardButtonDueToExternalKeyboard()
         interfaceButtons = createButtonsFromData(populateDict: interfaceButtons, buttonData: interfaceButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
         interfaceButtons["disconnectButton"]?.addTarget(self, action: #selector(self.scheduleDisconnectTimerFromButton), for: .touchDown)
@@ -688,6 +711,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         topButtons = createButtonsFromData(populateDict: topButtons, buttonData: topButtonData, width: StateKeeper.tbW, height: StateKeeper.bH, spacing: StateKeeper.tbSp)
         modifierButtons = createButtonsFromData(populateDict: modifierButtons, buttonData: modifierButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
         keyboardButtons = createButtonsFromData(populateDict: keyboardButtons, buttonData: keyboardButtonData, width: StateKeeper.bW, height: StateKeeper.bH, spacing: StateKeeper.bSp)
+        overrideButtonVisibilityForMacOs()
     }
     
     func createButtonsFromData(populateDict: [String: UIControl], buttonData: [ String: [ String: Any ] ], width: CGFloat, height: CGFloat, spacing: CGFloat ) -> [String: UIControl] {
@@ -941,9 +965,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.imageView?.enableTouch()
                 globalWindow!.addSubview(self.imageView!)
                 self.createAndRepositionButtons()
-                if !(self.macOs) {
-                    self.addButtons(buttons: self.interfaceButtons)
-                }
+                self.addButtons(buttons: self.interfaceButtons)
                 self.showConnectedSession()
                 self.keepSessionRefreshed()
                 self.reDraw()
