@@ -1,4 +1,5 @@
 1.0.20
+  - Fix for modifier up event not received after disconnect/reconnect.
   - Fix for arrow keys in several keyboard layouts.
   - Support for RAlt / AltGr
   - Fix for modifier keys released after text sent.
