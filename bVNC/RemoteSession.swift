@@ -286,10 +286,10 @@ class RemoteSession {
         XK_End: 0x21F2 | RemoteSession.UNICODE_MASK,
         XK_Page_Up: 0x21DE | RemoteSession.UNICODE_MASK,
         XK_Page_Down: 0x21DF | RemoteSession.UNICODE_MASK,
-        XK_Pointer_Up: 19,
-        XK_Pointer_Down: 20,
-        XK_Pointer_Left: 21,
-        XK_Pointer_Right: 22,
+        XK_Up: 19,
+        XK_Down: 20,
+        XK_Left: 21,
+        XK_Right: 22,
         XK_BackSpace: 0x0008 | RemoteSession.UNICODE_MASK,
     ]
     

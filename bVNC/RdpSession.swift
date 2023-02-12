@@ -51,7 +51,7 @@ class RdpSession: RemoteSession {
     override class var LCONTROL: Int { return 0xA2 }
     override class var RCONTROL: Int { return 0xA3 }
     override class var LALT: Int { return 0xA4 }
-    override class var RALT: Int { return 0xA5 }
+    override class var RALT: Int { return 0xA5 | KBD_FLAGS_EXTENDED }
     override class var LSHIFT: Int { return 0xA0 }
     override class var RSHIFT: Int { return 0xA1 }
     override class var LWIN: Int { return 0x5B }
@@ -304,8 +304,15 @@ class RdpSession: RemoteSession {
     
     func getVirtualScanCode(code: Int) -> UInt32 {
         var scode: UInt32 = 0
-        if code == RdpSession.LWIN || code == RdpSession.RWIN {
+        struct Holder {
+            static var timesCalled = 0
+        }
+        if code == RdpSession.LWIN {
             scode = 347
+        } else if code == RdpSession.RWIN {
+            scode = 236
+        } else if code == RdpSession.RALT {
+            scode = 312
         } else {
             // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
             scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
@@ -320,7 +327,7 @@ class RdpSession: RemoteSession {
             let scode = getVirtualScanCode(code: code)
             var keyFlags = RdpSession.KBD_FLAGS_DOWN
             keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
-            log_callback_str(message: "RdpSession: sendModifierIfNotDown, code: \(code), scode: \(scode)")
+            log_callback_str(message: "RdpSession: sendModifierIfNotDown, modifier: \(modifier), code: \(code), scode: \(scode)")
             vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
         }
     }
