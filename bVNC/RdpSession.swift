@@ -268,20 +268,26 @@ class RdpSession: RemoteSession {
         }
     }
     
+    fileprivate func getKeyFlagsForScanCode(_ virtualScanCode: Int32, downFlag: Int) -> Int32 {
+        var keyFlags = downFlag
+        keyFlags |= ((Int(virtualScanCode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+        return Int32(keyFlags)
+    }
+    
     override func sendUnicodeKeyEvent(char: Int) {
         let scanCodes = getScanCodesForKeyCodeChar(char: char)
         for scanCode in scanCodes {
             var scode = scanCode
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift down")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
-                           Int32(getVirtualScanCode(code: RdpSession.LSHIFT)))
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), getVirtualScanCode(code: RdpSession.LSHIFT))
                 scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                let virtualScanCode = getVirtualScanCode(code: RdpSession.RALT)
+                let keyFlags = getKeyFlagsForScanCode(virtualScanCode, downFlag: RdpSession.KBD_FLAGS_DOWN)
                 log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr down")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN),
-                           Int32(getVirtualScanCode(code: RdpSession.RALT)))
+                vkKeyEvent(self.cl, keyFlags, virtualScanCode)
                 scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
             }
         
@@ -291,19 +297,19 @@ class RdpSession: RemoteSession {
             
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift up")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
-                           Int32(getVirtualScanCode(code: RdpSession.LSHIFT)))
+                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), getVirtualScanCode(code: RdpSession.LSHIFT))
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
+                let virtualScanCode = getVirtualScanCode(code: RdpSession.RALT)
+                let keyFlags = getKeyFlagsForScanCode(virtualScanCode, downFlag: RdpSession.KBD_FLAGS_RELEASE)
                 log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr up")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE),
-                           Int32(getVirtualScanCode(code: RdpSession.RALT)))
+                vkKeyEvent(self.cl, keyFlags, virtualScanCode)
             }
         }
     }
     
-    func getVirtualScanCode(code: Int) -> UInt32 {
-        var scode: UInt32 = 0
+    func getVirtualScanCode(code: Int) -> Int32 {
+        var scode: Int32 = 0
         struct Holder {
             static var timesCalled = 0
         }
@@ -315,7 +321,7 @@ class RdpSession: RemoteSession {
             scode = 312
         } else {
             // FIXME: Replace call to GetVirtualScanCodeFromVirtualKeyCode with implementation using layoutMap
-            scode = GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF
+            scode = Int32(GetVirtualScanCodeFromVirtualKeyCode(DWORD(code), 4) & 0xFF)
         }
         return scode
     }
@@ -325,8 +331,7 @@ class RdpSession: RemoteSession {
         if code != 0 && !self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = true
             let scode = getVirtualScanCode(code: code)
-            var keyFlags = RdpSession.KBD_FLAGS_DOWN
-            keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            let keyFlags = getKeyFlagsForScanCode(Int32(scode), downFlag: RdpSession.KBD_FLAGS_DOWN)
             log_callback_str(message: "RdpSession: sendModifierIfNotDown, modifier: \(modifier), code: \(code), scode: \(scode)")
             vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
         }
@@ -337,8 +342,7 @@ class RdpSession: RemoteSession {
         if code != 0 && self.stateKeeper.modifiers[modifier]! {
             self.stateKeeper.modifiers[modifier] = false
             let scode = getVirtualScanCode(code: code)
-            var keyFlags = RdpSession.KBD_FLAGS_RELEASE
-            keyFlags |= ((Int(scode) & RdpSession.KBD_FLAGS_EXTENDED) != 0) ? RdpSession.KBD_FLAGS_EXTENDED : 0
+            let keyFlags = getKeyFlagsForScanCode(Int32(scode), downFlag: RdpSession.KBD_FLAGS_RELEASE)
             log_callback_str(message: "RdpSession: releaseModifierIfDown, code: \(code), scode: \(scode)")
             vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
         }
