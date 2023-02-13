@@ -111,7 +111,6 @@ static void ios_post_disconnect(freerdp *instance) {
     int connection_state = instance->ConnectionCallbackState;
 
     int i = instance->context->argc;
-    gdi_free(instance);
     
     switch(last_error) {
         case FREERDP_ERROR_CONNECT_LOGON_FAILURE:

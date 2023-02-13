@@ -16,11 +16,19 @@ DATE=$(date +%Y-%m-%d)
 PROJ_FILE=../bVNC.xcodeproj
 EXPORT_OPTS_FILE=./export-app-store.plist
 BASE_EXPORT_PATH=./export/$DATE
+buildconfig="Release"
 
 mkdir -p $BASE_EXPORT_PATH
 
 for scheme in bVNC aRDP aSPICE
 do
+    # Build debug artifact for aRDP to work around a crash
+    if [ "$scheme" == "aRDP" ]
+    then
+        buildconfig="Debug"
+    else
+        buildconfig="Release"
+    fi
     for destination in 'generic/platform=iOS' 'platform=macOS,variant=Mac Catalyst,arch=x86_64'
     do
         if [ "$destination" == 'platform=macOS,variant=Mac Catalyst,arch=x86_64' ]
@@ -38,8 +46,8 @@ do
         mkdir -p $EXPORT_PATH
         
         xcodebuild clean -project $PROJ_FILE -scheme "$scheme" -destination "$destination"
-        xcodebuild build -project $PROJ_FILE -scheme "$scheme" -destination "$destination"
-        xcodebuild archive -project $PROJ_FILE -scheme "$scheme" -destination "$destination" $ARCHIVE_FLAGS
+        xcodebuild build -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination"
+        xcodebuild archive -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination" $ARCHIVE_FLAGS
         ARCHIVE_PATH=$(ls -datr $HOME/Library/Developer/Xcode/Archives/$DATE/$scheme* | tail -1)
         xcodebuild -exportArchive -exportOptionsPlist $EXPORT_OPTS_FILE -allowProvisioningUpdates -archivePath "$ARCHIVE_PATH" -exportPath $EXPORT_PATH
         
