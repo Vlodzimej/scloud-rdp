@@ -1,7 +1,8 @@
 1.0.20
-  - Fix for modifier up event not received after disconnect/reconnect.
+  - Fix for spurious right-click after two-finger scrolling
+  - Fix for modifier up event not received after disconnect/reconnect
   - Support for RAlt / AltGr
-  - Fix for modifier keys released after text sent.
+  - Fix for modifier keys released after text sent
 1.0.19
   - Labeled Keyboard Layout Picker
   - Adjusted font sizes in connection settings
