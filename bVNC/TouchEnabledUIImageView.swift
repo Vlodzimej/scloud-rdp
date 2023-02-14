@@ -122,6 +122,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     var stateKeeper: StateKeeper?
     var physicalMouseAttached = false
     var indexes = 0
+    var contextMenuDetected = false
 
     func initialize() {
         isMultipleTouchEnabled = true
@@ -310,7 +311,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                         self.inPanning = false
                         log_callback_str(message: "Right-click already initiated, skipping first and second index detection")
                     }
-                    if index == 0 && !self.thirdDown {
+                    if index == 0 && !self.contextMenuDetected {
                         self.inScrolling = false
                         self.inPanning = false
                         log_callback_str(message: "Single index detected, marking this a left-click")
@@ -376,6 +377,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         self.firstDown = false
         self.secondDown = false
         self.thirdDown = false
+        self.contextMenuDetected = false
     }
     
     func sendMouseEventsAndResetButtonState() {
@@ -423,12 +425,6 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 }
             }
         }
-        /*
-        if (self.thirdDown) {
-            log_callback_str(message: "Right-click was previously initiated, sending right mouse up event.")
-            self.thirdDown = false
-            self.sendPointerEvent(scrolling: false, moving: false, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
-        }*/
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
@@ -558,6 +554,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             if stateKeeper?.macOs == true {
                 self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: false, secondDown: false, thirdDown: true, fourthDown: false, fifthDown: false)
             } else {
+                self.contextMenuDetected = true
                 self.thirdDown = true
             }
         } else {
