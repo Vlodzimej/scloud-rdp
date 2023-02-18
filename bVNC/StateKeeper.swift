@@ -931,9 +931,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.fbH = fbH
                 self.data = data
                 if self.isDrawing {
-                    self.imageView?.image =
-                        UIImage(cgImage: UIImage.imageFromARGB32Bitmap(
-                            pixels: data, withWidth: Int(fbW), withHeight: Int(fbH))!)
+                    self.imageView?.image = UIImage.imageFromARGB32Bitmap(
+                            pixels: data,
+                            withWidth: Int(fbW),
+                            withHeight: Int(fbH)
+                    )
                 }
             }
         }
@@ -960,7 +962,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                     log_callback_str(message: "Running on iOS")
                     self.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
                 }
-                //self.imageView?.backgroundColor = UIColor.gray
                 self.imageView?.enableGestures()
                 self.imageView?.enableTouch()
                 globalWindow!.addSubview(self.imageView!)
@@ -968,7 +969,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.addButtons(buttons: self.interfaceButtons)
                 self.showConnectedSession()
                 self.keepSessionRefreshed()
-                self.reDraw()
+                if !Utils.isRdp() {
+                    self.reDraw()
+                }
             }
         }
     }

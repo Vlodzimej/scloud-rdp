@@ -3,6 +3,8 @@
 
 set -xe
 
+APPS="${@:-bVNC aRDP aSPICE}"
+
 if [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]
 then
   echo "Export USERNAME and PASSWORD environment variables or"
@@ -20,15 +22,8 @@ buildconfig="Release"
 
 mkdir -p $BASE_EXPORT_PATH
 
-for scheme in bVNC aRDP aSPICE
+for scheme in $APPS
 do
-    # Build debug artifact for aRDP to work around a crash
-    if [ "$scheme" == "aRDP" ]
-    then
-        buildconfig="Debug"
-    else
-        buildconfig="Release"
-    fi
     for destination in 'generic/platform=iOS' 'platform=macOS,variant=Mac Catalyst,arch=x86_64'
     do
         if [ "$destination" == 'platform=macOS,variant=Mac Catalyst,arch=x86_64' ]

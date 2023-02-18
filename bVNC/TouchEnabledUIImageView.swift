@@ -50,31 +50,35 @@ extension UIImage {
 
 extension UIImage {
 
-    static func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int, withHeight: Int) -> CGImage? {
-        guard withWidth > 0 && withHeight > 0 else { return nil }
+    static func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int, withHeight: Int) -> UIImage {
+        guard withWidth > 0 && withHeight > 0 else { return UIImage() }
+        guard pixels != nil else { return UIImage() }
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Big)
         let bitsPerComponent = 8
-
         guard let context: CGContext = CGContext(data: pixels, width: withWidth, height: withHeight, bitsPerComponent: bitsPerComponent, bytesPerRow: 4*withWidth, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
             log_callback_str(message: "Could not create CGContext")
-            return nil
+            return UIImage()
         }
-        return context.makeImage()
+        let cgImage = context.makeImage()
+        return UIImage(cgImage: cgImage!)
         /*
         let bitsPerPixel = 32
-        return CGImage(width: withWidth,
+        let data: NSData = NSData(bytes: pixels, length: withWidth*withHeight*4)
+        let cgDataProvider = CGDataProvider(data: data)!
+        let cgImage = CGImage(width: withWidth,
                                  height: withHeight,
                                  bitsPerComponent: bitsPerComponent,
                                  bitsPerPixel: bitsPerPixel,
                                  bytesPerRow: 4*withWidth,
                                  space: colorSpace,
                                  bitmapInfo: bitmapInfo,
-                                 provider: CGDataProvider(data: NSData(bytes: pixels, length: withWidth*withHeight*4))!,
+                                 provider: cgDataProvider,
                                  decode: nil,
                                  shouldInterpolate: true,
                                  intent: .defaultIntent)
-         */
+        return UIImage(cgImage: cgImage!)
+        */
     }
 }
 

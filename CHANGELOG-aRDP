@@ -1,3 +1,5 @@
+1.0.21
+  - Stability improvements
 1.0.20
   - Fix for spurious right-click after two-finger scrolling
   - Fix for modifier up event not received after disconnect/reconnect
