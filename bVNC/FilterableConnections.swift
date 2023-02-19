@@ -82,12 +82,17 @@ class FilterableConnections : ObservableObject {
         return title
     }
     
+    fileprivate func connectionMatchesSearchText(_ connection: [String : String]) -> Bool {
+        let searchConnectionTextLowerCased = searchConnectionText.lowercased()
+        return searchConnectionTextLowerCased == "" ||
+        buildGenericTitle(connection: connection).lowercased().contains(searchConnectionTextLowerCased) ||
+        buildTitle(connection: connection).lowercased().contains(searchConnectionTextLowerCased)
+    }
+    
     func filterConnections() {
         self.filteredConnections = allConnections.filter(
             { (connection) -> Bool in
-                searchConnectionText == "" ||
-                buildGenericTitle(connection: connection).contains(searchConnectionText) ||
-                buildTitle(connection: connection).contains(searchConnectionText)
+                connectionMatchesSearchText(connection)
             })
     }
     
@@ -220,7 +225,7 @@ class FilterableConnections : ObservableObject {
     }
     
     func findFirstByName(connectionName: String) -> [String: String]? {
-        var existing = self.allConnections.filter(
+        let existing = self.allConnections.filter(
             { (connection) -> Bool in
                 connectionName == connection["connectionName"]
             }).first
