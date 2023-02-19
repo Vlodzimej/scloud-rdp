@@ -54,6 +54,14 @@ class FilterableConnections : ObservableObject {
     }
     
     func buildTitle(connection: Dictionary<String, String>) -> String {
+        if connection["connectionName"] != nil && connection["connectionName"] != "" {
+            return connection["connectionName"]!
+        } else {
+            return buildGenericTitle(connection: connection)
+        }
+    }
+    
+    func buildGenericTitle(connection: Dictionary<String, String>) -> String {
         let defaultPort = Utils.getDefaultPort()
         var title = ""
         if connection["sshAddress"] != "" {
@@ -77,7 +85,9 @@ class FilterableConnections : ObservableObject {
     func filterConnections() {
         self.filteredConnections = allConnections.filter(
             { (connection) -> Bool in
-                searchConnectionText == "" || buildTitle(connection: connection).contains(searchConnectionText)
+                searchConnectionText == "" ||
+                buildGenericTitle(connection: connection).contains(searchConnectionText) ||
+                buildTitle(connection: connection).contains(searchConnectionText)
             })
     }
     
@@ -132,10 +142,12 @@ class FilterableConnections : ObservableObject {
         self.editedConnection = [:]
     }
     
-    func addNewConnection() {
+    func addNewConnection(connectionName: String) {
         log_callback_str(message: "\(#function)")
         self.deselectConnection()
         self.copyConnectionIntoSelectedConnection(connection: self.defaultSettings)
+        self.selectedConnection["connectionName"] = connectionName
+        
     }
     
     func deleteCurrentConnection() {
@@ -143,7 +155,7 @@ class FilterableConnections : ObservableObject {
         // Do something only if we were not adding a new connection.
         if selectedFilteredConnectionIndex >= 0 {
             log_callback_str(message: "Deleting connection with index \(selectedFilteredConnectionIndex)")
-            let screenShotFile = self.get(at: selectedFilteredConnectionIndex)["screenShotFile"]!
+            let screenShotFile = self.get(at: selectedFilteredConnectionIndex)["screenShotFile"]
             let deleteScreenshotResult = Utils.deleteFile(name: screenShotFile)
             log_callback_str(message: "Deleting connection screenshot \(deleteScreenshotResult)")
             self.removeSelected()
@@ -205,5 +217,13 @@ class FilterableConnections : ObservableObject {
             log_callback_str(message: #function + error.localizedDescription)
             return false
         }
+    }
+    
+    func findFirstByName(connectionName: String) -> [String: String]? {
+        var existing = self.allConnections.filter(
+            { (connection) -> Bool in
+                connectionName == connection["connectionName"]
+            }).first
+        return existing
     }
 }

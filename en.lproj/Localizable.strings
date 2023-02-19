@@ -66,3 +66,4 @@
 "SEARCH_CONNECTION_TEXT" = "Search Connections";
 "DEFAULT_SETTINGS_LABEL" = "Edit Default Settings";
 "KEYBOARD_LAYOUT_LABEL" = "Keyboard Layout";
+"CONNECTION_NAME_LABEL" = "Nickname";

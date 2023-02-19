@@ -54,11 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         // Create the SwiftUI view that provides the window contents.
-        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let contentView = ContentView(stateKeeper: appDelegate.stateKeeper,
                                       searchConnectionText: appDelegate.stateKeeper.connections.getSearchConnectionText(),
@@ -83,9 +79,54 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene,
         openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        let url = URLContexts.first!.url
-        log_callback_str(message: "\(#function): \(url)")
-        self.connectWithConsoleFile(url: url)
+        log_callback_str(message: #function)
+
+        if let urlContext = URLContexts.first {
+            log_callback_str(message: "\(#function): \(urlContext.url)")
+            if (!self.handleUniversalUrl(urlContext: urlContext)) {
+                let url = urlContext.url
+                self.connectWithConsoleFile(url: url)
+            }
+        }
+    }
+    
+    func handleUniversalUrl(urlContext: UIOpenURLContext) -> Bool {
+        let sendingAppID = urlContext.options.sourceApplication
+        let url = urlContext.url
+        log_callback_str(message: "\(#function) source application = \(sendingAppID ?? "Unknown")")
+        log_callback_str(message: "\(#function) url = \(url)")
+        
+        guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
+              let host = components.host,
+              let port = components.port,
+              let params = components.queryItems else {
+            log_callback_str(message: "\(#function) Invalid URL")
+            return false
+        }
+
+        if let connectionName = params.first(where: { $0.name == "ConnectionName" })?.value {
+            log_callback_str(message: "\(#function) host = \(host)")
+            log_callback_str(message: "\(#function) port = \(port)")
+            let connectionName = connectionName.replacingOccurrences(of: "+", with: " ")
+            log_callback_str(message: "\(#function) connectionName = \(connectionName)")
+            let selectedConnection = globalStateKeeper?.connections.findFirstByName(connectionName: connectionName)
+            if (selectedConnection != nil) {
+                globalStateKeeper?.connections.selectedConnection = selectedConnection!
+                globalStateKeeper?.connect(connection: selectedConnection!)
+            } else {
+                let selectedConnection: [String : String] = [
+                    "connectionName": connectionName,
+                    "address": host,
+                    "port": "\(port)",
+                ]
+                globalStateKeeper?.connections.selectedConnection = selectedConnection
+                globalStateKeeper?.addOrEditConnection()
+            }
+            return true
+        } else {
+            log_callback_str(message: "\(#function) ConnectionName missing")
+            return false
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

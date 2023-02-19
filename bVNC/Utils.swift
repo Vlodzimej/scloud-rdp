@@ -67,7 +67,11 @@ struct Utils {
         return filename.path
     }
     
-    static func deleteFile(name: String) -> Bool {
+    static func deleteFile(name: String?) -> Bool {
+        guard let name = name else {
+            log_callback_str(message: "\(#function) invalid file name")
+            return false
+        }
         guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else {
             return false
         }

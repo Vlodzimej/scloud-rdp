@@ -128,6 +128,7 @@ struct ContentView : View {
             } else if stateKeeper.currentPage == "addOrEditConnection" {
                 AddOrEditConnectionPage(
                      stateKeeper: stateKeeper,
+                     connectionNameText: selectedConnection["connectionName"] ?? "",
                      sshAddressText: selectedConnection["sshAddress"] ?? "",
                      sshPortText: selectedConnection["sshPort"] ?? "22",
                      sshUserText: selectedConnection["sshUser"] ?? "",
@@ -216,7 +217,7 @@ struct ConnectionsList : View {
             VStack {
                 HStack() {
                     Button(action: {
-                        self.stateKeeper.addNewConnection()
+                        self.stateKeeper.addNewConnection(connectionName: "")
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "plus")
@@ -323,6 +324,7 @@ struct ConnectionsList : View {
 struct AddOrEditConnectionPage : View {
     var settings: UserDefaults = UserDefaults.standard
     @ObservedObject var stateKeeper: StateKeeper
+    @State var connectionNameText: String
     @State var sshAddressText: String
     @State var sshPortText: String
     @State var sshUserText: String
@@ -346,6 +348,7 @@ struct AddOrEditConnectionPage : View {
     
     func retrieveConnectionDetails() -> [String : String] {
         var connection = [
+            "connectionName": self.connectionNameText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshAddress": self.sshAddressText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshPort": self.sshPortText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshUser": self.sshUserText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -455,6 +458,10 @@ struct AddOrEditConnectionPage : View {
                         }.padding()
                     }
                 }
+                
+                VStack {
+                    TextField(self.stateKeeper.localizedString(for: "CONNECTION_NAME_LABEL"), text: $connectionNameText).autocapitalization(.none).font(.title)
+                }.padding()
                 
                 if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
                     VStack {
@@ -828,7 +835,29 @@ struct YesNoDialog : View {
 
 struct ContentViewA_Previews : PreviewProvider {
     static var previews: some View {
-        AddOrEditConnectionPage(stateKeeper: StateKeeper(), sshAddressText: "", sshPortText: "", sshUserText: "", sshPassText: "", sshPassphraseText: "", sshPrivateKeyText: "", addressText: "", portText: "", tlsPortText: "", certSubjectText: "", certAuthorityText: "", keyboardLayoutText: "", domainText: "", usernameText: "", passwordText: "", screenShotFile: "", allowZooming: true, allowPanning: true, showSshTunnelSettings: false)
+        AddOrEditConnectionPage(
+            stateKeeper: StateKeeper(),
+            connectionNameText: "",
+            sshAddressText: "",
+            sshPortText: "",
+            sshUserText: "",
+            sshPassText: "",
+            sshPassphraseText: "",
+            sshPrivateKeyText: "",
+            addressText: "",
+            portText: "",
+            tlsPortText: "",
+            certSubjectText: "",
+            certAuthorityText: "",
+            keyboardLayoutText: "",
+            domainText: "",
+            usernameText: "",
+            passwordText: "",
+            screenShotFile: "",
+            allowZooming: true,
+            allowPanning: true,
+            showSshTunnelSettings: false
+        )
     }
 }
 

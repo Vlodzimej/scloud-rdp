@@ -345,8 +345,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             log_callback_str(message: "Reconnecting after previous disconnect due to backgrounding")
             disconnectedDueToBackgrounding = false
             connectSaved(connection: self.connections.selectedConnection)
-        } else if !self.isDrawing {
-            self.showConnections()
         }
     }
     
@@ -425,9 +423,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         _ = (self.interfaceButtons["keyboardButton"] as? CustomTextInput)?.hideKeyboard()
     }
     
-    func addNewConnection() {
+    func addNewConnection(connectionName: String) {
         log_callback_str(message: "Adding new connection and navigating to connection setup screen")
-        self.connections.addNewConnection()
+        self.connections.addNewConnection(connectionName: connectionName)
         UserInterface {
             self.currentPage = "addOrEditConnection"
         }
