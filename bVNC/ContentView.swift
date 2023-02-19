@@ -165,7 +165,7 @@ struct ContentView : View {
                 HelpDialog(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "yesNoMessage" {
                 YesNoDialog(stateKeeper: stateKeeper)
-            } else if stateKeeper.currentPage == "dismissableBlankPage" {
+            } else if stateKeeper.currentPage == "disconnectionInProgress" {
                 DismissableBlankPage(stateKeeper: stateKeeper)
             }
         }

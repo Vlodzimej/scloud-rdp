@@ -217,7 +217,9 @@ class FilterableConnections : ObservableObject {
             log_callback_str(message: "\(#function): fileName: \(fileName)")
             try data.write(to: directory.appendingPathComponent(String(fileName))!)
             self.saveConnections()
-            self.stateKeeper?.showConnections()
+            if self.stateKeeper?.isAtConnectionsListPage() ?? true {
+                self.stateKeeper?.showConnections()
+            }
             return true
         } catch {
             log_callback_str(message: #function + error.localizedDescription)

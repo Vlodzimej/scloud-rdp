@@ -119,11 +119,11 @@ static void ios_post_disconnect(freerdp *instance) {
         case FREERDP_ERROR_CONNECT_WRONG_PASSWORD:
         case FREERDP_ERROR_CONNECT_NO_OR_MISSING_CREDENTIALS:
             clientLogCallback((int8_t*)"Authentication failed\n");
-            failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
+            failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
             return;
         case FREERDP_ERROR_CONNECT_CANCELLED:
             clientLogCallback((int8_t*)"Connection cancelled\n");
-            failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
+            failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
             break;
         case FREERDP_ERROR_NONE:
             break;

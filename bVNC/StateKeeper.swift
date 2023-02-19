@@ -333,6 +333,14 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.currentPage = "connectedSession"
         }
     }
+    
+    func isAtConnectionsListPage() -> Bool {
+        return self.currentPage == "connectionsList"
+    }
+    
+    func isAtDisconnectionInProgressPage() -> Bool {
+        return self.currentPage == "disconnectionInProgress"
+    }
 
     func showConnectionInProgress() {
         UserInterface {
@@ -394,7 +402,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             log_callback_str(message: "\(#function) called but wasDrawing was already false")
         }
         spinner.removeFromSuperview()
-        if !wasDrawing {
+        if isAtDisconnectionInProgressPage() {
             showConnections()
         }
         StoreReviewHelper.checkAndAskForReview()
@@ -494,7 +502,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         UserInterface {
             self.localizedTitle = ""
             self.message = ""
-            self.currentPage = "dismissableBlankPage"
+            self.currentPage = "disconnectionInProgress"
             self.recreateContentView()
         }
     }
