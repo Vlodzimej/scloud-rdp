@@ -95,7 +95,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     var currentTransition: String = "";
     var logLock: NSLock = NSLock()
-    var spinner = UIActivityIndicatorView(style: .large)
 
     var allowZooming = true
     var allowPanning = true
@@ -406,7 +405,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         } else {
             log_callback_str(message: "\(#function) called but wasDrawing was already false")
         }
-        spinner.removeFromSuperview()
         if isAtDisconnectionInProgressPage() {
             showConnections()
         }
@@ -420,18 +418,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func scheduleDisconnectTimerFromButton() {
-        self.scheduleDisconnectTimer(interval: 1, wasDrawing: self.isDrawing)
         self.showDisconnectionPage()
+        self.scheduleDisconnectTimer(interval: 1, wasDrawing: self.isDrawing)
     }
     
     @objc func scheduleDisconnectTimer(interval: Double = 1, wasDrawing: Bool) {
         UserInterface {
             log_callback_str(message: "Scheduling disconnect")
-            self.spinner.frame.origin.x = (globalWindow?.frame.size.width ?? 0) / 2 - self.spinner.frame.size.width / 2
-            self.spinner.frame.origin.y = (globalWindow?.frame.size.height ?? 0) / 2 - self.spinner.frame.size.height / 2
-            self.spinner.translatesAutoresizingMaskIntoConstraints = false
-            self.spinner.startAnimating()
-            globalWindow?.addSubview(self.spinner)
             self.lazyDisconnect()
             self.disconnectTimer.invalidate()
             self.disconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.disconnect(sender:)), userInfo: wasDrawing, repeats: false)
@@ -506,7 +499,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                                       filteredConnections: self.connections.filteredConnections)
         globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
         globalWindow!.makeKeyAndVisible()
-        self.spinner.removeFromSuperview()
     }
     
     func showDisconnectionPage() {

@@ -69,9 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @objc func disconnect() {
-        globalStateKeeper?.scheduleDisconnectTimer(interval: 1,
-            wasDrawing: globalStateKeeper?.isDrawing ?? false)
-        globalStateKeeper?.scheduleDisconnectTimer(interval: 2, wasDrawing: false)
+        globalStateKeeper?.scheduleDisconnectTimerFromButton()
     }
 
     @objc func quit() {
