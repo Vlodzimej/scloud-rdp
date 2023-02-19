@@ -381,8 +381,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
 
     @objc func disconnect(sender: Timer) {
         log_callback_str(message: "\(#function) called")
-        self.currInst = (currInst + 1) % maxClCapacity
         let wasDrawing = (sender.userInfo as! Bool)
+        self.disconnect(wasDrawing: wasDrawing)
+    }
+
+    func disconnect(wasDrawing: Bool) {
+        log_callback_str(message: "\(#function) called")
+        self.currInst = (currInst + 1) % maxClCapacity
         if !self.disconnectedDueToBackgrounding && self.receivedUpdate {
             _ = self.connections.saveImage(image: self.captureScreen(imageView: self.imageView ?? UIImageView()))
         }
@@ -406,6 +411,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             showConnections()
         }
         StoreReviewHelper.checkAndAskForReview()
+    }
+
+    func disconnectFromCancelButton() {
+        self.lazyDisconnect()
+        self.disconnect(wasDrawing: false)
+        self.showDisconnectionPage()
     }
     
     @objc func scheduleDisconnectTimerFromButton() {

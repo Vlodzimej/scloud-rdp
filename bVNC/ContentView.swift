@@ -560,8 +560,7 @@ struct ConnectionInProgressPage : View {
         VStack {
             Text("CONNECTING_TO_SERVER_LABEL")
             Button(action: {
-                self.stateKeeper.lazyDisconnect()
-                self.stateKeeper.showConnections()
+                self.stateKeeper.disconnectFromCancelButton()
             }) {
                 HStack(spacing: 10) {
                     Image(systemName: "arrowshape.turn.up.left")
