@@ -1,3 +1,6 @@
+1.0.22
+  - Caseless search for connections
+  - Fix for crash when deleting connection with no thumbnail
 1.0.20
   - Fix for spurious right-click after two-finger scrolling
   - Fix for modifier up event not received after disconnect/reconnect

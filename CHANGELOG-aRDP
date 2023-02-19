@@ -1,3 +1,6 @@
+1.0.22
+  - Caseless search for connections
+  - Fix for crash when deleting connection with no thumbnail
 1.0.21
   - Stability improvements
 1.0.20
