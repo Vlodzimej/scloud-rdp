@@ -331,9 +331,7 @@ class RemoteSession {
         var newScreenHeight = screenHeight
         
         if self.stateKeeper.macOs {
-            #if targetEnvironment(macCatalyst)
-            globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
-            #endif
+            log_callback_str(message: "Device is MacOS")
         } else {
             log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
             if (screenWidth > Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS ||
