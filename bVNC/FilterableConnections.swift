@@ -54,8 +54,9 @@ class FilterableConnections : ObservableObject {
     }
     
     func buildTitle(connection: Dictionary<String, String>) -> String {
-        if connection["connectionName"] != nil && connection["connectionName"] != "" {
-            return connection["connectionName"]!
+        let connectionName = connection["connectionName"] ?? ""
+        if connectionName != "" {
+            return connectionName
         } else {
             return buildGenericTitle(connection: connection)
         }
