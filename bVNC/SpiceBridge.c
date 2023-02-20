@@ -24,6 +24,8 @@
 #include <glib.h>
 #include "glue-spice-widget-priv.h"
 #include <glue-service.h>
+#define USE_CLIPBOARD
+#include <glue-clipboard-client.h>
 #include <glue-spice-widget.h>
 #include <stdio.h>
 
@@ -35,6 +37,8 @@ extern int fbW;
 extern int fbH;
 int desiredFbW;
 int desiredFbH;
+uint32_t *guestClipboardP = NULL;
+uint32_t *hostClipboardP = NULL;
 
 static gint get_display_id(SpiceDisplay *display)
 {
@@ -112,11 +116,31 @@ void gst_init_and_register_static_plugins () {
     }
 }
 
+static void initClipboardStorage() {
+    if (guestClipboardP == NULL) {
+        guestClipboardP = malloc(CB_SIZE);
+    }
+    if (hostClipboardP == NULL) {
+        hostClipboardP = malloc(CB_SIZE);
+    }
+}
+
+void initClipboard(void (*clientClipboardCallbackP)(int8_t *)) {
+    initClipboardStorage();
+    SpiceGlibGlue_InitClipboard(true, true, guestClipboardP, hostClipboardP, clientClipboardCallbackP);
+}
+
+void setHostClipboard(char *hostClipboardContents, int size) {
+    SpiceGlibGlue_GrabGuestClipboard();
+    SpiceGlibGlue_ClientCutText(hostClipboardContents, size);
+}
+
 void *initializeSpice(int instance, int width, int height,
                       bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                       void (*fb_resize_callback)(int instance, int fbW, int fbH),
                       void (*fail_callback)(int instance, uint8_t *),
                       void (*cl_log_callback)(int8_t *),
+                      void (*cl_cb_callback)(int8_t *),
                       int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                       char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                       char* cert_subject, bool enable_sound) {
@@ -153,7 +177,7 @@ void *initializeSpice(int instance, int width, int height,
     if (cert_subject != NULL)
         strncpy(p.cert_subj, cert_subject, sizeof(p.cert_subj));
     p.enable_sound = enable_sound;
-    
+    initClipboard(cl_cb_callback);
     pthread_create(&spice_worker, NULL, (void *) &engine_spice_worker, NULL);
     pthread_create(&mainloop_worker, NULL, (void *) &engine_mainloop_worker, NULL);
     client_log("Done initializing SPICE session\n");
@@ -165,6 +189,7 @@ void *initializeSpiceVv(int instance, int width, int height,
                         void (*fb_resize_callback)(int instance, int fbW, int fbH),
                         void (*fail_callback)(int instance, uint8_t *),
                         void (*cl_log_callback)(int8_t *),
+                        void (*cl_cb_callback)(int8_t *),
                         int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                         char* vv_file, bool enable_sound) {
     client_log("Initializing SPICE session from vv file\n");
@@ -184,10 +209,11 @@ void *initializeSpiceVv(int instance, int width, int height,
     
     p.resolutionRequested = 0;
     p.instance = instance;
-    if (vv_file != NULL)
+    if (vv_file != NULL) {
         strncpy(p.vv_file, vv_file, sizeof(p.vv_file));
+    }
     p.enable_sound = enable_sound;
-    
+    initClipboard(cl_cb_callback);
     pthread_create(&spice_worker, NULL, (void *) &engine_spice_worker, NULL);
     pthread_create(&mainloop_worker, NULL, (void *) &engine_mainloop_worker, NULL);
     client_log("Done initializing SPICE session from file\n");

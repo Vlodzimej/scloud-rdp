@@ -129,6 +129,7 @@ class SpiceSession: RemoteSession {
                                                 resize_callback,
                                                 failure_callback_swift,
                                                 log_callback,
+                                                clipboard_callback,
                                                 yes_no_dialog_callback,
                                                 UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
                                                 true)
@@ -141,6 +142,7 @@ class SpiceSession: RemoteSession {
                                               resize_callback,
                                               failure_callback_swift,
                                               log_callback,
+                                              clipboard_callback,
                                               yes_no_dialog_callback,
                                               UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                                               UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
@@ -310,5 +312,16 @@ class SpiceSession: RemoteSession {
     override func requestRemoteResolution(x: Int, y: Int) {
         log_callback_str(message: "Requesting remote resolution to be \(x)x\(y)")
         requestResolution(Int32(x), Int32(y));
+    }
+    
+    override func clientCutText(clientClipboardContents: String?) {
+        guard (self.stateKeeper.getCurrentInstance()) != nil else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        let clipboardStr = clientClipboardContents ?? ""
+        let clientClipboardContentsPtr = UnsafeMutablePointer<Int8>(mutating: (clipboardStr as NSString).utf8String)
+        let length = clipboardStr.lengthOfBytes(using: .utf8)
+        setHostClipboard(clientClipboardContentsPtr, Int32(length))
     }
 }

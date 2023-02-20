@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1608AEB429A2FE5900D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		1608AEB729A32A1300D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		1608AEB829A32A1400D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		1608AEB929A32A1500D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
 		165D67C826ADD24200E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67CE26ADD24300E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67CF26ADD24400E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
@@ -330,6 +334,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1369,6 +1374,7 @@
 				AFF5043D2617AC53007C7644 /* Constants.swift */,
 				AF5D23EE275088E500974427 /* RdpBridge.m */,
 				AF5D23F227508A2700974427 /* RdpBridge.h */,
+				1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -2431,6 +2437,7 @@
 				AF53DCB124022C8C00569F19 /* VncSession.swift in Sources */,
 				AF44C9C42601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */,
+				1608AEB429A2FE5900D82A58 /* ClipboardMonitor.swift in Sources */,
 				AF9E8F99242AE4E900752FC2 /* SystemMonitor.m in Sources */,
 				AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */,
 				167176C62838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
@@ -2484,6 +2491,7 @@
 				AF30D19B253396EF00BA7A62 /* VncSession.swift in Sources */,
 				AF30D19C253396EF00BA7A62 /* StoreReviewHelper.swift in Sources */,
 				AF30D19D253396EF00BA7A62 /* SystemMonitor.m in Sources */,
+				1608AEB929A32A1500D82A58 /* ClipboardMonitor.swift in Sources */,
 				AF8C9CD3255B2F07001563A0 /* PhysicalKeyboardHandler.swift in Sources */,
 				AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */,
 				167176C72838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
@@ -2519,6 +2527,7 @@
 				AFB2C8D426001F4D00E2859F /* LocalizedStringKey.swift in Sources */,
 				AFF6D39F260FE8B20077F6D2 /* Utils.swift in Sources */,
 				AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */,
+				1608AEB729A32A1300D82A58 /* ClipboardMonitor.swift in Sources */,
 				AFB2C8D626001F4D00E2859F /* StoreReviewHelper.swift in Sources */,
 				AFB2C8D726001F4D00E2859F /* SystemMonitor.m in Sources */,
 				167176C82838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
@@ -2554,6 +2563,7 @@
 				AFB39115274F564A0059F91F /* ucs2xkeysym.c in Sources */,
 				AFB39116274F564A0059F91F /* LocalizedStringKey.swift in Sources */,
 				AFB39117274F564A0059F91F /* Utils.swift in Sources */,
+				1608AEB829A32A1400D82A58 /* ClipboardMonitor.swift in Sources */,
 				AFB39118274F564A0059F91F /* RemoteBridge.c in Sources */,
 				AFB39119274F564A0059F91F /* StoreReviewHelper.swift in Sources */,
 				167176C92838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */,
@@ -2826,7 +2836,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"${inherited}",
 					"@executable_path/Frameworks",

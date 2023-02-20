@@ -159,7 +159,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var keyboardLayouts: [String] = []
     var contentView: ContentView?
     var physicalKeyboardHandler: PhysicalKeyboardHandler?
-
+    var clipboardMonitor: ClipboardMonitor?
+    
     @objc func reDraw() {
         UserInterface {
             self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
@@ -260,6 +261,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
                                         Constants.LAYOUT_PATH)
         }
+        self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.macOs)
     }
     
     func connectWithConsoleFile (consoleFile: String) {
@@ -301,7 +303,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
      */
     func connect(connection: [String: String]) {
         log_callback_str(message: #function)
-        showConnectionInProgress()
+        self.clipboardMonitor?.startMonitoring()
+        self.showConnectionInProgress()
         self.receivedUpdate = false
         self.connections.select(connection: connection)
         log_callback_str(message: "Connecting and navigating to the connection screen")
@@ -368,6 +371,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     @objc func lazyDisconnect() {
         log_callback_str(message: "Lazy disconnecting")
+        self.clipboardMonitor?.stopMonitoring()
         self.imageView?.disableTouch()
         self.isDrawing = false
         self.deregisterFromNotifications()
@@ -981,6 +985,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 if !Utils.isRdp() {
                     self.reDraw()
                 }
+                self.clipboardMonitor?.startMonitoring()
             }
         }
     }
@@ -1001,5 +1006,4 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     */
-
 }

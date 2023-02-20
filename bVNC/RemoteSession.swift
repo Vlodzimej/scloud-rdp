@@ -111,6 +111,12 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
     }
 }
 
+func clipboard_callback(clipboard: UnsafeMutablePointer<Int8>?) -> Void {
+    let clipboardContents = String(cString: clipboard!)
+    log_callback_str(message: "Got clipboard from guest VM: \(clipboardContents)")
+    UIPasteboard.general.string = clipboardContents
+}
+
 func log_callback(message: UnsafeMutablePointer<Int8>?) -> Void {
     let messageStr = String(cString: message!)
     log_callback_str(message: messageStr)
@@ -428,5 +434,9 @@ class RemoteSession {
         let scanCodes = self.layoutMap[char] ?? []
         print("getScanCodesForKeyCodeChar: \(char) looked up to scanCodes: \(scanCodes)")
         return scanCodes
+    }
+    
+    func clientCutText(clientClipboardContents: String?) {
+        preconditionFailure("This method must be overridden")
     }
 }

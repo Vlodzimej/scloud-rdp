@@ -167,4 +167,8 @@ class VncSession: RemoteSession {
     override func requestRemoteResolution(x: Int, y: Int) {
         self.stateKeeper.reDraw()
     }
+    
+    override func clientCutText(clientClipboardContents: String?) {
+        // TODO: Implement
+    }
 }

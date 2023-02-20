@@ -171,4 +171,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         log_callback_str(message: "\(#function) called.")
         globalStateKeeper?.resizeWindow()
     }
+    
+    @objc func clipboardChanged(_ notification: Notification) {
+        log_callback_str(message: "\(#function) Detected change in clipboard: \(UIPasteboard.general.string)")
+    }
 }

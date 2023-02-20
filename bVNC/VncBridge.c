@@ -203,6 +203,7 @@ void *initializeVnc(int instance,
     cl->UnlockWriteToTLS = unlockWriteToTLS;
     cl->instance = instance;
     
+    
     if (!rfbInitClient(cl, &argc, argv)) {
         cl = NULL; /* rfbInitClient has already freed the client struct */
         cleanup(cl, "FAILED_TO_INIT_CONNECTION_TO_SERVER");
@@ -231,7 +232,9 @@ void connectVnc(void *c) {
         //if (i) {
             //rfbClientLog("Handling RFB Server Message\n");
         //}
-        
+        if (i == rfbSetDesktopSize) {
+            rfbClientLog("Server cut text!!!\n");
+        }
         if (!HandleRFBServerMessage(cl)) {
             cleanup(cl, "CONNECTION_FAILED");
             break;

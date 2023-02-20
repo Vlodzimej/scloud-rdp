@@ -376,4 +376,8 @@ class RdpSession: RemoteSession {
             self.stateKeeper.reDraw()
         }
     }
+    
+    override func clientCutText(clientClipboardContents: String?) {
+        // TODO: Implement
+    }
 }

@@ -36,12 +36,12 @@ then
   patch -p1 < ../cerbero.patch
   popd
 
-  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python3 cpanm"
+  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python@3.9 cpanm"
   brew install ${BREW_DEPS} || true
   brew unlink ${BREW_DEPS}
   brew link --overwrite ${BREW_DEPS}
   cpanm XML::Parser
-  /usr/local/bin/pip3 install six pyparsing
+  /usr/local/bin/pip3.9 install six pyparsing
 fi
 
 echo "Get latest recipes for project"
@@ -91,9 +91,4 @@ pushd ../bVNC.xcodeproj/ios_universal/lib
 mkdir -p iconv
 mv libiconv.a iconv/
 
-## Make a super duper static lib out of all the other libs
-#SPICELIBS=$(find . -name 'lib*.a')
-#SPICELIBS_WITHOUT_JPEG=$(find . -name 'lib*.a' | grep -v jpeg | grep -v iconv)
-#/Library/Developer/CommandLineTools/usr/bin/libtool -static -o spicelib.a ${SPICELIBS}
-#/Library/Developer/CommandLineTools/usr/bin/libtool -static -o spicelib_no_jpeg.a ${SPICELIBS_WITHOUT_JPEG}
 popd
