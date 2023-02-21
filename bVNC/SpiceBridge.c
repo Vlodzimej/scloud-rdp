@@ -92,6 +92,7 @@ static void updateSpiceBuffer(int x, int y, int w, int h) {
         disconnectSpice();
     }
     if (p.oldFrameBuffer != NULL) {
+        client_log("Freeing old framebuffer");
         free(p.oldFrameBuffer);
         p.oldFrameBuffer = NULL;
     }
@@ -226,7 +227,7 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     fbH = height;
     client_log("Width, height: %d, %d\n", fbW, fbH);
     
-    uint8_t *oldFrameBuffer = p.frameBuffer;
+    p.oldFrameBuffer = p.frameBuffer;
     int pixel_buffer_size = bytesPerPixel*fbW*fbH*sizeof(char);
     p.frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
     if (fbW > 0 && fbH > 0) {
