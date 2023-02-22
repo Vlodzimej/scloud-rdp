@@ -2,6 +2,7 @@
   - Caseless search for connections
   - Fix for crash when deleting connection with no thumbnail
   - Fix for error dialog automatically dismissed
+  - Implemented clipboard integration
 1.0.20
   - Fix for spurious right-click after two-finger scrolling
   - Fix for modifier up event not received after disconnect/reconnect
