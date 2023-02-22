@@ -47,5 +47,6 @@ extern void (*failure_callback)(int, uint8_t *);
 bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, int h);
 void signal_handler(int signal, siginfo_t *info, void *reserved);
 void handle_signals(void);
+void clientCutText(void *c, char *hostClipboardContents, int size);
 
 #endif /* RemoteBridge_h */

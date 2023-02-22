@@ -238,6 +238,7 @@ then
       -DWITH_SASL=OFF \
       -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
       -DWITH_GCRYPT=OFF \
+      -DWITH_PNG=OFF \
       -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
   popd
 fi
@@ -267,6 +268,7 @@ then
         -DDEPLOYMENT_TARGET=13.2 \
         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
         -DWITH_GCRYPT=OFF \
+        -DWITH_PNG=OFF \
         -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
     popd
   fi
@@ -298,6 +300,7 @@ then
       -DWITH_SASL=OFF \
       -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
       -DWITH_GCRYPT=OFF \
+      -DWITH_PNG=OFF \
       -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined/)
   popd
 fi

@@ -27,14 +27,15 @@
 
 bool getMaintainConnection(void *c);
 void *initializeVnc(int instance,
-                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
-                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
-                   void (*fail_callback)(int instance, uint8_t *),
-                   void (*cl_log_callback)(int8_t *),
-                   void (*lock_wrt_tls_callback)(int instance),
-                   void (*unlock_wrt_tls_callback)(int instance),
-                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                   char* addr, char* user, char* password);
+                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                    void (*fail_callback)(int instance, uint8_t *),
+                    void (*cl_log_callback)(int8_t *),
+                    void (*cl_cb_callback)(char *),
+                    void (*lock_wrt_tls_callback)(int instance),
+                    void (*unlock_wrt_tls_callback)(int instance),
+                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                    char* addr, char* user, char* password);
 void connectVnc(void *c);
 void disconnectVnc(void *c);
 void sendKeyEvent(void *c, const char *character);

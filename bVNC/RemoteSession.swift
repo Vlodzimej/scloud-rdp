@@ -111,9 +111,16 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
     }
 }
 
-func clipboard_callback(clipboard: UnsafeMutablePointer<Int8>?) -> Void {
+func utf_decoding_clipboard_callback(clipboard: UnsafeMutablePointer<CChar>?) -> Void {
+    log_callback_str(message: "utf_decoding_clipboard_callback")
+    let string = String(cString: clipboard!)
+    let clipboardContents = string.utf8DecodedString() ?? string
+    UIPasteboard.general.string = clipboardContents
+}
+
+func clipboard_callback(clipboard: UnsafeMutablePointer<CChar>?) -> Void {
+    log_callback_str(message: "clipboard_callback")
     let clipboardContents = String(cString: clipboard!)
-    log_callback_str(message: "Got clipboard from guest VM: \(clipboardContents)")
     UIPasteboard.general.string = clipboardContents
 }
 
@@ -436,7 +443,14 @@ class RemoteSession {
         return scanCodes
     }
     
-    func clientCutText(clientClipboardContents: String?) {
-        preconditionFailure("This method must be overridden")
+    func clientCutTextInSession(clientClipboardContents: String?) {
+        guard (self.stateKeeper.getCurrentInstance()) != nil else {
+            log_callback_str(message: "No currently connected instance, ignoring \(#function)")
+            return
+        }
+        let clipboardStr = clientClipboardContents ?? ""
+        let clientClipboardContentsPtr = UnsafeMutablePointer<Int8>(mutating: (clipboardStr as NSString).utf8String)
+        let length = clipboardStr.lengthOfBytes(using: .utf8)
+        clientCutText(stateKeeper.getCurrentInstance(), clientClipboardContentsPtr, Int32(length))
     }
 }

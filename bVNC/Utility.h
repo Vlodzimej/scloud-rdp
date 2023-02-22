@@ -25,6 +25,7 @@
 #include <stdarg.h>
 
 extern void (*client_log_callback)(int8_t *);
+extern void (*client_clipboard_callback)(char *);
 extern int (*yes_no_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
 
 void client_log(const char *format, ...);

@@ -47,7 +47,7 @@ class ClipboardMonitor {
             let currentTextContents = UIPasteboard.general.string
             if clipboardTextContents != currentTextContents {
                 clipboardTextContents = currentTextContents
-                self.stateKeeper.remoteSession?.clientCutText(clientClipboardContents: clipboardTextContents)
+                self.stateKeeper.remoteSession?.clientCutTextInSession(clientClipboardContents: clipboardTextContents)
             }
         }
     }

@@ -11,6 +11,10 @@
 		1608AEB729A32A1300D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
 		1608AEB829A32A1400D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
 		1608AEB929A32A1500D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		1624FE0B29A5D90500FD54CA /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
+		1624FE0C29A5D90500FD54CA /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
+		1624FE0D29A5D90500FD54CA /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
+		1624FE0E29A5D90500FD54CA /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
 		165D67C826ADD24200E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67CE26ADD24300E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		165D67CF26ADD24400E27D6E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
@@ -335,6 +339,7 @@
 
 /* Begin PBXFileReference section */
 		1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
+		1624FE0A29A5D90500FD54CA /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1375,6 +1380,7 @@
 				AF5D23EE275088E500974427 /* RdpBridge.m */,
 				AF5D23F227508A2700974427 /* RdpBridge.h */,
 				1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */,
+				1624FE0A29A5D90500FD54CA /* StringExtension.swift */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -2430,6 +2436,7 @@
 			files = (
 				165D67C826ADD24200E27D6E /* Constants.swift in Sources */,
 				AF7421F4241D58EB00C552A7 /* SshPortForwarder.c in Sources */,
+				1624FE0B29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */,
 				AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */,
 				AF51B3002410BAED005DE8AB /* ucs2xkeysym.c in Sources */,
@@ -2484,6 +2491,7 @@
 			files = (
 				AF44CF37260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
 				AF30D196253396EF00BA7A62 /* SshPortForwarder.c in Sources */,
+				1624FE0C29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AF30D197253396EF00BA7A62 /* CustomTextInput.swift in Sources */,
 				AF30D198253396EF00BA7A62 /* ToggleButton.swift in Sources */,
 				AF30D199253396EF00BA7A62 /* ucs2xkeysym.c in Sources */,
@@ -2520,6 +2528,7 @@
 			files = (
 				165D67CF26ADD24400E27D6E /* Constants.swift in Sources */,
 				AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */,
+				1624FE0D29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */,
 				AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */,
 				AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */,
@@ -2556,6 +2565,7 @@
 			files = (
 				AFB39110274F564A0059F91F /* Constants.swift in Sources */,
 				AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */,
+				1624FE0E29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */,
 				AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */,
 				AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */,

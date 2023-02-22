@@ -20,25 +20,6 @@
 import Foundation
 import UIKit
 
-/*
-extension String {
-
-  func toPointer() -> UnsafeMutablePointer<UInt8>? {
-    guard let data = self.data(using: String.Encoding.utf8) else { return nil }
-
-    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: data.count)
-    let stream = OutputStream(toBuffer: buffer, capacity: data.count)
-
-    stream.open()
-    
-    data.withUnsafeBytes({ (p: UnsafePointer<UInt8>) -> Void in
-      stream.write(p, maxLength: data.count)
-    })
-    stream.close()
-
-    return UnsafeMutablePointer<UInt8>(buffer)
-  }
-}*/
 
 class CustomTextInput: UIButton, UIKeyInput {
     public var hasText: Bool { return false }

@@ -208,6 +208,7 @@ void *initializeRdp(int i, int width, int height,
     instance->context->settings->DesktopWidth = width;
     instance->context->settings->DesktopHeight = height;
     instance->context->settings->DynamicResolutionUpdate = TRUE;
+    instance->context->settings->RedirectClipboard = TRUE;
 
     instance->update->DesktopResize = resize_window;
     instance->update->BitmapUpdate = bitmap_update;
@@ -254,5 +255,9 @@ void disconnectRdp(void *instance) {
 }
 
 void resizeRemoteRdpDesktop(void *i, int x, int y) {
+    // FIXME: Implement
+}
+
+void clientCutText(void *instance, char *hostClipboardContents, int size) {
     // FIXME: Implement
 }

@@ -147,15 +147,20 @@ rfbBool unlockWriteToTLS(rfbClient *client) {
     return TRUE;
 }
 
+void serverCutText(rfbClient *client, const char *text, int textlen) {
+    client_clipboard_callback((char *)text);
+}
+
 void *initializeVnc(int instance,
-                   bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
-                   void (*fb_resize_callback)(int instance, int fbW, int fbH),
-                   void (*fail_callback)(int instance, uint8_t *),
-                   void (*cl_log_callback)(int8_t *),
-                   void (*lock_wrt_tls_callback)(int instance),
-                   void (*unlock_wrt_tls_callback)(int instance),
-                   int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                   char* addr, char* user, char* password) {
+                    bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
+                    void (*fb_resize_callback)(int instance, int fbW, int fbH),
+                    void (*fail_callback)(int instance, uint8_t *),
+                    void (*cl_log_callback)(int8_t *),
+                    void (*cl_cb_callback)(char *),
+                    void (*lock_wrt_tls_callback)(int instance),
+                    void (*unlock_wrt_tls_callback)(int instance),
+                    int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
+                    char* addr, char* user, char* password) {
     rfbClientLog("Initializing VNC session.\n");
     fbW = 0;
     fbH = 0;
@@ -166,6 +171,7 @@ void *initializeVnc(int instance,
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
     client_log_callback = cl_log_callback;
+    client_clipboard_callback = cl_cb_callback;
     yes_no_callback = y_n_callback;
     lock_write_tls_callback = lock_wrt_tls_callback;
     unlock_write_tls_callback = unlock_wrt_tls_callback;
@@ -193,7 +199,7 @@ void *initializeVnc(int instance,
     cl->GotFrameBufferUpdate=update;
     //cl->HandleKeyboardLedState=kbd_leds;
     //cl->HandleTextChat=text_chat;
-    //cl->GotXCutText = got_selection;
+    cl->GotXCutText = serverCutText;
     cl->GetCredential = get_credential;
     cl->GetPassword = get_password;
     //cl->listenPort = LISTEN_PORT_OFFSET;
@@ -202,7 +208,6 @@ void *initializeVnc(int instance,
     cl->LockWriteToTLS = lockWriteToTLS;
     cl->UnlockWriteToTLS = unlockWriteToTLS;
     cl->instance = instance;
-    
     
     if (!rfbInitClient(cl, &argc, argv)) {
         cl = NULL; /* rfbInitClient has already freed the client struct */
@@ -387,5 +392,12 @@ void checkForError(rfbClient *cl, rfbBool res) {
         cleanup(cl, "RFB_CLIENT_OBJECT_NOT_INITIALIZED");
     } else if (!res) {
         cleanup(cl, "FAILED_TO_SEND_MESSAGE_TO_SERVER");
+    }
+}
+
+void clientCutText(void *c, char *hostClipboardContents, int size) {
+    rfbClient *cl = (rfbClient *)c;
+    if (cl != NULL) {
+        SendClientCutText(cl, hostClipboardContents, size);
     }
 }

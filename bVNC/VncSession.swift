@@ -95,10 +95,20 @@ class VncSession: RemoteSession {
             if continueConnecting {
                 log_callback_str(message: "Connecting VNC Session in the background...")
                 
-                self.cl = initializeVnc(Int32(self.instance), update_callback, resize_callback, failure_callback_swift, log_callback, lock_write_tls_callback_swift, unlock_write_tls_callback_swift, yes_no_dialog_callback,
-                           UnsafeMutablePointer<Int8>(mutating: (addressAndPort as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
-                           UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String))
+                self.cl = initializeVnc(
+                    Int32(self.instance),
+                    update_callback,
+                    resize_callback,
+                    failure_callback_swift,
+                    log_callback,
+                    utf_decoding_clipboard_callback,
+                    lock_write_tls_callback_swift,
+                    unlock_write_tls_callback_swift,
+                    yes_no_dialog_callback,
+                    UnsafeMutablePointer<Int8>(mutating: (addressAndPort as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String)
+                )
                 if self.cl != nil {
                     self.stateKeeper.setCurrentInstance(inst: self.cl)
                     connectVnc(self.cl)
@@ -166,9 +176,5 @@ class VncSession: RemoteSession {
     
     override func requestRemoteResolution(x: Int, y: Int) {
         self.stateKeeper.reDraw()
-    }
-    
-    override func clientCutText(clientClipboardContents: String?) {
-        // TODO: Implement
     }
 }
