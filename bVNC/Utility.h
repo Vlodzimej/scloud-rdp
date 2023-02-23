@@ -25,8 +25,11 @@
 #include <stdarg.h>
 
 extern void (*client_log_callback)(int8_t *);
+extern void (*utf8_client_clipboard_callback)(uint8_t *, long);
 extern void (*client_clipboard_callback)(char *);
 extern int (*yes_no_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
+extern uint8_t* cast_cchar_to_uint8(char*);
+extern char* cast_uint8_to_cchar(uint8_t*);
 
 void client_log(const char *format, ...);
 char *get_human_readable_fingerprint(uint8_t *raw_fingerprint, uint32_t len);

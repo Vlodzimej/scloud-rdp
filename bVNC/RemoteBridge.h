@@ -35,8 +35,10 @@ typedef void (*pFrameBufferResizeCallback)(int instance, int fbW, int fbH);
 extern pFrameBufferResizeCallback frameBufferResizeCallback;
 typedef void (*pFailCallback)(int instance, uint8_t *);
 extern pFailCallback failCallback;
-typedef void (*pClientLogCallback)(int8_t *);
+typedef void (*pClientLogCallback)(char *);
 extern pClientLogCallback clientLogCallback;
+typedef void (*pClientClipboardCallback)(uint8_t *, long);
+extern pClientClipboardCallback clientClipboardCallback;
 typedef int (*pYesNoCallback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
 extern pYesNoCallback yesNoCallback;
 

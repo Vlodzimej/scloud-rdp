@@ -124,6 +124,25 @@ func clipboard_callback(clipboard: UnsafeMutablePointer<CChar>?) -> Void {
     UIPasteboard.general.string = clipboardContents
 }
 
+func try_converting_utf_codepoints(clipboard: UnsafeMutablePointer<UInt8>?, size: Int) -> String? {
+    log_callback_str(message: "try_converting_utf_codepoints")
+    let a = UnsafeMutableBufferPointer(start: clipboard, count: Int(size))
+    let byteArray: [UInt8] = Array(a)
+    let unicodeScalars = byteArray.compactMap(Unicode.Scalar.init)
+    let result = String(String.UnicodeScalarView(unicodeScalars))
+    return result
+}
+
+func utf8_clipboard_callback(clipboard: UnsafeMutablePointer<UInt8>?, size: Int) -> Void {
+    log_callback_str(message: "utf8_clipboard_callback")
+    var clipboardContents = String(validatingUTF8: cast_uint8_to_cchar(clipboard!))
+    if clipboardContents == nil {
+        clipboardContents = try_converting_utf_codepoints(clipboard: clipboard, size: size)
+    }
+    UIPasteboard.general.string = clipboardContents
+}
+
+
 func log_callback(message: UnsafeMutablePointer<Int8>?) -> Void {
     let messageStr = String(cString: message!)
     log_callback_str(message: messageStr)

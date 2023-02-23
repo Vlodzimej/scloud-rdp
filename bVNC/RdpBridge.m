@@ -118,32 +118,32 @@ static void ios_post_disconnect(freerdp *instance) {
         case FREERDP_ERROR_AUTHENTICATION_FAILED:
         case FREERDP_ERROR_CONNECT_WRONG_PASSWORD:
         case FREERDP_ERROR_CONNECT_NO_OR_MISSING_CREDENTIALS:
-            clientLogCallback((int8_t*)"Authentication failed\n");
+            clientLogCallback("Authentication failed\n");
             failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
             return;
         case FREERDP_ERROR_CONNECT_CANCELLED:
-            clientLogCallback((int8_t*)"Connection cancelled\n");
+            clientLogCallback("Connection cancelled\n");
             failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
             break;
         case FREERDP_ERROR_NONE:
             break;
         default:
-            clientLogCallback((int8_t*)"Unhandled error value after disconnection\n");
+            clientLogCallback("Unhandled error value after disconnection\n");
             break;
     }
 
     switch (connection_state) {
         case CLIENT_STATE_INITIAL:
         case CLIENT_STATE_PRECONNECT_PASSED:
-            clientLogCallback((int8_t*)"Could not connect to remote server\n");
+            clientLogCallback("Could not connect to remote server\n");
             failCallback(i, (uint8_t*)"RDP_CONNECTION_FAILURE_TITLE");
             return;
         case CLIENT_STATE_POSTCONNECT_PASSED:
-            clientLogCallback((int8_t*)"Connection to remote server was interrupted\n");
+            clientLogCallback("Connection to remote server was interrupted\n");
             failCallback(i, (uint8_t*)"CONNECTION_INTERRUPTED_TITLE");
             return;
         default:
-            clientLogCallback((int8_t*)"Unhandled connection state after disconnection\n");
+            clientLogCallback("Unhandled connection state after disconnection\n");
             return;
     }
 }
@@ -172,11 +172,19 @@ static DWORD verify_cert(freerdp* instance, const char* host, UINT16 port,
     return 1;
 }
 
+
+static BOOL serverCutText(rdpContext* context, int8_t* data, UINT32 size) {
+    utf8_client_clipboard_callback(data, size);
+    return true;
+}
+
+
 void *initializeRdp(int i, int width, int height,
                     pFrameBufferUpdateCallback fb_update_callback,
                     pFrameBufferResizeCallback fb_resize_callback,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
+                    pClientClipboardCallback cl_clipboard_callback,
                     pYesNoCallback y_n_callback,
                     char *addr,
                     char *port,
@@ -189,11 +197,12 @@ void *initializeRdp(int i, int width, int height,
     frameBufferResizeCallback = fb_resize_callback;
     failCallback = fail_callback;
     clientLogCallback = cl_log_callback;
+    utf8_client_clipboard_callback = cl_clipboard_callback;
     yesNoCallback = y_n_callback;
     
     freerdp* instance = ios_freerdp_new();
     if (!instance) {
-        clientLogCallback((int8_t*)"Could not initialize new freerdp instance\n");
+        clientLogCallback("Could not initialize new freerdp instance\n");
         return NULL;
     }
     
@@ -214,6 +223,7 @@ void *initializeRdp(int i, int width, int height,
     instance->update->BitmapUpdate = bitmap_update;
     instance->update->BeginPaint = begin_paint;
     instance->update->EndPaint = end_paint;
+    instance->update->ServerCutText = serverCutText;
 
     //FIXME: Implement RDP gateway support
     //instance->context->settings->GatewayUsername
@@ -258,6 +268,7 @@ void resizeRemoteRdpDesktop(void *i, int x, int y) {
     // FIXME: Implement
 }
 
-void clientCutText(void *instance, char *hostClipboardContents, int size) {
-    // FIXME: Implement
+void clientCutText(void *i, char *hostClipboardContents, int size) {
+    freerdp *instance = (freerdp *)i;
+    ios_send_clipboard_data(instance->context, (void*)hostClipboardContents, size);
 }

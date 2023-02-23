@@ -1,0 +1,699 @@
+From be5001f2833389f22fd9393f96c80b0cd663286d Mon Sep 17 00:00:00 2001
+From: iordan iordanov <iordanovv@gmail.com>
+Date: Wed, 22 Feb 2023 20:21:41 -0500
+Subject: [PATCH] Implemented clipboard redirection for iOS
+
+---
+ client/iOS/FreeRDP/ios_cliprdr.h |  34 ++
+ client/iOS/FreeRDP/ios_cliprdr.m | 511 +++++++++++++++++++++++++++++++
+ client/iOS/FreeRDP/ios_freerdp.h |  12 +
+ client/iOS/FreeRDP/ios_freerdp.m |  23 ++
+ include/freerdp/update.h         |   4 +-
+ 5 files changed, 583 insertions(+), 1 deletion(-)
+ create mode 100644 client/iOS/FreeRDP/ios_cliprdr.h
+ create mode 100644 client/iOS/FreeRDP/ios_cliprdr.m
+
+diff --git a/client/iOS/FreeRDP/ios_cliprdr.h b/client/iOS/FreeRDP/ios_cliprdr.h
+new file mode 100644
+index 000000000..e3b71f43d
+--- /dev/null
++++ b/client/iOS/FreeRDP/ios_cliprdr.h
+@@ -0,0 +1,34 @@
++/**
++ * FreeRDP: A Remote Desktop Protocol Implementation
++ * Android Clipboard Redirection
++ *
++ * Copyright 2013 Felix Long
++ * Copyright 2023 Iordan Iordanov
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef FREERDP_CLIENT_IOS_CLIPRDR_H
++#define FREERDP_CLIENT_IOS_CLIPRDR_H
++
++#include <freerdp/client/cliprdr.h>
++#include <freerdp/api.h>
++
++#include "ios_freerdp.h"
++
++FREERDP_LOCAL UINT ios_cliprdr_send_client_format_list(CliprdrClientContext* cliprdr);
++
++FREERDP_LOCAL BOOL ios_cliprdr_init(mfContext *context, CliprdrClientContext* cliprdr);
++FREERDP_LOCAL BOOL ios_cliprdr_uninit(mfContext *context, CliprdrClientContext* cliprdr);
++
++#endif /* FREERDP_CLIENT_IOS_CLIPRDR_H */
+diff --git a/client/iOS/FreeRDP/ios_cliprdr.m b/client/iOS/FreeRDP/ios_cliprdr.m
+new file mode 100644
+index 000000000..6fd837de3
+--- /dev/null
++++ b/client/iOS/FreeRDP/ios_cliprdr.m
+@@ -0,0 +1,511 @@
++/**
++ * FreeRDP: A Remote Desktop Protocol Implementation
++ * Android Clipboard Redirection
++ *
++ * Copyright 2013 Felix Long
++ * Copyright 2015 Thincast Technologies GmbH
++ * Copyright 2015 DI (FH) Martin Haimberger <martin.haimberger@thincast.com>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
++
++#include <winpr/crt.h>
++#include <winpr/stream.h>
++
++#include <freerdp/client/channels.h>
++#include <freerdp/client/cliprdr.h>
++
++#include "ios_cliprdr.h"
++
++#define TAG FREERDP_TAG("iOS")
++
++UINT ios_cliprdr_send_client_format_list(CliprdrClientContext* cliprdr)
++{
++	UINT rc = ERROR_INTERNAL_ERROR;
++	UINT32 index;
++	UINT32 formatId;
++	UINT32 numFormats;
++	UINT32* pFormatIds;
++	const char* formatName;
++	CLIPRDR_FORMAT* formats;
++	CLIPRDR_FORMAT_LIST formatList;
++
++	if (!cliprdr)
++		return ERROR_INVALID_PARAMETER;
++
++	mfContext* afc = (mfContext*)cliprdr->custom;
++
++	if (!afc || !afc->cliprdr)
++		return ERROR_INVALID_PARAMETER;
++
++	ZeroMemory(&formatList, sizeof(CLIPRDR_FORMAT_LIST));
++	pFormatIds = NULL;
++	numFormats = ClipboardGetFormatIds(afc->clipboard, &pFormatIds);
++	formats = (CLIPRDR_FORMAT*)calloc(numFormats, sizeof(CLIPRDR_FORMAT));
++
++	if (!formats)
++		goto fail;
++
++	for (index = 0; index < numFormats; index++)
++	{
++		formatId = pFormatIds[index];
++		formatName = ClipboardGetFormatName(afc->clipboard, formatId);
++		formats[index].formatId = formatId;
++		formats[index].formatName = NULL;
++
++		if ((formatId > CF_MAX) && formatName)
++		{
++			formats[index].formatName = _strdup(formatName);
++
++			if (!formats[index].formatName)
++				goto fail;
++		}
++	}
++
++	formatList.msgFlags = CB_RESPONSE_OK;
++	formatList.numFormats = numFormats;
++	formatList.formats = formats;
++	formatList.msgType = CB_FORMAT_LIST;
++
++	if (!afc->cliprdr->ClientFormatList)
++		goto fail;
++
++	rc = afc->cliprdr->ClientFormatList(afc->cliprdr, &formatList);
++fail:
++	free(pFormatIds);
++	free(formats);
++	return rc;
++}
++
++static UINT ios_cliprdr_send_client_format_data_request(CliprdrClientContext* cliprdr,
++                                                            UINT32 formatId)
++{
++	UINT rc = ERROR_INVALID_PARAMETER;
++	CLIPRDR_FORMAT_DATA_REQUEST formatDataRequest;
++	mfContext* afc;
++
++	if (!cliprdr)
++		goto fail;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc || !afc->clipboardRequestEvent || !cliprdr->ClientFormatDataRequest)
++		goto fail;
++
++	ZeroMemory(&formatDataRequest, sizeof(CLIPRDR_FORMAT_DATA_REQUEST));
++	formatDataRequest.msgType = CB_FORMAT_DATA_REQUEST;
++	formatDataRequest.msgFlags = 0;
++	formatDataRequest.requestedFormatId = formatId;
++	afc->requestedFormatId = formatId;
++	ResetEvent(afc->clipboardRequestEvent);
++	rc = cliprdr->ClientFormatDataRequest(cliprdr, &formatDataRequest);
++fail:
++	return rc;
++}
++
++static UINT ios_cliprdr_send_client_capabilities(CliprdrClientContext* cliprdr)
++{
++	CLIPRDR_CAPABILITIES capabilities;
++	CLIPRDR_GENERAL_CAPABILITY_SET generalCapabilitySet;
++
++	if (!cliprdr || !cliprdr->ClientCapabilities)
++		return ERROR_INVALID_PARAMETER;
++
++	capabilities.cCapabilitiesSets = 1;
++	capabilities.capabilitySets = (CLIPRDR_CAPABILITY_SET*)&(generalCapabilitySet);
++	generalCapabilitySet.capabilitySetType = CB_CAPSTYPE_GENERAL;
++	generalCapabilitySet.capabilitySetLength = 12;
++	generalCapabilitySet.version = CB_CAPS_VERSION_2;
++	generalCapabilitySet.generalFlags = CB_USE_LONG_FORMAT_NAMES;
++	return cliprdr->ClientCapabilities(cliprdr, &capabilities);
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_monitor_ready(CliprdrClientContext* cliprdr,
++                                          const CLIPRDR_MONITOR_READY* monitorReady)
++{
++	UINT rc;
++	mfContext* afc;
++
++	if (!cliprdr || !monitorReady)
++		return ERROR_INVALID_PARAMETER;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc)
++		return ERROR_INVALID_PARAMETER;
++
++	if ((rc = ios_cliprdr_send_client_capabilities(cliprdr)) != CHANNEL_RC_OK)
++		return rc;
++
++	if ((rc = ios_cliprdr_send_client_format_list(cliprdr)) != CHANNEL_RC_OK)
++		return rc;
++
++	afc->clipboardSync = TRUE;
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_server_capabilities(CliprdrClientContext* cliprdr,
++                                                const CLIPRDR_CAPABILITIES* capabilities)
++{
++	UINT32 index;
++	CLIPRDR_CAPABILITY_SET* capabilitySet;
++	mfContext* afc;
++
++	if (!cliprdr || !capabilities)
++		return ERROR_INVALID_PARAMETER;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc)
++		return ERROR_INVALID_PARAMETER;
++
++	for (index = 0; index < capabilities->cCapabilitiesSets; index++)
++	{
++		capabilitySet = &(capabilities->capabilitySets[index]);
++
++		if ((capabilitySet->capabilitySetType == CB_CAPSTYPE_GENERAL) &&
++		    (capabilitySet->capabilitySetLength >= CB_CAPSTYPE_GENERAL_LEN))
++		{
++			CLIPRDR_GENERAL_CAPABILITY_SET* generalCapabilitySet =
++			    (CLIPRDR_GENERAL_CAPABILITY_SET*)capabilitySet;
++			afc->clipboardCapabilities = generalCapabilitySet->generalFlags;
++			break;
++		}
++	}
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_server_format_list(CliprdrClientContext* cliprdr,
++                                               const CLIPRDR_FORMAT_LIST* formatList)
++{
++	UINT rc;
++	UINT32 index;
++	CLIPRDR_FORMAT* format;
++	mfContext* afc;
++
++	if (!cliprdr || !formatList)
++		return ERROR_INVALID_PARAMETER;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc)
++		return ERROR_INVALID_PARAMETER;
++
++	if (afc->serverFormats)
++	{
++		for (index = 0; index < afc->numServerFormats; index++)
++			free(afc->serverFormats[index].formatName);
++
++		free(afc->serverFormats);
++		afc->serverFormats = NULL;
++		afc->numServerFormats = 0;
++	}
++
++	if (formatList->numFormats < 1)
++		return CHANNEL_RC_OK;
++
++	afc->numServerFormats = formatList->numFormats;
++	afc->serverFormats = (CLIPRDR_FORMAT*)calloc(afc->numServerFormats, sizeof(CLIPRDR_FORMAT));
++
++	if (!afc->serverFormats)
++		return CHANNEL_RC_NO_MEMORY;
++
++	for (index = 0; index < afc->numServerFormats; index++)
++	{
++		afc->serverFormats[index].formatId = formatList->formats[index].formatId;
++		afc->serverFormats[index].formatName = NULL;
++
++		if (formatList->formats[index].formatName)
++		{
++			afc->serverFormats[index].formatName = _strdup(formatList->formats[index].formatName);
++
++			if (!afc->serverFormats[index].formatName)
++				return CHANNEL_RC_NO_MEMORY;
++		}
++	}
++
++	for (index = 0; index < afc->numServerFormats; index++)
++	{
++		format = &(afc->serverFormats[index]);
++
++		if (format->formatId == CF_UNICODETEXT)
++		{
++			if ((rc = ios_cliprdr_send_client_format_data_request(cliprdr, CF_UNICODETEXT)) !=
++			    CHANNEL_RC_OK)
++				return rc;
++
++			break;
++		}
++		else if (format->formatId == CF_TEXT)
++		{
++			if ((rc = ios_cliprdr_send_client_format_data_request(cliprdr, CF_TEXT)) !=
++			    CHANNEL_RC_OK)
++				return rc;
++
++			break;
++		}
++	}
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT
++ios_cliprdr_server_format_list_response(CliprdrClientContext* cliprdr,
++                                            const CLIPRDR_FORMAT_LIST_RESPONSE* formatListResponse)
++{
++	if (!cliprdr || !formatListResponse)
++		return ERROR_INVALID_PARAMETER;
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT
++ios_cliprdr_server_lock_clipboard_data(CliprdrClientContext* cliprdr,
++                                           const CLIPRDR_LOCK_CLIPBOARD_DATA* lockClipboardData)
++{
++	if (!cliprdr || !lockClipboardData)
++		return ERROR_INVALID_PARAMETER;
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_server_unlock_clipboard_data(
++    CliprdrClientContext* cliprdr, const CLIPRDR_UNLOCK_CLIPBOARD_DATA* unlockClipboardData)
++{
++	if (!cliprdr || !unlockClipboardData)
++		return ERROR_INVALID_PARAMETER;
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT
++ios_cliprdr_server_format_data_request(CliprdrClientContext* cliprdr,
++                                           const CLIPRDR_FORMAT_DATA_REQUEST* formatDataRequest)
++{
++	UINT rc;
++	BYTE* data;
++	UINT32 size;
++	UINT32 formatId;
++	CLIPRDR_FORMAT_DATA_RESPONSE response;
++	mfContext* afc;
++
++	if (!cliprdr || !formatDataRequest || !cliprdr->ClientFormatDataResponse)
++		return ERROR_INVALID_PARAMETER;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc)
++		return ERROR_INVALID_PARAMETER;
++
++	ZeroMemory(&response, sizeof(CLIPRDR_FORMAT_DATA_RESPONSE));
++	formatId = formatDataRequest->requestedFormatId;
++	data = (BYTE*)ClipboardGetData(afc->clipboard, formatId, &size);
++	response.msgFlags = CB_RESPONSE_OK;
++	response.dataLen = size;
++	response.requestedFormatData = data;
++
++	if (!data)
++	{
++		response.msgFlags = CB_RESPONSE_FAIL;
++		response.dataLen = 0;
++		response.requestedFormatData = NULL;
++	}
++
++	rc = cliprdr->ClientFormatDataResponse(cliprdr, &response);
++	free(data);
++	return rc;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT
++ios_cliprdr_server_format_data_response(CliprdrClientContext* cliprdr,
++                                            const CLIPRDR_FORMAT_DATA_RESPONSE* formatDataResponse)
++{
++	BYTE* data;
++	UINT32 size;
++	UINT32 index;
++	UINT32 formatId;
++	CLIPRDR_FORMAT* format = NULL;
++	mfContext* afc;
++	freerdp* instance;
++
++	if (!cliprdr || !formatDataResponse)
++		return ERROR_INVALID_PARAMETER;
++
++	afc = (mfContext*)cliprdr->custom;
++
++	if (!afc)
++		return ERROR_INVALID_PARAMETER;
++
++	instance = ((rdpContext*)afc)->instance;
++
++	if (!instance)
++		return ERROR_INVALID_PARAMETER;
++
++	for (index = 0; index < afc->numServerFormats; index++)
++	{
++		if (afc->requestedFormatId == afc->serverFormats[index].formatId)
++			format = &(afc->serverFormats[index]);
++	}
++
++	if (!format)
++	{
++		SetEvent(afc->clipboardRequestEvent);
++		return ERROR_INTERNAL_ERROR;
++	}
++
++	if (format->formatName)
++		formatId = ClipboardRegisterFormat(afc->clipboard, format->formatName);
++	else
++		formatId = format->formatId;
++
++	size = formatDataResponse->dataLen;
++
++	if (!ClipboardSetData(afc->clipboard, formatId, formatDataResponse->requestedFormatData, size))
++		return ERROR_INTERNAL_ERROR;
++
++	SetEvent(afc->clipboardRequestEvent);
++
++	if ((formatId == CF_TEXT) || (formatId == CF_UNICODETEXT))
++	{
++		formatId = ClipboardRegisterFormat(afc->clipboard, "UTF8_STRING");
++		data = (BYTE*)ClipboardGetData(afc->clipboard, formatId, &size);
++		size = strnlen(data, size);
++		if (instance->update->ServerCutText != NULL)
++		{
++			instance->update->ServerCutText(afc, (uint8_t*)data, size);
++		}
++	}
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_server_file_contents_request(
++    CliprdrClientContext* cliprdr, const CLIPRDR_FILE_CONTENTS_REQUEST* fileContentsRequest)
++{
++	if (!cliprdr || !fileContentsRequest)
++		return ERROR_INVALID_PARAMETER;
++
++	return CHANNEL_RC_OK;
++}
++
++/**
++ * Function description
++ *
++ * @return 0 on success, otherwise a Win32 error code
++ */
++static UINT ios_cliprdr_server_file_contents_response(
++    CliprdrClientContext* cliprdr, const CLIPRDR_FILE_CONTENTS_RESPONSE* fileContentsResponse)
++{
++	if (!cliprdr || !fileContentsResponse)
++		return ERROR_INVALID_PARAMETER;
++
++	return CHANNEL_RC_OK;
++}
++
++BOOL ios_cliprdr_init(mfContext* afc, CliprdrClientContext* cliprdr)
++{
++	WLog_INFO(TAG, "ios_cliprdr_init");
++
++	wClipboard* clipboard;
++	HANDLE hevent;
++
++	if (!afc || !cliprdr)
++		return FALSE;
++
++	if (!(hevent = CreateEvent(NULL, TRUE, FALSE, NULL)))
++		return FALSE;
++
++	if (!(clipboard = ClipboardCreate()))
++	{
++		CloseHandle(hevent);
++		return FALSE;
++	}
++
++	afc->cliprdr = cliprdr;
++	afc->clipboard = clipboard;
++	afc->clipboardRequestEvent = hevent;
++	cliprdr->custom = (void*)afc;
++	cliprdr->MonitorReady = ios_cliprdr_monitor_ready;
++	cliprdr->ServerCapabilities = ios_cliprdr_server_capabilities;
++	cliprdr->ServerFormatList = ios_cliprdr_server_format_list;
++	cliprdr->ServerFormatListResponse = ios_cliprdr_server_format_list_response;
++	cliprdr->ServerLockClipboardData = ios_cliprdr_server_lock_clipboard_data;
++	cliprdr->ServerUnlockClipboardData = ios_cliprdr_server_unlock_clipboard_data;
++	cliprdr->ServerFormatDataRequest = ios_cliprdr_server_format_data_request;
++	cliprdr->ServerFormatDataResponse = ios_cliprdr_server_format_data_response;
++	cliprdr->ServerFileContentsRequest = ios_cliprdr_server_file_contents_request;
++	cliprdr->ServerFileContentsResponse = ios_cliprdr_server_file_contents_response;
++	return TRUE;
++}
++
++BOOL ios_cliprdr_uninit(mfContext* afc, CliprdrClientContext* cliprdr)
++{
++	if (!afc || !cliprdr)
++		return FALSE;
++
++	cliprdr->custom = NULL;
++	afc->cliprdr = NULL;
++	ClipboardDestroy(afc->clipboard);
++	CloseHandle(afc->clipboardRequestEvent);
++	return TRUE;
++}
+diff --git a/client/iOS/FreeRDP/ios_freerdp.h b/client/iOS/FreeRDP/ios_freerdp.h
+index 8cc7df5ed..4b2c3c089 100644
+--- a/client/iOS/FreeRDP/ios_freerdp.h
++++ b/client/iOS/FreeRDP/ios_freerdp.h
+@@ -13,6 +13,8 @@
+ #import <freerdp/freerdp.h>
+ #import <freerdp/channels/channels.h>
+ #import "TSXTypes.h"
++#import <winpr/clipboard.h>
++#import <freerdp/client/cliprdr.h>
+ 
+ @class RDPSession, RDPSessionView;
+ 
+@@ -25,6 +27,15 @@ typedef struct mf_context
+ 
+ 	mfInfo *mfi;
+ 	rdpSettings *settings;
++
++	BOOL clipboardSync;
++	wClipboard* clipboard;
++	UINT32 numServerFormats;
++	UINT32 requestedFormatId;
++	HANDLE clipboardRequestEvent;
++	CLIPRDR_FORMAT* serverFormats;
++	CliprdrClientContext* cliprdr;
++	UINT32 clipboardCapabilities;
+ } mfContext;
+ 
+ struct mf_info
+@@ -67,3 +78,4 @@ void ios_uninit_freerdp(void);
+ freerdp *ios_freerdp_new(void);
+ int ios_run_freerdp(freerdp *instance);
+ void ios_freerdp_free(freerdp *instance);
++void ios_send_clipboard_data(void *context, const void* data, UINT32 size);
+\ No newline at end of file
+diff --git a/client/iOS/FreeRDP/ios_freerdp.m b/client/iOS/FreeRDP/ios_freerdp.m
+index 295d769a8..c759b605a 100644
+--- a/client/iOS/FreeRDP/ios_freerdp.m
++++ b/client/iOS/FreeRDP/ios_freerdp.m
+@@ -14,10 +14,12 @@
+ #import <freerdp/client/cmdline.h>
+ #import <freerdp/freerdp.h>
+ #import <freerdp/gdi/gfx.h>
++#import <freerdp/client/cliprdr.h>
+ 
+ #import "ios_freerdp.h"
+ #import "ios_freerdp_ui.h"
+ #import "ios_freerdp_events.h"
++#import "ios_cliprdr.h"
+ 
+ #import "RDPSession.h"
+ #import "Utils.h"
+@@ -30,6 +32,7 @@
+ 
+ static void ios_OnChannelConnectedEventHandler(void *context, ChannelConnectedEventArgs *e)
+ {
++	WLog_INFO(TAG, "ios_OnChannelConnectedEventHandler, channel %s", e->name);
+ 	rdpSettings *settings;
+ 	mfContext *afc;
+ 
+@@ -54,10 +57,15 @@ static void ios_OnChannelConnectedEventHandler(void *context, ChannelConnectedEv
+ 			               " This is not supported, add /gdi:sw");
+ 		}
+ 	}
++	else if (strcmp(e->name, CLIPRDR_SVC_CHANNEL_NAME) == 0)
++	{
++		ios_cliprdr_init(afc, (CliprdrClientContext*)e->pInterface);
++	}
+ }
+ 
+ static void ios_OnChannelDisconnectedEventHandler(void *context, ChannelDisconnectedEventArgs *e)
+ {
++	WLog_INFO(TAG, "ios_OnChannelDisconnectedEventHandler, channel: %s", e->name);
+ 	rdpSettings *settings;
+ 	mfContext *afc;
+ 
+@@ -82,6 +90,10 @@ static void ios_OnChannelDisconnectedEventHandler(void *context, ChannelDisconne
+ 			               " This is not supported, add /gdi:sw");
+ 		}
+ 	}
++	else if (strcmp(e->name, CLIPRDR_SVC_CHANNEL_NAME) == 0)
++	{
++		ios_cliprdr_uninit(afc, (CliprdrClientContext*)e->pInterface);
++	}
+ }
+ 
+ static BOOL ios_pre_connect(freerdp *instance)
+@@ -460,3 +472,14 @@ void ios_uninit_freerdp()
+ {
+ 	return fwrite(ptr, size, nmemb, stream);
+ }
++
++void ios_send_clipboard_data(void *context, const void* data, UINT32 size) {
++	mfContext *afc = (mfContext *)context;
++	UINT32 formatId = ClipboardRegisterFormat(afc->clipboard, "UTF8_STRING");
++	if (size)
++		ClipboardSetData(afc->clipboard, formatId, data, size);
++	else
++		ClipboardEmpty(afc->clipboard);
++
++	ios_cliprdr_send_client_format_list(afc->cliprdr);
++}
+diff --git a/include/freerdp/update.h b/include/freerdp/update.h
+index 71cb15580..7b42a3b4b 100644
+--- a/include/freerdp/update.h
++++ b/include/freerdp/update.h
+@@ -200,6 +200,7 @@ typedef BOOL (*pSaveSessionInfo)(rdpContext* context, UINT32 type, void* data);
+ typedef BOOL (*pSetKeyboardImeStatus)(rdpContext* context, UINT16 imeId, UINT32 imeState,
+                                       UINT32 imeConvMode);
+ typedef BOOL (*pServerStatusInfo)(rdpContext* context, UINT32 status);
++typedef BOOL (*pServerCutText)(rdpContext* context, int8_t* data, UINT32 size);
+ 
+ struct rdp_update
+ {
+@@ -237,7 +238,8 @@ struct rdp_update
+ 	pSurfaceFrameAcknowledge SurfaceFrameAcknowledge; /* 68 */
+ 	pSaveSessionInfo SaveSessionInfo;                 /* 69 */
+ 	pServerStatusInfo ServerStatusInfo;               /* 70 */
+-	UINT32 paddingE[80 - 71];                         /* 71 */
++	pServerCutText ServerCutText;                     /* 71 */
++	UINT32 paddingE[80 - 72];                         /* 72 */
+ 
+ 	/* internal */
+ 
+-- 
+2.32.1 (Apple Git-133)
+

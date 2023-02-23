@@ -30,8 +30,15 @@
 #include <sys/time.h>
 
 void (*client_log_callback)(int8_t *);
+void (*utf8_client_clipboard_callback)(uint8_t *, long);
 void (*client_clipboard_callback)(char *);
 int (*yes_no_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int);
+uint8_t* cast_cchar_to_uint8(char* input) {
+    return (uint8_t*)input;
+}
+char* cast_uint8_to_cchar(uint8_t* input) {
+    return (char*)input;
+}
 
 void client_log(const char *format, ...) {
     if (client_log_callback != NULL) {

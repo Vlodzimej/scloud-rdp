@@ -14,4 +14,10 @@ extension String {
         let message = String(data: data!, encoding: .nonLossyASCII) ?? nil
         return message
     }
+
+    func utf8DecodedStringWithEncoding(encoding: String.Encoding) -> String? {
+        let data = self.data(using: .utf8)
+        let message = String(data: data!, encoding: encoding) ?? nil
+        return message
+    }
 }

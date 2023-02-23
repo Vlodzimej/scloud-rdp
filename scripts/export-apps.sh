@@ -44,11 +44,15 @@ do
         xcodebuild build -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination"
         xcodebuild archive -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination" $ARCHIVE_FLAGS
         ARCHIVE_PATH=$(ls -datr $HOME/Library/Developer/Xcode/Archives/$DATE/$scheme* | tail -1)
-        xcodebuild -exportArchive -exportOptionsPlist $EXPORT_OPTS_FILE -allowProvisioningUpdates -archivePath "$ARCHIVE_PATH" -exportPath $EXPORT_PATH
+        while ! xcodebuild -exportArchive -exportOptionsPlist $EXPORT_OPTS_FILE -allowProvisioningUpdates -archivePath "$ARCHIVE_PATH" -exportPath $EXPORT_PATH
+        do
+          echo Retrying exportArchive
+          sleep 5
+        done
         
         UPLOAD_FILE=$EXPORT_PATH/$scheme.$EXPORT_EXTENSION
         echo "Uploading $UPLOAD_FILE to App Store"
-        xcrun altool --upload-app -t $UPLOAD_TYPE -f "$UPLOAD_FILE" -u $USERNAME -p $PASSWORD
+        xcrun altool --upload-app -t $UPLOAD_TYPE -f "$UPLOAD_FILE" -u $USERNAME -p $PASSWORD || true
     done
 done
 

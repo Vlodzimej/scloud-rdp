@@ -167,6 +167,7 @@ class RdpSession: RemoteSession {
                                         resize_callback,
                                         failure_callback_swift,
                                         log_callback,
+                                        utf8_clipboard_callback,
                                         yes_no_dialog_callback,
                                         UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
                                         UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
