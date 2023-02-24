@@ -268,6 +268,16 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         objc_sync_exit(lock)
     }
     
+    fileprivate func repositionPointerIfScrolling(fourthDown: Bool, fifthDown: Bool) {
+        if fourthDown || fifthDown {
+            stateKeeper?.remoteSession?.pointerEvent(
+                totalX: Float32(self.width), totalY: Float32(self.height),
+                x: Float32(self.newX), y: Float32(self.newY),
+                firstDown: false, secondDown: false, thirdDown: false,
+                scrollUp: false, scrollDown: false)
+        }
+    }
+    
     func sendPointerEvent(scrolling: Bool, moving: Bool, firstDown: Bool, secondDown: Bool, thirdDown: Bool, fourthDown: Bool, fifthDown: Bool) {
         guard (self.stateKeeper?.getCurrentInstance()) != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
@@ -278,7 +288,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         //let timeDiff = timeNow - self.timeLast
         if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
             synced(self) {
-                log_callback_str(message: "sendPointerEvent: sending scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
+                log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
+                repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
                 stateKeeper?.remoteSession?.pointerEvent(
                     totalX: Float32(self.width), totalY: Float32(self.height),
                     x: Float32(self.newX), y: Float32(self.newY),
@@ -630,7 +641,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         self.directionDown = false
     }
     
-    func scroll(translation: CGPoint, viewTransform: CGAffineTransform, scaleX: CGFloat, scaleY: CGFloat, gesturePoint: CGPoint, restorePointerPosition: Bool) -> Bool {
+    func scroll(touchView: UIView, translation: CGPoint, viewTransform: CGAffineTransform, scaleX: CGFloat, scaleY: CGFloat, gesturePoint: CGPoint, restorePointerPosition: Bool) -> Bool {
 
         let yTranslation = abs(scaleY*translation.y)
         let xTranslation = abs(scaleX*translation.x)
@@ -653,8 +664,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             if (!self.inScrolling) {
                 self.inScrolling = true
                 self.viewTransform = viewTransform
-                self.newX = gesturePoint.x*viewTransform.a
-                self.newY = gesturePoint.y*viewTransform.d
+                self.setViewParameters(point: gesturePoint, touchView: touchView)
                 resetScrollParameters()
             }
             

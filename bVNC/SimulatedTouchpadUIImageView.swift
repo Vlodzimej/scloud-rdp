@@ -54,7 +54,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
 
             // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
             let translation = sender.translation(in: sender.view)
-            if (scroll(translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
+            if (scroll(touchView: view, translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
                        gesturePoint: sender.location(in: view), restorePointerPosition: true)) {
                 log_callback_str(message: "\(#function), scrolled at \(newX)x\(newY)")
             } else if self.secondDown || self.thirdDown {

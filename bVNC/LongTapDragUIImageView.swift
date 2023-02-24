@@ -56,7 +56,7 @@ class LongTapDragUIImageView: TouchEnabledUIImageView {
             
             //print ("inPanDragging: \(inPanDragging), inPanning: \(inPanning), thirdDown: \(thirdDown), abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
             // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
-            if (scroll(translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
+            if (scroll(touchView: view, translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
                        gesturePoint: sender.location(in: view), restorePointerPosition: false)) {
                 return
             } else if self.secondDown || self.thirdDown {
