@@ -111,10 +111,10 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
     }
 }
 
-func utf_decoding_clipboard_callback(clipboard: UnsafeMutablePointer<CChar>?) -> Void {
+func utf_decoding_clipboard_callback(clipboard: UnsafeMutablePointer<UInt8>?, size: Int) -> Void {
     log_callback_str(message: "utf_decoding_clipboard_callback")
     let string = String(cString: clipboard!)
-    let clipboardContents = string.utf8DecodedString() ?? string
+    let clipboardContents = string.utf8DecodedString() ?? try_converting_utf_codepoints(clipboard: clipboard, size: size)
     UIPasteboard.general.string = clipboardContents
 }
 

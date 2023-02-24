@@ -148,7 +148,8 @@ rfbBool unlockWriteToTLS(rfbClient *client) {
 }
 
 void serverCutText(rfbClient *client, const char *text, int textlen) {
-    client_clipboard_callback((char *)text);
+    rfbClientLog("serverCutText, length: %d", textlen);
+    utf8_client_clipboard_callback((uint8_t *)text, textlen);
 }
 
 void *initializeVnc(int instance,
@@ -156,7 +157,7 @@ void *initializeVnc(int instance,
                     void (*fb_resize_callback)(int instance, int fbW, int fbH),
                     void (*fail_callback)(int instance, uint8_t *),
                     void (*cl_log_callback)(int8_t *),
-                    void (*cl_cb_callback)(char *),
+                    void (*utf8_client_cb_callback)(uint8_t *, long),
                     void (*lock_wrt_tls_callback)(int instance),
                     void (*unlock_wrt_tls_callback)(int instance),
                     int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
@@ -171,7 +172,7 @@ void *initializeVnc(int instance,
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
     client_log_callback = cl_log_callback;
-    client_clipboard_callback = cl_cb_callback;
+    utf8_client_clipboard_callback = utf8_client_cb_callback;
     yes_no_callback = y_n_callback;
     lock_write_tls_callback = lock_wrt_tls_callback;
     unlock_write_tls_callback = unlock_wrt_tls_callback;
