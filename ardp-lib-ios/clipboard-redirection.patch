@@ -1,6 +1,6 @@
-From be5001f2833389f22fd9393f96c80b0cd663286d Mon Sep 17 00:00:00 2001
+From 33fda9d52f4b0f54daa75bbe30e5809d4011ba46 Mon Sep 17 00:00:00 2001
 From: iordan iordanov <iordanovv@gmail.com>
-Date: Wed, 22 Feb 2023 20:21:41 -0500
+Date: Thu, 23 Feb 2023 23:40:27 -0500
 Subject: [PATCH] Implemented clipboard redirection for iOS
 
 ---
@@ -673,14 +673,14 @@ index 295d769a8..c759b605a 100644
 +	ios_cliprdr_send_client_format_list(afc->cliprdr);
 +}
 diff --git a/include/freerdp/update.h b/include/freerdp/update.h
-index 71cb15580..7b42a3b4b 100644
+index 71cb15580..6746b3034 100644
 --- a/include/freerdp/update.h
 +++ b/include/freerdp/update.h
 @@ -200,6 +200,7 @@ typedef BOOL (*pSaveSessionInfo)(rdpContext* context, UINT32 type, void* data);
  typedef BOOL (*pSetKeyboardImeStatus)(rdpContext* context, UINT16 imeId, UINT32 imeState,
                                        UINT32 imeConvMode);
  typedef BOOL (*pServerStatusInfo)(rdpContext* context, UINT32 status);
-+typedef BOOL (*pServerCutText)(rdpContext* context, int8_t* data, UINT32 size);
++typedef BOOL (*pServerCutText)(rdpContext* context, UINT8* data, UINT32 size);
  
  struct rdp_update
  {

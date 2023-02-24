@@ -128,6 +128,13 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     var indexes = 0
     var contextMenuDetected = false
 
+    var prevActionedTranslationX: CGFloat = 0
+    var prevActionedTranslationY: CGFloat = 0
+    var prevTranslationX: CGFloat = 0
+    var prevTranslationY: CGFloat = 0
+    var directionUp = false
+    var directionDown = false
+
     func initialize() {
         isMultipleTouchEnabled = true
         self.width = self.frame.width
@@ -165,13 +172,29 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         }
     }
     
+    func handleScroll(translationX: CGFloat, translationY: CGFloat, threshhold: CGFloat) {
+        if prevTranslationY - translationY < 0 {
+            if directionDown {
+                resetScrollParameters()
+            }
+            directionUp = true
+        } else if prevTranslationY - translationY > 0 {
+            if directionUp {
+                resetScrollParameters()
+            }
+            directionDown = true
+        }
+        prevTranslationY = translationY
+        if abs(prevActionedTranslationY - translationY) >= threshhold {
+            prevActionedTranslationY = translationY
+            sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false,
+                                fourthDown: directionUp, fifthDown: directionDown)
+        }
+    }
+    
     @objc func handleScroll(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: sender.view)
-        if translation.y > 0 {
-            sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: true, fifthDown: false)
-        } else if translation.y < 0 {
-            sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: true)
-        }
+        self.handleScroll(translationX: translation.x, translationY: translation.y, threshhold: 40)
     }
 
     override init(image: UIImage?) {
@@ -597,6 +620,16 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         log_callback_str(message: #function)
     }
     
+    func resetScrollParameters() {
+        log_callback_str(message: #function)
+        self.prevActionedTranslationX = 0
+        self.prevActionedTranslationY = 0
+        self.prevTranslationX = 0
+        self.prevTranslationY = 0
+        self.directionUp = false
+        self.directionDown = false
+    }
+    
     func scroll(translation: CGPoint, viewTransform: CGAffineTransform, scaleX: CGFloat, scaleY: CGFloat, gesturePoint: CGPoint, restorePointerPosition: Bool) -> Bool {
         var consumed = false
         if (!self.inPanDragging && !self.inPanning && self.thirdDown &&
@@ -609,18 +642,13 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
                 self.viewTransform = viewTransform
                 self.newX = gesturePoint.x*viewTransform.a
                 self.newY = gesturePoint.y*viewTransform.d
+                resetScrollParameters()
             }
             
             let oX = lastX
             let oY = lastY
             
-            if translation.y > 20 {
-                //print("\(#function), scroll up")
-                sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: true, fifthDown: false)
-            } else if translation.y < -20 {
-                //print("\(#function), scroll down")
-                sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: true)
-            }
+            self.handleScroll(translationX: translation.x, translationY: translation.y, threshhold: 40)
             
             if restorePointerPosition {
                 // keep pointer where it was when the scroll event started

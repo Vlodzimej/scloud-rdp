@@ -173,7 +173,7 @@ static DWORD verify_cert(freerdp* instance, const char* host, UINT16 port,
 }
 
 
-static BOOL serverCutText(rdpContext* context, int8_t* data, UINT32 size) {
+static BOOL serverCutText(rdpContext* context, uint8_t* data, UINT32 size) {
     utf8_client_clipboard_callback(data, size);
     return true;
 }
