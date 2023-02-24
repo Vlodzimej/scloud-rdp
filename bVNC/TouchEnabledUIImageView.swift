@@ -381,7 +381,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             for (index, finger) in self.fingers.enumerated() {
                 if let finger = finger, finger == touch {
                     if index == 0 {
-                        if stateKeeper!.macOs || moveEventsSinceFingerDown > 12 {
+                        if stateKeeper!.macOs || moveEventsSinceFingerDown >= 12 {
                             //log_callback_str(message: "\(#function) +\(self.firstDown) + \(self.secondDown) + \(self.thirdDown)")
                             self.inPanDragging = true
                             self.sendDownThenUpEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown:     self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
@@ -631,9 +631,22 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     func scroll(translation: CGPoint, viewTransform: CGAffineTransform, scaleX: CGFloat, scaleY: CGFloat, gesturePoint: CGPoint, restorePointerPosition: Bool) -> Bool {
+
+        let yTranslation = abs(scaleY*translation.y)
+        let xTranslation = abs(scaleX*translation.x)
+        var translationRatio = 0.0
+        if xTranslation > 0.0 && yTranslation > 0.0 {
+            translationRatio = yTranslation/xTranslation
+        } else {
+            // Consume event but don't take action if translation in x and y are exactly zero
+            return true
+        }
+
         var consumed = false
-        if (!self.inPanDragging && !self.inPanning && self.thirdDown &&
-            (self.inScrolling || abs(scaleY*translation.y)/abs(scaleX*translation.x) > 1.2 )) {
+        if (
+            !self.inPanDragging && !self.inPanning && self.thirdDown &&
+            (self.inScrolling || translationRatio >= Constants.SCROLL_TOLERANCE)
+        ) {
             consumed = true
 
             // If tolerance for scrolling was just exceeded, begin scroll event

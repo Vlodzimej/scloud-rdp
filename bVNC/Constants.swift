@@ -27,4 +27,5 @@ class Constants {
     class var LAYOUT_PATH: String { return "aSPICE-resources/Resources/layouts/" }
     class var MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS: Double { return 2000.0 }
     class var MIN_RESOLUTION_SCALE_UP_FACTOR: Double { return 1.5 }
+    class var SCROLL_TOLERANCE: Double { return 1.2 }
 }
