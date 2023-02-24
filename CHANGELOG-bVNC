@@ -3,6 +3,10 @@
   - Fix for crash when deleting connection with no thumbnail
   - Fix for error dialog automatically dismissed
   - Clipboard integration support
+  - Responsive scroll direction detection
+  - Scroll sensitivity improvements
+  - Bugfix for stray right-click on multi-touch scroll
+  - Bugfix for location of touch scroll events
 1.0.20
   - Fix for spurious right-click after two-finger scrolling
   - Fix for modifier up event not received after disconnect/reconnect
