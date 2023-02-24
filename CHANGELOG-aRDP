@@ -3,6 +3,7 @@
   - Fix for crash when deleting connection with no thumbnail
   - Fix for authentication and connection failure dialogs swapped
   - Fix for error dialog automatically dismissed
+  - Clipboard integration support
 1.0.21
   - Stability improvements
 1.0.20
