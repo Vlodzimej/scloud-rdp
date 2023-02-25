@@ -1,4 +1,4 @@
-From 33fda9d52f4b0f54daa75bbe30e5809d4011ba46 Mon Sep 17 00:00:00 2001
+From 1046af47ae6e350fdd5bed2e147edcc49594ecbe Mon Sep 17 00:00:00 2001
 From: iordan iordanov <iordanovv@gmail.com>
 Date: Thu, 23 Feb 2023 23:40:27 -0500
 Subject: [PATCH] Implemented clipboard redirection for iOS
@@ -6,10 +6,9 @@ Subject: [PATCH] Implemented clipboard redirection for iOS
 ---
  client/iOS/FreeRDP/ios_cliprdr.h |  34 ++
  client/iOS/FreeRDP/ios_cliprdr.m | 511 +++++++++++++++++++++++++++++++
- client/iOS/FreeRDP/ios_freerdp.h |  12 +
+ client/iOS/FreeRDP/ios_freerdp.h |  15 +
  client/iOS/FreeRDP/ios_freerdp.m |  23 ++
- include/freerdp/update.h         |   4 +-
- 5 files changed, 583 insertions(+), 1 deletion(-)
+ 4 files changed, 583 insertions(+)
  create mode 100644 client/iOS/FreeRDP/ios_cliprdr.h
  create mode 100644 client/iOS/FreeRDP/ios_cliprdr.m
 
@@ -55,7 +54,7 @@ index 000000000..e3b71f43d
 +#endif /* FREERDP_CLIENT_IOS_CLIPRDR_H */
 diff --git a/client/iOS/FreeRDP/ios_cliprdr.m b/client/iOS/FreeRDP/ios_cliprdr.m
 new file mode 100644
-index 000000000..6fd837de3
+index 000000000..474b9f516
 --- /dev/null
 +++ b/client/iOS/FreeRDP/ios_cliprdr.m
 @@ -0,0 +1,511 @@
@@ -486,9 +485,9 @@ index 000000000..6fd837de3
 +		formatId = ClipboardRegisterFormat(afc->clipboard, "UTF8_STRING");
 +		data = (BYTE*)ClipboardGetData(afc->clipboard, formatId, &size);
 +		size = strnlen(data, size);
-+		if (instance->update->ServerCutText != NULL)
++		if (afc->ServerCutText != NULL)
 +		{
-+			instance->update->ServerCutText(afc, (uint8_t*)data, size);
++			afc->ServerCutText(afc, (uint8_t*)data, size);
 +		}
 +	}
 +
@@ -571,10 +570,10 @@ index 000000000..6fd837de3
 +	return TRUE;
 +}
 diff --git a/client/iOS/FreeRDP/ios_freerdp.h b/client/iOS/FreeRDP/ios_freerdp.h
-index 8cc7df5ed..4b2c3c089 100644
+index 8cc7df5ed..15f2e8466 100644
 --- a/client/iOS/FreeRDP/ios_freerdp.h
 +++ b/client/iOS/FreeRDP/ios_freerdp.h
-@@ -13,6 +13,8 @@
+@@ -13,18 +13,32 @@
  #import <freerdp/freerdp.h>
  #import <freerdp/channels/channels.h>
  #import "TSXTypes.h"
@@ -583,7 +582,14 @@ index 8cc7df5ed..4b2c3c089 100644
  
  @class RDPSession, RDPSessionView;
  
-@@ -25,6 +27,15 @@ typedef struct mf_context
+ // FreeRDP extended structs
+ typedef struct mf_info mfInfo;
+ 
++typedef BOOL (*pServerCutText)(rdpContext* context, UINT8* data, UINT32 size);
++
+ typedef struct mf_context
+ {
+ 	rdpContext _p;
  
  	mfInfo *mfi;
  	rdpSettings *settings;
@@ -596,10 +602,11 @@ index 8cc7df5ed..4b2c3c089 100644
 +	CLIPRDR_FORMAT* serverFormats;
 +	CliprdrClientContext* cliprdr;
 +	UINT32 clipboardCapabilities;
++	pServerCutText ServerCutText;
  } mfContext;
  
  struct mf_info
-@@ -67,3 +78,4 @@ void ios_uninit_freerdp(void);
+@@ -67,3 +81,4 @@ void ios_uninit_freerdp(void);
  freerdp *ios_freerdp_new(void);
  int ios_run_freerdp(freerdp *instance);
  void ios_freerdp_free(freerdp *instance);
@@ -672,28 +679,6 @@ index 295d769a8..c759b605a 100644
 +
 +	ios_cliprdr_send_client_format_list(afc->cliprdr);
 +}
-diff --git a/include/freerdp/update.h b/include/freerdp/update.h
-index 71cb15580..6746b3034 100644
---- a/include/freerdp/update.h
-+++ b/include/freerdp/update.h
-@@ -200,6 +200,7 @@ typedef BOOL (*pSaveSessionInfo)(rdpContext* context, UINT32 type, void* data);
- typedef BOOL (*pSetKeyboardImeStatus)(rdpContext* context, UINT16 imeId, UINT32 imeState,
-                                       UINT32 imeConvMode);
- typedef BOOL (*pServerStatusInfo)(rdpContext* context, UINT32 status);
-+typedef BOOL (*pServerCutText)(rdpContext* context, UINT8* data, UINT32 size);
- 
- struct rdp_update
- {
-@@ -237,7 +238,8 @@ struct rdp_update
- 	pSurfaceFrameAcknowledge SurfaceFrameAcknowledge; /* 68 */
- 	pSaveSessionInfo SaveSessionInfo;                 /* 69 */
- 	pServerStatusInfo ServerStatusInfo;               /* 70 */
--	UINT32 paddingE[80 - 71];                         /* 71 */
-+	pServerCutText ServerCutText;                     /* 71 */
-+	UINT32 paddingE[80 - 72];                         /* 72 */
- 
- 	/* internal */
- 
 -- 
 2.32.1 (Apple Git-133)
 

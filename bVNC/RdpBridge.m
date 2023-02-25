@@ -223,7 +223,8 @@ void *initializeRdp(int i, int width, int height,
     instance->update->BitmapUpdate = bitmap_update;
     instance->update->BeginPaint = begin_paint;
     instance->update->EndPaint = end_paint;
-    instance->update->ServerCutText = serverCutText;
+    mfInfo *mfi = MFI_FROM_INSTANCE(instance);
+    mfi->context->ServerCutText = serverCutText;
 
     //FIXME: Implement RDP gateway support
     //instance->context->settings->GatewayUsername
