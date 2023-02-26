@@ -71,16 +71,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         log_callback_str(message: "\(#function): \(connectionOptions.urlContexts)")
-        guard let url = connectionOptions.urlContexts.first?.url else {
+        guard (connectionOptions.urlContexts.first?.url) != nil else {
             return
         }
-        self.connectWithConsoleFile(url: url)
+        handleUrlContexts(connectionOptions.urlContexts)
     }
     
-    func scene(_ scene: UIScene,
-        openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        log_callback_str(message: #function)
-
+    fileprivate func handleUrlContexts(_ URLContexts: Set<UIOpenURLContext>) {
         if let urlContext = URLContexts.first {
             log_callback_str(message: "\(#function): \(urlContext.url)")
             if (!self.handleUniversalUrl(urlContext: urlContext)) {
@@ -88,6 +85,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.connectWithConsoleFile(url: url)
             }
         }
+    }
+    
+    func scene(_ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        log_callback_str(message: #function)
+        handleUrlContexts(URLContexts)
     }
     
     func handleUniversalUrl(urlContext: UIOpenURLContext) -> Bool {
