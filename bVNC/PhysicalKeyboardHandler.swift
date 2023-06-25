@@ -23,6 +23,7 @@ import UIKit
 
 class PhysicalKeyboardHandler {
     var specialKeyToXKeySymMap: [String: Int32]
+    var commandModifiedKeyToXKeySymMap: [String: Int32]
     var keyCodeWithShiftModifierToString: [Int: String]
     var stateKeeper: StateKeeper?
     var textInput: CustomTextInput?
@@ -60,8 +61,15 @@ class PhysicalKeyboardHandler {
                 "\u{1C}": XK_Pointer_Left,
                 "\u{1D}": XK_Pointer_Right,
                 "\t": XK_Tab,
+                "\u{5}": XK_Insert,
+                "\u{7F}": XK_Delete
             ]
-
+            
+            self.commandModifiedKeyToXKeySymMap = [
+                "\u{8}": XK_Delete,
+                "\u{10}": XK_Insert
+            ]
+            
             self.keyCodeWithShiftModifierToString = [
                 UIKeyboardHIDUsage.keyboardEqualSign.rawValue: "+",
                 UIKeyboardHIDUsage.keyboardHyphen.rawValue: "_",
@@ -88,6 +96,7 @@ class PhysicalKeyboardHandler {
             
         } else {
             self.specialKeyToXKeySymMap = [:]
+            self.commandModifiedKeyToXKeySymMap = [:]
             self.keyCodeWithShiftModifierToString = [:]
         }
     }
@@ -132,7 +141,7 @@ class PhysicalKeyboardHandler {
                 print(#function, "CapsLock")
                 shiftDown = true
             }
-            
+
             if key.characters != "" {
                 var text = ""
 
@@ -276,6 +285,17 @@ class PhysicalKeyboardHandler {
         return self.commands
     }
     
+    fileprivate func sendCommandModifiedWorkaroundKeys(_ text: String) -> Bool {
+        var consumed = false
+        if self.commandModifiedKeyToXKeySymMap[text] != nil {
+            let xKeySym = self.commandModifiedKeyToXKeySymMap[text] ?? 0
+            print(#function, "sending xKeySym converted from text:", xKeySym)
+            self.stateKeeper?.sendSpecialKeyByXKeySym(key: xKeySym)
+            consumed = true
+        }
+        return consumed
+    }
+    
     @objc func captureCmd(sender: UIKeyCommand) {
         let text = sender.input!
         var modifiers = [ false, false, false, false ]
@@ -295,6 +315,9 @@ class PhysicalKeyboardHandler {
             modifiers[2] = true
         }
         if sender.modifierFlags.contains(.command) {
+            if sendCommandModifiedWorkaroundKeys(text) {
+                return
+            }
             print(#function, "Super")
             self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Super_L)
             modifiers[3] = true
