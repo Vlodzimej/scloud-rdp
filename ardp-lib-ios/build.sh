@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+DEVELOPMENT_TEAM=96Z3MCQKZA
+
 FREERDP_VERSION=0a6b999c5655d07b5653894b24a840c08838e304
 
 brew install coreutils
@@ -20,12 +22,17 @@ then
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
       -GXcode
-
-  echo "The first time this script runs, it will stop before building. You need to set a development"
-  echo "team in the iFreeRDP target of project FreeRDP. To do so, open the FreeRDP_iphoneos"
+  
+  echo "The first time this script runs, it will try to automatically update the development"
+  echo "team in the iFreeRDP target of project FreeRDP to the variable DEVELOPMENT_TEAM"
+  echo
+  echo "To do so manually, open the FreeRDP_iphoneos"
   echo "directory with XCode, find the iFreeRDP Target, select Signing & Capabilities tab"
   echo "and select your 'Team'. Then, rerun this script."
-  exit 0
+  echo
+  sleep 20
+  sed -i.bak "s/USE_HEADERMAP = NO;/USE_HEADERMAP = NO;\n                                DEVELOPMENT_TEAM = ${DEVELOPMENT_TEAM};/g" FreeRDP.xcodeproj/project.pbxproj
+  popd
 fi
 pushd FreeRDP_iphoneos
 cmake --build . -j 12
