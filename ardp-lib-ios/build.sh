@@ -23,6 +23,8 @@ then
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
       -GXcode
   
+  sed -i.bak1 "s/IPHONEOS_DEPLOYMENT_TARGET = 10.0/IPHONEOS_DEPLOYMENT_TARGET = 11.0/g" FreeRDP.xcodeproj/project.pbxproj
+
   echo "The first time this script runs, it will try to automatically update the development"
   echo "team in the iFreeRDP target of project FreeRDP to the variable DEVELOPMENT_TEAM"
   echo
@@ -31,7 +33,7 @@ then
   echo "and select your 'Team'. Then, rerun this script."
   echo
   sleep 20
-  sed -i.bak "s/USE_HEADERMAP = NO;/USE_HEADERMAP = NO;\n                                DEVELOPMENT_TEAM = ${DEVELOPMENT_TEAM};/g" FreeRDP.xcodeproj/project.pbxproj
+  sed -i.bak2 "s/USE_HEADERMAP = NO;/USE_HEADERMAP = NO;\n                                DEVELOPMENT_TEAM = ${DEVELOPMENT_TEAM};/g" FreeRDP.xcodeproj/project.pbxproj
   popd
 fi
 pushd FreeRDP_iphoneos

@@ -1,10 +1,9 @@
 diff --git a/catalyst.sh b/catalyst.sh
-index 4a2a100..8787693 100755
+index c9c44b4..3ca586e 100755
 --- a/catalyst.sh
 +++ b/catalyst.sh
-@@ -246,3 +246,5 @@ echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-armv7/libssl.
- echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-armv7s/libssl.a \\
- echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneSimulator_$SDK_VERSION-i386/libssl.a -output ./openssl_iphoneos/lib/libssl.a
+@@ -219,3 +219,4 @@ echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${
+ echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \\
+ echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
  lipo -info ./openssl_iphoneos/lib/libssl.a
 +rsync -avP ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/include/ ./openssl_iphoneos/include/
-+
