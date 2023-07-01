@@ -1,3 +1,8 @@
+1.0.23
+  - Support for hardware keyboard Forward Delete key
+  - Support for hardware keyboard Insert key
+  - Support for Cmd-Del combination to send Forward Delete.
+  - Support for Cmd-F12 combination to send Insert.
 1.0.22
   - Caseless search for connections
   - Fix for crash when deleting connection with no thumbnail
