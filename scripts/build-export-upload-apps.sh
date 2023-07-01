@@ -36,13 +36,13 @@ shift $((OPTIND-1))
 
 APPS="${APPS:-bVNC aRDP aSPICE}"
 
-if [ -z "$USERNAME" ] || [ -z "$PASSWORD" ]
+if [ -z "$AUSERNAME" ] || [ -z "$APASSWORD" ]
 then
-  echo "Export USERNAME and PASSWORD environment variables or"
-  echo "Enter USERNAME and press enter"
-  read -s USERNAME
-  echo "Enter PASSWORD and press enter"
-  read -s PASSWORD
+  echo "Export AUSERNAME and APASSWORD environment variables or"
+  echo "Enter AUSERNAME and press enter"
+  read -s AUSERNAME
+  echo "Enter APASSWORD and press enter"
+  read -s APASSWORD
 fi
 
 DATE=$(date +%Y-%m-%d)
@@ -92,7 +92,7 @@ do
         then
             UPLOAD_FILE=$EXPORT_PATH/$scheme.$EXPORT_EXTENSION
             echo "Uploading $UPLOAD_FILE to App Store"
-            xcrun altool --upload-app -t $UPLOAD_TYPE -f "$UPLOAD_FILE" -u $USERNAME -p $PASSWORD || true
+            xcrun altool --upload-app -t $UPLOAD_TYPE -f "$UPLOAD_FILE" -u $AUSERNAME -p $APASSWORD || true
         fi
     done
 done
