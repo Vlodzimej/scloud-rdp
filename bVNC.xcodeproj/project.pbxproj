@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1602CFC82A674CB7004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
+		1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
+		1602CFCA2A674CCE004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
+		1602CFCB2A674CD8004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
 		1608AEB429A2FE5900D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
 		1608AEB729A32A1300D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
 		1608AEB829A32A1400D82A58 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
@@ -338,6 +342,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.9.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/lib/libresolv.9.tbd; sourceTree = DEVELOPER_DIR; };
 		1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 		1624FE0A29A5D90500FD54CA /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
@@ -1098,6 +1103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1602CFCA2A674CCE004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AF44CF4226025A8200DAA44B /* libz.tbd in Frameworks */,
 				AFB2CA5F26002B5500E2859F /* superlib.a in Frameworks */,
 			);
@@ -1121,6 +1127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1602CFCB2A674CD8004A9D89 /* libresolv.9.tbd in Frameworks */,
 				165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */,
 				AF30D1AA253396EF00BA7A62 /* superlib.a in Frameworks */,
 			);
@@ -1130,6 +1137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1602CFC82A674CB7004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AF05186026115FE900B64D95 /* libssh2.a in Frameworks */,
 				AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */,
 				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
@@ -1288,6 +1296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AFB391DB274F58B60059F91F /* superlib.a in Frameworks */,
 				AFB391DA274F586D0059F91F /* duperlib.a in Frameworks */,
 				AFB391D8274F585C0059F91F /* libz.tbd in Frameworks */,
@@ -1422,6 +1431,7 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */,
 				AFB391D9274F586D0059F91F /* duperlib.a */,
 				AFB391D7274F585C0059F91F /* libz.tbd */,
 				AFE0251E260DBD2D005E851E /* liblz4.a */,
@@ -2766,7 +2776,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2827,7 +2837,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -2981,7 +2991,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3032,7 +3042,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3086,7 +3096,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3148,7 +3158,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3212,7 +3222,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3274,7 +3284,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 96;
+				CURRENT_PROJECT_VERSION = 97;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
