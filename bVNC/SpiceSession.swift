@@ -271,21 +271,13 @@ class SpiceSession: RemoteSession {
         }
     }
     
-    @objc override func sendModifierIfNotDown(modifier: Int32) {
+    @objc override func sendModifier(modifier: Int32, down: Bool) {
         let scode = xKeySymToScanCode[modifier] ?? 0
-        if scode != 0 && !self.stateKeeper.modifiers[modifier]! {
-            self.stateKeeper.modifiers[modifier] = true
-            log_callback_str(message: "SpiceSession: Sending modifier scancode \(scode)")
-            spiceKeyEvent(1, Int32(scode))
-        }
-    }
-
-    @objc override func releaseModifierIfDown(modifier: Int32) {
-        let scode = xKeySymToScanCode[modifier] ?? 0
-        if scode != 0 && self.stateKeeper.modifiers[modifier]! {
-            self.stateKeeper.modifiers[modifier] = false
-            log_callback_str(message: "SpiceSession: Releasing modifier scancode \(scode)")
-            spiceKeyEvent(0, Int32(scode))
+        if scode != 0 {
+            self.stateKeeper.modifiers[modifier] = down
+            log_callback_str(message: "SpiceSession: sendModifier, scancode: \(scode), down: \(down)")
+            let keyDirection: Int16 = down ? 1 : 0
+            spiceKeyEvent(keyDirection, Int32(scode))
         }
     }
     

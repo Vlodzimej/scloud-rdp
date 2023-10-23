@@ -859,20 +859,20 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
-    @objc func sendModifierIfNotDown(modifier: Int32) {
+    @objc func pressModifier(modifier: Int32) {
         guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
-        self.remoteSession?.sendModifierIfNotDown(modifier: modifier)
+        self.remoteSession?.sendModifier(modifier: modifier, down: true)
     }
 
-    @objc func releaseModifierIfDown(modifier: Int32) {
+    @objc func releaseModifier(modifier: Int32) {
         guard self.getCurrentInstance() != nil else {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
-        self.remoteSession?.releaseModifierIfDown(modifier: modifier)
+        self.remoteSession?.sendModifier(modifier: modifier, down: false)
     }
     
     @objc func sendSpecialKeyByXKeySym(key: Int32) {

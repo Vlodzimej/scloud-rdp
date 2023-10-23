@@ -140,20 +140,10 @@ class VncSession: RemoteSession {
         }
     }
     
-    @objc override func sendModifierIfNotDown(modifier: Int32) {
-        if !self.stateKeeper.modifiers[modifier]! {
-            self.stateKeeper.modifiers[modifier] = true
-            print("Sending modifier", modifier)
-            sendUniDirectionalKeyEventWithKeySym(self.cl, modifier, true)
-        }
-    }
-
-    @objc override func releaseModifierIfDown(modifier: Int32) {
-        if self.stateKeeper.modifiers[modifier]! {
-            self.stateKeeper.modifiers[modifier] = false
-            print("Releasing modifier", modifier)
-            sendUniDirectionalKeyEventWithKeySym(self.cl, modifier, false)
-        }
+    @objc override func sendModifier(modifier: Int32, down: Bool) {
+        self.stateKeeper.modifiers[modifier] = down
+        log_callback_str(message: "VncSession: sendModifier, scancode: \(modifier), down: \(down)")
+        sendUniDirectionalKeyEventWithKeySym(self.cl, modifier, down)
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {

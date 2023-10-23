@@ -436,14 +436,10 @@ class RemoteSession {
         preconditionFailure("This method must be overridden")
     }
     
-    @objc func sendModifierIfNotDown(modifier: Int32) {
+    @objc func sendModifier(modifier: Int32, down: Bool) {
         preconditionFailure("This method must be overridden")
     }
-
-    @objc func releaseModifierIfDown(modifier: Int32) {
-        preconditionFailure("This method must be overridden")
-    }
-
+    
     @objc func sendSpecialKeyByXKeySym(key: Int32) {
         preconditionFailure("This method must be overridden")
     }

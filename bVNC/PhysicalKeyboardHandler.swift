@@ -117,25 +117,25 @@ class PhysicalKeyboardHandler {
             if key.modifierFlags.contains(.control) {
                 altOrCtrlDown = true
                 print(#function, "Control")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Control_L)
+                self.stateKeeper?.pressModifier(modifier: XK_Control_L)
             }
             if key.keyCode == .keyboardRightAlt {
                 altOrCtrlDown = true
                 print(#function, "RAlt")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_R)
+                self.stateKeeper?.pressModifier(modifier: XK_Alt_R)
             } else if key.keyCode == .keyboardLeftAlt {
                 altOrCtrlDown = true
                 print(#function, "LAlt")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
+                self.stateKeeper?.pressModifier(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 shiftDown = true
                 print(#function, "Shift")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Shift_L)
+                self.stateKeeper?.pressModifier(modifier: XK_Shift_L)
             }
             if key.modifierFlags.contains(.command) {
                 print(#function, "Super")
-                self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Super_L)
+                self.stateKeeper?.pressModifier(modifier: XK_Super_L)
             }
             if key.modifierFlags.contains(.alphaShift) {
                 print(#function, "CapsLock")
@@ -190,22 +190,22 @@ class PhysicalKeyboardHandler {
             }
             if key.modifierFlags.contains(.control) {
                 print(#function, "Control")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
+                self.stateKeeper?.releaseModifier(modifier: XK_Control_L)
             }
             if key.keyCode == .keyboardRightAlt {
                 print(#function, "RAlt")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_R)
+                self.stateKeeper?.releaseModifier(modifier: XK_Alt_R)
             } else if key.keyCode == .keyboardLeftAlt {
                 print(#function, "LAlt")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
+                self.stateKeeper?.releaseModifier(modifier: XK_Alt_L)
             }
             if key.modifierFlags.contains(.shift) {
                 print(#function, "Shift")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Shift_L)
+                self.stateKeeper?.releaseModifier(modifier: XK_Shift_L)
             }
             if key.modifierFlags.contains(.command) {
                 print(#function, "Super")
-                self.stateKeeper?.releaseModifierIfDown(modifier: XK_Super_L)
+                self.stateKeeper?.releaseModifier(modifier: XK_Super_L)
             }
         }
     }
@@ -301,17 +301,17 @@ class PhysicalKeyboardHandler {
         var modifiers = [ false, false, false, false ]
         if sender.modifierFlags.contains(.control) {
             print(#function, "Control")
-            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Control_L)
+            self.stateKeeper?.pressModifier(modifier: XK_Control_L)
             modifiers[0] = true
         }
         if sender.modifierFlags.contains(.alternate) {
             print(#function, "Alt")
-            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Alt_L)
+            self.stateKeeper?.pressModifier(modifier: XK_Alt_L)
             modifiers[1] = true
         }
         if sender.modifierFlags.contains(.shift) {
             print(#function, "Shift")
-            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Shift_L)
+            self.stateKeeper?.pressModifier(modifier: XK_Shift_L)
             modifiers[2] = true
         }
         if sender.modifierFlags.contains(.command) {
@@ -319,7 +319,7 @@ class PhysicalKeyboardHandler {
                 return
             }
             print(#function, "Super")
-            self.stateKeeper?.sendModifierIfNotDown(modifier: XK_Super_L)
+            self.stateKeeper?.pressModifier(modifier: XK_Super_L)
             modifiers[3] = true
         }
         
@@ -342,19 +342,19 @@ class PhysicalKeyboardHandler {
 
         if (modifiers[0]) {
             print(#function, "Releasing Control")
-            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Control_L)
+            self.stateKeeper?.releaseModifier(modifier: XK_Control_L)
         }
         if (modifiers[1]) {
             print(#function, "Releasing Alt")
-            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Alt_L)
+            self.stateKeeper?.releaseModifier(modifier: XK_Alt_L)
         }
         if (modifiers[2]) {
             print(#function, "Releasing Shift")
-            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Shift_L)
+            self.stateKeeper?.releaseModifier(modifier: XK_Shift_L)
         }
         if (modifiers[3]) {
             print(#function, "Releasing Super")
-            self.stateKeeper?.releaseModifierIfDown(modifier: XK_Super_L)
+            self.stateKeeper?.releaseModifier(modifier: XK_Super_L)
         }
     }
 }
