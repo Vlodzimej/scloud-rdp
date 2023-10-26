@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -73,8 +73,6 @@
 		AF30D1AE253396EF00BA7A62 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
 		AF30D1AF253396EF00BA7A62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
 		AF44C9C42601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
-		AF44C9C52601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
-		AF44C9C62601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9CF260128A000DAA44B /* SpiceBridge.c */; };
@@ -1307,6 +1305,92 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16FABD022AE9E571007A5810 /* vnc */ = {
+			isa = PBXGroup;
+			children = (
+				AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */,
+				AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */,
+				AF48283023B47EC300826395 /* VncBridge.h */,
+				AF48283123B47EC300826395 /* VncBridge.c */,
+				AF53DCB024022C8C00569F19 /* VncSession.swift */,
+				AF05184926115F3B00B64D95 /* VncSessionDummy.swift */,
+			);
+			path = vnc;
+			sourceTree = "<group>";
+		};
+		16FABD032AE9E58B007A5810 /* rdp */ = {
+			isa = PBXGroup;
+			children = (
+				AF5D23F227508A2700974427 /* RdpBridge.h */,
+				AF5D23EE275088E500974427 /* RdpBridge.m */,
+				AFB391E2274F5A820059F91F /* RdpSession.swift */,
+				AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */,
+			);
+			path = rdp;
+			sourceTree = "<group>";
+		};
+		16FABD042AE9E5A0007A5810 /* spice */ = {
+			isa = PBXGroup;
+			children = (
+				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
+				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
+				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
+				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
+			);
+			path = spice;
+			sourceTree = "<group>";
+		};
+		16FABD052AE9E5CA007A5810 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
+				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
+				AF9E8F97242AE4BB00752FC2 /* SystemMonitor.h */,
+				AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */,
+				AF9E8F912427F3B500752FC2 /* Utility.h */,
+				AF9E8F922427F3B500752FC2 /* Utility.c */,
+				AF9E8F96242AE02D00752FC2 /* Utilities.h */,
+				AF9E8F94242ADD9200752FC2 /* Utilities.m */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		16FABD062AE9E62A007A5810 /* ssh */ = {
+			isa = PBXGroup;
+			children = (
+				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
+				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
+			);
+			path = ssh;
+			sourceTree = "<group>";
+		};
+		16FABD072AE9E644007A5810 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */,
+				1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */,
+				AFF5043D2617AC53007C7644 /* Constants.swift */,
+				AF043A1C23B3DADA00C43ED7 /* ContentView.swift */,
+				AFF244E12407985E00F5839B /* CustomTextInput.swift */,
+				16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */,
+				AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */,
+				AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */,
+				AF99997C243593C70018204F /* LongTapDragUIImageView.swift */,
+				AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */,
+				AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */,
+				AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */,
+				AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */,
+				167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */,
+				AF53DCB22402391600569F19 /* StateKeeper.swift */,
+				AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */,
+				1624FE0A29A5D90500FD54CA /* StringExtension.swift */,
+				AF291AD4242418A200DCD383 /* ToggleButton.swift */,
+				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
+				AFF6D39C260FE8B20077F6D2 /* Utils.swift */,
+			);
+			path = app;
+			sourceTree = "<group>";
+		};
 		AF043A0C23B3DADA00C43ED7 = {
 			isa = PBXGroup;
 			children = (
@@ -1338,58 +1422,20 @@
 			children = (
 				AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */,
 				AF94A6B3251663C000AA2A25 /* bVNC Pro.entitlements */,
-				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
-				AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */,
-				AF99997C243593C70018204F /* LongTapDragUIImageView.swift */,
-				167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */,
-				AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */,
-				AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */,
-				AFF244E12407985E00F5839B /* CustomTextInput.swift */,
-				AF043A1C23B3DADA00C43ED7 /* ContentView.swift */,
-				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
-				AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */,
-				AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */,
+				AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */,
+				16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */,
+				16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */,
 				AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */,
 				16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */,
-				16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */,
-				16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */,
-				AF53DCB024022C8C00569F19 /* VncSession.swift */,
-				AF05184926115F3B00B64D95 /* VncSessionDummy.swift */,
-				AF48283023B47EC300826395 /* VncBridge.h */,
-				AF48283123B47EC300826395 /* VncBridge.c */,
-				AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */,
-				AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */,
-				AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */,
-				AF53DCB22402391600569F19 /* StateKeeper.swift */,
-				16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */,
-				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
-				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
-				AF291AD4242418A200DCD383 /* ToggleButton.swift */,
-				AFF6D39C260FE8B20077F6D2 /* Utils.swift */,
-				AF9E8F912427F3B500752FC2 /* Utility.h */,
-				AF9E8F922427F3B500752FC2 /* Utility.c */,
-				AF9E8F94242ADD9200752FC2 /* Utilities.m */,
-				AF9E8F96242AE02D00752FC2 /* Utilities.h */,
-				AF9E8F97242AE4BB00752FC2 /* SystemMonitor.h */,
-				AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */,
+				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
+				16FABD072AE9E644007A5810 /* app */,
+				16FABD052AE9E5CA007A5810 /* common */,
+				AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */,
 				AF043A2023B3DADB00C43ED7 /* Preview Content */,
-				AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */,
-				AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */,
-				AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */,
-				AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */,
-				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
-				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
-				AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */,
-				AFB391E2274F5A820059F91F /* RdpSession.swift */,
-				AF44C9CE260128A000DAA44B /* SpiceBridge.h */,
-				AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */,
-				AF44C9CF260128A000DAA44B /* SpiceBridge.c */,
-				AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */,
-				AFF5043D2617AC53007C7644 /* Constants.swift */,
-				AF5D23EE275088E500974427 /* RdpBridge.m */,
-				AF5D23F227508A2700974427 /* RdpBridge.h */,
-				1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */,
-				1624FE0A29A5D90500FD54CA /* StringExtension.swift */,
+				16FABD032AE9E58B007A5810 /* rdp */,
+				16FABD042AE9E5A0007A5810 /* spice */,
+				16FABD062AE9E62A007A5810 /* ssh */,
+				16FABD022AE9E571007A5810 /* vnc */,
 			);
 			path = bVNC;
 			sourceTree = "<group>";
@@ -2481,7 +2527,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF44C9C52601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF043A3023B3DADB00C43ED7 /* bVNCTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2490,7 +2535,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AF44C9C62601287900DAA44B /* RemoteBridge.c in Sources */,
 				AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
