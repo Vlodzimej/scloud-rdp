@@ -24,9 +24,6 @@ realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-ln -sf /usr/local/bin/python3 ./python
-export PATH=$PATH:$(realpath .)
-
 if git clone https://github.com/GStreamer/cerbero.git
 then
   pushd cerbero
@@ -43,6 +40,8 @@ then
   cpanm XML::Parser
   /usr/local/bin/pip3.9 install six==1.16.0 pyparsing==2.4.7
 fi
+
+export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
 
 echo "Get latest recipes for project"
 git clone https://github.com/iiordanov/remote-desktop-clients-cerbero-recipes.git recipes || true
@@ -61,12 +60,15 @@ do
     ln -sf libz.la build/dist/ios_universal/${arch}/lib/lib-pthread.la
 done
 
-# Use newer clang, python3 from /use/local/bin, and buildtools from cerbero directory
-export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/usr/local/bin:./build/build-tools/bin/${PATH}
+# Use newer clang and buildtools from cerbero directory
+export PATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$(realpath ./build/build-tools/bin/):${PATH}"
 
 # Needed for Mac Catalyst builds
 # TODO: If freetype build fails, export SDKROOT and run make again. Then, rerun build and skip freetype recipe.
-export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+#export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+
+echo "Python is: $(which python) and $(which python3)"
+echo "Path is: $PATH"
 
 ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
 

@@ -1343,14 +1343,14 @@
 		16FABD052AE9E5CA007A5810 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
 				AF44C9C32601287900DAA44B /* RemoteBridge.c */,
+				AF44C9BC260127BE00DAA44B /* RemoteBridge.h */,
 				AF9E8F97242AE4BB00752FC2 /* SystemMonitor.h */,
 				AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */,
-				AF9E8F912427F3B500752FC2 /* Utility.h */,
-				AF9E8F922427F3B500752FC2 /* Utility.c */,
 				AF9E8F96242AE02D00752FC2 /* Utilities.h */,
 				AF9E8F94242ADD9200752FC2 /* Utilities.m */,
+				AF9E8F922427F3B500752FC2 /* Utility.c */,
+				AF9E8F912427F3B500752FC2 /* Utility.h */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -2819,6 +2819,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 98;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
@@ -2880,6 +2881,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 98;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
@@ -2943,7 +2945,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				INFOPLIST_FILE = bVNCTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2967,7 +2969,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				INFOPLIST_FILE = bVNCTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2988,8 +2990,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				INFOPLIST_FILE = bVNCUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3010,8 +3013,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "${DEVELOPMENT_TEAM}";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				INFOPLIST_FILE = bVNCUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -39,37 +39,40 @@ index 492fa073..d1de7521 100644
      def _install_perl_deps(self):
          cpanm_installer = os.path.join(self.config.local_sources, 'cpanm')
 diff --git a/cerbero/enums.py b/cerbero/enums.py
-index 3fba0f03..226e81e5 100644
+index 3fba0f03..cc0b3f40 100644
 --- a/cerbero/enums.py
 +++ b/cerbero/enums.py
-@@ -140,6 +140,7 @@ class DistroVersion:
+@@ -140,6 +140,8 @@ class DistroVersion:
      OS_X_MOJAVE = 'osx_mojave'
      OS_X_CATALINA = 'osx_catalina'
      OS_X_BIG_SUR = 'osx_big_sur'
 +    OS_X_MONTERREY = 'osx_monterrey'
++    OS_X_VENTURA = 'osx_ventura'
      IOS_8_0 = 'ios_08_0'
      IOS_8_1 = 'ios_08_1'
      IOS_8_2 = 'ios_08_2'
 diff --git a/cerbero/utils/__init__.py b/cerbero/utils/__init__.py
-index 7effed97..66507259 100644
+index 7effed97..6c1f8070 100644
 --- a/cerbero/utils/__init__.py
 +++ b/cerbero/utils/__init__.py
-@@ -353,7 +353,9 @@ Terminating.''', file=sys.stderr)
+@@ -353,7 +353,11 @@ Terminating.''', file=sys.stderr)
      elif platform == Platform.DARWIN:
          distro = Distro.OS_X
          ver = pplatform.mac_ver()[0]
 -        if ver.startswith(('11.', '10.16')):
-+        if ver.startswith(('12.')):
++        if ver.startswith(('13.')):
++            distro_version = DistroVersion.OS_X_VENTURA
++        elif ver.startswith(('12.')):
 +            distro_version = DistroVersion.OS_X_MONTERREY
 +        elif ver.startswith(('11.', '10.16')):
              distro_version = DistroVersion.OS_X_BIG_SUR
          elif ver.startswith('10.15'):
              distro_version = DistroVersion.OS_X_CATALINA
 diff --git a/config/ios.config b/config/ios.config
-index cddbdcf1..8da1943e 100644
+index cddbdcf1..6bb638c8 100644
 --- a/config/ios.config
 +++ b/config/ios.config
-@@ -15,19 +15,22 @@ variants.override(['nopython', 'notestspackage'])
+@@ -15,21 +15,24 @@ variants.override(['nopython', 'notestspackage'])
  # used later. System libs are passed through the -isysroot option
  allow_system_libs=False
  
@@ -92,8 +95,11 @@ index cddbdcf1..8da1943e 100644
 +    toolchain_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin'
 +
  def sdk_location_to_version_array(location):
-     match = re.fullmatch(ios_platform + r'(\d{1,2}\.\d).sdk', location)
+-    match = re.fullmatch(ios_platform + r'(\d{1,2}\.\d).sdk', location)
++    match = re.fullmatch(ios_platform + r'(\d{1,2}\.?\d?).sdk', location)
      if not match:
+         raise FatalError('Could not find SDK version from location: ', location)
+     return [int(m.group(1)) for m in re.finditer(r'(\d+)', match.group(1))]
 @@ -68,6 +71,10 @@ else:
  
  sysroot = version_array_to_sdk_location(best_version)
@@ -254,10 +260,9 @@ index 1db5e1f6..2d17841d 100644
      files_bins = ['json-glib-validate', 'json-glib-format']
      files_libs = ['libjson-glib-1.0']
 diff --git a/recipes/json-glib/0001-meson-Don-t-error-with-MSVC-C4819-warning.patch b/recipes/json-glib/0001-meson-Don-t-error-with-MSVC-C4819-warning.patch
-deleted file mode 100644
-index d14c6290..00000000
+index d14c6290..e69de29b 100644
 --- a/recipes/json-glib/0001-meson-Don-t-error-with-MSVC-C4819-warning.patch
-+++ /dev/null
++++ b/recipes/json-glib/0001-meson-Don-t-error-with-MSVC-C4819-warning.patch
 @@ -1,28 +0,0 @@
 -From 90a659a22280e8a2dcf4a9330dfbaa182cb6f256 Mon Sep 17 00:00:00 2001
 -From: Seungha Yang <seungha.yang@navercorp.com>
