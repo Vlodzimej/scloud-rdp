@@ -1,3 +1,6 @@
+1.0.25
+  - Dynamic querying for credentials
+  - Bugfix for connection search on MacOS with SDK 17
 1.0.24
   - Fix for possibility of stuck modifier keys
 1.0.23
