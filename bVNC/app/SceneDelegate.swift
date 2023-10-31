@@ -123,7 +123,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     "port": "\(port)",
                 ]
                 globalStateKeeper?.connections.selectedConnection = selectedConnection
-                globalStateKeeper?.addOrEditConnection()
+                globalStateKeeper?.connections.saveConnection(connection: selectedConnection)
+                globalStateKeeper?.connect(connection: selectedConnection)
             }
             return true
         } else {

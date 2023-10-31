@@ -67,7 +67,7 @@ void spiceConnectionFailure() {
 }
 
 void spiceAuthenticationFailure() {
-    failure_callback(p.instance, (uint8_t*)"SPICE_SESSION_AUTH_FAILED");
+    failure_callback(p.instance, (uint8_t*)"SPICE_AUTHENTICATION_FAILED_TITLE");
 }
 
 void engine_spice_worker(void *data) {
@@ -84,7 +84,7 @@ void engine_spice_worker(void *data) {
     SpiceGlibGlue_SetBufferResizeCallback(resizeSpiceBuffer);
     SpiceGlibGlue_SetBufferUpdateCallback(updateSpiceBuffer);
     SpiceGlibGlue_SetDisconnectCallback(spiceConnectionFailure);
-    //SpiceGlibGlue_SetAuthFailedCallback(spiceAuthenticationFailure);
+    SpiceGlibGlue_SetAuthFailedCallback(spiceAuthenticationFailure);
 }
 
 void engine_mainloop_worker(void *data) {

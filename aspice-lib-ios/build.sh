@@ -78,6 +78,8 @@ echo "Path is: $PATH"
 
 ./cerbero-uninstalled -c config/cross-ios-universal.cbc build spiceglue
 
+./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone spiceglue
+
 popd
 
 # Workaround for missing spiceglue header files

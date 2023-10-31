@@ -101,8 +101,11 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
         log_callback_str(message: "Current inst \(globalStateKeeper!.currInst) discarding failure_callback_swift, inst \(instance)")
         return
     }
-    
-    if message != nil {
+    let message_str = String(cString: message!)
+    if message_str.contains("AUTHENTICATION_FAILED_TITLE") {
+        log_callback_str(message: "Detected authentication failure, requesting credentials")
+        globalStateKeeper?.requestCredentials()
+    } else if message != nil {
         log_callback_str(message: "Will show error dialog with title: \(String(cString: message!))")
         failure_callback_str(instance: Int(instance), title: String(cString: message!))
     } else {

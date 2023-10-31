@@ -67,3 +67,5 @@
 "DEFAULT_SETTINGS_LABEL" = "Edit Default Settings";
 "KEYBOARD_LAYOUT_LABEL" = "Keyboard Layout";
 "CONNECTION_NAME_LABEL" = "Nickname";
+"DO_NOT_SAVE_AND_CONNECT_LABEL" = "Connect Without Saving";
+"SAVE_AND_CONNECT_LABEL" = "Save And Connect";

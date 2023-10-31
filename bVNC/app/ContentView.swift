@@ -24,48 +24,48 @@ import SwiftUI
 struct MultilineTextView: UIViewRepresentable {
     var placeholder: String
     @Binding var text: String
-
+    
     var minHeight: CGFloat
     @Binding var calculatedHeight: CGFloat
-
+    
     init(placeholder: String, text: Binding<String>, minHeight: CGFloat, calculatedHeight: Binding<CGFloat>) {
         self.placeholder = placeholder
         self._text = text
         self.minHeight = minHeight
         self._calculatedHeight = calculatedHeight
     }
-
+    
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-
+    
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.delegate = context.coordinator
-
+        
         // Decrease priority of content resistance, so content would not push external layout set in SwiftUI
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-
+        
         textView.isScrollEnabled = false
         textView.isEditable = true
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
-
+        
         // Set the placeholder
         textView.text = placeholder
         textView.textColor = UIColor.lightGray
-
+        
         return textView
     }
-
+    
     func updateUIView(_ textView: UITextView, context: Context) {
         if textView.text != self.text {
             textView.text = self.text
         }
-
+        
         recalculateHeight(view: textView)
     }
-
+    
     func recalculateHeight(view: UIView) {
         let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
         if minHeight < newSize.height && $calculatedHeight.wrappedValue != newSize.height {
@@ -78,15 +78,15 @@ struct MultilineTextView: UIViewRepresentable {
             }
         }
     }
-
+    
     class Coordinator : NSObject, UITextViewDelegate {
-
+        
         var parent: MultilineTextView
-
+        
         init(_ uiTextView: MultilineTextView) {
             self.parent = uiTextView
         }
-
+        
         func textViewDidChange(_ textView: UITextView) {
             // This is needed for multistage text input (eg. Chinese, Japanese)
             if textView.markedTextRange == nil {
@@ -94,14 +94,14 @@ struct MultilineTextView: UIViewRepresentable {
                 parent.recalculateHeight(view: textView)
             }
         }
-
+        
         func textViewDidBeginEditing(_ textView: UITextView) {
             if textView.textColor == UIColor.lightGray {
                 textView.text = nil
                 textView.textColor = UIColor.lightGray
             }
         }
-
+        
         func textViewDidEndEditing(_ textView: UITextView) {
             if textView.text.isEmpty {
                 textView.text = parent.placeholder
@@ -127,28 +127,28 @@ struct ContentView : View {
                 ConnectionsList(stateKeeper: stateKeeper, searchConnectionText: searchConnectionText, connections: filteredConnections)
             } else if stateKeeper.currentPage == "addOrEditConnection" {
                 AddOrEditConnectionPage(
-                     stateKeeper: stateKeeper,
-                     connectionNameText: selectedConnection["connectionName"] ?? "",
-                     sshAddressText: selectedConnection["sshAddress"] ?? "",
-                     sshPortText: selectedConnection["sshPort"] ?? "22",
-                     sshUserText: selectedConnection["sshUser"] ?? "",
-                     sshPassText: selectedConnection["sshPass"] ?? "",
-                     sshPassphraseText: selectedConnection["sshPassphrase"] ?? "",
-                     sshPrivateKeyText: selectedConnection["sshPrivateKey"] ?? "",
-                     addressText: selectedConnection["address"] ?? "",
-                     portText: selectedConnection["port"] ?? Utils.getDefaultPort(),
-                     tlsPortText: selectedConnection["tlsPort"] ?? "-1",
-                     certSubjectText: selectedConnection["certSubject"] ?? "",
-                     certAuthorityText: selectedConnection["certAuthority"] ?? "",
-                     keyboardLayoutText: selectedConnection["keyboardLayout"] ??
-                                        Constants.DEFAULT_LAYOUT,
-                     domainText: selectedConnection["domain"] ?? "",
-                     usernameText: selectedConnection["username"] ?? "",
-                     passwordText: selectedConnection["password"] ?? "",
-                     screenShotFile: selectedConnection["screenShotFile"] ?? UUID().uuidString,
-                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
-                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
-                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "")
+                    stateKeeper: stateKeeper,
+                    connectionNameText: selectedConnection["connectionName"] ?? "",
+                    sshAddressText: selectedConnection["sshAddress"] ?? "",
+                    sshPortText: selectedConnection["sshPort"] ?? "22",
+                    sshUserText: selectedConnection["sshUser"] ?? "",
+                    sshPassText: selectedConnection["sshPass"] ?? "",
+                    sshPassphraseText: selectedConnection["sshPassphrase"] ?? "",
+                    sshPrivateKeyText: selectedConnection["sshPrivateKey"] ?? "",
+                    addressText: selectedConnection["address"] ?? "",
+                    portText: selectedConnection["port"] ?? Utils.getDefaultPort(),
+                    tlsPortText: selectedConnection["tlsPort"] ?? "-1",
+                    certSubjectText: selectedConnection["certSubject"] ?? "",
+                    certAuthorityText: selectedConnection["certAuthority"] ?? "",
+                    keyboardLayoutText: selectedConnection["keyboardLayout"] ??
+                    Constants.DEFAULT_LAYOUT,
+                    domainText: selectedConnection["domain"] ?? "",
+                    usernameText: selectedConnection["username"] ?? "",
+                    passwordText: selectedConnection["password"] ?? "",
+                    screenShotFile: selectedConnection["screenShotFile"] ?? UUID().uuidString,
+                    allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
+                    allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
+                    showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "")
             } else if stateKeeper.currentPage == "genericProgressPage" {
                 ProgressPage(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "connectionInProgress" {
@@ -202,17 +202,11 @@ struct ConnectionsList : View {
     }
     
     func search() {
+        self.stateKeeper.connections.setSearchConnectionText(searchConnectionText: searchConnectionText)
         self.stateKeeper.showConnections()
     }
     
     var body: some View {
-        let binding = Binding<String>(get: {
-            self.searchConnectionText
-        }, set: {
-            self.searchConnectionText = $0
-            self.stateKeeper.connections.setSearchConnectionText(searchConnectionText: searchConnectionText)
-        })
-        
         ScrollView {
             VStack {
                 HStack() {
@@ -267,10 +261,14 @@ struct ConnectionsList : View {
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
                 
                 HStack() {
-                    TextField(self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"), text: binding, onCommit: {
-                        self.search()
-                    }).autocapitalization(.none).font(.title).padding(50)
-
+                    TextField(
+                        self.stateKeeper.localizedString(for: "SEARCH_CONNECTION_TEXT"),
+                        text: $searchConnectionText,
+                        onCommit: {
+                            self.search()
+                        }
+                    ).autocapitalization(.none).font(.title).padding(50).autocorrectionDisabled()
+                    
                     Button(action: {
                         self.search()
                     }) {
@@ -282,7 +280,7 @@ struct ConnectionsList : View {
                         }.padding()
                     }
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
-
+                
                 ForEach(0 ..< self.connections.count) { i in
                     Button(action: {
                     }) {
@@ -313,7 +311,7 @@ struct ConnectionsList : View {
                         }.onLongPressGesture {
                             self.edit(index: i)
                         }
-
+                        
                     }.buttonStyle(PlainButtonStyle())
                 }
             }
@@ -375,103 +373,157 @@ struct AddOrEditConnectionPage : View {
         }
         return connection
     }
-
+    
     func getKeyboardLayouts() -> [String] {
         
         return stateKeeper.keyboardLayouts.sorted()
     }
     
-    var body: some View {
-        ScrollView {
-            VStack {
-                HStack(spacing: 5) {
-                    Button(action: {
-                        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
-                        self.stateKeeper.connections.saveConnection(connection: selectedConnection)
-                        self.stateKeeper.connections.deselectConnection()
-                    }) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "folder.badge.plus")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                            Text("SAVE_LABEL")
-                                .lineLimit(1)
-                                .allowsTightening(true)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.70)
-                        }.padding()
-                    }
-                    
-                    Button(action: {
-                        self.stateKeeper.connections.deleteCurrentConnection()
-                        self.stateKeeper.connections.deselectConnection()
-                    }) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "trash")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                            Text("DELETE_LABEL")
-                                .lineLimit(1)
-                                .allowsTightening(true)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.70)
-                        }.padding()
-                    }
-                    
-                    Button(action: {
-                        self.stateKeeper.connections.deselectConnection()
-                        self.stateKeeper.showConnections()
-                    }) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "arrowshape.turn.up.left")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                            Text("CANCEL_LABEL")
-                                .lineLimit(1)
-                                .allowsTightening(true)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.70)
-                        }.padding()
-                    }
-
-                    Button(action: {
-                        var help_messages_list: [LocalizedStringKey] = ["VNC_CONNECTION_SETUP_HELP_TEXT", "UI_SETUP_HELP_TEXT"]
-                        if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
-                            help_messages_list.insert("SSH_CONNECTION_SETUP_HELP_TEXT", at: 0)
-                        }
-                        self.stateKeeper.connections.edit(connection: self.retrieveConnectionDetails())
-                        self.stateKeeper.showHelp(messages: help_messages_list)
-                    }) {
-                        VStack(spacing: 10) {
-                            Image(systemName: "info")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                            Text("HELP_LABEL")
-                                .lineLimit(1)
-                                .allowsTightening(true)
-                                .scaledToFit()
-                                .minimumScaleFactor(0.70)
-                        }.padding()
-                    }
-                }
-                
-                VStack {
-                    TextField(self.stateKeeper.localizedString(for: "CONNECTION_NAME_LABEL"), text: $connectionNameText).autocapitalization(.none).font(.title)
-                }.padding()
-                
-                if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
-                    VStack {
-                        Toggle(isOn: $showSshTunnelSettings) {
-                            Text("SHOW_SSH_TUNNEL_SETTINGS_LABEL")
-                        }.font(.title)
-                    }.padding()
-                }
-
-                if self.showSshTunnelSettings {
+    fileprivate func getCredentialsFields() -> some View {
+        return VStack {
+            if Utils.isRdp() {
+                TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
+            }
+            if Utils.isVnc() {
+                TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+            } else if Utils.isRdp() {
+                TextField(self.stateKeeper.localizedString(for: "MANDATORY_USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+            }
+            SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
+        }.padding()
+    }
+    
+    fileprivate func saveButtonActions() {
+        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        self.stateKeeper.connections.saveConnection(connection: selectedConnection)
+        self.stateKeeper.connections.deselectConnection()
+    }
+    
+    fileprivate func getSaveButton() -> Button<some View> {
+        return Button(action: {
+            saveButtonActions()
+        }) {
+            getButton(imageName: "folder.badge.plus", textLabel: "SAVE_LABEL")
+        }
+    }
+    
+    fileprivate func saveAndConnectButtonActions() {
+        self.stateKeeper.requestingCredentials = false
+        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        self.stateKeeper.connections.saveConnection(connection: selectedConnection)
+        self.stateKeeper.connect(connection: selectedConnection)
+    }
+    
+    fileprivate func getSaveAndConnectButton() -> Button<some View> {
+        return Button(action: {
+            saveAndConnectButtonActions()
+        }) {
+            getButton(imageName: "rectangle.center.inset.filled.badge.plus", textLabel: "SAVE_AND_CONNECT_LABEL")
+        }
+    }
+    
+    fileprivate func doNotSaveAndConnectButtonActions() {
+        self.stateKeeper.requestingCredentials = false
+        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        self.stateKeeper.connect(connection: selectedConnection)
+    }
+    
+    fileprivate func getDoNotSaveAndConnectButton() -> Button<some View> {
+        return Button(action: {
+            doNotSaveAndConnectButtonActions()
+        }) {
+            getButton(imageName: "rectangle.center.inset.filled", textLabel: "DO_NOT_SAVE_AND_CONNECT_LABEL")
+        }
+    }
+    
+    fileprivate func deleteButtonActions() {
+        self.stateKeeper.connections.deleteCurrentConnection()
+        self.stateKeeper.connections.deselectConnection()
+    }
+    
+    fileprivate func getDeleteButton() -> Button<some View> {
+        return Button(action: {
+            deleteButtonActions()
+        }) {
+            getButton(imageName: "trash", textLabel: "DELETE_LABEL")
+        }
+    }
+    
+    fileprivate func cancelButtonActions() {
+        self.stateKeeper.requestingCredentials = false
+        self.stateKeeper.connections.deselectConnection()
+        self.stateKeeper.showConnections()
+    }
+    
+    fileprivate func getCancelButton() -> Button<some View> {
+        return Button(action: {
+            cancelButtonActions()
+        }) {
+            getButton(imageName: "arrowshape.turn.up.left", textLabel: "CANCEL_LABEL")
+        }
+    }
+    
+    fileprivate func getHelpButtonActions() {
+        var help_messages_list: [LocalizedStringKey] = ["VNC_CONNECTION_SETUP_HELP_TEXT", "UI_SETUP_HELP_TEXT"]
+        if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
+            help_messages_list.insert("SSH_CONNECTION_SETUP_HELP_TEXT", at: 0)
+        }
+        self.stateKeeper.connections.edit(connection: self.retrieveConnectionDetails())
+        self.stateKeeper.showHelp(messages: help_messages_list)
+    }
+    
+    fileprivate func getButton(imageName: String, textLabel: String) -> some View {
+        return VStack(spacing: 10) {
+            Image(systemName: imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40, height: 40)
+            Text(self.stateKeeper.localizedString(for: textLabel))
+                .lineLimit(1)
+                .allowsTightening(true)
+                .scaledToFit()
+                .minimumScaleFactor(0.70)
+        }.padding()
+    }
+    
+    fileprivate func getHelpButton() -> Button<some View> {
+        return Button(action: {
+            getHelpButtonActions()
+        }) {
+            getButton(imageName: "info", textLabel: "HELP_LABEL")
+        }
+    }
+    
+    fileprivate func getTopButtons() -> some View {
+        return HStack(spacing: 5) {
+            getSaveButton()
+            getDeleteButton()
+            getCancelButton()
+            getHelpButton()
+        }
+    }
+    
+    fileprivate func getCredentialsButtons() -> some View {
+        return HStack(spacing: 5) {
+            getCancelButton()
+            getDoNotSaveAndConnectButton()
+            getSaveAndConnectButton()
+        }
+    }
+    
+    fileprivate func getConnectionNameField() -> some View {
+        return VStack {
+            TextField(self.stateKeeper.localizedString(for: "CONNECTION_NAME_LABEL"), text: $connectionNameText).autocapitalization(.none).font(.title)
+        }.padding()
+    }
+    
+    fileprivate func getSshSettingsFields() -> some View {
+        return VStack {
+            Toggle(isOn: $showSshTunnelSettings) {
+                Text("SHOW_SSH_TUNNEL_SETTINGS_LABEL")
+            }.font(.title)
+            
+            if self.showSshTunnelSettings {
                 VStack {
                     Text("SSH_TUNNEL_LABEL").font(.title)
                     TextField(self.stateKeeper.localizedString(for: "SSH_SERVER_LABEL"), text: $sshAddressText).autocapitalization(.none).font(.title)
@@ -489,65 +541,95 @@ struct AddOrEditConnectionPage : View {
                         }
                         Divider()
                     }
-                }.padding()
                 }
-                
-                VStack {
-                    Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.title)
-                    TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
-                    TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
-                    if Utils.isSpice() {
-                        TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
-                    }
-                }.padding()
-
-                VStack(alignment: .leading) {
-                    if Utils.isRdp() {
-                        TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
-                    }
-                    if Utils.isVnc() {
-                        TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
-                    } else if Utils.isRdp() {
-                        TextField(self.stateKeeper.localizedString(for: "MANDATORY_USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
-                    }
-                    SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
-                    
-                    if Utils.isSpice() || Utils.isRdp() {
-                        HStack {
-                            Text("KEYBOARD_LAYOUT_LABEL").font(.title)
-                            Picker("", selection: $keyboardLayoutText) {
-                                ForEach(self.getKeyboardLayouts(), id: \.self) {
-                                    Text($0).font(.title)
-                                }
-                            }.font(.title).padding()
-                        }
-                    }
-                    
-                    if Utils.isSpice() {
-                        TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
-                        VStack {
-                            Divider()
-                            HStack {
-                                Text("CERT_AUTHORITY_LABEL").font(.title)
-                                Divider()
-                                MultilineTextView(placeholder: "", text: $certAuthorityText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
-                                Divider()
-                            }
-                            Divider()
-                        }
-                    }
-                }.padding()
-                
-                VStack {
-                    Text("USER_INTERFACE_SETTINGS_LABEL").font(.title)
-                    Toggle(isOn: $allowZooming) {
-                        Text("ALLOW_DESKTOP_ZOOMING_LABEL").font(.title)
-                    }
-                    Toggle(isOn: $allowPanning) {
-                        Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
-                    }
-                }.padding()
             }
+        }.padding()
+    }
+    
+    fileprivate func shouldShowSshSettingsFields() -> Bool {
+        return self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "")
+    }
+    
+    fileprivate func getAddressAndPortFields() -> some View {
+        return VStack {
+            Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.title)
+            TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
+            TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+            if Utils.isSpice() {
+                TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
+            }
+        }.padding()
+    }
+    
+    fileprivate func getLayoutAndCertFields() -> some View {
+        return VStack {
+            if Utils.isSpice() || Utils.isRdp() {
+                HStack {
+                    Text("KEYBOARD_LAYOUT_LABEL").font(.title)
+                    Picker("", selection: $keyboardLayoutText) {
+                        ForEach(self.getKeyboardLayouts(), id: \.self) {
+                            Text($0).font(.title)
+                        }
+                    }.font(.title).padding()
+                }
+            }
+            
+            if Utils.isSpice() {
+                TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
+                VStack {
+                    Divider()
+                    HStack {
+                        Text("CERT_AUTHORITY_LABEL").font(.title)
+                        Divider()
+                        MultilineTextView(placeholder: "", text: $certAuthorityText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
+                        Divider()
+                    }
+                    Divider()
+                }
+            }
+        }.padding()
+    }
+    
+    fileprivate func getUiOptionsFields() -> some View {
+        return VStack {
+            Text("USER_INTERFACE_SETTINGS_LABEL").font(.title)
+            Toggle(isOn: $allowZooming) {
+                Text("ALLOW_DESKTOP_ZOOMING_LABEL").font(.title)
+            }
+            Toggle(isOn: $allowPanning) {
+                Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
+            }
+        }.padding()
+    }
+    
+    fileprivate func getConnectionEditBody() -> some View {
+        return ScrollView {
+            VStack {
+                getTopButtons()
+                getConnectionNameField()
+                if shouldShowSshSettingsFields() {
+                    getSshSettingsFields()
+                }
+                getAddressAndPortFields()
+                getCredentialsFields()
+                getLayoutAndCertFields()
+                getUiOptionsFields()
+            }
+        }
+    }
+    
+    fileprivate func getCredentialsRequestBody() -> some View {
+        return VStack(alignment: .leading) {
+            getCredentialsFields()
+            getCredentialsButtons()
+        }.padding()
+    }
+    
+    var body: some View {
+        if self.stateKeeper.requestingCredentials {
+            getCredentialsRequestBody()
+        } else {
+            getConnectionEditBody()
         }
     }
 }
@@ -631,7 +713,7 @@ struct HelpDialog : View {
                                 Text("REPORT_BUG_LABEL")
                             }.padding()
                         }
-
+                        
                         Button(action: {
                             UIApplication.shared.open(URL(string: "https://www.youtube.com/watch?v=16pwo3wwv9w")!, options: [:], completionHandler: nil)
                             
@@ -644,7 +726,7 @@ struct HelpDialog : View {
                                 Text("HELP_VIDEOS_LABEL")
                             }.padding()
                         }
-
+                        
                     }
                 }
             }
@@ -666,7 +748,7 @@ struct HelpDialog : View {
 
 struct DismissableBlankPage : View {
     @ObservedObject var stateKeeper: StateKeeper
-
+    
     var body: some View {
         VStack {
             HStack {
@@ -689,7 +771,7 @@ struct DismissableBlankPage : View {
 struct DismissableLogDialog : View {
     @ObservedObject var stateKeeper: StateKeeper
     var dismissAction: String = "default"
-
+    
     func getTitle() -> LocalizedStringKey {
         return stateKeeper.localizedTitle ?? ""
     }
@@ -716,7 +798,7 @@ struct DismissableLogDialog : View {
                     self.stateKeeper.exitNow()
                 } else {
                     self.stateKeeper.showConnections()
-
+                    
                 }
             }) {
                 HStack(spacing: 10) {
@@ -737,7 +819,7 @@ struct DismissableMessageDialog : View {
     func getTitle() -> LocalizedStringKey {
         return stateKeeper.localizedTitle ?? ""
     }
-
+    
     func getMessage() -> String {
         return stateKeeper.message
     }
@@ -789,7 +871,7 @@ struct YesNoDialog : View {
                                     pageYes: "connectedSession",
                                     pageNo: "connectionsList")
     }
-
+    
     var body: some View {
         VStack {
             Text(self.getLocalizedTitle()).font(.title).padding()
@@ -805,27 +887,27 @@ struct YesNoDialog : View {
                     self.setResponse(response: false)
                 }) {
                     Text("NO_LABEL")
-                    .fontWeight(.bold)
-                    .font(.title)
-                    .padding(5)
-                    .background(Color.gray)
-                    .cornerRadius(5)
-                    .foregroundColor(.white)
-                    .padding(10)
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .padding(5)
+                        .background(Color.gray)
+                        .cornerRadius(5)
+                        .foregroundColor(.white)
+                        .padding(10)
                 }
                 Button(action: {
                     self.setResponse(response: true)
                 }) {
                     Text("YES_LABEL")
-                    .fontWeight(.bold)
-                    .font(.title)
-                    .padding(5)
-                    .background(Color.gray)
-                    .cornerRadius(5)
-                    .foregroundColor(.white)
-                    .padding(10)
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .padding(5)
+                        .background(Color.gray)
+                        .cornerRadius(5)
+                        .foregroundColor(.white)
+                        .padding(10)
                 }
-
+                
             }
         }
     }

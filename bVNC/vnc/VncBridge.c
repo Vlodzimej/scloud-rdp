@@ -61,17 +61,16 @@ static rfbCredential* get_credential(rfbClient *cl, int credentialType){
         c->x509Credential.x509ClientKeyFile = NULL;
         c->x509Credential.x509ClientCertFile = NULL;
     }
-    
     return c;
 }
 
 static char* get_password(rfbClient *cl){
     rfbClientLog("VNC password authentication callback called\n");
     char *p = malloc(RFB_BUF_SIZE);
-    
-    rfbClientLog("Password requested for authentication\n");
     strcpy(p, PASSWORD);
-    
+    if (strcmp(p, "") == 0) {
+        strcpy(p, "\n");
+    }
     return p;
 }
 
@@ -152,6 +151,19 @@ void serverCutText(rfbClient *client, const char *text, int textlen) {
     utf8_client_clipboard_callback((uint8_t *)text, textlen);
 }
 
+static volatile int current_instance = 0;
+static void vnc_client_log(const char *format, ...);
+static void vnc_client_log(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    client_log(format, args);
+    va_end(args);
+    char *auth_failed_log_entry = "VNC authentication failed";
+    if (strncmp(format, auth_failed_log_entry, strlen(auth_failed_log_entry)) == 0) {
+        failure_callback(current_instance, (uint8_t*)"VNC_AUTHENTICATION_FAILED_TITLE");
+    }
+}
+
 void *initializeVnc(int instance,
                     bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                     void (*fb_resize_callback)(int instance, int fbW, int fbH),
@@ -163,6 +175,7 @@ void *initializeVnc(int instance,
                     int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
                     char* addr, char* user, char* password) {
     rfbClientLog("Initializing VNC session.\n");
+    current_instance = instance;
     fbW = 0;
     fbH = 0;
     handle_signals();
@@ -177,7 +190,7 @@ void *initializeVnc(int instance,
     lock_write_tls_callback = lock_wrt_tls_callback;
     unlock_write_tls_callback = unlock_wrt_tls_callback;
 
-    rfbClientLog = rfbClientErr = client_log;
+    rfbClientLog = rfbClientErr = vnc_client_log;
     rfbClient *cl = NULL;
     int argc = 6;
     char **argv = (char**)malloc(argc*sizeof(char*));
@@ -211,11 +224,13 @@ void *initializeVnc(int instance,
     cl->instance = instance;
     
     if (!rfbInitClient(cl, &argc, argv)) {
+        rfbClientLog("Failed to initialize VNC session\n");
         cl = NULL; /* rfbInitClient has already freed the client struct */
         cleanup(cl, "FAILED_TO_INIT_CONNECTION_TO_SERVER");
+    } else {
+        rfbClientLog("Succesfully initialized VNC session\n");
     }
     
-    rfbClientLog("Done initializing VNC session\n");
     return (void *)cl;
 }
 

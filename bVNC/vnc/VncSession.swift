@@ -112,7 +112,7 @@ class VncSession: RemoteSession {
                 if self.cl != nil {
                     self.stateKeeper.setCurrentInstance(inst: self.cl)
                     connectVnc(self.cl)
-                } else {
+                } else if (!self.stateKeeper.requestingCredentials) {
                     title = "VNC_CONNECTION_FAILURE_TITLE"
                     failure_callback_str(instance: self.instance, title: title)
                 }
