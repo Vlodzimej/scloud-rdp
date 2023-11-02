@@ -382,14 +382,14 @@ struct AddOrEditConnectionPage : View {
     fileprivate func getCredentialsFields() -> some View {
         return VStack {
             if Utils.isRdp() {
-                TextField(self.stateKeeper.localizedString(for: "DOMAIN_LABEL"), text: $domainText).font(.title)
+                getTextField(text: "DOMAIN_LABEL", binding: $domainText)
             }
             if Utils.isVnc() {
-                TextField(self.stateKeeper.localizedString(for: "USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+                getTextField(text: "USER_LABEL", binding: $usernameText)
             } else if Utils.isRdp() {
-                TextField(self.stateKeeper.localizedString(for: "MANDATORY_USER_LABEL"), text: $usernameText).autocapitalization(.none).font(.title)
+                getTextField(text: "MANDATORY_USER_LABEL", binding: $usernameText)
             }
-            SecureField(self.stateKeeper.localizedString(for: "PASSWORD_LABEL"), text: $passwordText).font(.title)
+            getSecureField(text: "PASSWORD_LABEL", binding: $passwordText)
         }.padding()
     }
     
@@ -513,7 +513,7 @@ struct AddOrEditConnectionPage : View {
     
     fileprivate func getConnectionNameField() -> some View {
         return VStack {
-            TextField(self.stateKeeper.localizedString(for: "CONNECTION_NAME_LABEL"), text: $connectionNameText).autocapitalization(.none).font(.title)
+            getTextField(text: "CONNECTION_NAME_LABEL", binding: $connectionNameText)
         }.padding()
     }
     
@@ -526,11 +526,11 @@ struct AddOrEditConnectionPage : View {
             if self.showSshTunnelSettings {
                 VStack {
                     Text("SSH_TUNNEL_LABEL").font(.title)
-                    TextField(self.stateKeeper.localizedString(for: "SSH_SERVER_LABEL"), text: $sshAddressText).autocapitalization(.none).font(.title)
-                    TextField(self.stateKeeper.localizedString(for: "SSH_PORT_LABEL"), text: $sshPortText).autocapitalization(.none).font(.title)
-                    TextField(self.stateKeeper.localizedString(for: "SSH_USER_LABEL"), text: $sshUserText).autocapitalization(.none).font(.title)
-                    SecureField(self.stateKeeper.localizedString(for: "SSH_PASSWORD_LABEL"), text: $sshPassText).autocapitalization(.none).font(.title)
-                    SecureField(self.stateKeeper.localizedString(for: "SSH_PASSPHRASE_LABEL"), text: $sshPassphraseText).autocapitalization(.none).font(.title)
+                    getTextField(text: "SSH_SERVER_LABEL", binding: $sshAddressText)
+                    getTextField(text: "SSH_PORT_LABEL", binding: $sshPortText)
+                    getTextField(text: "SSH_USER_LABEL", binding: $sshUserText)
+                    getSecureField(text: "SSH_PASSWORD_LABEL", binding: $sshPassText)
+                    getSecureField(text: "SSH_PASSPHRASE_LABEL", binding: $sshPassphraseText)
                     VStack {
                         Divider()
                         HStack {
@@ -550,13 +550,27 @@ struct AddOrEditConnectionPage : View {
         return self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "")
     }
     
+    fileprivate func getTextField(text: String, binding: Binding<String>) -> some View {
+        return TextField(
+            self.stateKeeper.localizedString(for: text),
+            text: binding
+        ).autocapitalization(.none).font(.title).autocorrectionDisabled()
+    }
+    
+    fileprivate func getSecureField(text: String, binding: Binding<String>) -> some View {
+        return SecureField(
+            self.stateKeeper.localizedString(for: text),
+            text: binding
+        ).autocapitalization(.none).font(.title).autocorrectionDisabled()
+    }
+    
     fileprivate func getAddressAndPortFields() -> some View {
         return VStack {
             Text("MAIN_CONNECTION_SETTINGS_LABEL").font(.title)
-            TextField(self.stateKeeper.localizedString(for: "ADDRESS_LABEL"), text: $addressText).autocapitalization(.none).font(.title)
-            TextField(self.stateKeeper.localizedString(for: "PORT_LABEL"), text: $portText).font(.title)
+            getTextField(text: "ADDRESS_LABEL", binding: $addressText)
+            getTextField(text: "PORT_LABEL", binding: $portText)
             if Utils.isSpice() {
-                TextField(self.stateKeeper.localizedString(for: "TLS_PORT_LABEL"), text: $tlsPortText).font(.title)
+                getTextField(text: "TLS_PORT_LABEL", binding: $tlsPortText)
             }
         }.padding()
     }
@@ -575,7 +589,7 @@ struct AddOrEditConnectionPage : View {
             }
             
             if Utils.isSpice() {
-                TextField(self.stateKeeper.localizedString(for: "CERT_SUBJECT_LABEL"), text: $certSubjectText).autocapitalization(.none).font(.title)
+                getTextField(text: "CERT_SUBJECT_LABEL", binding: $certSubjectText)
                 VStack {
                     Divider()
                     HStack {

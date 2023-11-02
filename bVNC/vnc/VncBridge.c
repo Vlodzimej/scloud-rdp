@@ -28,7 +28,9 @@ char* USERNAME = NULL;
 char* PASSWORD = NULL;
 int pixel_buffer_size = 0;
 int BYTES_PER_PIXEL = 4;
-bool maintainConnection = 0;
+bool maintainConnection = false;
+bool authRequested = false;
+bool authSucceeded = false;
 void (*lock_write_tls_callback)(int instance);
 void (*unlock_write_tls_callback)(int instance);
 
@@ -42,6 +44,7 @@ void setMaintainConnection(void *c, int state) {
 
 static rfbCredential* get_credential(rfbClient *cl, int credentialType){
     rfbClientLog("User and password or x509 certificate authentication callback called\n\n");
+    authRequested = true;
     rfbCredential *c = calloc(1, sizeof(rfbCredential));
     
     if(credentialType == rfbCredentialTypeUser) {
@@ -66,6 +69,7 @@ static rfbCredential* get_credential(rfbClient *cl, int credentialType){
 
 static char* get_password(rfbClient *cl){
     rfbClientLog("VNC password authentication callback called\n");
+    authRequested = true;
     char *p = malloc(RFB_BUF_SIZE);
     strcpy(p, PASSWORD);
     if (strcmp(p, "") == 0) {
@@ -159,8 +163,11 @@ static void vnc_client_log(const char *format, ...) {
     client_log(format, args);
     va_end(args);
     char *auth_failed_log_entry = "VNC authentication failed";
+    char *auth_succeeded_log_entry = "VNC authentication succeeded";
     if (strncmp(format, auth_failed_log_entry, strlen(auth_failed_log_entry)) == 0) {
         failure_callback(current_instance, (uint8_t*)"VNC_AUTHENTICATION_FAILED_TITLE");
+    } else if (strncmp(format, auth_succeeded_log_entry, strlen(auth_succeeded_log_entry)) == 0) {
+        authSucceeded = true;
     }
 }
 
@@ -179,6 +186,8 @@ void *initializeVnc(int instance,
     fbW = 0;
     fbH = 0;
     handle_signals();
+    authRequested = false;
+    authSucceeded = false;
     USERNAME = user;
     PASSWORD = password;
     framebuffer_update_callback = fb_update_callback;
@@ -226,7 +235,11 @@ void *initializeVnc(int instance,
     if (!rfbInitClient(cl, &argc, argv)) {
         rfbClientLog("Failed to initialize VNC session\n");
         cl = NULL; /* rfbInitClient has already freed the client struct */
-        cleanup(cl, "FAILED_TO_INIT_CONNECTION_TO_SERVER");
+        if (authRequested && !authSucceeded) {
+            failure_callback(instance, (uint8_t*)"VNC_AUTHENTICATION_FAILED_TITLE");
+        } else {
+            cleanup(cl, "FAILED_TO_INIT_CONNECTION_TO_SERVER");
+        }
     } else {
         rfbClientLog("Succesfully initialized VNC session\n");
     }
