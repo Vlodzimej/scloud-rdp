@@ -299,6 +299,7 @@
 int resolve_host_to_ip(char *  , char *);
 int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_success)(void));
 void setupSshPortForward(int instance,
+                         void (*fail_callback)(int instance, uint8_t *),
                          void (*ssh_forward_success)(void),
                          void (*ssh_forward_failure)(void),
                          void (*cl_log_callback)(int8_t *),

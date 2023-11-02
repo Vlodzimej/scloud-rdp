@@ -75,6 +75,7 @@ class SpiceSession: RemoteSession {
                 port = sshForwardPort
                 setupSshPortForward(
                     Int32(self.stateKeeper.currInst),
+                    failure_callback_swift,
                     ssh_forward_success,
                     ssh_forward_failure,
                     log_callback,

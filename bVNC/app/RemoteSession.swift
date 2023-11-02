@@ -102,7 +102,10 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
         return
     }
     let message_str = String(cString: message!)
-    if message_str.contains("AUTHENTICATION_FAILED_TITLE") {
+    if message_str.contains("SSH_PASSWORD_AUTHENTICATION_FAILED_TITLE") {
+        log_callback_str(message: "Detected SSH authentication failure, requesting SSH credentials")
+        globalStateKeeper?.requestSshCredentials()
+    } else if message_str.contains("AUTHENTICATION_FAILED_TITLE") {
         log_callback_str(message: "Detected authentication failure, requesting credentials")
         globalStateKeeper?.requestCredentials()
     } else if message != nil {

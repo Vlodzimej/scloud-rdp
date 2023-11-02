@@ -161,7 +161,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var physicalKeyboardHandler: PhysicalKeyboardHandler?
     var clipboardMonitor: ClipboardMonitor?
     var requestingCredentials: Bool = false
-    
+    var requestingSshCredentials: Bool = false
+
     @objc func reDraw() {
         UserInterface {
             self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
@@ -305,6 +306,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func connect(connection: [String: String]) {
         log_callback_str(message: #function)
         self.requestingCredentials = false
+        self.requestingSshCredentials = false
         self.clipboardMonitor?.startMonitoring()
         self.showConnectionInProgress()
         self.receivedUpdate = false
@@ -994,6 +996,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func requestCredentials() {
         self.requestingCredentials = true
+        self.editConnection(connection: self.connections.selectedConnection)
+    }
+    
+    func requestSshCredentials() {
+        self.requestingSshCredentials = true
         self.editConnection(connection: self.connections.selectedConnection)
     }
     

@@ -45,6 +45,7 @@ class VncSession: RemoteSession {
                 log_callback_str(message: "Setting up SSH forwarding")
                 setupSshPortForward(
                     Int32(self.stateKeeper.currInst),
+                    failure_callback_swift,
                     ssh_forward_success,
                     ssh_forward_failure,
                     log_callback,

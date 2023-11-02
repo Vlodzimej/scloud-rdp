@@ -409,6 +409,7 @@ struct AddOrEditConnectionPage : View {
     
     fileprivate func saveAndConnectButtonActions() {
         self.stateKeeper.requestingCredentials = false
+        self.stateKeeper.requestingSshCredentials = false
         let selectedConnection: [String : String] = self.retrieveConnectionDetails()
         self.stateKeeper.connections.saveConnection(connection: selectedConnection)
         self.stateKeeper.connect(connection: selectedConnection)
@@ -424,6 +425,7 @@ struct AddOrEditConnectionPage : View {
     
     fileprivate func doNotSaveAndConnectButtonActions() {
         self.stateKeeper.requestingCredentials = false
+        self.stateKeeper.requestingSshCredentials = false
         let selectedConnection: [String : String] = self.retrieveConnectionDetails()
         self.stateKeeper.connect(connection: selectedConnection)
     }
@@ -451,6 +453,7 @@ struct AddOrEditConnectionPage : View {
     
     fileprivate func cancelButtonActions() {
         self.stateKeeper.requestingCredentials = false
+        self.stateKeeper.requestingSshCredentials = false
         self.stateKeeper.connections.deselectConnection()
         self.stateKeeper.showConnections()
     }
@@ -517,6 +520,13 @@ struct AddOrEditConnectionPage : View {
         }.padding()
     }
     
+    fileprivate func getSshCredentialsFields() -> some View {
+        return VStack {
+            getTextField(text: "SSH_USER_LABEL", binding: $sshUserText)
+            getSecureField(text: "SSH_PASSWORD_LABEL", binding: $sshPassText)
+        }
+    }
+    
     fileprivate func getSshSettingsFields() -> some View {
         return VStack {
             Toggle(isOn: $showSshTunnelSettings) {
@@ -528,8 +538,7 @@ struct AddOrEditConnectionPage : View {
                     Text("SSH_TUNNEL_LABEL").font(.title)
                     getTextField(text: "SSH_SERVER_LABEL", binding: $sshAddressText)
                     getTextField(text: "SSH_PORT_LABEL", binding: $sshPortText)
-                    getTextField(text: "SSH_USER_LABEL", binding: $sshUserText)
-                    getSecureField(text: "SSH_PASSWORD_LABEL", binding: $sshPassText)
+                    getSshCredentialsFields()
                     getSecureField(text: "SSH_PASSPHRASE_LABEL", binding: $sshPassphraseText)
                     VStack {
                         Divider()
@@ -632,6 +641,13 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
+    fileprivate func getCredentialsSshRequestBody() -> some View {
+        return VStack(alignment: .leading) {
+            getSshCredentialsFields()
+            getCredentialsButtons()
+        }.padding()
+    }
+    
     fileprivate func getCredentialsRequestBody() -> some View {
         return VStack(alignment: .leading) {
             getCredentialsFields()
@@ -640,7 +656,9 @@ struct AddOrEditConnectionPage : View {
     }
     
     var body: some View {
-        if self.stateKeeper.requestingCredentials {
+        if self.stateKeeper.requestingSshCredentials {
+            getCredentialsSshRequestBody()
+        } else if self.stateKeeper.requestingCredentials {
             getCredentialsRequestBody()
         } else {
             getConnectionEditBody()

@@ -92,6 +92,7 @@ int ssh_certificate_verification_callback(int instance, char* fingerprint_sha1, 
 }
 
 void setupSshPortForward(int instance,
+                         void (*fail_callback)(int instance, uint8_t *),
                          void (*ssh_forward_success)(void),
                          void (*ssh_forward_failure)(void),
                          void (*cl_log_callback)(int8_t *),
@@ -132,6 +133,11 @@ void setupSshPortForward(int instance,
 
     int res = startForwarding(instance, argc, argv, ssh_forward_success);
     client_log ("SSH Result of SSH forwarding: %d\n", res);
+    if (res == -2 || res == -4) {
+        fail_callback(instance, (uint8_t*)"SSH_PASSWORD_AUTHENTICATION_FAILED_TITLE");
+    } else if (res < 0) {
+        ssh_forward_failure();
+    }
 }
 
 int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_success)(void))
