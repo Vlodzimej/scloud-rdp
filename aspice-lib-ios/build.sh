@@ -41,6 +41,8 @@ then
   /usr/local/bin/pip3.9 install six==1.16.0 pyparsing==2.4.7
 fi
 
+git config --global protocol.file.allow always
+
 export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
 
 echo "Get latest recipes for project"
