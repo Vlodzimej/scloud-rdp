@@ -214,8 +214,8 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
         globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] != nil {
         messages.append("WARNING_SSH_KEY_CHANGED_TEXT")
     } else if fingerprintType == "X509" &&
-       (globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] != nil ||
-        globalStateKeeper?.connections.selectedConnection["sshFingerprintSha512"] != nil) {
+       (globalStateKeeper?.connections.selectedConnection["x509FingerprintSha256"] != nil ||
+        globalStateKeeper?.connections.selectedConnection["x509FingerprintSha512"] != nil) {
         messages.append("WARNING_X509_KEY_CHANGED_TEXT")
     }
 

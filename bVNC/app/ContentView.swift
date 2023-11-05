@@ -135,6 +135,9 @@ struct ContentView : View {
                     sshPassText: selectedConnection["sshPass"] ?? "",
                     sshPassphraseText: selectedConnection["sshPassphrase"] ?? "",
                     sshPrivateKeyText: selectedConnection["sshPrivateKey"] ?? "",
+                    sshFingerprintSha256: selectedConnection["sshFingerprintSha256"] ?? "",
+                    x509FingerprintSha256: selectedConnection["x509FingerprintSha256"] ?? "",
+                    x509FingerprintSha512: selectedConnection["x509FingerprintSha512"] ?? "",
                     addressText: selectedConnection["address"] ?? "",
                     portText: selectedConnection["port"] ?? Utils.getDefaultPort(),
                     tlsPortText: selectedConnection["tlsPort"] ?? "-1",
@@ -329,6 +332,9 @@ struct AddOrEditConnectionPage : View {
     @State var sshPassText: String
     @State var sshPassphraseText: String
     @State var sshPrivateKeyText: String
+    @State var sshFingerprintSha256: String
+    @State var x509FingerprintSha256: String
+    @State var x509FingerprintSha512: String
     @State var addressText: String
     @State var portText: String
     @State var tlsPortText: String
@@ -353,6 +359,9 @@ struct AddOrEditConnectionPage : View {
             "sshPass": self.sshPassText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshPassphrase": self.sshPassphraseText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshPrivateKey": self.sshPrivateKeyText.trimmingCharacters(in: .whitespacesAndNewlines),
+            "sshFingerprintSha256": self.sshFingerprintSha256.trimmingCharacters(in: .whitespacesAndNewlines),
+            "x509FingerprintSha256": self.x509FingerprintSha256.trimmingCharacters(in: .whitespacesAndNewlines),
+            "x509FingerprintSha512": self.x509FingerprintSha512.trimmingCharacters(in: .whitespacesAndNewlines),
             "address": self.addressText.trimmingCharacters(in: .whitespacesAndNewlines),
             "port": self.portText.trimmingCharacters(in: .whitespacesAndNewlines),
             "domain": self.domainText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -974,6 +983,9 @@ struct ContentViewA_Previews : PreviewProvider {
             sshPassText: "",
             sshPassphraseText: "",
             sshPrivateKeyText: "",
+            sshFingerprintSha256: "",
+            x509FingerprintSha256: "",
+            x509FingerprintSha512: "",
             addressText: "",
             portText: "",
             tlsPortText: "",
