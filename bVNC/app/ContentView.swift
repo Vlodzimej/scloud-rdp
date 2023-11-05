@@ -379,6 +379,17 @@ struct AddOrEditConnectionPage : View {
         return stateKeeper.keyboardLayouts.sorted()
     }
     
+    fileprivate func getCredentialsHeading() -> some View {
+        var credentialsHeading = Text("ENTER_VNC_CREDENTIALS_LABEL").font(.title)
+        if Utils.isRdp() {
+            credentialsHeading = Text("ENTER_RDP_CREDENTIALS_LABEL").font(.title)
+        }
+        if Utils.isSpice() {
+            credentialsHeading = Text("ENTER_SPICE_CREDENTIALS_LABEL").font(.title)
+        }
+        return credentialsHeading
+    }
+    
     fileprivate func getCredentialsFields() -> some View {
         return VStack {
             if Utils.isRdp() {
@@ -520,6 +531,10 @@ struct AddOrEditConnectionPage : View {
         }.padding()
     }
     
+    fileprivate func getSshCredentialsHeading() -> some View {
+        return Text("ENTER_SSH_CREDENTIALS_LABEL").font(.title)
+    }
+    
     fileprivate func getSshCredentialsFields() -> some View {
         return VStack {
             getTextField(text: "SSH_USER_LABEL", binding: $sshUserText)
@@ -641,8 +656,9 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
-    fileprivate func getCredentialsSshRequestBody() -> some View {
+    fileprivate func getSshCredentialsRequestBody() -> some View {
         return VStack(alignment: .leading) {
+            getSshCredentialsHeading()
             getSshCredentialsFields()
             getCredentialsButtons()
         }.padding()
@@ -650,6 +666,7 @@ struct AddOrEditConnectionPage : View {
     
     fileprivate func getCredentialsRequestBody() -> some View {
         return VStack(alignment: .leading) {
+            getCredentialsHeading()
             getCredentialsFields()
             getCredentialsButtons()
         }.padding()
@@ -657,7 +674,7 @@ struct AddOrEditConnectionPage : View {
     
     var body: some View {
         if self.stateKeeper.requestingSshCredentials {
-            getCredentialsSshRequestBody()
+            getSshCredentialsRequestBody()
         } else if self.stateKeeper.requestingCredentials {
             getCredentialsRequestBody()
         } else {

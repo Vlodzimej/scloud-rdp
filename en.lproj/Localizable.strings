@@ -69,3 +69,8 @@
 "CONNECTION_NAME_LABEL" = "Nickname";
 "DO_NOT_SAVE_AND_CONNECT_LABEL" = "Connect Without Saving";
 "SAVE_AND_CONNECT_LABEL" = "Save And Connect";
+"SAVE_AND_CONNECT_LABEL" = "Save And Connect";
+"ENTER_VNC_CREDENTIALS_LABEL" = "Enter VNC Credentials";
+"ENTER_RDP_CREDENTIALS_LABEL" = "Enter RDP Credentials";
+"ENTER_SPICE_CREDENTIALS_LABEL" = "Enter SPICE Credentials";
+"ENTER_SSH_CREDENTIALS_LABEL" = "Enter SSH Credentials";
