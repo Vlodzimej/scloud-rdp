@@ -297,6 +297,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func connectSaved(connection: [String: String]) {
         log_callback_str(message: #function)
         self.connectedWithConsoleFileOrUri = false
+        self.connections.select(connection: connection)
         self.connect(connection: connection)
     }
     
@@ -310,7 +311,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clipboardMonitor?.startMonitoring()
         self.showConnectionInProgress()
         self.receivedUpdate = false
-        self.connections.select(connection: connection)
         log_callback_str(message: "Connecting and navigating to the connection screen")
         self.yesNoDialogResponse = 0
         self.isKeptFresh = false
@@ -454,6 +454,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func editConnection(connection: Dictionary<String, String>) {
         log_callback_str(message: "Editing connection and navigating to setup screen")
         self.connections.edit(connection: connection)
+        UserInterface {
+            self.currentPage = "addOrEditConnection"
+        }
+    }
+    
+    func requestCredentialsForConnection() {
+        log_callback_str(message: "Navigating to request credentials screen")
         UserInterface {
             self.currentPage = "addOrEditConnection"
         }
@@ -996,12 +1003,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func requestCredentials() {
         self.requestingCredentials = true
-        self.editConnection(connection: self.connections.selectedConnection)
+        self.requestCredentialsForConnection()
     }
     
     func requestSshCredentials() {
         self.requestingSshCredentials = true
-        self.editConnection(connection: self.connections.selectedConnection)
+        self.requestCredentialsForConnection()
     }
     
 	/*

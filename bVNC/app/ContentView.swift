@@ -133,6 +133,7 @@ struct ContentView : View {
                     sshPortText: selectedConnection["sshPort"] ?? "22",
                     sshUserText: selectedConnection["sshUser"] ?? "",
                     sshPassText: selectedConnection["sshPass"] ?? "",
+                    saveSshCredentials: Bool(selectedConnection["saveSshCredentials"] ?? "true") ?? true,
                     sshPassphraseText: selectedConnection["sshPassphrase"] ?? "",
                     sshPrivateKeyText: selectedConnection["sshPrivateKey"] ?? "",
                     sshFingerprintSha256: selectedConnection["sshFingerprintSha256"] ?? "",
@@ -148,6 +149,7 @@ struct ContentView : View {
                     domainText: selectedConnection["domain"] ?? "",
                     usernameText: selectedConnection["username"] ?? "",
                     passwordText: selectedConnection["password"] ?? "",
+                    saveCredentials: Bool(selectedConnection["saveCredentials"] ?? "true") ?? true,
                     screenShotFile: selectedConnection["screenShotFile"] ?? UUID().uuidString,
                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
@@ -330,6 +332,7 @@ struct AddOrEditConnectionPage : View {
     @State var sshPortText: String
     @State var sshUserText: String
     @State var sshPassText: String
+    @State var saveSshCredentials: Bool
     @State var sshPassphraseText: String
     @State var sshPrivateKeyText: String
     @State var sshFingerprintSha256: String
@@ -344,6 +347,7 @@ struct AddOrEditConnectionPage : View {
     @State var domainText: String
     @State var usernameText: String
     @State var passwordText: String
+    @State var saveCredentials: Bool
     @State var screenShotFile: String
     @State var textHeight: CGFloat = 20
     @State var allowZooming: Bool
@@ -357,6 +361,7 @@ struct AddOrEditConnectionPage : View {
             "sshPort": self.sshPortText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshUser": self.sshUserText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshPass": self.sshPassText.trimmingCharacters(in: .whitespacesAndNewlines),
+            "saveSshCredentials": String(self.saveSshCredentials),
             "sshPassphrase": self.sshPassphraseText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshPrivateKey": self.sshPrivateKeyText.trimmingCharacters(in: .whitespacesAndNewlines),
             "sshFingerprintSha256": self.sshFingerprintSha256.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -367,6 +372,7 @@ struct AddOrEditConnectionPage : View {
             "domain": self.domainText.trimmingCharacters(in: .whitespacesAndNewlines),
             "username": self.usernameText.trimmingCharacters(in: .whitespacesAndNewlines),
             "password": self.passwordText.trimmingCharacters(in: .whitespacesAndNewlines),
+            "saveCredentials": String(self.saveCredentials),
             "screenShotFile": self.screenShotFile.trimmingCharacters(in: .whitespacesAndNewlines),
             "allowZooming": String(self.allowZooming),
             "allowPanning": String(self.allowPanning),
@@ -416,7 +422,6 @@ struct AddOrEditConnectionPage : View {
     fileprivate func saveButtonActions() {
         let selectedConnection: [String : String] = self.retrieveConnectionDetails()
         self.stateKeeper.connections.saveConnection(connection: selectedConnection)
-        self.stateKeeper.connections.deselectConnection()
     }
     
     fileprivate func getSaveButton() -> Button<some View> {
@@ -427,32 +432,31 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
-    fileprivate func saveAndConnectButtonActions() {
-        self.stateKeeper.requestingCredentials = false
-        self.stateKeeper.requestingSshCredentials = false
-        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
+    fileprivate func saveAndConnectButtonActions(saveCredentials: Bool) {
+        var selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        if self.stateKeeper.requestingCredentials {
+            self.stateKeeper.requestingCredentials = false
+            selectedConnection["saveCredentials"] = String(saveCredentials)
+        }
+        if self.stateKeeper.requestingSshCredentials {
+            self.stateKeeper.requestingSshCredentials = false
+            selectedConnection["saveSshCredentials"] = String(saveCredentials)
+        }
         self.stateKeeper.connections.saveConnection(connection: selectedConnection)
         self.stateKeeper.connect(connection: selectedConnection)
     }
     
     fileprivate func getSaveAndConnectButton() -> Button<some View> {
         return Button(action: {
-            saveAndConnectButtonActions()
+            saveAndConnectButtonActions(saveCredentials: true)
         }) {
             getButton(imageName: "rectangle.center.inset.filled.badge.plus", textLabel: "SAVE_AND_CONNECT_LABEL")
         }
     }
     
-    fileprivate func doNotSaveAndConnectButtonActions() {
-        self.stateKeeper.requestingCredentials = false
-        self.stateKeeper.requestingSshCredentials = false
-        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
-        self.stateKeeper.connect(connection: selectedConnection)
-    }
-    
     fileprivate func getDoNotSaveAndConnectButton() -> Button<some View> {
         return Button(action: {
-            doNotSaveAndConnectButtonActions()
+            saveAndConnectButtonActions(saveCredentials: false)
         }) {
             getButton(imageName: "rectangle.center.inset.filled", textLabel: "DO_NOT_SAVE_AND_CONNECT_LABEL")
         }
@@ -981,6 +985,7 @@ struct ContentViewA_Previews : PreviewProvider {
             sshPortText: "",
             sshUserText: "",
             sshPassText: "",
+            saveSshCredentials: true,
             sshPassphraseText: "",
             sshPrivateKeyText: "",
             sshFingerprintSha256: "",
@@ -995,6 +1000,7 @@ struct ContentViewA_Previews : PreviewProvider {
             domainText: "",
             usernameText: "",
             passwordText: "",
+            saveCredentials: true,
             screenShotFile: "",
             allowZooming: true,
             allowPanning: true,

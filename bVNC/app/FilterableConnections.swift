@@ -144,8 +144,15 @@ class FilterableConnections : ObservableObject {
     
     func saveConnections() {
         log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
+        var copyOfSelectedConnection = selectedConnection
+        if (copyOfSelectedConnection["saveSshCredentials"] == "false") {
+            copyOfSelectedConnection["sshPass"] = ""
+        }
+        if (copyOfSelectedConnection["saveCredentials"] == "false") {
+            copyOfSelectedConnection["password"] = ""
+        }
         if selectedUnfilteredConnectionIndex >= 0 {
-            self.allConnections[selectedUnfilteredConnectionIndex] = selectedConnection
+            self.allConnections[selectedUnfilteredConnectionIndex] = copyOfSelectedConnection
         }
         self.settings.set(self.allConnections, forKey: Constants.SAVED_CONNECTIONS_KEY)
         self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
@@ -199,7 +206,6 @@ class FilterableConnections : ObservableObject {
         }
         self.saveConnections()
         self.filterConnections()
-        self.deselectConnection()
         self.stateKeeper?.showConnections()
     }
     
