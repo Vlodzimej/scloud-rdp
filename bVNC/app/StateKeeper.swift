@@ -266,6 +266,16 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.macOs)
     }
     
+    func connectIfConsoleFileFound(_ destPath: String) {
+        let fileContents = Utils.getFileContents(path: destPath)
+        if fileContents.starts(with: "[virt-viewer]") {
+            log_callback_str(message: "\(#function): File at \(destPath) starts with [virt-viewer], connecting.")
+            self.connectWithConsoleFile(consoleFile: destPath)
+        } else {
+            log_callback_str(message: "\(#function): File at \(destPath) does not start with [virt-viewer], ignoring.")
+        }
+    }
+    
     func connectWithConsoleFile (consoleFile: String) {
         self.connectedWithConsoleFileOrUri = true
         var connection: [String: String] = self.connections.defaultSettings
@@ -291,14 +301,28 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.imageView = imageView
     }
     
+    func selectAndConnect(connection: [String: String]) {
+        log_callback_str(message: #function)
+        self.connections.select(connection: connection)
+        self.connect(connection: connection)
+    }
+    
     /**
      Used to connect with an index from the list of saved connections
      */
     func connectSaved(connection: [String: String]) {
         log_callback_str(message: #function)
         self.connectedWithConsoleFileOrUri = false
+        self.selectAndConnect(connection: connection)
+    }
+    
+    
+    func selectSaveAndConnect(connection: [String: String]) {
+        log_callback_str(message: #function)
+        // Try to select the connection in order to not create duplicates
         self.connections.select(connection: connection)
-        self.connect(connection: connection)
+        self.connections.saveConnection(connection: connection)
+        self.selectAndConnect(connection: connection)
     }
     
     /**

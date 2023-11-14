@@ -36,17 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
     
     func connectWithConsoleFile(url: URL) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let stateKeeper = (UIApplication.shared.delegate as! AppDelegate).stateKeeper
         if (url.startAccessingSecurityScopedResource()) {
             if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
                 let destPath = String(format: "%@/%@", docsPath, "console.vv")
-                do {
-                    try FileManager.default.copyItem(atPath: url.path, toPath: destPath)
-                } catch (let error) {
-                    log_callback_str(message: "Cannot copy item at \(url) to \(destPath): \(error)")
-                }
-                log_callback_str(message: "\(#function): \(destPath)")
-                appDelegate.stateKeeper.connectWithConsoleFile(consoleFile: destPath)
+                Utils.deletePathIfNeeded(destPath)
+                Utils.copyUrlToDestinationIfPossible(url, destPath)
+                stateKeeper.connectIfConsoleFileFound(destPath)
                 url.stopAccessingSecurityScopedResource()
             }
         }
@@ -114,17 +110,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             log_callback_str(message: "\(#function) connectionName = \(connectionName)")
             let selectedConnection = globalStateKeeper?.connections.findFirstByName(connectionName: connectionName)
             if (selectedConnection != nil) {
-                globalStateKeeper?.connections.selectedConnection = selectedConnection!
-                globalStateKeeper?.connect(connection: selectedConnection!)
+                globalStateKeeper?.selectAndConnect(connection: selectedConnection!)
             } else {
                 let selectedConnection: [String : String] = [
                     "connectionName": connectionName,
                     "address": host,
                     "port": "\(port)",
                 ]
-                globalStateKeeper?.connections.selectedConnection = selectedConnection
-                globalStateKeeper?.connections.saveConnection(connection: selectedConnection)
-                globalStateKeeper?.connect(connection: selectedConnection)
+                globalStateKeeper?.selectSaveAndConnect(connection: selectedConnection)
             }
             return true
         } else {

@@ -23,6 +23,13 @@ import StoreKit
 struct Utils {
     static let bundleID = Bundle.main.bundleIdentifier
 
+    static func getFileContents(path: String) -> String {
+        let url = URL(string: "file://" + path)!
+        log_callback_str(message: "\(#function): url \(url)")
+        let contents = try? String(contentsOf: url, encoding: .utf8)
+        return contents ?? ""
+    }
+    
     static func getBundleFileContents(name: String) -> String {
         if let fileURL = Bundle.main.url(forResource: name, withExtension: nil) {
             if let fileContents = try? String(contentsOf: fileURL) {
@@ -82,6 +89,22 @@ struct Utils {
             log_callback_str(message: error.localizedDescription)
             return false
         }
+    }
+    
+    static func copyUrlToDestinationIfPossible(_ url: URL, _ destPath: String) {
+        do {
+            log_callback_str(message: "\(#function): Trying to copy \(url) to \(destPath)")
+            try FileManager.default.copyItem(atPath: url.path, toPath: destPath)
+            log_callback_str(message: "\(#function): Copied \(url) to \(destPath)")
+        } catch (let error) {
+            log_callback_str(message: "\(#function): Cannot copy item at \(url) to \(destPath): \(error)")
+        }
+    }
+    
+    static func deletePathIfNeeded(_ destPath: String) {
+        log_callback_str(message: "\(#function): Removing \(destPath) if there")
+        try? FileManager.default.removeItem(atPath: destPath)
+        log_callback_str(message: "\(#function): Removed \(destPath)")
     }
     
     static func isSpice() -> Bool {
