@@ -266,14 +266,17 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.macOs)
     }
     
-    func connectIfConsoleFileFound(_ destPath: String) {
+    func connectIfConsoleFileFound(_ destPath: String) -> Bool {
         let fileContents = Utils.getFileContents(path: destPath)
+        var result = false
         if fileContents.starts(with: "[virt-viewer]") {
             log_callback_str(message: "\(#function): File at \(destPath) starts with [virt-viewer], connecting.")
             self.connectWithConsoleFile(consoleFile: destPath)
+            result = true
         } else {
             log_callback_str(message: "\(#function): File at \(destPath) does not start with [virt-viewer], ignoring.")
         }
+        return result
     }
     
     func connectWithConsoleFile (consoleFile: String) {
