@@ -1,4 +1,5 @@
 1.0.26
+  - Workaround for non-console .vv files launching app
   - Dynamic querying for SSH credentials
 1.0.25
   - Dynamic querying for credentials
