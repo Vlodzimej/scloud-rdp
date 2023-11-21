@@ -37,17 +37,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func connectWithConsoleFile(url: URL) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let stateKeeper = appDelegate.stateKeeper
+        let stateKeeper: StateKeeper = appDelegate.stateKeeper
         if (url.startAccessingSecurityScopedResource()) {
             if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
                 let destPath = String(format: "%@/%@", docsPath, "console.vv")
                 Utils.deletePathIfNeeded(destPath)
                 Utils.copyUrlToDestinationIfPossible(url, destPath)
                 if !stateKeeper.connectIfConsoleFileFound(destPath) {
-                    exit(0)
+                    stateKeeper.exitNow()
                 }
                 url.stopAccessingSecurityScopedResource()
             }
+        } else {
+            stateKeeper.exitNow()
         }
     }
     
