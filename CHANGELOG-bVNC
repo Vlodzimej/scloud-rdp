@@ -1,5 +1,6 @@
 1.0.26
   - Dynamic querying for SSH credentials
+  - Workaround for invalid FaceTime vnc:// Universal URLs launching app
 1.0.25
   - Dynamic querying for credentials
   - Bugfix for connection search on MacOS with SDK 17
