@@ -44,12 +44,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 Utils.deletePathIfNeeded(destPath)
                 Utils.copyUrlToDestinationIfPossible(url, destPath)
                 if !stateKeeper.connectIfConsoleFileFound(destPath) {
-                    stateKeeper.exitNow()
+                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
                 }
                 url.stopAccessingSecurityScopedResource()
             }
         } else {
-            stateKeeper.exitNow()
+            log_callback_str(message: "\(#function) Could not startAccessingSecurityScopedResource")
         }
     }
     
