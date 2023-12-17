@@ -1,5 +1,25 @@
 "HELP_LABEL" = "Help";
-"MAIN_HELP_TEXT" = "When the application launches, tap the New button to add new connections. Once you have at least one new connection, tap it once to start it. Long tap it to edit or delete it.\n\nFor more information, please tap on the following buttons for various help options. Post your questions on the Support Forum, report bugs and problems to the Issue Tracker, and find instructional videos in Usage Help Videos for an overview of how to use the application including the multi-touch interface.";
+"ASPICE_HELP" = "
+oVirt, RHEV, and Proxmox
+- Be sure to use the Edit Default Settings button in the app and choose your keyboard layout if it's not English (US)
+- Once you have the app installed and layout configured, launch Safari or Chrome on your iPhone, iPad, or Mac
+- Login to Proxmox, oVirt or RHEV through its Web interface
+- Find your VM and click on its Console to download a console .vv file
+- Tap or click on the downloaded console file and aSPICE will launch to show you the remote console
+- Ensure SPICE Tools (aka vd-agent or vdagent) is installed in your Virtual Machine for best results.
+
+Libvirt/Qemu KVM
+- If your mouse pointer is not in sync with where you tap, you may need to add an 'EvTouch USB Graphics Tablet' to your virtual machine (when it's powered off) and then power it on. To add the Tablet:
+- If configuring through virt-manager, Go to the View->Details section, and select Add Hardware->Input->EvTouch USB Graphics Tablet.
+- If running your virtual machine on the command-line, you need an option similar to: '-device usb-tablet,id=input0'
+";
+"MAIN_HELP_TEXT" = "
+When the application launches, tap the New button to add new connections. Once you have at least one new connection, tap it once to start it. Long tap it to edit or delete it.\n\nFor more information, please tap on the following buttons for various help options. Post your questions on the Support Forum, report bugs and problems to the Issue Tracker, and find instructional videos in Usage Help Videos for an overview of how to use the application including the multi-touch interface.
+
+Email our forum at bvnc-ardp-aspice-opaque-remote-desktop-clients@googlegroups.com for help.
+
+Email us directly at support@morpheusly.com for help.
+";
 "SSH_CONNECTION_SETUP_HELP_TEXT" = "SSH tunneling is available and enabled, enter the SSH tunneling information under SSH Tunnel Settings. SSH Server is the IP or host name of your computer. SSH Port is the port number your SSH server daemon is listening on. SSH User and Password are your authentication credentials. SSH Passphrase only needs to be entered if an encrypted SSH Key is being used for authentication. To use an SSH Key for authentication, paste it in the text box after the SSH Key label. Please note that when tunneling over SSH, the Address field under Main Connection Parameters is entered from the point of view of the SSH server. For instance, it would be 'localhost' or '127.0.0.1' if the SSH server and VNC server are on the same computer.";
 "VNC_CONNECTION_SETUP_HELP_TEXT" = "To set up a connection to your VNC server, enter the VNC connection parameters under Main Connection Settings. The Address field is the IP or host name of your VNC server. Port is the port number that your VNC server is listening on, but it may also be specified as the VNC screen number which is 0 for port 5900 for instance. User is required for certain VNC authentication modes like VeNCrypt, and Password is usually required if VNC authentication is enabled.";
 "UI_SETUP_HELP_TEXT" = "You may tune certain User Interface parameters such as whether to allow the remote desktop to pan or zoom in User Interface Settings. For instance, in order to keep the the remote desktop resized and fixed to the local screen, disable both options.";
@@ -74,3 +94,4 @@
 "ENTER_RDP_CREDENTIALS_LABEL" = "Enter RDP Credentials";
 "ENTER_SPICE_CREDENTIALS_LABEL" = "Enter SPICE Credentials";
 "ENTER_SSH_CREDENTIALS_LABEL" = "Enter SSH Credentials";
+"HELP_INSTRUCTIONS" = "Hit the info button for help.";

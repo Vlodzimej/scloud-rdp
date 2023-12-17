@@ -211,6 +211,27 @@ struct ConnectionsList : View {
         self.stateKeeper.showConnections()
     }
     
+    fileprivate func getStaticText(text: String) -> some View {
+        return Text(
+            self.stateKeeper.localizedString(for: text)
+        ).font(.title)
+    }
+    
+    fileprivate func getHelpMessages() -> [LocalizedStringKey] {
+        var messages: [LocalizedStringKey]
+        if (Utils.isSpice()) {
+            messages = [
+                LocalizedStringKey(self.stateKeeper.localizedString(for: "ASPICE_HELP")),
+                LocalizedStringKey(self.stateKeeper.localizedString(for: "MAIN_HELP_TEXT"))
+            ]
+        } else {
+            messages = [
+                LocalizedStringKey(self.stateKeeper.localizedString(for: "MAIN_HELP_TEXT"))
+            ]
+        }
+        return messages
+    }
+    
     var body: some View {
         ScrollView {
             VStack {
@@ -228,7 +249,7 @@ struct ConnectionsList : View {
                     }
                     
                     Button(action: {
-                        self.stateKeeper.showHelp(messages: [ LocalizedStringKey(self.stateKeeper.localizedString(for: "MAIN_HELP_TEXT")) ])
+                        self.stateKeeper.showHelp(messages: getHelpMessages())
                     }) {
                         VStack(spacing: 10) {
                             Image(systemName: "info")
@@ -286,38 +307,42 @@ struct ConnectionsList : View {
                     }
                 }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, alignment: .topTrailing).padding()
                 
-                ForEach(0 ..< self.connections.count) { i in
-                    Button(action: {
-                    }) {
-                        VStack {
-                            Image(uiImage: self.getSavedImage(named: self.connections[i]["screenShotFile"] ?? "") ?? UIImage())
-                                .resizable()
-                                .scaledToFit()
-                                .cornerRadius(5)
-                                .frame(maxWidth: 600, maxHeight: 200)
-                            Text(self.stateKeeper.connections.buildTitle(connection: self.connections[i]))
-                                .font(.headline)
-                                .padding(5)
-                                .background(Color.black)
-                                .cornerRadius(5)
-                                .foregroundColor(.white)
-                                .padding(5)
-                                .frame(height:100)
-                        }
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(Color.black)
-                        .cornerRadius(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(Color.white, lineWidth: 2))
-                        .onTapGesture {
-                            self.connect(index: i)
-                        }.onLongPressGesture {
-                            self.edit(index: i)
-                        }
-                        
-                    }.buttonStyle(PlainButtonStyle())
+                if (self.connections.count == 0 && Utils.isSpice()) {
+                    self.getStaticText(text: "HELP_INSTRUCTIONS")
+                } else {
+                    ForEach(0 ..< self.connections.count) { i in
+                        Button(action: {
+                        }) {
+                            VStack {
+                                Image(uiImage: self.getSavedImage(named: self.connections[i]["screenShotFile"] ?? "") ?? UIImage())
+                                    .resizable()
+                                    .scaledToFit()
+                                    .cornerRadius(5)
+                                    .frame(maxWidth: 600, maxHeight: 200)
+                                Text(self.stateKeeper.connections.buildTitle(connection: self.connections[i]))
+                                    .font(.headline)
+                                    .padding(5)
+                                    .background(Color.black)
+                                    .cornerRadius(5)
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                                    .frame(height:100)
+                            }
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(Color.black)
+                            .cornerRadius(5)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color.white, lineWidth: 2))
+                            .onTapGesture {
+                                self.connect(index: i)
+                            }.onLongPressGesture {
+                                self.edit(index: i)
+                            }
+                            
+                        }.buttonStyle(PlainButtonStyle())
+                    }
                 }
             }
         }
