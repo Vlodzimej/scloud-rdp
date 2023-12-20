@@ -169,7 +169,7 @@ class FilterableConnections : ObservableObject {
     func addNewConnection(connectionName: String) {
         log_callback_str(message: "\(#function)")
         self.deselectConnection()
-        self.copyConnectionIntoSelectedConnection(connection: self.defaultSettings)
+        self.copyConnectionIntoSelectedConnection(connection: self.defaultSettings, skipKeys: ["screenShotFile"])
         self.selectedConnection["connectionName"] = connectionName
         
     }
@@ -209,9 +209,11 @@ class FilterableConnections : ObservableObject {
         self.stateKeeper?.showConnections()
     }
     
-    func copyConnectionIntoSelectedConnection(connection: Dictionary<String, String>) {
+    func copyConnectionIntoSelectedConnection(connection: Dictionary<String, String>, skipKeys: [String] = []) {
         connection.forEach() { setting in // Iterate through new settings to avoid losing e.g. ssh and x509 fingerprints
-            self.selectedConnection[setting.key] = setting.value
+            if !skipKeys.contains(setting.key) {
+                self.selectedConnection[setting.key] = setting.value
+            }
         }
     }
     
@@ -231,7 +233,7 @@ class FilterableConnections : ObservableObject {
         }
         do {
             let fileName = self.selectedConnection["screenShotFile"] ?? "default"
-            log_callback_str(message: "\(#function): fileName: \(fileName)")
+            log_callback_str(message: "\(#function): screenShotFile: \(fileName)")
             try data.write(to: directory.appendingPathComponent(String(fileName))!)
             self.saveConnections()
             if self.stateKeeper?.isAtConnectionsListPage() ?? true {

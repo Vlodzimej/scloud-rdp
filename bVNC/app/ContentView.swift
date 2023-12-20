@@ -120,12 +120,21 @@ struct ContentView : View {
         self.filteredConnections = filteredConnections
     }
     
+    fileprivate func getScreenShotFile(connection: [String : String]) -> String {
+        var screenShotFile: String? = connection["screenShotFile"]
+        if screenShotFile == stateKeeper.connections.defaultSettings["screenShotFile"] {
+            screenShotFile = nil
+        }
+        return screenShotFile ?? UUID().uuidString
+    }
+    
     var body: some View {
         let selectedConnection = stateKeeper.connections.selectedConnection
         VStack {
             if stateKeeper.currentPage == "connectionsList" {
                 ConnectionsList(stateKeeper: stateKeeper, searchConnectionText: searchConnectionText, connections: filteredConnections)
             } else if stateKeeper.currentPage == "addOrEditConnection" {
+                let screenshotFile = getScreenShotFile(connection: selectedConnection)
                 AddOrEditConnectionPage(
                     stateKeeper: stateKeeper,
                     connectionNameText: selectedConnection["connectionName"] ?? "",
@@ -150,7 +159,7 @@ struct ContentView : View {
                     usernameText: selectedConnection["username"] ?? "",
                     passwordText: selectedConnection["password"] ?? "",
                     saveCredentials: Bool(selectedConnection["saveCredentials"] ?? "true") ?? true,
-                    screenShotFile: selectedConnection["screenShotFile"] ?? UUID().uuidString,
+                    screenShotFile: screenshotFile,
                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "")
@@ -201,6 +210,7 @@ struct ConnectionsList : View {
     
     func getSavedImage(named: String) -> UIImage? {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+            log_callback_str(message: "\(#function) \(named)")
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(named).path)
         }
         return nil
@@ -230,6 +240,41 @@ struct ConnectionsList : View {
             ]
         }
         return messages
+    }
+    
+    fileprivate func getThumbnailButtonForConnection(_ i: Int) -> some View {
+        let screenshotFile = self.connections[i]["screenShotFile"] ?? ""
+        log_callback_str(message: "\(#function) \(i) connection out of \(self.connections.count): screenshotFile: \(screenshotFile)")
+        return Button(action: {
+        }) {
+            VStack {
+                Image(uiImage: self.getSavedImage(named: screenshotFile) ?? UIImage())
+                    .resizable()
+                    .scaledToFit()
+                    .cornerRadius(5)
+                    .frame(maxWidth: 600, maxHeight: 200)
+                Text(self.stateKeeper.connections.buildTitle(connection: self.connections[i]))
+                    .font(.headline)
+                    .padding(5)
+                    .background(Color.black)
+                    .cornerRadius(5)
+                    .foregroundColor(.white)
+                    .padding(5)
+                    .frame(height:100)
+            }
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.black)
+            .cornerRadius(5)
+            .overlay(
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(Color.white, lineWidth: 2))
+            .onTapGesture {
+                self.connect(index: i)
+            }.onLongPressGesture {
+                self.edit(index: i)
+            }
+        }.buttonStyle(PlainButtonStyle())
     }
     
     var body: some View {
@@ -311,37 +356,7 @@ struct ConnectionsList : View {
                     self.getStaticText(text: "HELP_INSTRUCTIONS")
                 } else {
                     ForEach(0 ..< self.connections.count) { i in
-                        Button(action: {
-                        }) {
-                            VStack {
-                                Image(uiImage: self.getSavedImage(named: self.connections[i]["screenShotFile"] ?? "") ?? UIImage())
-                                    .resizable()
-                                    .scaledToFit()
-                                    .cornerRadius(5)
-                                    .frame(maxWidth: 600, maxHeight: 200)
-                                Text(self.stateKeeper.connections.buildTitle(connection: self.connections[i]))
-                                    .font(.headline)
-                                    .padding(5)
-                                    .background(Color.black)
-                                    .cornerRadius(5)
-                                    .foregroundColor(.white)
-                                    .padding(5)
-                                    .frame(height:100)
-                            }
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Color.black)
-                            .cornerRadius(5)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(Color.white, lineWidth: 2))
-                            .onTapGesture {
-                                self.connect(index: i)
-                            }.onLongPressGesture {
-                                self.edit(index: i)
-                            }
-                            
-                        }.buttonStyle(PlainButtonStyle())
+                        getThumbnailButtonForConnection(i)
                     }
                 }
             }
