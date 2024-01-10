@@ -33,8 +33,6 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var window: UIWindow?
-    
     func connectWithConsoleFile(url: URL) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let stateKeeper: StateKeeper = appDelegate.stateKeeper
@@ -57,18 +55,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         // Create the SwiftUI view that provides the window contents.
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let contentView = ContentView(stateKeeper: appDelegate.stateKeeper,
-                                      searchConnectionText: appDelegate.stateKeeper.connections.getSearchConnectionText(),
-                                      filteredConnections: appDelegate.stateKeeper.connections.filteredConnections)
-        
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
-            window = UIWindow(windowScene: windowScene)
-            window!.rootViewController = MyUIHostingController(rootView: contentView)
-            //window!.rootViewController?.modalPresentationCapturesStatusBarAppearance = true
-
-            window!.makeKeyAndVisible()
-            globalWindow = window
+            globalWindow = UIWindow(windowScene: windowScene)
+            appDelegate.stateKeeper.recreateContentView()
         }
         
         log_callback_str(message: "\(#function): \(connectionOptions.urlContexts)")
@@ -94,6 +84,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         handleUrlContexts(URLContexts)
     }
     
+    fileprivate func createIfNeededAndConnect(
+        _ selectedConnection: [String : String]?,
+        _ connectionName: String?,
+        _ host: String,
+        _ port: String,
+        _ requiresVpn: String,
+        _ vpnUriScheme: String,
+        _ externalId: String?
+    ) {
+        var connection: [String : String] = selectedConnection ?? [:]
+        connection["connectionName"] = connectionName!
+        connection["address"] = host
+        connection["port"] = port
+        connection["requiresVpn"] = requiresVpn
+        connection["vpnUriScheme"] = vpnUriScheme
+        connection["externalId"] = externalId
+        globalStateKeeper?.selectSaveAndConnect(connection: connection)
+    }
+    
+    fileprivate func extractFromParameters(_ params: [URLQueryItem], _ field: String) -> String? {
+        return params.first(where: { $0.name == field })?.value
+    }
+    
     func handleUniversalUrl(urlContext: UIOpenURLContext) -> Bool {
         let sendingAppID = urlContext.options.sourceApplication
         let url = urlContext.url
@@ -102,32 +115,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true),
               let host = components.host,
-              let port = components.port,
+              let numericPort = components.port,
               let params = components.queryItems else {
             log_callback_str(message: "\(#function) Invalid URL")
             return false
         }
+        let port = "\(numericPort)"
+        log_callback_str(message: "\(#function) host = \(host)")
+        log_callback_str(message: "\(#function) port = \(port)")
 
-        if let connectionName = params.first(where: { $0.name == "ConnectionName" })?.value {
-            log_callback_str(message: "\(#function) host = \(host)")
-            log_callback_str(message: "\(#function) port = \(port)")
-            let connectionName = connectionName.replacingOccurrences(of: "+", with: " ")
-            log_callback_str(message: "\(#function) connectionName = \(connectionName)")
-            let selectedConnection = globalStateKeeper?.connections.findFirstByName(connectionName: connectionName)
-            if (selectedConnection != nil) {
-                globalStateKeeper?.selectAndConnect(connection: selectedConnection!)
-            } else {
-                let selectedConnection: [String : String] = [
-                    "connectionName": connectionName,
-                    "address": host,
-                    "port": "\(port)",
-                ]
-                globalStateKeeper?.selectSaveAndConnect(connection: selectedConnection)
-            }
-            return true
-        } else {
+        var connectionName = extractFromParameters(params, "ConnectionName")
+        let requiresVpn = extractFromParameters(params, "RequiresVpn") == "1" ? "true" : "false"
+        let vpnUriScheme = extractFromParameters(params, "VpnUriScheme") ?? "vpn"
+        let externalId = extractFromParameters(params, "ExternalId")
+
+        if connectionName == nil {
             log_callback_str(message: "\(#function) ConnectionName missing")
             return false
+        } else if (externalId != nil) {
+            log_callback_str(message: "\(#function) externalId = \(externalId!)")
+            let selectedConnection = globalStateKeeper?.connections.findFirstByExternalIdAddressAndPort(
+                externalId: externalId!,
+                address: host,
+                port: port
+            )
+            createIfNeededAndConnect(selectedConnection, connectionName, host, port, requiresVpn, vpnUriScheme, externalId)
+            return true
+        } else {
+            connectionName = connectionName!.replacingOccurrences(of: "+", with: " ")
+            log_callback_str(message: "\(#function) connectionName = \(connectionName!)")
+            let selectedConnection = globalStateKeeper?.connections.findFirstByName(connectionName: connectionName!)
+            createIfNeededAndConnect(selectedConnection, connectionName, host, port, requiresVpn, vpnUriScheme, externalId)
+            return true
         }
     }
 

@@ -171,7 +171,6 @@ class FilterableConnections : ObservableObject {
         self.deselectConnection()
         self.copyConnectionIntoSelectedConnection(connection: self.defaultSettings, skipKeys: ["screenShotFile"])
         self.selectedConnection["connectionName"] = connectionName
-        
     }
     
     func deleteCurrentConnection() {
@@ -246,10 +245,24 @@ class FilterableConnections : ObservableObject {
         }
     }
     
-    func findFirstByName(connectionName: String) -> [String: String]? {
+    func findFirstByField(field: String, value: String) -> [String: String]? {
         let existing = self.allConnections.filter(
             { (connection) -> Bool in
-                connectionName == connection["connectionName"]
+                value == connection[field]
+            }).first
+        return existing
+    }
+    
+    func findFirstByName(connectionName: String) -> [String: String]? {
+        return findFirstByField(field: "connectionName", value: connectionName)
+    }
+
+    func findFirstByExternalIdAddressAndPort(externalId: String, address: String, port: String) -> [String: String]? {
+        let existing = self.allConnections.filter(
+            { (connection) -> Bool in
+                externalId == connection["externalId"] &&
+                address == connection["address"] &&
+                port == connection["port"]
             }).first
         return existing
     }

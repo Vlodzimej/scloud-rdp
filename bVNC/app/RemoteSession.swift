@@ -40,8 +40,6 @@ func UserInterface(_ block: @escaping ()->Void) {
     DispatchQueue.main.async(execute: block)
 }
 
-var globalContentView: Image?
-var globalImageView: TouchEnabledUIImageView?
 var lastUpdate: Double = 0.0
 var isDrawing: Bool = false
 var buttonStateMap: [Int: Bool] = [:]

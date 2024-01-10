@@ -539,8 +539,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.contentView = ContentView(stateKeeper: self,
                                       searchConnectionText: self.connections.getSearchConnectionText(),
                                       filteredConnections: self.connections.filteredConnections)
-        globalWindow!.rootViewController = MyUIHostingController(rootView: self.contentView)
-        globalWindow!.makeKeyAndVisible()
+        globalWindow?.rootViewController = MyUIHostingController(rootView: self.contentView)
+        globalWindow?.makeKeyAndVisible()
     }
     
     func showDisconnectionPage() {

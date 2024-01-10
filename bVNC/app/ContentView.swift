@@ -162,7 +162,12 @@ struct ContentView : View {
                     screenShotFile: screenshotFile,
                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
-                    showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "")
+                    showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "",
+                    externalId: selectedConnection["externalId"] ?? "",
+                    requiresVpn: Bool(selectedConnection["requiresVpn"] ?? "true") ?? false,
+                    vpnUriScheme: selectedConnection["vpnUriScheme"] ?? ""
+                )
+
             } else if stateKeeper.currentPage == "genericProgressPage" {
                 ProgressPage(stateKeeper: stateKeeper)
             } else if stateKeeper.currentPage == "connectionInProgress" {
@@ -195,8 +200,34 @@ struct ConnectionsList : View {
         if self.stateKeeper.currentPage != "connectionInProgress" {
             self.stateKeeper.currentPage = "connectionInProgress"
             let connection = self.elementAt(index: index)
-            self.stateKeeper.connectSaved(connection: connection)
+            if (connection["requiresVpn"] == "true") {
+                self.launchVpnUrl(connection: connection)
+            } else {
+                self.stateKeeper.connectSaved(connection: connection)
+            }
         }
+    }
+    
+    func launchVpnUrl(connection: [String: String]) {
+        let scheme = connection["vpnUriScheme"]!
+        let host = connection["address"]!
+        let port = connection["port"]!
+        let externalId = connection["externalId"]!
+
+        var tunneledProtocol = "VNC"
+        if Utils.isRdp() {
+            tunneledProtocol = "VNC"
+        } else if Utils.isSpice() {
+            tunneledProtocol = "SPICE"
+        }
+
+        guard let url = URL(
+            string: "\(scheme)://\(host):\(port)/tunnel?tunnelAction=start&remotePort=\(port)&tunneledProtocol=\(tunneledProtocol)&externalId=\(externalId)"
+        ) else {
+          return
+        }
+
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     func edit(index: Int) {
@@ -393,7 +424,11 @@ struct AddOrEditConnectionPage : View {
     @State var allowZooming: Bool
     @State var allowPanning: Bool
     @State var showSshTunnelSettings: Bool
-    
+
+    @State var externalId: String
+    @State var requiresVpn: Bool
+    @State var vpnUriScheme: String
+
     func retrieveConnectionDetails() -> [String : String] {
         var connection = [
             "connectionName": self.connectionNameText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -416,7 +451,10 @@ struct AddOrEditConnectionPage : View {
             "screenShotFile": self.screenShotFile.trimmingCharacters(in: .whitespacesAndNewlines),
             "allowZooming": String(self.allowZooming),
             "allowPanning": String(self.allowPanning),
-            "showSshTunnelSettings": String(self.showSshTunnelSettings)
+            "showSshTunnelSettings": String(self.showSshTunnelSettings),
+            "externalId": self.externalId.trimmingCharacters(in: .whitespacesAndNewlines),
+            "requiresVpn": String(self.requiresVpn),
+            "vpnUriScheme": self.vpnUriScheme.trimmingCharacters(in: .whitespacesAndNewlines),
         ]
         if Utils.isSpice() {
             connection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -1044,7 +1082,10 @@ struct ContentViewA_Previews : PreviewProvider {
             screenShotFile: "",
             allowZooming: true,
             allowPanning: true,
-            showSshTunnelSettings: false
+            showSshTunnelSettings: false,
+            externalId: "",
+            requiresVpn: false,
+            vpnUriScheme: ""
         )
     }
 }
