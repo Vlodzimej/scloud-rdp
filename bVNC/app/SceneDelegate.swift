@@ -58,7 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             globalWindow = UIWindow(windowScene: windowScene)
-            appDelegate.stateKeeper.recreateContentView()
+            appDelegate.stateKeeper.recreateMainPage()
         }
         
         log_callback_str(message: "\(#function): \(connectionOptions.urlContexts)")

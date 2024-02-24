@@ -157,7 +157,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     ]
     
     var keyboardLayouts: [String] = []
-    var contentView: ContentView?
+    var mainPage: MainPage?
     var physicalKeyboardHandler: PhysicalKeyboardHandler?
     var clipboardMonitor: ClipboardMonitor?
     var requestingCredentials: Bool = false
@@ -535,11 +535,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.showConnections()
     }
     
-    func recreateContentView() {
-        self.contentView = ContentView(stateKeeper: self,
+    func recreateMainPage() {
+        self.mainPage = MainPage(stateKeeper: self,
                                       searchConnectionText: self.connections.getSearchConnectionText(),
                                       filteredConnections: self.connections.filteredConnections)
-        globalWindow?.rootViewController = MyUIHostingController(rootView: self.contentView)
+        globalWindow?.rootViewController = MyUIHostingController(rootView: self.mainPage)
         globalWindow?.makeKeyAndVisible()
     }
     
@@ -548,7 +548,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.localizedTitle = ""
             self.message = ""
             self.currentPage = "disconnectionInProgress"
-            self.recreateContentView()
+            self.recreateMainPage()
         }
     }
     
@@ -556,7 +556,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         UserInterface {
             self.connections.loadConnections()
             self.currentPage = "connectionsList"
-            self.recreateContentView()
+            self.recreateMainPage()
         }
     }
     
