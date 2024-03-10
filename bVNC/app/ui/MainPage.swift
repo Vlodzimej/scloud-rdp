@@ -77,7 +77,7 @@ struct MainPage : View {
                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "",
                     externalId: selectedConnection["externalId"] ?? "",
-                    requiresVpn: Bool(selectedConnection["requiresVpn"] ?? "true") ?? false,
+                    requiresVpn: Bool(selectedConnection["requiresVpn"] ?? "false") ?? false,
                     vpnUriScheme: selectedConnection["vpnUriScheme"] ?? ""
                 )
 
