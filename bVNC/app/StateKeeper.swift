@@ -164,8 +164,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var requestingSshCredentials: Bool = false
 
     @objc func reDraw() {
-        UserInterface {
-            self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
+        if (self.isDrawing) {
+            UserInterface {
+                self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
+            }
         }
     }
     
@@ -528,7 +530,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func saveSettings() {
         log_callback_str(message: "Saving settings")
-        connections.saveConnections()
+        connections.saveConnections(connection: connections.selectedConnection)
     }
     
     @objc func showConnectionsSelector(sender: Timer) {

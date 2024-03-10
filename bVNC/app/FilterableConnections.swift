@@ -25,6 +25,7 @@ class FilterableConnections : ObservableObject {
     var stateKeeper: StateKeeper?
     var settings = UserDefaults.standard
     private var searchConnectionText = ""
+    var connectionsVersion = -1
     var selectedFilteredConnectionIndex = -1
     var selectedUnfilteredConnectionIndex = -1
     var defaultSettings: Dictionary<String, String> = [:]
@@ -34,18 +35,134 @@ class FilterableConnections : ObservableObject {
     
     init(stateKeeper: StateKeeper?) {
         self.stateKeeper = stateKeeper
+        let version = self.settings.integer(forKey: Constants.SAVED_CONNECTIONS_VERSION_KEY)
+        self.connectionsVersion = version == 0 ? Constants.DEFAULT_CONNECTIONS_VERSION : version
         self.allConnections = []
         self.filteredConnections = self.allConnections
         self.loadConnections()
     }
     
+    fileprivate func migrateConnections(_ connections: [[String : String]]) {
+        while connectionsVersion < Constants.CURRENT_CONNECTIONS_VERSION {
+            log_callback_str(message: "Migrating connections from version \(connectionsVersion) to version \(Constants.CURRENT_CONNECTIONS_VERSION)")
+            deselectConnection()
+            if connectionsVersion == 1 {
+                moveCredentialsToSecureStorage(connections)
+            }
+            connectionsVersion += 1
+            self.settings.set(connectionsVersion, forKey: Constants.SAVED_CONNECTIONS_VERSION_KEY)
+        }
+    }
+    
+    fileprivate func moveCredentialsToSecureStorage(_ connections: [[String : String]]) {
+        connections.forEach { connection in
+            saveConnection(connection: connection)
+        }
+    }
+    
+    fileprivate func loadCredentials(_ connections: [[String : String]]) {
+        connections.forEach { connection in
+            let connectionWithCredentials = loadCredentialsFromSecureStorage(
+                connection: connection,
+                usernameField: "username",
+                passwordField: "password",
+                domainField: "domain",
+                addressField: "address",
+                portField: "port"
+            )
+            let connectionWithSshPassword = loadCredentialsFromSecureStorage(
+                connection: connectionWithCredentials,
+                usernameField: "sshUser",
+                passwordField: "sshPass",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
+            let connectionWithSshPassphrase = loadCredentialsFromSecureStorage(
+                connection: connectionWithSshPassword,
+                usernameField: "sshUser",
+                passwordField: "sshPassphrase",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
+            let connectionWithSshKey = loadCredentialsFromSecureStorage(
+                connection: connectionWithSshPassphrase,
+                usernameField: "sshUser",
+                passwordField: "sshPrivateKey",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
+            allConnections.append(connectionWithSshKey)
+        }
+    }
+    
     func loadConnections() {
         self.defaultSettings = self.settings.object(
             forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY) as? Dictionary<String, String> ?? [:]
-        self.allConnections = self.settings.array(
+        let connections = self.settings.array(
             forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
+        self.allConnections = []
+        migrateConnections(connections)
+        loadCredentials(connections)
         self.filteredConnections = self.allConnections
         self.filterConnections()
+    }
+    
+    fileprivate func getServer(_ address: String?, _ defaultAddress: String) -> String {
+        return address ?? defaultAddress
+    }
+    
+    fileprivate func getPort(_ port: String?, _ defaultPort: String) -> String {
+        return port ?? defaultPort
+    }
+    
+    fileprivate func getLoadQuery(
+        _ account: (String),
+        _ server: String,
+        _ port: String,
+        _ uniqueField: String,
+        _ passwordField: String,
+        _ domain: String
+    ) -> [String : Any] {
+        return [kSecClass as String: kSecClassInternetPassword,
+                kSecAttrServer as String: server,
+                kSecAttrPort as String: port,
+                kSecAttrAccount as String: account,
+                kSecAttrSecurityDomain as String: domain,
+                kSecMatchLimit as String: kSecMatchLimitOne,
+                kSecReturnAttributes as String: true,
+                kSecReturnData as String: true]
+    }
+    
+    private func loadCredentialsFromSecureStorage(
+        connection: Dictionary<String, String>,
+        usernameField: String,
+        passwordField: String,
+        domainField: String?,
+        addressField: String,
+        portField: String
+    ) -> Dictionary<String, String> {
+        var copyOfConnection = connection
+        let username = (connection[usernameField] ?? "")
+        let domain = domainField != nil ? (connection[domainField!] ?? "") : ""
+        let server = getServer(connection[addressField], Utils.getDefaultAddress())
+        let port = getPort(connection[portField], Utils.getDefaultPort())
+        let uniqueField = connection["screenShotFile"] ?? ""
+        let account = username + "@" + server + "/" + passwordField + "/" + uniqueField
+        let query: [String: Any] = getLoadQuery(account, server, port, uniqueField, passwordField, domain)
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        guard status == errSecSuccess && status != errSecItemNotFound else {
+            log_callback_str(message: "\(#function) Could not load \(account) credentials due to: \(SecCopyErrorMessageString(status, nil)!)")
+            return connection
+        }
+        let passwordData = item![kSecValueData as String] as? Data
+        let password = String(data: passwordData!, encoding: String.Encoding.utf8)
+        copyOfConnection[passwordField] = password
+        log_callback_str(message: "\(#function) Success loading \(account) credentials from secure storage")
+        return copyOfConnection
     }
     
     func connectionCount() -> Int {
@@ -142,20 +259,108 @@ class FilterableConnections : ObservableObject {
         self.filterConnections()
     }
     
-    func saveConnections() {
+    func saveConnections(connection: Dictionary<String, String>) {
         log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
-        var copyOfSelectedConnection = selectedConnection
-        if (copyOfSelectedConnection["saveSshCredentials"] == "false") {
-            copyOfSelectedConnection["sshPass"] = ""
+        var copyOfConnection = connection
+        if copyOfConnection["saveCredentials"] == "true" &&
+            copyOfConnection["password"] != "" {
+            saveCredentialsToSecureStorage(
+                connection: connection,
+                usernameField: "username",
+                passwordField: "password",
+                domainField: "domain",
+                addressField: "address",
+                portField: "port"
+            )
         }
-        if (copyOfSelectedConnection["saveCredentials"] == "false") {
-            copyOfSelectedConnection["password"] = ""
+        if copyOfConnection["saveSshCredentials"] == "true" &&
+            copyOfConnection["sshPass"] != "" {
+            saveCredentialsToSecureStorage(
+                connection: connection,
+                usernameField: "sshUser",
+                passwordField: "sshPass",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
         }
+        if copyOfConnection["sshPassphrase"] != "" {
+            saveCredentialsToSecureStorage(
+                connection: connection,
+                usernameField: "sshUser",
+                passwordField: "sshPassphrase",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
+        }
+        if copyOfConnection["sshPrivateKey"] != "" {
+            saveCredentialsToSecureStorage(
+                connection: connection,
+                usernameField: "sshUser",
+                passwordField: "sshPrivateKey",
+                domainField: nil,
+                addressField: "sshAddress",
+                portField: "sshPort"
+            )
+        }
+        copyOfConnection["password"] = ""
+        copyOfConnection["sshPass"] = ""
+        copyOfConnection["sshPassphrase"] = ""
+        copyOfConnection["sshPrivateKey"] = ""
         if selectedUnfilteredConnectionIndex >= 0 {
-            self.allConnections[selectedUnfilteredConnectionIndex] = copyOfSelectedConnection
+            self.allConnections[selectedUnfilteredConnectionIndex] = copyOfConnection
         }
         self.settings.set(self.allConnections, forKey: Constants.SAVED_CONNECTIONS_KEY)
         self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
+    }
+    
+    fileprivate func getSaveQuery(
+        _ account: (String),
+        _ server: String,
+        _ port: String,
+        _ uniqueField: String,
+        _ passwordField: String,
+        _ password: Data,
+        _ domain: (String)
+    ) -> [String : Any] {
+        let query = [
+            kSecClass as String: kSecClassInternetPassword,
+            kSecAttrAccount as String: account,
+            kSecAttrServer as String: server,
+            kSecAttrPort as String: port,
+            kSecValueData as String: password,
+            kSecAttrSecurityDomain as String: domain
+        ] as [String : Any]
+        return query
+    }
+    
+    private func saveCredentialsToSecureStorage(
+        connection: Dictionary<String, String>,
+        usernameField: String,
+        passwordField: String,
+        domainField: String?,
+        addressField: String,
+        portField: String
+    ) {
+        let username = (connection[usernameField] ?? "")
+        let domain = domainField != nil ? (connection[domainField!] ?? "") : ""
+        let server = getServer(connection[addressField], Utils.getDefaultAddress())
+        let port = getPort(connection[portField], Utils.getDefaultSshPort())
+        let password = (connection[passwordField] ?? "").data(using: String.Encoding.utf8)!
+        guard let uniqueField = connection["screenShotFile"] else {
+            log_callback_str(message: "\(#function) Not saving credentials for connection with no unique ID")
+            return
+        }
+        let account = username + "@" + server + "/" + passwordField + "/" + uniqueField
+        let query: [String: Any] = getSaveQuery(account, server, port, uniqueField, passwordField, password, domain)
+        SecItemDelete(query as CFDictionary)
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == errSecSuccess else {
+            log_callback_str(message: "\(#function) Error \(SecCopyErrorMessageString(status, nil)!) saving \(account) credentials in secure storage")
+            return
+        }
+        log_callback_str(message: "\(#function) Success saving \(account) credentials in secure storage")
     }
     
     func deselectConnection() {
@@ -183,7 +388,7 @@ class FilterableConnections : ObservableObject {
             log_callback_str(message: "Deleting connection screenshot \(deleteScreenshotResult)")
             self.removeSelected()
             self.deselectConnection()
-            self.saveConnections()
+            self.saveConnections(connection: selectedConnection)
         } else {
             log_callback_str(message: "We were adding a new connection, so not deleting anything")
         }
@@ -203,7 +408,7 @@ class FilterableConnections : ObservableObject {
                              "and navigating to list of connections")
             copyConnectionIntoSelectedConnection(connection: connection)
         }
-        self.saveConnections()
+        self.saveConnections(connection: selectedConnection)
         self.filterConnections()
         self.stateKeeper?.showConnections()
     }
@@ -234,7 +439,7 @@ class FilterableConnections : ObservableObject {
             let fileName = self.selectedConnection["screenShotFile"] ?? "default"
             log_callback_str(message: "\(#function): screenShotFile: \(fileName)")
             try data.write(to: directory.appendingPathComponent(String(fileName))!)
-            self.saveConnections()
+            self.saveConnections(connection: selectedConnection)
             if self.stateKeeper?.isAtConnectionsListPage() ?? true {
                 self.stateKeeper?.showConnections()
             }
@@ -256,7 +461,7 @@ class FilterableConnections : ObservableObject {
     func findFirstByName(connectionName: String) -> [String: String]? {
         return findFirstByField(field: "connectionName", value: connectionName)
     }
-
+    
     func findFirstByExternalIdAddressAndPort(externalId: String, address: String, port: String) -> [String: String]? {
         let existing = self.allConnections.filter(
             { (connection) -> Bool in

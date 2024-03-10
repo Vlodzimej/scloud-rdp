@@ -21,6 +21,9 @@ import Foundation
 
 class Constants {
     class var DEFAULT_SETTINGS_FLAG: Int { return -777 }
+    class var CURRENT_CONNECTIONS_VERSION: Int { return 2 }
+    class var DEFAULT_CONNECTIONS_VERSION: Int { return 1 }
+    class var SAVED_CONNECTIONS_VERSION_KEY: String { return "connections_version" }
     class var SAVED_CONNECTIONS_KEY: String { return "connections" }
     class var SAVED_DEFAULT_SETTINGS_KEY: String { return "defaults" }
     class var DEFAULT_LAYOUT: String { return "English (US)" }

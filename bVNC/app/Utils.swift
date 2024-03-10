@@ -122,5 +122,12 @@ struct Utils {
     static func getDefaultPort() -> String {
         return isRdp() ? "3389" : "5900"
     }
-
+    
+    static func getDefaultSshPort() -> String {
+        return "22"
+    }
+    
+    static func getDefaultAddress() -> String {
+        return "127.0.0.1"
+    }
 }
