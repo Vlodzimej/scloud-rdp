@@ -93,7 +93,7 @@ struct ConnectionsListPage : View {
     }
     
     fileprivate func getThumbnailButtonForConnection(_ i: Int) -> some View {
-        let screenshotFile = self.connections[i]["screenShotFile"] ?? ""
+        let screenshotFile = self.connections[i]["id"] ?? ""
         log_callback_str(message: "\(#function) \(i) connection out of \(self.connections.count): screenshotFile: \(screenshotFile)")
         return Button(action: {
         }) {

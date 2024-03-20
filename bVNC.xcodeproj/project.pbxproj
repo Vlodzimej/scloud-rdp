@@ -55,6 +55,10 @@
 		16E4FC672B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
 		16E4FC682B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
 		16E4FC692B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
+		16F948532BA9045D009B919D /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		16F948542BA9045D009B919D /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		16F948552BA9045D009B919D /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		16F948562BA9045D009B919D /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
 		AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
 		AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
 		AF043A1D23B3DADA00C43ED7 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
@@ -373,6 +377,7 @@
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
+		16F948522BA9045D009B919D /* SecureStorageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageDelegate.swift; sourceTree = "<group>"; };
 		690C707F2693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		690C70802693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		690C708526937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1425,6 +1430,7 @@
 				AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */,
 				1624FE0A29A5D90500FD54CA /* StringExtension.swift */,
 				AFF6D39C260FE8B20077F6D2 /* Utils.swift */,
+				16F948522BA9045D009B919D /* SecureStorageDelegate.swift */,
 			);
 			path = app;
 			sourceTree = "<group>";
@@ -2533,6 +2539,7 @@
 				AF7421F4241D58EB00C552A7 /* SshPortForwarder.c in Sources */,
 				168225402B8A2E5900EF07E3 /* MultilineTextView.swift in Sources */,
 				1624FE0B29A5D90500FD54CA /* StringExtension.swift in Sources */,
+				16F948532BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
 				AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */,
 				AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */,
 				AF51B3002410BAED005DE8AB /* ucs2xkeysym.c in Sources */,
@@ -2591,6 +2598,7 @@
 				AF30D196253396EF00BA7A62 /* SshPortForwarder.c in Sources */,
 				1624FE0C29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AF30D197253396EF00BA7A62 /* CustomTextInput.swift in Sources */,
+				16F948542BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
 				AF30D198253396EF00BA7A62 /* ToggleButton.swift in Sources */,
 				162940672B8A31220086396F /* MultilineTextView.swift in Sources */,
 				AF30D199253396EF00BA7A62 /* ucs2xkeysym.c in Sources */,
@@ -2633,6 +2641,7 @@
 				AFB2C8CF26001F4D00E2859F /* SshPortForwarder.c in Sources */,
 				1624FE0D29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFB2C8D126001F4D00E2859F /* CustomTextInput.swift in Sources */,
+				16F948552BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
 				AFB2C8D226001F4D00E2859F /* ToggleButton.swift in Sources */,
 				162940682B8A31220086396F /* MultilineTextView.swift in Sources */,
 				AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */,
@@ -2675,6 +2684,7 @@
 				AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */,
 				1624FE0E29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */,
+				16F948562BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
 				AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */,
 				162940692B8A31230086396F /* MultilineTextView.swift in Sources */,
 				AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */,

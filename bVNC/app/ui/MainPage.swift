@@ -31,12 +31,12 @@ struct MainPage : View {
         self.filteredConnections = filteredConnections
     }
     
-    fileprivate func getScreenShotFile(connection: [String : String]) -> String {
-        var screenShotFile: String? = connection["screenShotFile"]
-        if screenShotFile == stateKeeper.connections.defaultSettings["screenShotFile"] {
-            screenShotFile = nil
+    fileprivate func getId(connection: [String : String]) -> String {
+        var id: String? = connection["id"]
+        if id == stateKeeper.connections.defaultSettings["id"] {
+            id = nil
         }
-        return screenShotFile ?? UUID().uuidString
+        return id ?? UUID().uuidString
     }
     
     var body: some View {
@@ -47,7 +47,7 @@ struct MainPage : View {
                     stateKeeper: stateKeeper, searchConnectionText: searchConnectionText, connections: filteredConnections
                 )
             } else if stateKeeper.currentPage == "addOrEditConnection" {
-                let screenshotFile = getScreenShotFile(connection: selectedConnection)
+                let id = getId(connection: selectedConnection)
                 AddOrEditConnectionPage(
                     stateKeeper: stateKeeper,
                     connectionNameText: selectedConnection["connectionName"] ?? "",
@@ -72,7 +72,7 @@ struct MainPage : View {
                     usernameText: selectedConnection["username"] ?? "",
                     passwordText: selectedConnection["password"] ?? "",
                     saveCredentials: Bool(selectedConnection["saveCredentials"] ?? "true") ?? true,
-                    screenShotFile: screenshotFile,
+                    id: id,
                     allowZooming: Bool(selectedConnection["allowZooming"] ?? "true") ?? true,
                     allowPanning: Bool(selectedConnection["allowPanning"] ?? "true") ?? true,
                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "",
@@ -129,7 +129,7 @@ struct MainPageA_Previews : PreviewProvider {
             usernameText: "",
             passwordText: "",
             saveCredentials: true,
-            screenShotFile: "",
+            id: "",
             allowZooming: true,
             allowPanning: true,
             showSshTunnelSettings: false,

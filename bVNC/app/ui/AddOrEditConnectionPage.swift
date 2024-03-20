@@ -33,7 +33,7 @@ struct AddOrEditConnectionPage : View {
     @State var usernameText: String
     @State var passwordText: String
     @State var saveCredentials: Bool
-    @State var screenShotFile: String
+    @State var id: String
     @State var textHeight: CGFloat = 20
     @State var allowZooming: Bool
     @State var allowPanning: Bool
@@ -62,7 +62,7 @@ struct AddOrEditConnectionPage : View {
             "username": self.usernameText.trimmingCharacters(in: .whitespacesAndNewlines),
             "password": self.passwordText.trimmingCharacters(in: .whitespacesAndNewlines),
             "saveCredentials": String(self.saveCredentials),
-            "screenShotFile": self.screenShotFile.trimmingCharacters(in: .whitespacesAndNewlines),
+            "id": self.id.trimmingCharacters(in: .whitespacesAndNewlines),
             "allowZooming": String(self.allowZooming),
             "allowPanning": String(self.allowPanning),
             "showSshTunnelSettings": String(self.showSshTunnelSettings),

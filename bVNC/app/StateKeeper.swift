@@ -285,7 +285,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.connectedWithConsoleFileOrUri = true
         var connection: [String: String] = self.connections.defaultSettings
         connection["consoleFile"] = consoleFile
-        connection["screenShotFile"] = ""
+        connection["id"] = ""
         self.connect(connection: connection)
     }
 
@@ -985,9 +985,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.data = data
                 if self.isDrawing {
                     self.imageView?.image = UIImage.imageFromARGB32Bitmap(
-                            pixels: data,
-                            withWidth: Int(fbW),
-                            withHeight: Int(fbH)
+                        pixels: data,
+                        withWidth: Int(fbW),
+                        withHeight: Int(fbH)
                     )
                 }
             }
