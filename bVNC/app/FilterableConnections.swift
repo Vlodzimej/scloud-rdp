@@ -213,6 +213,10 @@ class FilterableConnections : ObservableObject {
         self.filterConnections()
     }
     
+    func saveSelectedConnection() {
+        overwriteOneConnectionAndSaveConnections(connection: selectedConnection)
+    }
+    
     func overwriteOneConnectionAndSaveConnections(connection: Dictionary<String, String>) {
         log_callback_str(message: "\(#function): selectedConnectionId: \(selectedConnectionId)")
         _ = SecureStorageDelegate.saveCredentialsForConnection(connection: connection)

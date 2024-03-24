@@ -527,6 +527,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.currentPage = "addOrEditConnection"
         }
     }
+
+    func setFieldOfCurrentConnection(field: String, value: String) {
+        log_callback_str(message: "Setting field \(field) of current connection to value \(value)")
+        connections.selectedConnection[field] = value
+        connections.saveSelectedConnection()
+    }
     
     func saveSettings() {
         log_callback_str(message: "Saving settings")

@@ -221,12 +221,10 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
         title: titleStr, messages: messages, nonLocalizedMessage: additionalMessageStr) ?? 0
     
     if res == 1 && fingerprintType == "SSH" {
-        globalStateKeeper?.connections.selectedConnection["sshFingerprintSha256"] = fingerPrint1Str
-        globalStateKeeper?.saveSettings()
+        globalStateKeeper?.setFieldOfCurrentConnection(field: "sshFingerprintSha256", value: fingerPrint1Str)
     } else if res == 1 && fingerprintType == "X509" {
-        globalStateKeeper?.connections.selectedConnection["x509FingerprintSha256"] = fingerPrint1Str
-        globalStateKeeper?.connections.selectedConnection["x509FingerprintSha512"] = fingerPrint2Str
-        globalStateKeeper?.saveSettings()
+        globalStateKeeper?.setFieldOfCurrentConnection(field: "x509FingerprintSha256", value: fingerPrint1Str)
+        globalStateKeeper?.setFieldOfCurrentConnection(field: "x509FingerprintSha512", value: fingerPrint2Str)
     }
     return res
 }
