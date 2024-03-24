@@ -21,7 +21,7 @@ import Foundation
 import StoreKit
 
 struct Utils {
-    static let bundleID = Bundle.main.bundleIdentifier
+    static let bundleID = Bundle.main.bundleIdentifier ?? Constants.DEFAULT_BUNDLE_ID
 
     static func getFileContents(path: String) -> String {
         let url = URL(string: "file://" + path)!
@@ -108,15 +108,15 @@ struct Utils {
     }
     
     static func isSpice() -> Bool {
-        return self.bundleID?.lowercased().contains("spice") ?? false
+        return self.bundleID.lowercased().contains("spice")
     }
 
     static func isVnc() -> Bool {
-        return self.bundleID?.lowercased().contains("vnc") ?? false
+        return self.bundleID.lowercased().contains("vnc")
     }
 
     static func isRdp() -> Bool {
-        return self.bundleID?.lowercased().contains("rdp") ?? false
+        return self.bundleID.lowercased().contains("rdp")
     }
     
     static func getDefaultPort() -> String {

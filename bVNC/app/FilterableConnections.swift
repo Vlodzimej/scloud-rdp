@@ -26,6 +26,7 @@ class FilterableConnections : ObservableObject {
     var settings = UserDefaults.standard
     private var searchConnectionText = ""
     var connectionsVersion = -1
+    var selectedConnectionId = Constants.UNSELECTED_SETTINGS_ID
     var selectedFilteredConnectionIndex = -1
     var selectedUnfilteredConnectionIndex = -1
     var defaultSettings: Dictionary<String, String> = [:]
@@ -42,43 +43,72 @@ class FilterableConnections : ObservableObject {
         self.loadConnections()
     }
     
-    fileprivate func migrateConnections(_ connections: [[String : String]]) {
+    fileprivate func migrateConnections(_ connections: [[String : String]]) -> [[String : String]]  {
+        var newConnections = connections
         while connectionsVersion < Constants.CURRENT_CONNECTIONS_VERSION {
             log_callback_str(message: "Migrating connections from version \(connectionsVersion) to version \(Constants.CURRENT_CONNECTIONS_VERSION)")
             deselectConnection()
-            if connectionsVersion == 1 {
-                moveCredentialsToSecureStorage(connections)
+            if connectionsVersion <= 1 {
+                newConnections = migrateIdAndMoveCredentialsToSecureStorage(connections)
+                connectionsVersion = 2
             }
-            connectionsVersion += 1
+            self.allConnections = newConnections
+            self.saveConnections()
             self.settings.set(connectionsVersion, forKey: Constants.SAVED_CONNECTIONS_VERSION_KEY)
         }
+        return newConnections
     }
     
-    fileprivate func moveCredentialsToSecureStorage(_ connections: [[String : String]]) {
+    fileprivate func migrateIdAndMoveCredentialsToSecureStorage(
+        _ connections: [[String : String]]
+    ) -> [[String : String]] {
+        var newConnections: [[String : String]] = []
         connections.forEach { connection in
-            var copyOfConnection = connection
-            copyOfConnection["id"] = connection["screenShotFile"]
-            saveConnection(connection: connection)
+            let id = connection["screenShotFile"]
+            log_callback_str(message: "\(#function) connection id \(id ?? "")")
+            var copyOfConnectionCopyForSavingCredentialsPurposes = connection
+            var copyOfConnectionMigratedWithCredentialsRetained = connection
+            copyOfConnectionCopyForSavingCredentialsPurposes["id"] = id
+            copyOfConnectionMigratedWithCredentialsRetained["id"] = id
+            _ = SecureStorageDelegate.saveCredentialsForConnection(
+                connection: copyOfConnectionCopyForSavingCredentialsPurposes
+            )
+            newConnections.append(copyOfConnectionMigratedWithCredentialsRetained)
         }
+        return newConnections
     }
     
-    fileprivate func loadCredentials(_ connections: [[String : String]]) {
-        connections.forEach { connection in
+    fileprivate func loadCredentialsForAllConnections(_ connections: [[String : String]]) -> [[String : String]] {
+        log_callback_str(message: #function)
+        var newConnections: [[String : String]] = []
+        for connection in connections {
             let connectionWithCredentials = SecureStorageDelegate.loadCredentialsForConnection(
                 connection: connection
             )
-            allConnections.append(connectionWithCredentials)
+            newConnections.append(connectionWithCredentials)
         }
+        return newConnections
+    }
+    
+    fileprivate func saveCredentials(_ connections: [[String : String]]) -> [[String : String]] {
+        var newConnections: [[String : String]] = []
+        connections.forEach { connection in
+            let newConnection = connection
+            let connectionWithoutCredentials = SecureStorageDelegate.saveCredentialsForConnection(
+                connection: newConnection
+            )
+            newConnections.append(connectionWithoutCredentials)
+        }
+        return newConnections
     }
     
     func loadConnections() {
         self.defaultSettings = self.settings.object(
             forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY) as? Dictionary<String, String> ?? [:]
-        let connections = self.settings.array(
+        self.allConnections = self.settings.array(
             forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
-        self.allConnections = []
-        migrateConnections(connections)
-        loadCredentials(connections)
+        self.allConnections = migrateConnections(self.allConnections)
+        self.allConnections = loadCredentialsForAllConnections(self.allConnections)
         self.filteredConnections = self.allConnections
         self.filterConnections()
     }
@@ -151,15 +181,21 @@ class FilterableConnections : ObservableObject {
     
     func editDefaultSettings() -> Void {
         log_callback_str(message: #function)
+        selectedConnectionId = Constants.DEFAULT_SETTINGS_ID
         selectedFilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
         selectedUnfilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
         self.selectedConnection = defaultSettings
         self.editedConnection = defaultSettings
     }
     
+    fileprivate func getConnectionId(_ connection: [String : String]) -> String {
+        return connection["id"] ?? Constants.UNSELECTED_SETTINGS_ID
+    }
+    
     func select(connection: Dictionary<String, String>) -> Void {
         log_callback_str(message: #function)
         self.selectedConnection = connection
+        self.selectedConnectionId = getConnectionId(connection)
         self.selectedFilteredConnectionIndex = filteredConnections.firstIndex(of: connection) ?? -1
         self.selectedUnfilteredConnectionIndex = allConnections.firstIndex(of: connection) ?? -1
         log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
@@ -177,40 +213,51 @@ class FilterableConnections : ObservableObject {
         self.filterConnections()
     }
     
-    func saveConnections(connection: Dictionary<String, String>) {
+    func overwriteOneConnectionAndSaveConnections(
+        connection: Dictionary<String, String>
+    ) {
         log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
-        let copyOfConnection = SecureStorageDelegate.saveCredentialsForConnection(
-            connection: connection
-        )
+        _ = SecureStorageDelegate.saveCredentialsForConnection(connection: connection)
+        
+        log_callback_str(message: "\(#function): after saving credentials, original connection: \(connection)")
+
         if selectedUnfilteredConnectionIndex >= 0 {
-            self.allConnections[selectedUnfilteredConnectionIndex] = copyOfConnection
+            self.allConnections[selectedUnfilteredConnectionIndex] = connection
         }
-        self.settings.set(self.allConnections, forKey: Constants.SAVED_CONNECTIONS_KEY)
+        if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID {
+            self.replaceConnectionById(
+                id: selectedConnectionId, connection: connection, connections: self.allConnections
+            )
+        }
+        saveConnections()
+        saveDefaultSettings()
+    }
+    
+    func saveConnections() {
+        log_callback_str(message: "\(#function)")
+        let connections = saveCredentials(self.allConnections)
+        self.settings.set(connections, forKey: Constants.SAVED_CONNECTIONS_KEY)
+    }
+    
+    func saveDefaultSettings() {
+        log_callback_str(message: "\(#function)")
         self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
     }
     
-    fileprivate func getSaveQuery(
-        _ account: (String),
-        _ server: String,
-        _ port: String,
-        _ uniqueField: String,
-        _ passwordField: String,
-        _ password: Data,
-        _ domain: (String)
-    ) -> [String : Any] {
-        let query = [
-            kSecClass as String: kSecClassInternetPassword,
-            kSecAttrAccount as String: account,
-            kSecAttrServer as String: server,
-            kSecAttrPort as String: port,
-            kSecValueData as String: password,
-            kSecAttrSecurityDomain as String: domain
-        ] as [String : Any]
-        return query
+    fileprivate func replaceConnectionById(
+        id: String,
+        connection: Dictionary<String, String>,
+        connections: [Dictionary<String, String>]
+    ) {
+        let indexFound = connections.firstIndex(where: { $0["id"] == id }) ?? -1
+        if indexFound >= 0 {
+            self.allConnections[indexFound] = connection
+        }
     }
     
     func deselectConnection() {
         log_callback_str(message: "\(#function)")
+        self.selectedConnectionId = Constants.UNSELECTED_SETTINGS_ID
         self.selectedFilteredConnectionIndex = -1
         self.selectedUnfilteredConnectionIndex = -1
         self.selectedConnection = [:]
@@ -229,34 +276,35 @@ class FilterableConnections : ObservableObject {
         // Do something only if we were not adding a new connection.
         if selectedFilteredConnectionIndex >= 0 {
             log_callback_str(message: "Deleting connection with index \(selectedFilteredConnectionIndex)")
-            let screenShotFile = self.get(at: selectedFilteredConnectionIndex)["id"]
+            let connection = self.get(at: selectedFilteredConnectionIndex)
+            let screenShotFile = connection["id"]
             let deleteScreenshotResult = Utils.deleteFile(name: screenShotFile)
-            // TODO: Delete any saved credentials
-            log_callback_str(message: "Deleting connection screenshot \(deleteScreenshotResult)")
+            log_callback_str(message: "Deleting connection screenshot result: \(deleteScreenshotResult)")
+            SecureStorageDelegate.deleteCredentialsForConnection(connection: connection)
             self.removeSelected()
             self.deselectConnection()
-            self.saveConnections(connection: selectedConnection)
+            self.saveConnections()
         } else {
             log_callback_str(message: "We were adding a new connection, so not deleting anything")
         }
         self.stateKeeper?.showConnections()
     }
     
-    func saveConnection(connection: Dictionary<String, String>) {
+    func overwriteOneConnectionAndNavigate(connection: Dictionary<String, String>) {
         // Negative index indicates we are adding a connection, otherwise we are editing one.
         if (selectedFilteredConnectionIndex == Constants.DEFAULT_SETTINGS_FLAG) {
-            log_callback_str(message: "Saving default settings")
+            log_callback_str(message: "\(#function) Saving default settings")
             self.defaultSettings = connection
         } else if (selectedFilteredConnectionIndex < 0) {
-            log_callback_str(message: "Saving a new connection and navigating to list of connections")
+            log_callback_str(message: "\(#function) Saving a new connection")
             self.allConnections.append(connection)
         } else {
-            log_callback_str(message: "Saving a connection at index \(self.selectedFilteredConnectionIndex) " +
-                             "and navigating to list of connections")
+            log_callback_str(message: "\(#function) Saving connection at index \(self.selectedFilteredConnectionIndex)")
             copyConnectionIntoSelectedConnection(connection: connection)
         }
-        self.saveConnections(connection: selectedConnection)
+        self.overwriteOneConnectionAndSaveConnections(connection: connection)
         self.filterConnections()
+        log_callback_str(message: "\(#function) Navigating to list of connections")
         self.stateKeeper?.showConnections()
     }
     
@@ -283,10 +331,10 @@ class FilterableConnections : ObservableObject {
             return false
         }
         do {
-            let fileName = self.selectedConnection["id"] ?? "default"
+            let fileName = self.selectedConnection["id"] ?? Constants.DEFAULT_SETTINGS_ID
             log_callback_str(message: "\(#function): screenShotFile: \(fileName)")
             try data.write(to: directory.appendingPathComponent(String(fileName))!)
-            self.saveConnections(connection: selectedConnection)
+            self.saveConnections()
             if self.stateKeeper?.isAtConnectionsListPage() ?? true {
                 self.stateKeeper?.showConnections()
             }

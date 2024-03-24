@@ -22,61 +22,32 @@ import Foundation
 class SecureStorageDelegate {
     
     static func loadCredentialsForConnection(connection: [String : String]) -> [String : String] {
-        let connectionWithCredentials = loadCredentialsFromSecureStorage(
-            connection: connection,
-            usernameField: "username",
-            passwordField: "password",
-            domainField: "domain",
-            addressField: "address",
-            portField: "port"
-        )
-        let connectionWithSshPassword = loadCredentialsFromSecureStorage(
-            connection: connectionWithCredentials,
-            usernameField: "sshUser",
-            passwordField: "sshPass",
-            domainField: nil,
-            addressField: "sshAddress",
-            portField: "sshPort"
-        )
-        let connectionWithSshPassphrase = loadCredentialsFromSecureStorage(
-            connection: connectionWithSshPassword,
-            usernameField: "sshUser",
-            passwordField: "sshPassphrase",
-            domainField: nil,
-            addressField: "sshAddress",
-            portField: "sshPort"
-        )
-        let connectionWithSshKey = loadCredentialsFromSecureStorage(
-            connection: connectionWithSshPassphrase,
-            usernameField: "sshUser",
-            passwordField: "sshPrivateKey",
-            domainField: nil,
-            addressField: "sshAddress",
-            portField: "sshPort"
-        )
-        return connectionWithSshKey
+        var newConnection = loadCredentialsFromSecureStorage(connection: connection, passwordField: "password")
+        newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPass")
+        newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPassphrase")
+        newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPrivateKey")
+        return newConnection
     }
     
     static func saveCredentialsForConnection(connection: [String: String]) -> [String: String] {
         var copyOfConnection = connection
         if copyOfConnection["saveCredentials"] == "true" {
-            saveCredentialsToSecureStorage(
+            saveCredentials(
                 connection: connection,
                 usernameField: "username",
                 passwordField: "password",
-                domainField: "domain",
                 addressField: "address",
                 portField: "port"
             )
         }
         copyOfConnection["password"] = ""
         
-        if copyOfConnection["saveSshCredentials"] == "true" {
-            saveCredentialsToSecureStorage(
+        let sshServerNotEmpty = copyOfConnection["sshAddress"] != ""
+        if copyOfConnection["saveSshCredentials"] == "true" && sshServerNotEmpty {
+            saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
                 passwordField: "sshPass",
-                domainField: nil,
                 addressField: "sshAddress",
                 portField: "sshPort"
             )
@@ -84,11 +55,10 @@ class SecureStorageDelegate {
         copyOfConnection["sshPass"] = ""
         
         if copyOfConnection["sshPassphrase"] != "" {
-            saveCredentialsToSecureStorage(
+            saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
                 passwordField: "sshPassphrase",
-                domainField: nil,
                 addressField: "sshAddress",
                 portField: "sshPort"
             )
@@ -96,29 +66,48 @@ class SecureStorageDelegate {
         copyOfConnection["sshPassphrase"] = ""
         
         if copyOfConnection["sshPrivateKey"] != "" {
-            saveCredentialsToSecureStorage(
+            saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
                 passwordField: "sshPrivateKey",
-                domainField: nil,
                 addressField: "sshAddress",
                 portField: "sshPort"
             )
         }
         copyOfConnection["sshPrivateKey"] = ""
-        return connection
+        return copyOfConnection
     }
     
-    static private func saveCredentialsToSecureStorage(
+    static func deleteCredentialsForConnection(connection: [String: String]) {
+        deleteCredentials(connection: connection, passwordField: "password")
+        deleteCredentials(connection: connection, passwordField: "sshPass")
+        deleteCredentials(connection: connection, passwordField: "sshPassphrase")
+        deleteCredentials(connection: connection, passwordField: "sshPrivateKey")
+    }
+    
+    static private func deleteCredentials(connection: Dictionary<String, String>, passwordField: String) {
+        guard let uniqueField = connection["id"] else {
+            log_callback_str(message: "\(#function) Not saving credentials for connection with no unique ID")
+            return
+        }
+        let account = getAccount(passwordField, uniqueField)
+        let query: [String: Any] = getBaseQuery(account)
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess else {
+            log_callback_str(message: "\(#function) Error \(SecCopyErrorMessageString(status, nil)!) deleting \(account) credentials from secure storage")
+            return
+        }
+        log_callback_str(message: "\(#function) Success deleting \(account) credentials from secure storage")
+    }
+    
+    static private func saveCredentials(
         connection: Dictionary<String, String>,
         usernameField: String,
         passwordField: String,
-        domainField: String?,
         addressField: String,
         portField: String
     ) {
         let username = (connection[usernameField] ?? "")
-        let domain = domainField != nil ? (connection[domainField!] ?? "") : ""
         let server = getServer(connection[addressField], Utils.getDefaultAddress())
         let port = getPort(connection[portField], Utils.getDefaultSshPort())
         let password = (connection[passwordField] ?? "").data(using: String.Encoding.utf8)!
@@ -126,9 +115,9 @@ class SecureStorageDelegate {
             log_callback_str(message: "\(#function) Not saving credentials for connection with no unique ID")
             return
         }
-        let account = username + "@" + server + "/" + passwordField + "/" + uniqueField
-        let query: [String: Any] = getSaveQuery(account, server, port, uniqueField, passwordField, password, domain)
-        SecItemDelete(query as CFDictionary)
+        let account = getAccount(passwordField, uniqueField)
+        let query: [String: Any] = getSaveQuery(account, username, server, port, password)
+        deleteCredentials(connection: connection, passwordField: passwordField)
         let status = SecItemAdd(query as CFDictionary, nil)
         guard status == errSecSuccess else {
             log_callback_str(message: "\(#function) Error \(SecCopyErrorMessageString(status, nil)!) saving \(account) credentials in secure storage")
@@ -136,27 +125,17 @@ class SecureStorageDelegate {
         }
         log_callback_str(message: "\(#function) Success saving \(account) credentials in secure storage")
     }
-    
-    static private func loadCredentialsFromSecureStorage(
-        connection: Dictionary<String, String>,
-        usernameField: String,
-        passwordField: String,
-        domainField: String?,
-        addressField: String,
-        portField: String
-    ) -> Dictionary<String, String> {
+        
+    static private func loadCredentialsFromSecureStorage(connection: Dictionary<String, String>, passwordField: String) -> Dictionary<String, String> {
         var copyOfConnection = connection
-        let username = (connection[usernameField] ?? "")
-        let domain = domainField != nil ? (connection[domainField!] ?? "") : ""
-        let server = getServer(connection[addressField], Utils.getDefaultAddress())
-        let port = getPort(connection[portField], Utils.getDefaultPort())
         let uniqueField = connection["id"] ?? ""
-        let account = username + "@" + server + "/" + passwordField + "/" + uniqueField
-        let query: [String: Any] = getLoadQuery(account, server, port, uniqueField, passwordField, domain)
+        let account = getAccount(passwordField, uniqueField)
+        let query: [String: Any] = getLoadQuery(account)
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess && status != errSecItemNotFound else {
             log_callback_str(message: "\(#function) Could not load \(account) credentials due to: \(SecCopyErrorMessageString(status, nil)!)")
+            copyOfConnection[passwordField] = ""
             return connection
         }
         let passwordData = item![kSecValueData as String] as? Data
@@ -166,42 +145,29 @@ class SecureStorageDelegate {
         return copyOfConnection
     }
     
-    static private func getSaveQuery(
-        _ account: (String),
-        _ server: String,
-        _ port: String,
-        _ uniqueField: String,
-        _ passwordField: String,
-        _ password: Data,
-        _ domain: (String)
-    ) -> [String : Any] {
+    static private func getBaseQuery(_ account: (String)) -> [String : Any] {
         let query = [
-            kSecClass as String: kSecClassInternetPassword,
+            kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
-            kSecAttrServer as String: server,
-            kSecAttrPort as String: port,
-            kSecValueData as String: password,
-            kSecAttrSecurityDomain as String: domain
         ] as [String : Any]
         return query
     }
     
-    static private func getLoadQuery(
-        _ account: (String),
-        _ server: String,
-        _ port: String,
-        _ uniqueField: String,
-        _ passwordField: String,
-        _ domain: String
+    static private func getSaveQuery(
+        _ account: (String), _ user: String, _ server: String, _ port: String, _ password: Data
     ) -> [String : Any] {
-        return [kSecClass as String: kSecClassInternetPassword,
-                kSecAttrServer as String: server,
-                kSecAttrPort as String: port,
-                kSecAttrAccount as String: account,
-                kSecAttrSecurityDomain as String: domain,
-                kSecMatchLimit as String: kSecMatchLimitOne,
-                kSecReturnAttributes as String: true,
-                kSecReturnData as String: true]
+        var query = getBaseQuery(account)
+        query[kSecValueData as String] = password
+        query[kSecAttrLabel as String] = getLabel(Utils.bundleID, user, server, port)
+        return query
+    }
+    
+    static private func getLoadQuery(_ account: (String)) -> [String : Any] {
+        var query = getBaseQuery(account)
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+        query[kSecReturnAttributes as String] = true
+        query[kSecReturnData as String] = true
+        return query
     }
     
     static private func getServer(_ address: String?, _ defaultAddress: String) -> String {
@@ -211,4 +177,14 @@ class SecureStorageDelegate {
     static private func getPort(_ port: String?, _ defaultPort: String) -> String {
         return port ?? defaultPort
     }
+    
+    fileprivate static func getAccount(_ passwordField: String, _ uniqueField: String) -> String {
+        return passwordField + "/" + uniqueField
+    }
+
+    fileprivate static func getLabel(_ appId: String, _ user: String, _ address: String, _ port: String) -> String {
+        let userAtOrEmpty = user != "" ? user + "@" : ""
+        return appId + ": " + userAtOrEmpty + address + ":" + port
+    }
+
 }

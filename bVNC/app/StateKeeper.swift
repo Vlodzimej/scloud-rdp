@@ -326,7 +326,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: #function)
         // Try to select the connection in order to not create duplicates
         self.connections.select(connection: connection)
-        self.connections.saveConnection(connection: connection)
+        self.connections.overwriteOneConnectionAndNavigate(connection: connection)
         self.selectAndConnect(connection: connection)
     }
     
@@ -530,7 +530,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func saveSettings() {
         log_callback_str(message: "Saving settings")
-        connections.saveConnections(connection: connections.selectedConnection)
+        connections.saveConnections()
     }
     
     @objc func showConnectionsSelector(sender: Timer) {
