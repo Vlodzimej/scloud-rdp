@@ -112,7 +112,9 @@ struct AddOrEditConnectionPage : View {
     }
     
     fileprivate func saveButtonActions() {
-        let selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        var selectedConnection: [String : String] = self.retrieveConnectionDetails()
+        selectedConnection["saveCredentials"] = String(selectedConnection["password"] != "")
+        selectedConnection["saveSshCredentials"] = String(selectedConnection["sshPass"] != "")
         self.stateKeeper.connections.overwriteOneConnectionAndNavigate(connection: selectedConnection)
     }
     

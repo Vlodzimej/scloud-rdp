@@ -31,7 +31,8 @@ class SecureStorageDelegate {
     
     static func saveCredentialsForConnection(connection: [String: String]) -> [String: String] {
         var copyOfConnection = connection
-        if copyOfConnection["saveCredentials"] == "true" {
+        if copyOfConnection["saveCredentials"] == "true" // User wants to save credentials
+            || copyOfConnection["password"] == "" { // User may be deleting a password
             saveCredentials(
                 connection: connection,
                 usernameField: "username",
@@ -43,7 +44,9 @@ class SecureStorageDelegate {
         copyOfConnection["password"] = ""
         
         let sshServerNotEmpty = copyOfConnection["sshAddress"] != ""
-        if copyOfConnection["saveSshCredentials"] == "true" && sshServerNotEmpty {
+        if (sshServerNotEmpty &&
+            (copyOfConnection["saveSshCredentials"] == "true"
+             || copyOfConnection["sshPass"] == "")) { // User may be deleting a password
             saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
