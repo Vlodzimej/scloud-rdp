@@ -60,6 +60,7 @@ struct HelpPage : View {
                             }.padding()
                         }
                         
+                        Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
                     }
                 }
             }
