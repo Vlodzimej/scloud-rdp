@@ -27,8 +27,6 @@ class FilterableConnections : ObservableObject {
     private var searchConnectionText = ""
     var connectionsVersion = -1
     var selectedConnectionId = Constants.UNSELECTED_SETTINGS_ID
-    var selectedFilteredConnectionIndex = -1
-    var selectedUnfilteredConnectionIndex = -1
     var defaultSettings: Dictionary<String, String> = [:]
     var selectedConnection: Dictionary<String, String> = [:]
     var editedConnection: Dictionary<String, String> = [:]
@@ -182,8 +180,6 @@ class FilterableConnections : ObservableObject {
     func editDefaultSettings() -> Void {
         log_callback_str(message: #function)
         selectedConnectionId = Constants.DEFAULT_SETTINGS_ID
-        selectedFilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
-        selectedUnfilteredConnectionIndex = Constants.DEFAULT_SETTINGS_FLAG
         self.selectedConnection = defaultSettings
         self.editedConnection = defaultSettings
     }
@@ -196,9 +192,6 @@ class FilterableConnections : ObservableObject {
         log_callback_str(message: #function)
         self.selectedConnection = connection
         self.selectedConnectionId = getConnectionId(connection)
-        self.selectedFilteredConnectionIndex = filteredConnections.firstIndex(of: connection) ?? -1
-        self.selectedUnfilteredConnectionIndex = allConnections.firstIndex(of: connection) ?? -1
-        log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
     }
     
     func get(at: Int) -> Dictionary<String, String> {
@@ -206,7 +199,7 @@ class FilterableConnections : ObservableObject {
     }
     
     func removeSelected() -> Void {
-        let selectedConnection = filteredConnections[selectedFilteredConnectionIndex]
+        let selectedConnection = findConnectionById(id: selectedConnectionId)
         self.allConnections.removeAll { connection in
             selectedConnection == connection
         }
@@ -216,17 +209,14 @@ class FilterableConnections : ObservableObject {
     func overwriteOneConnectionAndSaveConnections(
         connection: Dictionary<String, String>
     ) {
-        log_callback_str(message: "\(#function): selectedUnfilteredConnectionIndex: \(selectedUnfilteredConnectionIndex)")
+        log_callback_str(message: "\(#function): selectedConnectionId: \(selectedConnectionId)")
         _ = SecureStorageDelegate.saveCredentialsForConnection(connection: connection)
         
         log_callback_str(message: "\(#function): after saving credentials, original connection: \(connection)")
 
-        if selectedUnfilteredConnectionIndex >= 0 {
-            self.allConnections[selectedUnfilteredConnectionIndex] = connection
-        }
         if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID {
             self.replaceConnectionById(
-                id: selectedConnectionId, connection: connection, connections: self.allConnections
+                id: selectedConnectionId, connection: connection
             )
         }
         saveConnections()
@@ -244,12 +234,16 @@ class FilterableConnections : ObservableObject {
         self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
     }
     
-    fileprivate func replaceConnectionById(
-        id: String,
-        connection: Dictionary<String, String>,
-        connections: [Dictionary<String, String>]
-    ) {
-        let indexFound = connections.firstIndex(where: { $0["id"] == id }) ?? -1
+    fileprivate func findConnectionById(id: String) -> [String: String]? {
+        let indexFound = self.allConnections.firstIndex(where: { $0["id"] == id }) ?? -1
+        if indexFound >= 0 {
+            return self.allConnections[indexFound]
+        }
+        return nil
+    }
+    
+    fileprivate func replaceConnectionById(id: String, connection: Dictionary<String, String>) {
+        let indexFound = self.allConnections.firstIndex(where: { $0["id"] == id }) ?? -1
         if indexFound >= 0 {
             self.allConnections[indexFound] = connection
         }
@@ -258,8 +252,6 @@ class FilterableConnections : ObservableObject {
     func deselectConnection() {
         log_callback_str(message: "\(#function)")
         self.selectedConnectionId = Constants.UNSELECTED_SETTINGS_ID
-        self.selectedFilteredConnectionIndex = -1
-        self.selectedUnfilteredConnectionIndex = -1
         self.selectedConnection = [:]
         self.editedConnection = [:]
     }
@@ -272,11 +264,15 @@ class FilterableConnections : ObservableObject {
     }
     
     func deleteCurrentConnection() {
-        log_callback_str(message: "Deleting connection at index \(selectedFilteredConnectionIndex) and navigating to list of connections screen")
+        log_callback_str(message: #function)
         // Do something only if we were not adding a new connection.
-        if selectedFilteredConnectionIndex >= 0 {
-            log_callback_str(message: "Deleting connection with index \(selectedFilteredConnectionIndex)")
-            let connection = self.get(at: selectedFilteredConnectionIndex)
+        if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID &&
+            selectedConnectionId != Constants.DEFAULT_SETTINGS_ID {
+            log_callback_str(message: "Deleting connection with id \(selectedConnectionId)")
+            guard let connection = self.findConnectionById(id: selectedConnectionId) else {
+                log_callback_str(message: "Could not find connection with id \(selectedConnectionId) to delete")
+                return
+            }
             let screenShotFile = connection["id"]
             let deleteScreenshotResult = Utils.deleteFile(name: screenShotFile)
             log_callback_str(message: "Deleting connection screenshot result: \(deleteScreenshotResult)")
@@ -292,14 +288,17 @@ class FilterableConnections : ObservableObject {
     
     func overwriteOneConnectionAndNavigate(connection: Dictionary<String, String>) {
         // Negative index indicates we are adding a connection, otherwise we are editing one.
-        if (selectedFilteredConnectionIndex == Constants.DEFAULT_SETTINGS_FLAG) {
+        if (selectedConnectionId == Constants.DEFAULT_SETTINGS_ID) {
             log_callback_str(message: "\(#function) Saving default settings")
             self.defaultSettings = connection
-        } else if (selectedFilteredConnectionIndex < 0) {
+            self.saveDefaultSettings()
+            self.stateKeeper?.showConnections()
+            return
+        } else if (selectedConnectionId == Constants.UNSELECTED_SETTINGS_ID) {
             log_callback_str(message: "\(#function) Saving a new connection")
             self.allConnections.append(connection)
         } else {
-            log_callback_str(message: "\(#function) Saving connection at index \(self.selectedFilteredConnectionIndex)")
+            log_callback_str(message: "\(#function) Saving connection with ID \(selectedConnectionId)")
             copyConnectionIntoSelectedConnection(connection: connection)
         }
         self.overwriteOneConnectionAndSaveConnections(connection: connection)

@@ -22,7 +22,6 @@ import Foundation
 class Constants {
     class var UNSELECTED_SETTINGS_ID: String { return "unselected" }
     class var DEFAULT_SETTINGS_ID: String { return "default" }
-    class var DEFAULT_SETTINGS_FLAG: Int { return -777 }
     class var CURRENT_CONNECTIONS_VERSION: Int { return 2 }
     class var DEFAULT_CONNECTIONS_VERSION: Int { return 1 }
     class var SAVED_CONNECTIONS_VERSION_KEY: String { return "connections_version" }
