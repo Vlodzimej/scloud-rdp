@@ -100,9 +100,16 @@ class FilterableConnections : ObservableObject {
         return newConnections
     }
     
-    func loadConnections() {
+    fileprivate func loadDefaultSettings() {
         self.defaultSettings = self.settings.object(
             forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY) as? Dictionary<String, String> ?? [:]
+        self.defaultSettings = SecureStorageDelegate.loadCredentialsForConnection(
+            connection: self.defaultSettings
+        )
+    }
+    
+    func loadConnections() {
+        loadDefaultSettings()
         self.allConnections = self.settings.array(
             forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
         self.allConnections = migrateConnections(self.allConnections)
@@ -206,14 +213,10 @@ class FilterableConnections : ObservableObject {
         self.filterConnections()
     }
     
-    func overwriteOneConnectionAndSaveConnections(
-        connection: Dictionary<String, String>
-    ) {
+    func overwriteOneConnectionAndSaveConnections(connection: Dictionary<String, String>) {
         log_callback_str(message: "\(#function): selectedConnectionId: \(selectedConnectionId)")
         _ = SecureStorageDelegate.saveCredentialsForConnection(connection: connection)
         
-        log_callback_str(message: "\(#function): after saving credentials, original connection: \(connection)")
-
         if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID {
             self.replaceConnectionById(
                 id: selectedConnectionId, connection: connection
@@ -231,7 +234,11 @@ class FilterableConnections : ObservableObject {
     
     func saveDefaultSettings() {
         log_callback_str(message: "\(#function)")
-        self.settings.set(self.defaultSettings, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
+        self.defaultSettings["id"] = Constants.DEFAULT_SETTINGS_ID
+        let settingsWithoutCredentials = SecureStorageDelegate.saveCredentialsForConnection(
+            connection: self.defaultSettings
+        )
+        self.settings.set(settingsWithoutCredentials, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
     }
     
     fileprivate func findConnectionById(id: String) -> [String: String]? {
