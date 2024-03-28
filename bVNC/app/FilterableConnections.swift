@@ -62,7 +62,7 @@ class FilterableConnections : ObservableObject {
     ) -> [[String : String]] {
         var newConnections: [[String : String]] = []
         connections.forEach { connection in
-            let id = connection["screenShotFile"]
+            let id = connection["screenShotFile"] ?? UUID().uuidString
             log_callback_str(message: "\(#function) connection id \(id ?? "")")
             var copyOfConnectionCopyForSavingCredentialsPurposes = connection
             var copyOfConnectionMigratedWithCredentialsRetained = connection
@@ -112,6 +112,7 @@ class FilterableConnections : ObservableObject {
         loadDefaultSettings()
         self.allConnections = self.settings.array(
             forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
+        log_callback_str(message: "Connections version \(connectionsVersion), number: \(allConnections.count)")
         self.allConnections = migrateConnections(self.allConnections)
         self.allConnections = loadCredentialsForAllConnections(self.allConnections)
         self.filteredConnections = self.allConnections
@@ -292,7 +293,7 @@ class FilterableConnections : ObservableObject {
             self.deselectConnection()
             self.saveConnections()
         } else {
-            log_callback_str(message: "We were adding a new connection, so not deleting anything")
+            log_callback_str(message: "Not deleting since selectedConnectionId: \(selectedConnectionId) and adding a new connection")
         }
         self.stateKeeper?.showConnections()
     }
