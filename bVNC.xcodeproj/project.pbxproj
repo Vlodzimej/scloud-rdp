@@ -40,6 +40,10 @@
 		167176C82838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
 		167176C92838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
 		168225402B8A2E5900EF07E3 /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
+		168B8AF32BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
+		168B8AF42BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
+		168B8AF52BB8D01200EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
+		168B8AF62BB8D01300EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
 		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
 		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
 		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
@@ -371,6 +375,7 @@
 		165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionListPage.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextView.swift; sourceTree = "<group>"; };
+		168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
@@ -1471,6 +1476,7 @@
 				16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */,
 				AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */,
 				16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */,
+				168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */,
 				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
 				16FABD072AE9E644007A5810 /* app */,
 				16FABD052AE9E5CA007A5810 /* common */,
@@ -2403,6 +2409,7 @@
 				AF043A2223B3DADB00C43ED7 /* Preview Assets.xcassets in Resources */,
 				AF043A1F23B3DADB00C43ED7 /* Assets.xcassets in Resources */,
 				16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */,
+				168B8AF52BB8D01200EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
 				16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2428,6 +2435,7 @@
 				AF30D1AC253396EF00BA7A62 /* LaunchScreen.storyboard in Resources */,
 				AF30D1AD253396EF00BA7A62 /* Localizable.strings in Resources */,
 				AF30D1AE253396EF00BA7A62 /* Preview Assets.xcassets in Resources */,
+				168B8AF62BB8D01300EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
 				AF30D1AF253396EF00BA7A62 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2436,6 +2444,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168B8AF32BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
 				AF09BD4D26126EC200D1A1D7 /* aSPICE-resources in Resources */,
 				AFB2C8EB26001F4D00E2859F /* LaunchScreen.storyboard in Resources */,
 				AFB2C8EC26001F4D00E2859F /* Localizable.strings in Resources */,
@@ -2448,6 +2457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				168B8AF42BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
 				AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */,
 				AFB391C9274F564A0059F91F /* LaunchScreen.storyboard in Resources */,
 				AFB391CA274F564A0059F91F /* Localizable.strings in Resources */,
