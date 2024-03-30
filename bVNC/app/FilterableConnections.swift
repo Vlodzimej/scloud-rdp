@@ -124,6 +124,7 @@ class FilterableConnections : ObservableObject {
             forKey: Constants.SAVED_CONNECTIONS_KEY) as? [Dictionary<String, String>] ?? []
         log_callback_str(message: "Connections version \(connectionsVersion), number: \(allConnections.count)")
         self.allConnections = migrateConnections(self.allConnections)
+        print(self.allConnections)
         self.allConnections = loadCredentialsForAllConnections(self.allConnections)
         self.filteredConnections = self.allConnections
         self.filterConnections()
