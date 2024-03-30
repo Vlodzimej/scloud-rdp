@@ -41,6 +41,16 @@ class FilterableConnections : ObservableObject {
         self.loadConnections()
     }
     
+    fileprivate func ensureConnectionsHaveIds(_ newConnections: [[String : String]]) -> [[String : String]] {
+        return newConnections.map({ (connection) -> [String:String] in
+            var newConnection = connection
+            var id = connection["id"]
+            id = (id != nil) ? id : UUID().uuidString
+            newConnection["id"] = id
+            return newConnection
+        })
+    }
+    
     fileprivate func migrateConnections(_ connections: [[String : String]]) -> [[String : String]]  {
         var newConnections = connections
         while connectionsVersion < Constants.CURRENT_CONNECTIONS_VERSION {
@@ -54,7 +64,7 @@ class FilterableConnections : ObservableObject {
             self.saveConnections()
             self.settings.set(connectionsVersion, forKey: Constants.SAVED_CONNECTIONS_VERSION_KEY)
         }
-        return newConnections
+        return ensureConnectionsHaveIds(newConnections)
     }
     
     fileprivate func migrateIdAndMoveCredentialsToSecureStorage(
@@ -63,7 +73,7 @@ class FilterableConnections : ObservableObject {
         var newConnections: [[String : String]] = []
         connections.forEach { connection in
             let id = connection["screenShotFile"] ?? UUID().uuidString
-            log_callback_str(message: "\(#function) connection id \(id ?? "")")
+            log_callback_str(message: "\(#function) connection id \(id)")
             var copyOfConnectionCopyForSavingCredentialsPurposes = connection
             var copyOfConnectionMigratedWithCredentialsRetained = connection
             copyOfConnectionCopyForSavingCredentialsPurposes["id"] = id
