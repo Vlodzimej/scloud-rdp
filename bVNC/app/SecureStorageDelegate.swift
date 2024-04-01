@@ -163,6 +163,7 @@ class SecureStorageDelegate {
         let query = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
+            kSecUseDataProtectionKeychain as String: true
         ] as [String : Any]
         return query
     }
