@@ -245,10 +245,18 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    fileprivate func setIsMacOs() {
+#if targetEnvironment(macCatalyst)
+        self.macOs = true
+#endif
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                self.macOs = true
+            }
+        }
+    }
+    
     override init() {
-        #if targetEnvironment(macCatalyst)
-            self.macOs = true
-        #endif
         // Load settings for current connection
         interfaceButtons = [:]
         keyboardButtons = [:]
@@ -259,6 +267,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             count: maxClCapacity);
 
         super.init()
+        setIsMacOs()
         connections = FilterableConnections(stateKeeper: self)
         physicalKeyboardHandler = PhysicalKeyboardHandler(stateKeeper: self)
         if Utils.isSpice() || Utils.isRdp() {
