@@ -41,14 +41,19 @@ class FilterableConnections : ObservableObject {
         self.loadConnections()
     }
     
-    fileprivate func ensureConnectionsHaveIds(_ newConnections: [[String : String]]) -> [[String : String]] {
-        return newConnections.map({ (connection) -> [String:String] in
+    fileprivate func getUniqueIdForConnectionWithinSpecifiedConnections(_ id: String?, connections: [[String: String]]) -> String? {
+        return (id != nil && findConnectionById(id: id!, connections: connections) == nil) ? id : UUID().uuidString
+    }
+    
+    fileprivate func ensureConnectionsHaveUniqueIds(_ connections: [[String : String]]) -> [[String : String]] {
+        var newConnections: [[String : String]] = []
+        connections.forEach { connection in
             var newConnection = connection
             var id = connection["id"]
-            id = (id != nil) ? id : UUID().uuidString
-            newConnection["id"] = id
-            return newConnection
-        })
+            newConnection["id"] = getUniqueIdForConnectionWithinSpecifiedConnections(id, connections: newConnections)
+            newConnections.append(newConnection)
+        }
+        return newConnections
     }
     
     fileprivate func migrateConnections(_ connections: [[String : String]]) -> [[String : String]]  {
@@ -64,7 +69,7 @@ class FilterableConnections : ObservableObject {
             self.saveConnections()
             self.settings.set(connectionsVersion, forKey: Constants.SAVED_CONNECTIONS_VERSION_KEY)
         }
-        return ensureConnectionsHaveIds(newConnections)
+        return ensureConnectionsHaveUniqueIds(newConnections)
     }
     
     fileprivate func migrateIdAndMoveCredentialsToSecureStorage(
@@ -218,7 +223,7 @@ class FilterableConnections : ObservableObject {
     }
     
     func removeSelected() -> Void {
-        let selectedConnection = findConnectionById(id: selectedConnectionId)
+        let selectedConnection = findConnectionById(id: selectedConnectionId, connections: self.allConnections)
         self.allConnections.removeAll { connection in
             selectedConnection == connection
         }
@@ -257,10 +262,10 @@ class FilterableConnections : ObservableObject {
         self.settings.set(settingsWithoutCredentials, forKey: Constants.SAVED_DEFAULT_SETTINGS_KEY)
     }
     
-    fileprivate func findConnectionById(id: String) -> [String: String]? {
-        let indexFound = self.allConnections.firstIndex(where: { $0["id"] == id }) ?? -1
+    fileprivate func findConnectionById(id: String, connections: [[String: String]]) -> [String: String]? {
+        let indexFound = connections.firstIndex(where: { $0["id"] == id }) ?? -1
         if indexFound >= 0 {
-            return self.allConnections[indexFound]
+            return connections[indexFound]
         }
         return nil
     }
@@ -292,7 +297,7 @@ class FilterableConnections : ObservableObject {
         if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID &&
             selectedConnectionId != Constants.DEFAULT_SETTINGS_ID {
             log_callback_str(message: "Deleting connection with id \(selectedConnectionId)")
-            guard let connection = self.findConnectionById(id: selectedConnectionId) else {
+            guard let connection = self.findConnectionById(id: selectedConnectionId, connections: self.allConnections) else {
                 log_callback_str(message: "Could not find connection with id \(selectedConnectionId) to delete")
                 return
             }
