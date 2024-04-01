@@ -81,6 +81,34 @@ class RdpSession: RemoteSession {
         XK_Delete: RdpSession.DEL
     ]
     
+    fileprivate func getUnsafeMutablePointerAsString(_ str: String) -> UnsafeMutablePointer<Int8>? {
+        return UnsafeMutablePointer<Int8>(mutating: (str as NSString).utf8String)
+    }
+    
+    fileprivate func getForwardToAddress(_ gatewayEnabled: Bool, _ gatewayAddress: String, _ address: String) -> String {
+        return gatewayEnabled ? gatewayAddress : address
+    }
+    
+    fileprivate func getForwardToPort(_ gatewayEnabled: Bool, _ gatewayPort: String, _ port: String) -> String {
+        return gatewayEnabled ? gatewayPort : port
+    }
+    
+    fileprivate func getRdpServerAddress(_ gatewayEnabled: Bool, _ address: String) -> String {
+        return gatewayEnabled ? address : "127.0.0.1"
+    }
+    
+    fileprivate func getRdpServerPort(_ gatewayEnabled: Bool, _ port: String, _ sshForwardPort: String) -> String {
+        return gatewayEnabled ? port : sshForwardPort
+    }
+    
+    fileprivate func getRdpGatewayAddress(_ gatewayEnabled: Bool, _ gatewayAddress: String) -> String {
+        return gatewayEnabled ? "127.0.0.1" : gatewayAddress
+    }
+    
+    fileprivate func getRdpGatewayPort(_ gatewayEnabled: Bool, _ sshForwardPort: String, _ gatewayPort: String) -> String {
+        return gatewayEnabled ? sshForwardPort : gatewayPort
+    }
+    
     override func connect(currentConnection: [String:String]) {
         let sshAddress = currentConnection["sshAddress"] ?? ""
         let sshPort = currentConnection["sshPort"] ?? ""
@@ -92,19 +120,23 @@ class RdpSession: RemoteSession {
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
                                 Constants.DEFAULT_LAYOUT
-        
+        let gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false") ?? false
+        var gatewayAddress = currentConnection["rdpGatewayAddress"] ?? ""
+        var gatewayPort = currentConnection["rdpGatewayPort"] ?? ""
+
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
-        
         layoutMap = Utils.loadStringOfIntArraysToMap(
                         source: Utils.getBundleFileContents(
                             name: Constants.LAYOUT_PATH + keyboardLayout))
         
         if sshAddress != "" {
             self.stateKeeper.sshTunnelingStarted = false
-            let forwardToAddress = address
-            let forwardToPort = port
-            address = "127.0.0.1"
-            port = sshForwardPort
+            let forwardToAddress = getForwardToAddress(gatewayEnabled, gatewayAddress, address)
+            let forwardToPort = getForwardToPort(gatewayEnabled, gatewayPort, port)
+            address = getRdpServerAddress(gatewayEnabled, address)
+            port = getRdpServerPort(gatewayEnabled, port, sshForwardPort)
+            gatewayAddress = getRdpGatewayAddress(gatewayEnabled, gatewayAddress)
+            gatewayPort = getRdpGatewayPort(gatewayEnabled, sshForwardPort, gatewayPort)
             Background {
                 self.stateKeeper.sshForwardingLock.unlock()
                 self.stateKeeper.sshForwardingLock.lock()
@@ -133,6 +165,9 @@ class RdpSession: RemoteSession {
         let domain = currentConnection["domain"] ?? ""
         let user = currentConnection["username"] ?? ""
         let pass = currentConnection["password"] ?? ""
+        let gatewayDomain = currentConnection["rdpGatewayDomain"] ?? ""
+        let gatewayUser = currentConnection["rdpGatewayUser"] ?? ""
+        let gatewayPass = currentConnection["rdpGatewayPass"] ?? ""
 
         Background {
             // Make it highly probable the SSH thread would obtain the lock before the RDP one does.
@@ -162,20 +197,29 @@ class RdpSession: RemoteSession {
                 log_callback_str(message: "Connecting RDP Session in the background...")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
                 
-                self.cl = initializeRdp(Int32(self.instance),
-                                        Int32(self.width), Int32(self.height),
-                                        update_callback,
-                                        resize_callback,
-                                        failure_callback_swift,
-                                        log_callback,
-                                        utf8_clipboard_callback,
-                                        yes_no_dialog_callback,
-                                        UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (domain as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
-                                        UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
-                                        true)
+                self.cl = initializeRdp(
+                    Int32(self.instance),
+                    Int32(self.width),
+                    Int32(self.height),
+                    update_callback,
+                    resize_callback,
+                    failure_callback_swift,
+                    log_callback,
+                    utf8_clipboard_callback,
+                    yes_no_dialog_callback,
+                    self.getUnsafeMutablePointerAsString(address),
+                    self.getUnsafeMutablePointerAsString(port),
+                    self.getUnsafeMutablePointerAsString(domain),
+                    self.getUnsafeMutablePointerAsString(user),
+                    self.getUnsafeMutablePointerAsString(pass),
+                    true,
+                    self.getUnsafeMutablePointerAsString(gatewayAddress),
+                    self.getUnsafeMutablePointerAsString(gatewayPort),
+                    self.getUnsafeMutablePointerAsString(gatewayDomain),
+                    self.getUnsafeMutablePointerAsString(gatewayUser),
+                    self.getUnsafeMutablePointerAsString(gatewayPass),
+                    gatewayEnabled
+                )
             }
             if self.cl != nil {
                 self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl

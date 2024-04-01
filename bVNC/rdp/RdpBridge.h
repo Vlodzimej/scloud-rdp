@@ -32,7 +32,13 @@ void *initializeRdp(int instance, int width, int height,
                     char *domain,
                     char *user,
                     char *pass,
-                    bool enable_sound);
+                    bool enable_sound,
+                    char *gateway_addr,
+                    char *gateway_port,
+                    char *gateway_domain,
+                    char *gateway_user,
+                    char *gateway_pass,
+                    bool gateway_enabled);
 void connectRdpInstance(void *instance);
 void cursorEvent(void *instance, int x, int y, int flags);
 void unicodeKeyEvent(void *instance, int flags, int code);

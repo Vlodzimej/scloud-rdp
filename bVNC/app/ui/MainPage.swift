@@ -78,8 +78,15 @@ struct MainPage : View {
                     showSshTunnelSettings: Bool(selectedConnection["showSshTunnelSettings"] ?? "false")! || (selectedConnection["sshAddress"] ?? "") != "",
                     externalId: selectedConnection["externalId"] ?? "",
                     requiresVpn: Bool(selectedConnection["requiresVpn"] ?? "false") ?? false,
-                    vpnUriScheme: selectedConnection["vpnUriScheme"] ?? ""
+                    vpnUriScheme: selectedConnection["vpnUriScheme"] ?? "",
+                    rdpGatewayAddress: selectedConnection["rdpGatewayAddress"] ?? "",
+                    rdpGatewayPort: selectedConnection["rdpGatewayPort"] ?? "",
+                    rdpGatewayDomain: selectedConnection["rdpGatewayDomain"] ?? "",
+                    rdpGatewayUser: selectedConnection["rdpGatewayUser"] ?? "",
+                    rdpGatewayPass: selectedConnection["rdpGatewayPass"] ?? "",
+                    rdpGatewayEnabled: Bool(selectedConnection["rdpGatewayEnabled"] ?? "false") ?? false
                 )
+
 
             } else if stateKeeper.currentPage == "genericProgressPage" {
                 ProgressPage(stateKeeper: stateKeeper)
@@ -135,7 +142,13 @@ struct MainPageA_Previews : PreviewProvider {
             showSshTunnelSettings: false,
             externalId: "",
             requiresVpn: false,
-            vpnUriScheme: ""
+            vpnUriScheme: "",
+            rdpGatewayAddress: "",
+            rdpGatewayPort: "",
+            rdpGatewayDomain: "",
+            rdpGatewayUser: "",
+            rdpGatewayPass: "",
+            rdpGatewayEnabled: false
         )
     }
 }

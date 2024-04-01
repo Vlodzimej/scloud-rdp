@@ -26,6 +26,7 @@ class SecureStorageDelegate {
         newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPass")
         newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPassphrase")
         newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "sshPrivateKey")
+        newConnection = loadCredentialsFromSecureStorage(connection: newConnection, passwordField: "rdpGatewayPass")
         return newConnection
     }
     
@@ -46,7 +47,7 @@ class SecureStorageDelegate {
         let sshServerNotEmpty = copyOfConnection["sshAddress"] != ""
         if (sshServerNotEmpty &&
             (copyOfConnection["saveSshCredentials"] == "true"
-             || copyOfConnection["sshPass"] == "")) { // User may be deleting a password
+             || copyOfConnection["sshPass"] == "")) { // User may be deleting the password
             saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
@@ -57,7 +58,7 @@ class SecureStorageDelegate {
         }
         copyOfConnection["sshPass"] = ""
         
-        if copyOfConnection["sshPassphrase"] != "" {
+        if sshServerNotEmpty {
             saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
@@ -65,10 +66,6 @@ class SecureStorageDelegate {
                 addressField: "sshAddress",
                 portField: "sshPort"
             )
-        }
-        copyOfConnection["sshPassphrase"] = ""
-        
-        if copyOfConnection["sshPrivateKey"] != "" {
             saveCredentials(
                 connection: connection,
                 usernameField: "sshUser",
@@ -77,7 +74,20 @@ class SecureStorageDelegate {
                 portField: "sshPort"
             )
         }
+        copyOfConnection["sshPassphrase"] = ""
         copyOfConnection["sshPrivateKey"] = ""
+
+        if copyOfConnection["saveCredentials"] == "true"
+            || copyOfConnection["rdpGatewayPass"] == "" { // User may be deleting the password
+            saveCredentials(
+                connection: connection,
+                usernameField: "rdpGatewayUser",
+                passwordField: "rdpGatewayPass",
+                addressField: "rdpGatewayAddress",
+                portField: "rdpGatewayPort"
+            )
+        }
+        copyOfConnection["rdpGatewayPass"] = ""
         return copyOfConnection
     }
     
@@ -86,6 +96,7 @@ class SecureStorageDelegate {
         deleteCredentials(connection: connection, passwordField: "sshPass")
         deleteCredentials(connection: connection, passwordField: "sshPassphrase")
         deleteCredentials(connection: connection, passwordField: "sshPrivateKey")
+        deleteCredentials(connection: connection, passwordField: "rdpGatewayPass")
     }
     
     static private func deleteCredentials(connection: Dictionary<String, String>, passwordField: String) {

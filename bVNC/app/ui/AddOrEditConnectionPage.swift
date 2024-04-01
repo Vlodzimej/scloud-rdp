@@ -38,10 +38,15 @@ struct AddOrEditConnectionPage : View {
     @State var allowZooming: Bool
     @State var allowPanning: Bool
     @State var showSshTunnelSettings: Bool
-    
     @State var externalId: String
     @State var requiresVpn: Bool
     @State var vpnUriScheme: String
+    @State var rdpGatewayAddress: String
+    @State var rdpGatewayPort: String
+    @State var rdpGatewayDomain: String
+    @State var rdpGatewayUser: String
+    @State var rdpGatewayPass: String
+    @State var rdpGatewayEnabled: Bool
     
     func retrieveConnectionDetails() -> [String : String] {
         var connection = [
@@ -77,6 +82,12 @@ struct AddOrEditConnectionPage : View {
         }
         if Utils.isSpice() || Utils.isRdp() {
             connection["keyboardLayout"] = self.keyboardLayoutText.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayAddress"] = self.rdpGatewayAddress.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayPort"] = self.rdpGatewayPort.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayDomain"] = self.rdpGatewayDomain.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayUser"] = self.rdpGatewayUser.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayPass"] = self.rdpGatewayPass.trimmingCharacters(in: .whitespacesAndNewlines)
+            connection["rdpGatewayEnabled"] = String(self.rdpGatewayEnabled)
         }
         return connection
     }
@@ -249,6 +260,18 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
+    fileprivate func getRdpGatewayCredentialsHeading() -> some View {
+        return Text("ENTER_RDP_GATEWAY_CREDENTIALS_LABEL").font(.title)
+    }
+    
+    fileprivate func getRdpGatewayCredentialsFields() -> some View {
+        return VStack {
+            getTextField(text: "RDP_GATEWAY_DOMAIN_LABEL", binding: $rdpGatewayDomain)
+            getTextField(text: "RDP_GATEWAY_USER_LABEL", binding: $rdpGatewayUser)
+            getSecureField(text: "RDP_GATEWAY_PASSWORD_LABEL", binding: $rdpGatewayPass)
+        }
+    }
+    
     fileprivate func getSshSettingsFields() -> some View {
         return VStack {
             Toggle(isOn: $showSshTunnelSettings) {
@@ -272,6 +295,23 @@ struct AddOrEditConnectionPage : View {
                         }
                         Divider()
                     }
+                }
+            }
+        }.padding()
+    }
+    
+    fileprivate func getRdpGatewayFields() -> some View {
+        return VStack {
+            Toggle(isOn: $rdpGatewayEnabled) {
+                Text("RDP_GATEWAY_ENABLED_SETTINGS_LABEL")
+            }.font(.title)
+            
+            if self.rdpGatewayEnabled {
+                VStack {
+                    Text("RDP_GATEWAY_LABEL").font(.title)
+                    getTextField(text: "RDP_GATEWAY_ADDRESS_LABEL", binding: $rdpGatewayAddress)
+                    getTextField(text: "RDP_GATEWAY_PORT_LABEL", binding: $rdpGatewayPort)
+                    getRdpGatewayCredentialsFields()
                 }
             }
         }.padding()
@@ -357,6 +397,9 @@ struct AddOrEditConnectionPage : View {
                 }
                 getAddressAndPortFields()
                 getCredentialsFields()
+                if (Utils.isRdp()) {
+                    getRdpGatewayFields()
+                }
                 getLayoutAndCertFields()
                 getUiOptionsFields()
             }
@@ -375,6 +418,10 @@ struct AddOrEditConnectionPage : View {
         return VStack(alignment: .leading) {
             getCredentialsHeading()
             getCredentialsFields()
+            if (Utils.isRdp() && rdpGatewayEnabled) {
+                getRdpGatewayCredentialsHeading()
+                getRdpGatewayCredentialsFields()
+            }
             getCredentialsButtons()
         }.padding()
     }

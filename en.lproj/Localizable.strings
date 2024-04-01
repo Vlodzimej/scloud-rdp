@@ -95,3 +95,12 @@ Email us directly at support@morpheusly.com for help.
 "ENTER_SPICE_CREDENTIALS_LABEL" = "Enter SPICE Credentials";
 "ENTER_SSH_CREDENTIALS_LABEL" = "Enter SSH Credentials";
 "HELP_INSTRUCTIONS" = "Hit the info button for help.";
+
+"RDP_GATEWAY_ENABLED_SETTINGS_LABEL" = "Enable RDP Gateway";
+"RDP_GATEWAY_LABEL" = "RDP Gateway Settings";
+"RDP_GATEWAY_ADDRESS_LABEL" = "Gateway Address";
+"RDP_GATEWAY_PORT_LABEL" = "Gateway Port";
+"ENTER_RDP_GATEWAY_CREDENTIALS_LABEL" = "Enter RDP Gateway Credentials";
+"RDP_GATEWAY_DOMAIN_LABEL" = "Gateway Domain";
+"RDP_GATEWAY_USER_LABEL" = "Gateway User";
+"RDP_GATEWAY_PASSWORD_LABEL" = "Gateway Password";

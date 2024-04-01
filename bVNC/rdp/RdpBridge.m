@@ -109,7 +109,9 @@ static void ios_post_disconnect(freerdp *instance) {
 
     int last_error = freerdp_get_last_error(instance->context);
     int connection_state = instance->ConnectionCallbackState;
-
+    NSString* last_error_str = [@(last_error) description];
+    const char* last_error_char_str = [last_error_str cStringUsingEncoding:[NSString defaultCStringEncoding]];
+    
     int i = instance->context->argc;
     gdi_free(instance);
     
@@ -118,6 +120,7 @@ static void ios_post_disconnect(freerdp *instance) {
         case FREERDP_ERROR_AUTHENTICATION_FAILED:
         case FREERDP_ERROR_CONNECT_WRONG_PASSWORD:
         case FREERDP_ERROR_CONNECT_NO_OR_MISSING_CREDENTIALS:
+        case FREERDP_ERROR_CONNECT_ACCESS_DENIED:
             clientLogCallback("Authentication failed\n");
             failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
             return;
@@ -129,6 +132,7 @@ static void ios_post_disconnect(freerdp *instance) {
             break;
         default:
             clientLogCallback("Unhandled error value after disconnection\n");
+            clientLogCallback((char*)last_error_char_str);
             break;
     }
 
@@ -144,6 +148,7 @@ static void ios_post_disconnect(freerdp *instance) {
             return;
         default:
             clientLogCallback("Unhandled connection state after disconnection\n");
+            clientLogCallback(last_error_char_str);
             return;
     }
 }
@@ -191,7 +196,13 @@ void *initializeRdp(int i, int width, int height,
                     char *domain,   
                     char *user,
                     char *pass,
-                    bool enable_sound) {
+                    bool enable_sound,
+                    char *gateway_addr,
+                    char *gateway_port,
+                    char *gateway_domain,
+                    char *gateway_user,
+                    char *gateway_pass,
+                    bool gateway_enabled) {
 
     frameBufferUpdateCallback = fb_update_callback;
     frameBufferResizeCallback = fb_resize_callback;
@@ -210,9 +221,18 @@ void *initializeRdp(int i, int width, int height,
     instance->context->settings->Domain = domain;
     instance->context->settings->Username = user;
     instance->context->settings->Password = pass;
+    
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
     instance->context->settings->AudioPlayback = enable_sound;
+    
+    instance->context->settings->GatewayEnabled = gateway_enabled;
+    instance->context->settings->GatewayHostname = gateway_addr;
+    instance->context->settings->GatewayPort = atoi(gateway_port);
+    instance->context->settings->GatewayUsername = gateway_user;
+    instance->context->settings->GatewayPassword = gateway_pass;
+    instance->context->settings->GatewayDomain = gateway_domain;
+    
     printf("Requesting initial remote resolution to be %dx%d\n", width, height);
     instance->context->settings->DesktopWidth = width;
     instance->context->settings->DesktopHeight = height;
