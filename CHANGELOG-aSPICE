@@ -1,6 +1,7 @@
 1.0.29
   - Migrated all passwords to secure storage
   - Implemented reporting app version on Help screen
+  - Fix for Operating System detection for when the iOS app is run on arm Macs
 1.0.28
   - Bugfix for connection thumbnail uniqueness
 1.0.27
