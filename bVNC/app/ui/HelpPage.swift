@@ -12,6 +12,12 @@ import SwiftUI
 struct HelpPage : View {
     @ObservedObject var stateKeeper: StateKeeper
     
+    fileprivate func getVersion() -> String {
+        let versionLabel = self.stateKeeper.localizedString(for: "VERSION_LABEL")
+        let version = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "0") as! String
+        return versionLabel + ": " + version
+    }
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -60,7 +66,7 @@ struct HelpPage : View {
                             }.padding()
                         }
                         
-                        Text(Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String)
+                        Text(getVersion())
                     }
                 }
             }

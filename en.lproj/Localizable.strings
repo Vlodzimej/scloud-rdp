@@ -105,3 +105,5 @@ Email us directly at support@morpheusly.com for help.
 "RDP_GATEWAY_DOMAIN_LABEL" = "Gateway Domain";
 "RDP_GATEWAY_USER_LABEL" = "Gateway User";
 "RDP_GATEWAY_PASSWORD_LABEL" = "Gateway Password";
+
+"VERSION_LABEL" = "Version";
