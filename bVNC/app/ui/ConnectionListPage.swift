@@ -54,6 +54,12 @@ struct ConnectionsListPage : View {
         self.stateKeeper.editConnection(connection: connection)
     }
     
+    func delete(index: Int) {
+        let connection = self.elementAt(index: index)
+        self.stateKeeper.connections.deleteConnectionById(id: connection["id"]!)
+        self.stateKeeper.showConnections()
+    }
+    
     func elementAt(index: Int) -> [String: String] {
         return self.connections[index]
     }
@@ -124,7 +130,10 @@ struct ConnectionsListPage : View {
             }.onLongPressGesture {
                 self.edit(index: i)
             }
-        }.buttonStyle(PlainButtonStyle())
+        }.buttonStyle(PlainButtonStyle()).contextMenu {
+            Button("EDIT_LABEL", action: { edit(index: i) })
+            Button("DELETE_LABEL", action: { delete(index: i) })
+        }
     }
     
     var body: some View {

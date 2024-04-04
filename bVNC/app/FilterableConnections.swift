@@ -222,8 +222,8 @@ class FilterableConnections : ObservableObject {
         return filteredConnections[at]
     }
     
-    func removeSelected() -> Void {
-        let selectedConnection = findConnectionById(id: selectedConnectionId, connections: self.allConnections)
+    func removeFromConnectionsById(id: String) -> Void {
+        let selectedConnection = findConnectionById(id: id, connections: self.allConnections)
         self.allConnections.removeAll { connection in
             selectedConnection == connection
         }
@@ -296,22 +296,26 @@ class FilterableConnections : ObservableObject {
         // Do something only if we were not adding a new connection.
         if selectedConnectionId != Constants.UNSELECTED_SETTINGS_ID &&
             selectedConnectionId != Constants.DEFAULT_SETTINGS_ID {
-            log_callback_str(message: "Deleting connection with id \(selectedConnectionId)")
-            guard let connection = self.findConnectionById(id: selectedConnectionId, connections: self.allConnections) else {
-                log_callback_str(message: "Could not find connection with id \(selectedConnectionId) to delete")
-                return
-            }
-            let screenShotFile = connection["id"]
-            let deleteScreenshotResult = Utils.deleteFile(name: screenShotFile)
-            log_callback_str(message: "Deleting connection screenshot result: \(deleteScreenshotResult)")
-            SecureStorageDelegate.deleteCredentialsForConnection(connection: connection)
-            self.removeSelected()
-            self.deselectConnection()
-            self.saveConnections()
+            deleteConnectionById(id: selectedConnectionId)
         } else {
             log_callback_str(message: "Not deleting since selectedConnectionId: \(selectedConnectionId) and adding a new connection")
         }
         self.stateKeeper?.showConnections()
+    }
+    
+    func deleteConnectionById(id: String) {
+        log_callback_str(message: "Deleting connection with id \(id)")
+        guard let connection = self.findConnectionById(id: id, connections: self.allConnections) else {
+            log_callback_str(message: "Could not find connection with id \(id) to delete")
+            return
+        }
+        let screenShotFile = connection["id"]
+        let deleteScreenshotResult = Utils.deleteFile(name: screenShotFile)
+        log_callback_str(message: "Deleting connection screenshot result: \(deleteScreenshotResult)")
+        SecureStorageDelegate.deleteCredentialsForConnection(connection: connection)
+        self.removeFromConnectionsById(id: id)
+        self.deselectConnection()
+        self.saveConnections()
     }
     
     func overwriteOneConnectionAndNavigate(connection: Dictionary<String, String>) {
