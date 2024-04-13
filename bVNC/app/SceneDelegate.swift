@@ -33,21 +33,29 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 }
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    func connectWithConsoleFile(url: URL) {
+    
+    fileprivate func moveVvFileToPrivateStorageAndConnect(_ url: URL) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let stateKeeper: StateKeeper = appDelegate.stateKeeper
-        if (url.startAccessingSecurityScopedResource()) {
-            if let docsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
-                let destPath = String(format: "%@/%@", docsPath, "console.vv")
-                Utils.deletePathIfNeeded(destPath)
-                Utils.copyUrlToDestinationIfPossible(url, destPath)
-                if !stateKeeper.connectIfConsoleFileFound(destPath) {
-                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
-                }
-                url.stopAccessingSecurityScopedResource()
+        if let docsPath = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+        ).first {
+            let destPath = String(format: "%@/%@", docsPath, "console.vv")
+            Utils.moveUrlToDestinationIfPossible(url, destPath)
+            if !stateKeeper.connectIfConsoleFileFound(destPath) {
+                log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
             }
+        }
+    }
+    
+    func connectWithConsoleFile(url: URL) {
+        if (url.startAccessingSecurityScopedResource()) {
+            moveVvFileToPrivateStorageAndConnect(url)
+            url.stopAccessingSecurityScopedResource()
         } else {
-            log_callback_str(message: "\(#function) Could not startAccessingSecurityScopedResource")
+            log_callback_str(message: "\(#function) Could not startAccessingSecurityScopedResource, trying without")
+            log_callback_str(message: "\(#function) aSPICE may need to be granted Full Disk Access in settings")
+            moveVvFileToPrivateStorageAndConnect(url)
         }
     }
     
