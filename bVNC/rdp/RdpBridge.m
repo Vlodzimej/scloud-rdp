@@ -291,5 +291,7 @@ void resizeRemoteRdpDesktop(void *i, int x, int y) {
 
 void clientCutText(void *i, char *hostClipboardContents, int size) {
     freerdp *instance = (freerdp *)i;
-    ios_send_clipboard_data(instance->context, (void*)hostClipboardContents, size);
+    if (instance != NULL && instance->context != NULL) {
+        ios_send_clipboard_data(instance->context, (void*)hostClipboardContents, size);
+    }
 }
