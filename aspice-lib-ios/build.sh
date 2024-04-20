@@ -33,17 +33,20 @@ then
   patch -p1 < ../cerbero.patch
   popd
 
-  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python@3.9 cpanm"
+  BREW_DEPS="expat perl autoconf libtool gtk-doc jpeg python@3.8 cpanm"
   brew install ${BREW_DEPS} || true
   brew unlink ${BREW_DEPS}
   brew link --overwrite ${BREW_DEPS}
+
+  /usr/local/bin/python3.8 -m virtualenv venv
   cpanm XML::Parser
-  /usr/local/bin/pip3.9 install six==1.16.0 pyparsing==2.4.7
 fi
 
 git config --global protocol.file.allow always
 
-export PATH="/usr/local/opt/python@3.9/libexec/bin:$PATH"
+. venv/bin/activate
+
+pip3 install six==1.16.0 pyparsing==2.4.7 setuptools==65.0.0
 
 echo "Get latest recipes for project"
 git clone https://github.com/iiordanov/remote-desktop-clients-cerbero-recipes.git recipes || true
@@ -62,15 +65,12 @@ do
     ln -sf libz.la build/dist/ios_universal/${arch}/lib/lib-pthread.la
 done
 
-# Use newer clang and buildtools from cerbero directory
-export PATH="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$(realpath ./build/build-tools/bin/):${PATH}"
+# Use clang from Xcode developer toolchain
+export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:${PATH}
 
 # Needed for Mac Catalyst builds
 # TODO: If freetype build fails, export SDKROOT and run make again. Then, rerun build and skip freetype recipe.
-#export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-
-echo "Python is: $(which python) and $(which python3)"
-echo "Path is: $PATH"
+export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
 
 ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
 
@@ -78,7 +78,9 @@ echo "Path is: $PATH"
 
 ./cerbero-uninstalled -c config/cross-ios-universal.cbc build spiceglue
 
-./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone spiceglue
+./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone openh264
+
+./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone ffmpeg
 
 popd
 

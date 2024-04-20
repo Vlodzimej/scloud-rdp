@@ -341,7 +341,7 @@ pushd aspice-lib-ios
 ./build.sh
 popd
 
-# Build SPICE dependencies
+# Build RDP dependencies
 pushd ardp-lib-ios
 ./build.sh
 popd

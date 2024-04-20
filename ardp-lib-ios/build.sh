@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-DEVELOPMENT_TEAM=96Z3MCQKZA
-
 FREERDP_VERSION=0a6b999c5655d07b5653894b24a840c08838e304
 
 brew install coreutils
@@ -21,20 +19,11 @@ then
       -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
-      -GXcode
-  
-  sed -i.bak1 "s/IPHONEOS_DEPLOYMENT_TARGET = 10.0/IPHONEOS_DEPLOYMENT_TARGET = 11.0/g" FreeRDP.xcodeproj/project.pbxproj
+      -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero/build/dist/ios_universal) \
+      -DWITH_JPEG=ON \
+      -G"Unix Makefiles"
 
-  echo "The first time this script runs, it will try to automatically update the development"
-  echo "team in the iFreeRDP target of project FreeRDP to the variable DEVELOPMENT_TEAM"
-  echo
-  echo "To do so manually, open the FreeRDP_iphoneos"
-  echo "directory with XCode, find the iFreeRDP Target, select Signing & Capabilities tab"
-  echo "and select your 'Team'. Then, rerun this script."
-  echo
-  sleep 20
-  sed -i.bak2 "s/USE_HEADERMAP = NO;/USE_HEADERMAP = NO;\n                                DEVELOPMENT_TEAM = ${DEVELOPMENT_TEAM};/g" FreeRDP.xcodeproj/project.pbxproj
-  popd
+  sed -i.bak1 "s/IPHONEOS_DEPLOYMENT_TARGET = 10.0/IPHONEOS_DEPLOYMENT_TARGET = 11.0/g" FreeRDP.xcodeproj/project.pbxproj
 fi
 pushd FreeRDP_iphoneos
 cmake --build . -j 12
@@ -51,15 +40,18 @@ then
   patch -p1 < ../clipboard-redirection.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
-        -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
-        -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
-        -DCMAKE_OSX_ARCHITECTURES="x86_64" \
-        -DCMAKE_CXX_FLAGS:STRING="-target x86_64-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
-        -DCMAKE_C_FLAGS:STRING="-target x86_64-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
-        -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
-        -DWITH_NEON=OFF \
-        -G"Unix Makefiles"
+  cmake \
+      -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
+      -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
+      -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
+      -DCMAKE_OSX_ARCHITECTURES="x86_64" \
+      -DCMAKE_CXX_FLAGS:STRING="-target x86_64-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
+      -DCMAKE_C_FLAGS:STRING="-target x86_64-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
+      -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
+      -DWITH_NEON=OFF \
+      -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero/build/dist/ios_universal) \
+      -DWITH_JPEG=ON \
+      -G"Unix Makefiles"
   popd
 fi
 pushd FreeRDP_maccatalyst
@@ -70,7 +62,8 @@ popd
 mkdir -p libs
 for f in $(find FreeRDP_iphoneos/ -name \*.a | sed 's/FreeRDP_iphoneos\///')
 do
-  lipo FreeRDP_iphoneos/$f FreeRDP_maccatalyst/$(echo $f | sed 's/Debug-iphoneos//') -output libs/$(basename $f) -create
+#  lipo FreeRDP_iphoneos/$f FreeRDP_maccatalyst/$(echo $f | sed 's/Debug-iphoneos//') -output libs/$(basename $f) -create
+  lipo FreeRDP_iphoneos/$f FreeRDP_maccatalyst/$f -output libs/$(basename $f) -create
 done
 
 libtool -static -o duperlib.a libs/*
