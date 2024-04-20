@@ -1,3 +1,5 @@
+32
+  - Bugfix for keyboard input on certain Macs
 31
   - Improved support for machines with scoped storage access issues
 30
