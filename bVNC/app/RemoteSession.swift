@@ -364,7 +364,7 @@ class RemoteSession {
         var newScreenWidth = screenWidth
         var newScreenHeight = screenHeight
         
-        if self.stateKeeper.macOs {
+        if self.stateKeeper.isOnMacOs() {
             #if targetEnvironment(macCatalyst)
             globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
             #endif

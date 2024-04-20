@@ -40,7 +40,7 @@ class ShortTapDragUIImageView: TouchEnabledUIImageView {
             let scaleY = sender.view!.transform.d
             
             //print ("abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
-            if self.physicalMouseAttached || self.stateKeeper?.macOs == true {
+            if self.physicalMouseAttached || self.stateKeeper?.isOnMacOsOriPadOnMacOs() == true {
                 self.inPanning = false
                 self.inScrolling = true
             }

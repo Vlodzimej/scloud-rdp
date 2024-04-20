@@ -166,7 +166,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         
         // Method of detecting two-finger tap/click on trackpad. Not adding unless this is running on a Mac
         // because it also captures long-taps on a touch screen
-        if physicalMouseAttached || self.stateKeeper?.macOs == true {
+        if physicalMouseAttached || self.stateKeeper?.isOnMacOsOriPadOnMacOs() == true {
             let interaction = UIContextMenuInteraction(delegate: self)
             self.addInteraction(interaction)
         }
@@ -392,7 +392,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             for (index, finger) in self.fingers.enumerated() {
                 if let finger = finger, finger == touch {
                     if index == 0 {
-                        if stateKeeper!.macOs || moveEventsSinceFingerDown >= 12 {
+                        if stateKeeper!.isOnMacOsOriPadOnMacOs() || moveEventsSinceFingerDown >= 12 {
                             //log_callback_str(message: "\(#function) +\(self.firstDown) + \(self.secondDown) + \(self.thirdDown)")
                             self.inPanDragging = true
                             self.sendDownThenUpEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown:     self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
@@ -589,7 +589,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         }
         if let view = interaction.view {
             self.setViewParameters(point: interaction.location(in: view), touchView: view, setDoubleTapCoordinates: true)
-            if stateKeeper?.macOs == true {
+            if stateKeeper?.isOnMacOsOriPadOnMacOs() == true {
                 self.sendDownThenUpEvent(scrolling: false, moving: false, firstDown: false, secondDown: false, thirdDown: true, fourthDown: false, fifthDown: false)
             } else {
                 self.contextMenuDetected = true

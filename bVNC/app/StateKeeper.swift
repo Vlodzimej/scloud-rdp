@@ -75,7 +75,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var data: UnsafeMutablePointer<UInt8>?
     var minScale: CGFloat = 0
     var macOs: Bool = false
-    
+    var iPadOnMacOs: Bool = false
+
     var topSpacing: CGFloat = bH
     var topButtonSpacing: CGFloat = 0.0
     var leftSpacing: CGFloat = 0.0
@@ -245,10 +246,27 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    func isOnMacOs() -> Bool {
+        return self.macOs 
+    }
+    
+    func isiPadOnMacOs() -> Bool {
+        return self.iPadOnMacOs
+    }
+    
+    func isOnMacOsOriPadOnMacOs() -> Bool {
+        return isOnMacOs() || isiPadOnMacOs()
+    }
+    
     override init() {
         #if targetEnvironment(macCatalyst)
             self.macOs = true
         #endif
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                self.iPadOnMacOs = true
+            }
+        }
         // Load settings for current connection
         interfaceButtons = [:]
         keyboardButtons = [:]
@@ -265,7 +283,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.keyboardLayouts = Utils.getResourcePathContents(path:
                                         Constants.LAYOUT_PATH)
         }
-        self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.macOs)
+        self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.isOnMacOs())
     }
     
     func connectIfConsoleFileFound(_ destPath: String) -> Bool {
@@ -1014,7 +1032,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.correctTopSpacingForOrientation()
                 let leftSpacing = self.leftSpacing
                 let topSpacing = self.topSpacing
-                if self.macOs == true {
+                if self.isOnMacOsOriPadOnMacOs() == true {
                     log_callback_str(message: "Running on MacOS")
                     self.imageView = ShortTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
                 } else {

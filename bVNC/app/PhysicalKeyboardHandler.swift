@@ -215,13 +215,13 @@ class PhysicalKeyboardHandler {
         pressesEnded(presses, with: event)
     }
     
-    func isiOSAppOnMac() -> Bool {
-        return self.stateKeeper?.macOs ?? false
+    fileprivate func isOnMacOs() -> (Bool) {
+        return (stateKeeper?.isOnMacOs() ?? false)
     }
     
     var keyCommands: [UIKeyCommand]? {
         // Do not capture all permutations on iOS devices because it causes soft keyboard lag
-        if !isiOSAppOnMac() || self.commands != nil {
+        if !isOnMacOs() || self.commands != nil {
             return self.commands
         }
 

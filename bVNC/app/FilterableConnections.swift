@@ -348,7 +348,8 @@ class FilterableConnections : ObservableObject {
     }
     
     func selectedConnectionAllowsZoomingOrPanning(setting: String) -> Bool {
-        return Bool(selectedConnection[setting] ?? "true") ?? true && !(self.stateKeeper?.macOs ?? false)
+        return Bool(selectedConnection[setting] ?? "true") ?? true
+                && !(self.stateKeeper?.isOnMacOsOriPadOnMacOs() ?? false)
     }
     
     func saveImage(image: UIImage) -> Bool {
