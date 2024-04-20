@@ -215,17 +215,17 @@ class PhysicalKeyboardHandler {
         pressesEnded(presses, with: event)
     }
     
-    fileprivate func isOnMacOs() -> (Bool) {
-        return (stateKeeper?.isOnMacOs() ?? false)
+    fileprivate func captureModifierPermutations() -> (Bool) {
+        return (stateKeeper?.isiPadOnMacOs() ?? false)
     }
     
     var keyCommands: [UIKeyCommand]? {
         // Do not capture all permutations on iOS devices because it causes soft keyboard lag
-        if !isOnMacOs() || self.commands != nil {
+        if !captureModifierPermutations() || self.commands != nil {
             return self.commands
         }
 
-        var chars = (0...255).map({String(UnicodeScalar($0))})
+        var chars = (0...127).map({String(UnicodeScalar($0))})
         // This implementation is able to send a single Start/Super key command, but
         // causes stray Start/Super key to be sent when Command-Tabbing away from the app.
         // adding "" to chars enables this behavior.
