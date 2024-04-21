@@ -1,8 +1,20 @@
 diff --git a/client/iOS/CMakeLists.txt b/client/iOS/CMakeLists.txt
-index 4970cee08..f3f2029b2 100644
+index 4970cee082..2204af59c7 100644
 --- a/client/iOS/CMakeLists.txt
 +++ b/client/iOS/CMakeLists.txt
-@@ -130,3 +130,14 @@ set(${MODULE_PREFIX}_LIBS ${${MODULE_PREFIX}_LIBS} winpr freerdp)
+@@ -81,9 +81,10 @@ find_library(COREGRAPHICS_FRAMEWORK CoreGraphics)
+ find_library(SECURITY_FRAMEWORK Security)
+ find_library(UIKIT_FRAMEWORK UIKit)
+ find_library(SYSTEMCONFIGURATION_FRAMEWORK SystemConfiguration)
++find_package(ZLIB)
+ 
+ mark_as_advanced(FOUNDATION_FRAMEWORK COREGRAPHICS_FRAMEWORK SECURITY_FRAMEWORK UIKIT_FRAMEWORK SYSTEMCONFIGURATION_FRAMEWORK)
+-set(EXTRA_LIBS ${FOUNDATION_FRAMEWORK} ${COREGRAPHICS_FRAMEWORK} ${SECURITY_FRAMEWORK} ${UIKIT_FRAMEWORK} ${SYSTEMCONFIGURATION_FRAMEWORK})
++set(EXTRA_LIBS ${FOUNDATION_FRAMEWORK} ${COREGRAPHICS_FRAMEWORK} ${SECURITY_FRAMEWORK} ${UIKIT_FRAMEWORK} ${SYSTEMCONFIGURATION_FRAMEWORK} ZLIB::ZLIB)
+ 
+ set(${MODULE_NAME}_RESOURCES ${IOS_CLIENT_RESOURCES_XIBS})
+ set(${MODULE_NAME}_RESOURCES ${${MODULE_NAME}_RESOURCES} ${IOS_CLIENT_RESOURCES_PNGS})
+@@ -130,3 +131,14 @@ set(${MODULE_PREFIX}_LIBS ${${MODULE_PREFIX}_LIBS} winpr freerdp)
  target_link_libraries(${MODULE_NAME} ${${MODULE_PREFIX}_LIBS})
  
  set_property(TARGET ${MODULE_NAME} PROPERTY FOLDER "Client/iOS")
@@ -18,7 +30,7 @@ index 4970cee08..f3f2029b2 100644
 +
 +target_link_libraries(${MODULE_NAME}Lib ${${MODULE_PREFIX}_LIBS})
 diff --git a/client/iOS/Controllers/AboutController.h b/client/iOS/Controllers/AboutController.h
-index 7af340c74..2315c3b6f 100644
+index 7af340c74e..2315c3b6f9 100644
 --- a/client/iOS/Controllers/AboutController.h
 +++ b/client/iOS/Controllers/AboutController.h
 @@ -10,10 +10,17 @@
@@ -40,7 +52,7 @@ index 7af340c74..2315c3b6f 100644
  
  @end
 diff --git a/client/iOS/Controllers/AboutController.m b/client/iOS/Controllers/AboutController.m
-index 1d7f8a2ad..efae52f50 100644
+index 1d7f8a2ad8..efae52f50f 100644
 --- a/client/iOS/Controllers/AboutController.m
 +++ b/client/iOS/Controllers/AboutController.m
 @@ -45,6 +45,7 @@ - (void)dealloc
@@ -91,7 +103,7 @@ index 1d7f8a2ad..efae52f50 100644
  
  @end
 diff --git a/client/iOS/Controllers/HelpController.h b/client/iOS/Controllers/HelpController.h
-index 9e7b93341..d4651b55a 100644
+index 9e7b933413..d4651b55a8 100644
 --- a/client/iOS/Controllers/HelpController.h
 +++ b/client/iOS/Controllers/HelpController.h
 @@ -10,8 +10,14 @@
@@ -110,7 +122,7 @@ index 9e7b93341..d4651b55a 100644
 +#endif
  @end
 diff --git a/client/iOS/Controllers/HelpController.m b/client/iOS/Controllers/HelpController.m
-index 7ea97c799..08360072a 100644
+index 7ea97c799a..08360072a9 100644
 --- a/client/iOS/Controllers/HelpController.m
 +++ b/client/iOS/Controllers/HelpController.m
 @@ -34,6 +34,7 @@ - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -143,7 +155,7 @@ index 7ea97c799..08360072a 100644
  
  // Override to allow orientations other than the default portrait orientation.
 diff --git a/winpr/include/winpr/wtsapi.h b/winpr/include/winpr/wtsapi.h
-index 21d86fef7..0cbb69ba3 100644
+index 21d86fef7f..0cbb69ba3f 100644
 --- a/winpr/include/winpr/wtsapi.h
 +++ b/winpr/include/winpr/wtsapi.h
 @@ -247,7 +247,11 @@ typedef BOOL VCAPITYPE VIRTUALCHANNELENTRYEX(PCHANNEL_ENTRY_POINTS_EX pEntryPoin
@@ -159,7 +171,7 @@ index 21d86fef7..0cbb69ba3 100644
  #endif
  
 diff --git a/winpr/include/winpr/wtypes.h.in b/winpr/include/winpr/wtypes.h.in
-index d2648908b..4fb05cc35 100644
+index d2648908b6..4fb05cc352 100644
 --- a/winpr/include/winpr/wtypes.h.in
 +++ b/winpr/include/winpr/wtypes.h.in
 @@ -298,7 +298,9 @@ typedef struct _LUID

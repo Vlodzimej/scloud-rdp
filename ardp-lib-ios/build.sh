@@ -12,6 +12,8 @@ then
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
+  patch -p1 < ../freerdp_audio_redirect.patch
+  patch -p1 < ../freerdp_fix_for_set_format.patch
 
   # iOS Build
   cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
@@ -21,12 +23,15 @@ then
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
       -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero/build/dist/ios_universal) \
       -DWITH_JPEG=ON \
+      -DWITH_FFMPEG=ON \
+      -DWITH_IOSAUDIO=ON \
+      -DWITH_ZLIB=ON \
       -G"Unix Makefiles"
-
-  sed -i.bak1 "s/IPHONEOS_DEPLOYMENT_TARGET = 10.0/IPHONEOS_DEPLOYMENT_TARGET = 11.0/g" FreeRDP.xcodeproj/project.pbxproj
+  popd
 fi
+
 pushd FreeRDP_iphoneos
-cmake --build . -j 12
+cmake --build . -j 12 -v
 popd
 
 if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_maccatalyst
@@ -38,10 +43,12 @@ then
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
+  patch -p1 < ../freerdp_audio_redirect.patch
+  patch -p1 < ../freerdp_fix_for_set_format.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-  cmake \
-      -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
+
+  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
       -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
       -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
       -DCMAKE_OSX_ARCHITECTURES="x86_64" \
@@ -51,11 +58,14 @@ then
       -DWITH_NEON=OFF \
       -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero/build/dist/ios_universal) \
       -DWITH_JPEG=ON \
+      -DWITH_FFMPEG=OFF \
+      -DWITH_IOSAUDIO=ON \
+      -DWITH_ZLIB=ON \
       -G"Unix Makefiles"
   popd
 fi
 pushd FreeRDP_maccatalyst
-cmake --build . -j 12
+cmake --build . -j 12 -v
 popd
 
 # Build one library with all architectures
