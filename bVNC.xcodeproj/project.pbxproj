@@ -47,6 +47,11 @@
 		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
 		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
 		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
+		16C51EFC2BD573E800565BB6 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C51EF82BD573E800565BB6 /* libavcodec.a */; };
+		16C51EFD2BD573E800565BB6 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C51EF92BD573E800565BB6 /* libavformat.a */; };
+		16C51EFE2BD573E800565BB6 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C51EFA2BD573E800565BB6 /* libavutil.a */; };
+		16C51EFF2BD573E800565BB6 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C51EFB2BD573E800565BB6 /* libavfilter.a */; };
+		16C51F012BD5743800565BB6 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16C51F002BD5743800565BB6 /* libswresample.a */; };
 		16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
@@ -379,6 +384,11 @@
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
+		16C51EF82BD573E800565BB6 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = bVNC.xcodeproj/ios_universal/lib/libavcodec.a; sourceTree = "<group>"; };
+		16C51EF92BD573E800565BB6 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = bVNC.xcodeproj/ios_universal/lib/libavformat.a; sourceTree = "<group>"; };
+		16C51EFA2BD573E800565BB6 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = bVNC.xcodeproj/ios_universal/lib/libavutil.a; sourceTree = "<group>"; };
+		16C51EFB2BD573E800565BB6 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = bVNC.xcodeproj/ios_universal/lib/libavfilter.a; sourceTree = "<group>"; };
+		16C51F002BD5743800565BB6 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = bVNC.xcodeproj/ios_universal/lib/libswresample.a; sourceTree = "<group>"; };
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
@@ -1329,6 +1339,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16C51F012BD5743800565BB6 /* libswresample.a in Frameworks */,
+				16C51EFC2BD573E800565BB6 /* libavcodec.a in Frameworks */,
+				16C51EFD2BD573E800565BB6 /* libavformat.a in Frameworks */,
+				16C51EFE2BD573E800565BB6 /* libavutil.a in Frameworks */,
+				16C51EFF2BD573E800565BB6 /* libavfilter.a in Frameworks */,
 				1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AFB391DB274F58B60059F91F /* superlib.a in Frameworks */,
 				AFB391DA274F586D0059F91F /* duperlib.a in Frameworks */,
@@ -1527,6 +1542,11 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				16C51F002BD5743800565BB6 /* libswresample.a */,
+				16C51EF82BD573E800565BB6 /* libavcodec.a */,
+				16C51EFB2BD573E800565BB6 /* libavfilter.a */,
+				16C51EF92BD573E800565BB6 /* libavformat.a */,
+				16C51EFA2BD573E800565BB6 /* libavutil.a */,
 				1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */,
 				AFB391D9274F586D0059F91F /* duperlib.a */,
 				AFB391D7274F585C0059F91F /* libz.tbd */,
