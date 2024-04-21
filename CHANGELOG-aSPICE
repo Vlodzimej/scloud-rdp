@@ -1,3 +1,6 @@
+33
+  - Bugfix for on-screen disconnect button showing on certain Macs
+  - Fix for .vv filew not opening on certain Macs
 32
   - Bugfix for keyboard input on certain Macs
 31

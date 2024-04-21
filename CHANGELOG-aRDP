@@ -1,3 +1,7 @@
+33
+  - Bugfix for on-screen disconnect button showing on certain Macs
+  - Audio Support
+  - Jpeg compression support
 32
   - Bugfix for keyboard input on certain Macs
 30
