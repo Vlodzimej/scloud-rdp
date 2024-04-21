@@ -765,14 +765,14 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func overrideInterfaceButtonDataForMacOs() {
-        if self.macOs {
+        if self.isOnMacOsOriPadOnMacOs() {
             self.interfaceButtonData["keyboardButton"]?["lx"] = CGFloat(0.001)
             self.interfaceButtonData["keyboardButton"]?["ly"] = CGFloat(0.001)
         }
     }
     
     func overrideButtonVisibilityForMacOs() {
-        if self.macOs {
+        if self.isOnMacOsOriPadOnMacOs() {
             self.interfaceButtons["disconnectButton"]?.isHidden = true
             self.interfaceButtons["keyboardButton"]?.isHidden = false
         }
