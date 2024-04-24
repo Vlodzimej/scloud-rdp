@@ -12,7 +12,6 @@ then
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
-  patch -p1 < ../freerdp_audio_redirect.patch
   patch -p1 < ../freerdp_fix_for_set_format.patch
 
   # iOS Build
@@ -43,7 +42,6 @@ then
   patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
-  patch -p1 < ../freerdp_audio_redirect.patch
   patch -p1 < ../freerdp_fix_for_set_format.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
