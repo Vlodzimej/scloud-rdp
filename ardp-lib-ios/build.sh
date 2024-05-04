@@ -1,6 +1,9 @@
 #!/bin/bash -e
 
+#FREERDP_VERSION=a383740a2f85fa93f390181e5ea4bd1458b34051 # Head of stable-2.0 as of 2024-04-24
+#CMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake
 FREERDP_VERSION=0a6b999c5655d07b5653894b24a840c08838e304
+CMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake
 
 brew install coreutils
 
@@ -9,13 +12,14 @@ then
   pushd FreeRDP_iphoneos
   git checkout ${FREERDP_VERSION}
 
-  patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
+  patch -p1 < ../freerdp_ifreerdp_library.patch
+  patch -p1 < ../freerdp_mac_catalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
   patch -p1 < ../freerdp_fix_for_set_format.patch
 
   # iOS Build
-  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
+  cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
       -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
       -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
@@ -25,6 +29,7 @@ then
       -DWITH_FFMPEG=ON \
       -DWITH_IOSAUDIO=ON \
       -DWITH_ZLIB=ON \
+      -DPLATFORM=OS64 \
       -G"Unix Makefiles"
   popd
 fi
@@ -39,14 +44,15 @@ then
   pushd FreeRDP_maccatalyst
   git checkout ${FREERDP_VERSION}
 
-  patch -p1 < ../ifreerdp_library_and_maccatalyst.patch
+  patch -p1 < ../freerdp_ifreerdp_library.patch
+  patch -p1 < ../freerdp_mac_catalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
   patch -p1 < ../freerdp_fix_for_set_format.patch
 
   MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-  cmake -DCMAKE_TOOLCHAIN_FILE=cmake/iOSToolchain.cmake \
+  cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
       -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2/openssl_iphoneos) \
       -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
       -DCMAKE_OSX_ARCHITECTURES="x86_64" \
@@ -59,6 +65,7 @@ then
       -DWITH_FFMPEG=OFF \
       -DWITH_IOSAUDIO=ON \
       -DWITH_ZLIB=ON \
+      -DPLATFORM=MAC_CATALYST \
       -G"Unix Makefiles"
   popd
 fi

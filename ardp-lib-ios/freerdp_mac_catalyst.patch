@@ -1,0 +1,155 @@
+diff --git a/client/iOS/Controllers/AboutController.h b/client/iOS/Controllers/AboutController.h
+index 7af340c74..2315c3b6f 100644
+--- a/client/iOS/Controllers/AboutController.h
++++ b/client/iOS/Controllers/AboutController.h
+@@ -10,10 +10,17 @@
+ 
+ #import <UIKit/UIKit.h>
+ 
++#if TARGET_OS_MACCATALYST
++@interface AboutController : UIViewController
++{
++	NSString *last_link_clicked;
++}
++#else
+ @interface AboutController : UIViewController <UIWebViewDelegate>
+ {
+ 	NSString *last_link_clicked;
+ 	UIWebView *webView;
+ }
++#endif
+ 
+ @end
+diff --git a/client/iOS/Controllers/AboutController.m b/client/iOS/Controllers/AboutController.m
+index 1d7f8a2ad..efae52f50 100644
+--- a/client/iOS/Controllers/AboutController.m
++++ b/client/iOS/Controllers/AboutController.m
+@@ -45,6 +45,7 @@ - (void)dealloc
+ // Implement loadView to create a view hierarchy programmatically, without using a nib.
+ - (void)loadView
+ {
++#if !(TARGET_OS_MACCATALYST)
+ 	webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
+ 	[webView
+ 	    setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
+@@ -52,6 +53,7 @@ - (void)loadView
+ 	[webView setDelegate:self];
+ 	[webView setDataDetectorTypes:UIDataDetectorTypeNone];
+ 	[self setView:webView];
++#endif
+ }
+ 
+ // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+@@ -67,6 +69,7 @@ - (void)viewDidLoad
+ 	                  encoding:NSUTF8StringEncoding
+ 	                     error:nil] autorelease];
+ 
++#if !(TARGET_OS_MACCATALYST)
+ 	[webView
+ 	    loadHTMLString:[NSString stringWithFormat:htmlString, TSXAppFullVersion(),
+ 	                                              [[UIDevice currentDevice] systemName],
+@@ -74,6 +77,7 @@ - (void)viewDidLoad
+ 	                                              [[UIDevice currentDevice] model]]
+ 	           baseURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] bundlePath]
+ 	                                              stringByAppendingPathComponent:@"about_page"]]];
++#endif
+ }
+ 
+ // Override to allow orientations other than the default portrait orientation.
+@@ -82,6 +86,7 @@ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interface
+ 	return YES;
+ }
+ 
++#if !(TARGET_OS_MACCATALYST)
+ #pragma mark -
+ #pragma mark UIWebView callbacks
+ - (BOOL)webView:(UIWebView *)webView
+@@ -116,5 +121,6 @@ - (BOOL)webView:(UIWebView *)webView
+ 	}
+ 	return YES;
+ }
++#endif
+ 
+ @end
+diff --git a/client/iOS/Controllers/HelpController.h b/client/iOS/Controllers/HelpController.h
+index 9e7b93341..d4651b55a 100644
+--- a/client/iOS/Controllers/HelpController.h
++++ b/client/iOS/Controllers/HelpController.h
+@@ -10,8 +10,14 @@
+ 
+ #import <UIKit/UIKit.h>
+ 
++#if TARGET_OS_MACCATALYST
++@interface HelpController : UIViewController
++{
++}
++#else
+ @interface HelpController : UIViewController <UIWebViewDelegate>
+ {
+ 	UIWebView *webView;
+ }
++#endif
+ @end
+diff --git a/client/iOS/Controllers/HelpController.m b/client/iOS/Controllers/HelpController.m
+index 7ea97c799..08360072a 100644
+--- a/client/iOS/Controllers/HelpController.m
++++ b/client/iOS/Controllers/HelpController.m
+@@ -34,6 +34,7 @@ - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+ // Implement loadView to create a view hierarchy programmatically, without using a nib.
+ - (void)loadView
+ {
++#if !(TARGET_OS_MACCATALYST)
+ 	webView = [[[UIWebView alloc] initWithFrame:CGRectZero] autorelease];
+ 	[webView
+ 	    setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
+@@ -41,6 +42,7 @@ - (void)loadView
+ 	[webView setDelegate:self];
+ 	[webView setDataDetectorTypes:UIDataDetectorTypeNone];
+ 	[self setView:webView];
++#endif
+ }
+ 
+ - (void)dealloc
+@@ -61,10 +63,12 @@ - (void)viewDidLoad
+ 	                  encoding:NSUTF8StringEncoding
+ 	                     error:nil] autorelease];
+ 
++#if !(TARGET_OS_MACCATALYST)
+ 	[webView
+ 	    loadHTMLString:htmlString
+ 	           baseURL:[NSURL fileURLWithPath:[[[NSBundle mainBundle] bundlePath]
+ 	                                              stringByAppendingPathComponent:@"help_page"]]];
++#endif
+ }
+ 
+ // Override to allow orientations other than the default portrait orientation.
+diff --git a/winpr/include/winpr/wtsapi.h b/winpr/include/winpr/wtsapi.h
+index 21d86fef7..0cbb69ba3 100644
+--- a/winpr/include/winpr/wtsapi.h
++++ b/winpr/include/winpr/wtsapi.h
+@@ -247,7 +247,11 @@ typedef BOOL VCAPITYPE VIRTUALCHANNELENTRYEX(PCHANNEL_ENTRY_POINTS_EX pEntryPoin
+ 
+ typedef VIRTUALCHANNELENTRYEX* PVIRTUALCHANNELENTRYEX;
+ 
++#if !(TARGET_OS_MACCATALYST)
+ typedef HRESULT(VCAPITYPE* PFNVCAPIGETINSTANCE)(REFIID refiid, PULONG pNumObjs, PVOID* ppObjArray);
++#else
++typedef HRESULT(VCAPITYPE* PFNVCAPIGETINSTANCE)(IID* refiid, PULONG pNumObjs, PVOID* ppObjArray);
++#endif
+ 
+ #endif
+ 
+diff --git a/winpr/include/winpr/wtypes.h.in b/winpr/include/winpr/wtypes.h.in
+index c868095b5..7bbdc8305 100644
+--- a/winpr/include/winpr/wtypes.h.in
++++ b/winpr/include/winpr/wtypes.h.in
+@@ -299,7 +299,9 @@ typedef struct _LUID
+ } LUID, *PLUID;
+ 
+ typedef GUID IID;
++#if !(TARGET_OS_MACCATALYST)
+ typedef IID* REFIID;
++#endif
+ 
+ #ifdef UNICODE
+ #define _T(x)	L ## x
