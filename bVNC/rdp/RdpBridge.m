@@ -225,6 +225,44 @@ void *initializeRdp(int i, int width, int height,
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
     instance->context->settings->AudioPlayback = enable_sound;
+
+    instance->context->settings->JpegCodec = TRUE;
+    instance->context->settings->JpegQuality = 70;
+
+    instance->context->settings->DisableWallpaper = TRUE;
+    instance->context->settings->AllowFontSmoothing = TRUE;
+    instance->context->settings->AllowDesktopComposition = TRUE;
+    instance->context->settings->DisableFullWindowDrag = TRUE;
+    instance->context->settings->DisableMenuAnims = TRUE;
+    instance->context->settings->DisableThemes = TRUE;
+    instance->context->settings->NetworkAutoDetect = TRUE;
+     
+    instance->context->settings->AsyncChannels = TRUE;
+
+    instance->context->settings->GfxAVC444 = TRUE;
+    instance->context->settings->GfxH264 = TRUE;
+
+    /*
+     //instance->context->settings->ChannelCount = 2; // Breaks xrdp connections
+     //instance->context->settings->SupportDynamicChannels = TRUE;
+
+     instance->context->settings->GfxSmallCache = TRUE;
+     instance->context->settings->GfxThinClient = TRUE;
+     instance->context->settings->GfxSendQoeAck = TRUE;
+     instance->context->settings->GfxProgressiveV2 = TRUE;
+     instance->context->settings->GfxProgressive = TRUE;
+     instance->context->settings->GfxAVC444v2 = TRUE;
+
+     instance->context->settings->RemoteFxCodec = TRUE;
+     instance->context->settings->SupportGraphicsPipeline = FALSE; // TRUE Breaks connections to Windows
+     
+     //instance->context->settings->AsyncUpdate = TRUE; // may be freezing connection
+     
+     //instance->context->settings->CompressionLevel = 1; // Slower
+     //instance->context->settings->CompressionEnabled = TRUE; // Slower
+
+     */
+    
     
     instance->context->settings->GatewayEnabled = gateway_enabled;
     instance->context->settings->GatewayHostname = gateway_addr;
@@ -232,6 +270,9 @@ void *initializeRdp(int i, int width, int height,
     instance->context->settings->GatewayUsername = gateway_user;
     instance->context->settings->GatewayPassword = gateway_pass;
     instance->context->settings->GatewayDomain = gateway_domain;
+
+    //FIXME: Implement dedicated RDP Gateway authentication support via:
+    //instance->GatewayAuthenticate
     
     printf("Requesting initial remote resolution to be %dx%d\n", width, height);
     instance->context->settings->DesktopWidth = width;
@@ -245,11 +286,6 @@ void *initializeRdp(int i, int width, int height,
     instance->update->EndPaint = end_paint;
     mfInfo *mfi = MFI_FROM_INSTANCE(instance);
     mfi->context->ServerCutText = serverCutText;
-
-    //FIXME: Implement RDP gateway support
-    //instance->context->settings->GatewayUsername
-    //instance->context->settings->GatewayPassword
-    //instance->GatewayAuthenticate
 
     instance->PostDisconnect = ios_post_disconnect;
     instance->PostConnect = post_connect;
