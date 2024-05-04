@@ -52,7 +52,7 @@ class SpiceSession: RemoteSession {
         let certAuthority = currentConnection["certAuthority"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
                                 Constants.DEFAULT_LAYOUT
-        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "false")!
+        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "true")!
 
         let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
 
