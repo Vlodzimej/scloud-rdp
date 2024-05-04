@@ -35,6 +35,7 @@ struct AddOrEditConnectionPage : View {
     @State var saveCredentials: Bool
     @State var id: String
     @State var textHeight: CGFloat = 20
+    @State var audioEnabled: Bool
     @State var allowZooming: Bool
     @State var allowPanning: Bool
     @State var showSshTunnelSettings: Bool
@@ -68,6 +69,7 @@ struct AddOrEditConnectionPage : View {
             "password": self.passwordText.trimmingCharacters(in: .whitespacesAndNewlines),
             "saveCredentials": String(self.saveCredentials),
             "id": self.id.trimmingCharacters(in: .whitespacesAndNewlines),
+            "audioEnabled": String(self.audioEnabled),
             "allowZooming": String(self.allowZooming),
             "allowPanning": String(self.allowPanning),
             "showSshTunnelSettings": String(self.showSshTunnelSettings),
@@ -387,6 +389,15 @@ struct AddOrEditConnectionPage : View {
         }.padding()
     }
     
+    fileprivate func getSoundOptionsFields() -> some View {
+        return VStack {
+            Text("SOUND_SETTINGS_LABEL").font(.title)
+            Toggle(isOn: $audioEnabled) {
+                Text("SOUND_ENABLED_LABEL").font(.title)
+            }
+        }.padding()
+    }
+    
     fileprivate func getConnectionEditBody() -> some View {
         return ScrollView {
             VStack {
@@ -402,6 +413,9 @@ struct AddOrEditConnectionPage : View {
                 }
                 getLayoutAndCertFields()
                 getUiOptionsFields()
+                if (Utils.isRdp() || Utils.isSpice()) {
+                    getSoundOptionsFields()
+                }
             }
         }
     }

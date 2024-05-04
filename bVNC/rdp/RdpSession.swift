@@ -120,7 +120,8 @@ class RdpSession: RemoteSession {
         let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
                                 Constants.DEFAULT_LAYOUT
-        let gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false") ?? false
+        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "false")!
+        let gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false")!
         var gatewayAddress = currentConnection["rdpGatewayAddress"] ?? ""
         var gatewayPort = currentConnection["rdpGatewayPort"] ?? ""
 
@@ -212,7 +213,7 @@ class RdpSession: RemoteSession {
                     self.getUnsafeMutablePointerAsString(domain),
                     self.getUnsafeMutablePointerAsString(user),
                     self.getUnsafeMutablePointerAsString(pass),
-                    true,
+                    audioEnabled,
                     self.getUnsafeMutablePointerAsString(gatewayAddress),
                     self.getUnsafeMutablePointerAsString(gatewayPort),
                     self.getUnsafeMutablePointerAsString(gatewayDomain),

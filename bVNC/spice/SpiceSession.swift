@@ -52,6 +52,8 @@ class SpiceSession: RemoteSession {
         let certAuthority = currentConnection["certAuthority"] ?? ""
         let keyboardLayout = currentConnection["keyboardLayout"] ??
                                 Constants.DEFAULT_LAYOUT
+        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "false")!
+
         let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
 
         let sshForwardPort = String(arc4random_uniform(30000) + 30000)
@@ -133,7 +135,7 @@ class SpiceSession: RemoteSession {
                                                 clipboard_callback,
                                                 yes_no_dialog_callback,
                                                 UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
-                                                true)
+                                                audioEnabled)
                 } else {
                     log_callback_str(message: "\(#function): Connecting with selected connection parameters")
                     self.cl = initializeSpice(Int32(self.instance),
@@ -152,7 +154,7 @@ class SpiceSession: RemoteSession {
                                               UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
                                               UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
                                               UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
-                                              true)
+                                              audioEnabled)
                 }
                 if self.cl != nil {
                     self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl

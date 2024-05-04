@@ -107,3 +107,5 @@ Email us directly at support@morpheusly.com for help.
 "RDP_GATEWAY_PASSWORD_LABEL" = "Gateway Password";
 
 "VERSION_LABEL" = "Version";
+"SOUND_SETTINGS_LABEL" = "Sound Settings";
+"SOUND_ENABLED_LABEL" = "Remote Sound Enabled";
