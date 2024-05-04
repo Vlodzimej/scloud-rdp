@@ -1,8 +1,220 @@
 diff --git a/channels/rdpsnd/client/ios/rdpsnd_ios.c b/channels/rdpsnd/client/ios/rdpsnd_ios.c
-index 29feb97cc..56ab92955 100644
+index 29feb97cc..6dfd1909d 100644
 --- a/channels/rdpsnd/client/ios/rdpsnd_ios.c
 +++ b/channels/rdpsnd/client/ios/rdpsnd_ios.c
-@@ -285,7 +285,7 @@ UINT freerdp_rdpsnd_client_subsystem_entry(PFREERDP_RDPSND_DEVICE_ENTRY_POINTS p
+@@ -52,10 +52,12 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+                                      const AudioTimeStamp __unused* inTimeStamp, UInt32 inBusNumber,
+                                      UInt32 __unused inNumberFrames, AudioBufferList* ioData)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_render_cb called");
+ 	unsigned int i;
+ 
+ 	if (inBusNumber != 0)
+ 	{
++		WLog_ERR(TAG, "rdpsnd_ios_render_cb non-zero inBusNumber, returning");
+ 		return noErr;
+ 	}
+ 
+@@ -69,6 +71,7 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+ 
+ 		if (buffer != NULL && available_bytes > 0)
+ 		{
++			WLog_DBG(TAG, "rdpsnd_ios_render_cb buffer not null, available_bytes: %d", available_bytes);
+ 			const int bytes_to_copy = MIN((int32_t)target_buffer->mDataByteSize, available_bytes);
+ 			memcpy(target_buffer->mData, buffer, bytes_to_copy);
+ 			target_buffer->mDataByteSize = bytes_to_copy;
+@@ -76,9 +79,7 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+ 		}
+ 		else
+ 		{
+-			target_buffer->mDataByteSize = 0;
+-			AudioOutputUnitStop(p->audio_unit);
+-			p->is_playing = 0;
++			WLog_DBG(TAG, "rdpsnd_ios_render_cb buffer NULL or available_bytes 0");
+ 		}
+ 	}
+ 
+@@ -87,38 +88,44 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+ 
+ static BOOL rdpsnd_ios_format_supported(rdpsndDevicePlugin* __unused device, AUDIO_FORMAT* format)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_format_supported called");
+ 	if (format->wFormatTag == WAVE_FORMAT_PCM)
+ 	{
+ 		return 1;
+ 	}
+-
++	WLog_DBG(TAG, "rdpsnd_ios_format_supported unsupported format %d", format->wFormatTag);
+ 	return 0;
+ }
+ 
+ static BOOL rdpsnd_ios_set_format(rdpsndDevicePlugin* __unused device,
+                                   AUDIO_FORMAT* __unused format, int __unused latency)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_set_format called");
+ 	return TRUE;
+ }
+ 
+ static BOOL rdpsnd_ios_set_volume(rdpsndDevicePlugin* __unused device, UINT32 __unused value)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_set_volume called");
+ 	return TRUE;
+ }
+ 
+ static void rdpsnd_ios_start(rdpsndDevicePlugin* device)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_start called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 
+ 	/* If this device is not playing... */
+ 	if (!p->is_playing)
+ 	{
++		WLog_DBG(TAG, "rdpsnd_ios_start not playing, checking available_bytes");
+ 		/* Start the device. */
+ 		int32_t available_bytes = 0;
+ 		TPCircularBufferTail(&p->buffer, &available_bytes);
+ 
+ 		if (available_bytes > 0)
+ 		{
++			WLog_DBG(TAG, "rdpsnd_ios_start available_bytes: %d, starting playback", available_bytes);
+ 			p->is_playing = 1;
+ 			AudioOutputUnitStart(p->audio_unit);
+ 		}
+@@ -127,11 +134,13 @@ static void rdpsnd_ios_start(rdpsndDevicePlugin* device)
+ 
+ static void rdpsnd_ios_stop(rdpsndDevicePlugin* __unused device)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_stop called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 
+ 	/* If the device is playing... */
+ 	if (p->is_playing)
+ 	{
++		WLog_DBG(TAG, "rdpsnd_ios_stop is_playing was true, stopping playback");
+ 		/* Stop the device. */
+ 		AudioOutputUnitStop(p->audio_unit);
+ 		p->is_playing = 0;
+@@ -142,22 +151,28 @@ static void rdpsnd_ios_stop(rdpsndDevicePlugin* __unused device)
+ 
+ static UINT rdpsnd_ios_play(rdpsndDevicePlugin* device, BYTE* data, int size)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_play called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 	const BOOL ok = TPCircularBufferProduceBytes(&p->buffer, data, size);
+ 
+-	if (!ok)
++	if (!ok) {
++		WLog_ERR(TAG, "rdpsnd_ios_play TPCircularBufferProduceBytes failed");
+ 		return 0;
++	}
+ 
+ 	rdpsnd_ios_start(device);
+-	return 10; /* TODO: Get real latencry in [ms] */
++	return 100; /* TODO: Get real latency in [ms] */
+ }
+ 
+ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, int __unused latency)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_open called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 
+-	if (p->is_opened)
++	if (p->is_opened) {
++		WLog_DBG(TAG, "rdpsnd_ios_open is_opened already true, returning success");
+ 		return TRUE;
++	}
+ 
+ 	/* Find the output audio unit. */
+ 	AudioComponentDescription desc;
+@@ -168,14 +183,18 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 	desc.componentFlagsMask = 0;
+ 	AudioComponent audioComponent = AudioComponentFindNext(NULL, &desc);
+ 
+-	if (audioComponent == NULL)
++	if (audioComponent == NULL) {
++		WLog_ERR(TAG, "rdpsnd_ios_open is_opened audioComponent is NULL, returning failure");
+ 		return FALSE;
++	}
+ 
+ 	/* Open the audio unit. */
+ 	OSStatus status = AudioComponentInstanceNew(audioComponent, &p->audio_unit);
+ 
+-	if (status != 0)
++	if (status != 0) {
++		WLog_ERR(TAG, "rdpsnd_ios_open AudioComponentInstanceNew failed, returning failure");
+ 		return FALSE;
++	}
+ 
+ 	/* Set the format for the AudioUnit. */
+ 	AudioStreamBasicDescription audioFormat = { 0 };
+@@ -192,6 +211,7 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 
+ 	if (status != 0)
+ 	{
++		WLog_ERR(TAG, "rdpsnd_ios_open AudioUnitSetProperty for StreamFormat failed, returning failure");
+ 		AudioComponentInstanceDispose(p->audio_unit);
+ 		p->audio_unit = NULL;
+ 		return FALSE;
+@@ -207,6 +227,7 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 
+ 	if (status != 0)
+ 	{
++		WLog_ERR(TAG, "rdpsnd_ios_open AudioUnitSetProperty for SetRenderCallback failed, returning failure");
+ 		AudioComponentInstanceDispose(p->audio_unit);
+ 		p->audio_unit = NULL;
+ 		return FALSE;
+@@ -217,6 +238,7 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 
+ 	if (status != 0)
+ 	{
++		WLog_ERR(TAG, "rdpsnd_ios_open AudioUnitInitialize failed, returning failure");
+ 		AudioComponentInstanceDispose(p->audio_unit);
+ 		p->audio_unit = NULL;
+ 		return FALSE;
+@@ -227,6 +249,7 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 
+ 	if (!ok)
+ 	{
++		WLog_ERR(TAG, "rdpsnd_ios_open TPCircularBufferInit failed, returning failure");
+ 		AudioUnitUninitialize(p->audio_unit);
+ 		AudioComponentInstanceDispose(p->audio_unit);
+ 		p->audio_unit = NULL;
+@@ -239,6 +262,7 @@ static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, in
+ 
+ static void rdpsnd_ios_close(rdpsndDevicePlugin* device)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_close called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 	/* Make sure the device is stopped. */
+ 	rdpsnd_ios_stop(device);
+@@ -246,6 +270,7 @@ static void rdpsnd_ios_close(rdpsndDevicePlugin* device)
+ 	/* If the device is open... */
+ 	if (p->is_opened)
+ 	{
++		WLog_DBG(TAG, "rdpsnd_ios_close is_opened true, closing");
+ 		/* Close the device. */
+ 		AudioUnitUninitialize(p->audio_unit);
+ 		AudioComponentInstanceDispose(p->audio_unit);
+@@ -258,6 +283,7 @@ static void rdpsnd_ios_close(rdpsndDevicePlugin* device)
+ 
+ static void rdpsnd_ios_free(rdpsndDevicePlugin* device)
+ {
++	WLog_DBG(TAG, "rdpsnd_ios_free called");
+ 	rdpsndIOSPlugin* p = THIS(device);
+ 	/* Ensure the device is closed. */
+ 	rdpsnd_ios_close(device);
+@@ -278,14 +304,17 @@ static void rdpsnd_ios_free(rdpsndDevicePlugin* device)
+  */
+ UINT freerdp_rdpsnd_client_subsystem_entry(PFREERDP_RDPSND_DEVICE_ENTRY_POINTS pEntryPoints)
+ {
++	WLog_DBG(TAG, "freerdp_rdpsnd_client_subsystem_entry called");
+ 	rdpsndIOSPlugin* p = (rdpsndIOSPlugin*)calloc(1, sizeof(rdpsndIOSPlugin));
+ 
+-	if (!p)
++	if (!p) {
++		WLog_ERR(TAG, "freerdp_rdpsnd_client_subsystem_entry out of memory");
+ 		return CHANNEL_RC_NO_MEMORY;
++	}
  
  	p->device.Open = rdpsnd_ios_open;
  	p->device.FormatSupported = rdpsnd_ios_format_supported;
