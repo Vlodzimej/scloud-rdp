@@ -288,7 +288,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
         //let timeDiff = timeNow - self.timeLast
         if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
             synced(self) {
-                log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
+                //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
                 stateKeeper?.remoteSession?.pointerEvent(
                     totalX: Float32(self.width), totalY: Float32(self.height),
@@ -377,7 +377,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        log_callback_str(message: #function)
+        //log_callback_str(message: #function)
         super.touchesMoved(touches, with: event)
         for touch in touches {
             if let touchView = touch.view {
@@ -473,7 +473,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
     }
     
     @objc func handleHovering(_ sender: UIHoverGestureRecognizer) {
-        log_callback_str(message: "\(#function) scrolling: false, moving: true, firstDown: \(self.firstDown), secondDown: \(self.secondDown), thirdDown: \(self.thirdDown), fourthDown: false, fifthDown: false, inLeftDragging: \(self.inLeftDragging)")
+        //log_callback_str(message: "\(#function) scrolling: false, moving: true, firstDown: \(self.firstDown), secondDown: \(self.secondDown), thirdDown: \(self.thirdDown), fourthDown: false, fifthDown: false, inLeftDragging: \(self.inLeftDragging)")
         sendPointerEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
         if let touchView = sender.view {
             self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
