@@ -3402,7 +3402,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 33;
+				MARKETING_VERSION = 34;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -3465,7 +3465,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 33;
+				MARKETING_VERSION = 34;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
