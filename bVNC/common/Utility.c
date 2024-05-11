@@ -43,9 +43,9 @@ char* cast_uint8_to_cchar(uint8_t* input) {
 void client_log(const char *format, ...) {
     if (client_log_callback != NULL) {
         va_list args;
-        static char message_buffer[128];
+        static char message_buffer[16384];
         va_start(args, format);
-        vsnprintf(message_buffer, 127, format, args);
+        vsnprintf(message_buffer, 16383, format, args);
         client_log_callback((int8_t*)message_buffer);
         va_end(args);
     }
