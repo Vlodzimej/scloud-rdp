@@ -25,6 +25,9 @@
 #include "RemoteBridge.h"
 #include "Utility.h"
 
+// libfreerdp gives us exit code 0 for authentication failures to Ubuntu 22.04
+#define FREERDP_ERROR_CONNECT_AUTH_FAILURE_UBUNTU_REMOTE_DESKTOP 0
+
 static CGContextRef reallocate_buffer(mfInfo *mfi) {
     rdpGdi *gdi = mfi->instance->context->gdi;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -116,6 +119,7 @@ static void ios_post_disconnect(freerdp *instance) {
     gdi_free(instance);
     
     switch(last_error) {
+        case FREERDP_ERROR_CONNECT_AUTH_FAILURE_UBUNTU_REMOTE_DESKTOP:
         case FREERDP_ERROR_CONNECT_LOGON_FAILURE:
         case FREERDP_ERROR_AUTHENTICATION_FAILED:
         case FREERDP_ERROR_CONNECT_WRONG_PASSWORD:
