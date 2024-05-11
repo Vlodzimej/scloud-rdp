@@ -1,3 +1,7 @@
+34
+  - Bugfix for wrong error displayed when SSH authentication occurs
+  - Bugfix for nil clipboard crash
+  - Updated libssh2 to 1.11.0 and libssl to 3.x.x
 33
   - Bugfix for on-screen disconnect button showing on certain Macs
   - Audio Support
