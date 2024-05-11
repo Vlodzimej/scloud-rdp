@@ -21,6 +21,11 @@ import UIKit
 import SwiftUI
 
 class SpiceSession: RemoteSession {
+    var consoleFile: String = ""
+    var tlsPort: String = ""
+    var certSubject: String = ""
+    var certAuthority: String = ""
+    var certAuthorityFile: String = ""
 
     class var SPICE_MOUSE_BUTTON_MOVE: Int { return 0 }
     class var SPICE_MOUSE_BUTTON_LEFT: Int { return 1 }
@@ -37,94 +42,16 @@ class SpiceSession: RemoteSession {
         SPICE_MOUSE_BUTTON_DOWN: false,
     ]
     
-    override func connect(currentConnection: [String:String]) {
-        let consoleFile = currentConnection["consoleFile"] ?? ""
-        let sshAddress = currentConnection["sshAddress"] ?? ""
-        let sshPort = currentConnection["sshPort"] ?? ""
-        let sshUser = currentConnection["sshUser"] ?? ""
-        let sshPass = currentConnection["sshPass"] ?? ""
-        var port = currentConnection["port"] ?? ""
-        let tlsPort = currentConnection["tlsPort"] ?? ""
-        var address = currentConnection["address"] ?? ""
-        let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
-        let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
-        let certSubject = currentConnection["certSubject"] ?? ""
-        let certAuthority = currentConnection["certAuthority"] ?? ""
-        let keyboardLayout = currentConnection["keyboardLayout"] ??
-                                Constants.DEFAULT_LAYOUT
-        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "true")!
-
-        let certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
-
-        let sshForwardPort = String(arc4random_uniform(30000) + 30000)
-        layoutMap = Utils.loadStringOfIntArraysToMap(
-                        source: Utils.getBundleFileContents(
-                            name: Constants.LAYOUT_PATH + keyboardLayout))
-        
-        if sshAddress != "" {
-            self.stateKeeper.sshTunnelingStarted = false
-            Background {
-                self.stateKeeper.sshForwardingLock.unlock()
-                self.stateKeeper.sshForwardingLock.lock()
-                self.stateKeeper.sshTunnelingStarted = true
-                log_callback_str(message: "Setting up SSH forwarding")
-                
-                // FIXME: Forward to whichever port is not -1 preferring TLS port
-                // FIXME: Forward to both ports if both are not -1
-                let forwardToAddress = address
-                let forwardToPort = port
-                address = "127.0.0.1"
-                port = sshForwardPort
-                setupSshPortForward(
-                    Int32(self.stateKeeper.currInst),
-                    failure_callback_swift,
-                    ssh_forward_success,
-                    ssh_forward_failure,
-                    log_callback,
-                    yes_no_dialog_callback,
-                    UnsafeMutablePointer<Int8>(mutating: (sshAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshUser as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPass as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPassphrase as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
-            }
-        }
-        
-        let pass = currentConnection["password"] ?? ""
-
+    fileprivate func startSpiceSessionOnBackgroundThread() {
         Background {
-            // Make it highly probable the SSH thread would obtain the lock before the SPICE one does.
             self.stateKeeper.yesNoDialogLock.unlock()
             var title = ""
             var continueConnecting = true
-            if sshAddress != "" {
-                // Wait until the SSH tunnel lock is obtained by the thread which sets up ssh tunneling.
-                while self.stateKeeper.sshTunnelingStarted != true {
-                    log_callback_str(message: "Waiting for SSH thread to start work")
-                    sleep(1)
-                }
-                log_callback_str(message: "Waiting for SSH forwarding to complete successfully")
-                // Wait for SSH Tunnel to be established for 60 seconds
-                continueConnecting = self.stateKeeper.sshForwardingLock.lock(before: Date(timeIntervalSinceNow: 60))
-                if !continueConnecting {
-                    title = "SSH_TUNNEL_TIMEOUT_TITLE"
-                } else if (self.stateKeeper.sshForwardingStatus != true) {
-                    title = "SSH_TUNNEL_CONNECTION_FAILURE_TITLE"
-                    continueConnecting = false
-                } else {
-                    log_callback_str(message: "SSH Tunnel indicated to be successful")
-                    self.stateKeeper.sshForwardingLock.unlock()
-                }
-            }
+            self.determineSshTunnelingStatusIfEnabled(sshAddress: self.sshAddress, &continueConnecting, &title)
+            
             if continueConnecting {
-                log_callback_str(message: "Connecting SPICE Session in the background...")
-                if (consoleFile != "") {
-                    log_callback_str(message: "\(#function): Connecting with console file \(consoleFile)")
+                if (self.consoleFile != "") {
+                    log_callback_str(message: "\(#function): Connecting SPICE session with console file \(self.consoleFile)")
                     self.cl = initializeSpiceVv(Int32(self.instance),
                                                 Int32(self.width),
                                                 Int32(self.height),
@@ -134,10 +61,10 @@ class SpiceSession: RemoteSession {
                                                 log_callback,
                                                 clipboard_callback,
                                                 yes_no_dialog_callback,
-                                                UnsafeMutablePointer<Int8>(mutating: (consoleFile as NSString).utf8String),
-                                                audioEnabled)
+                                                UnsafeMutablePointer<Int8>(mutating: (self.consoleFile as NSString).utf8String),
+                                                self.audioEnabled)
                 } else {
-                    log_callback_str(message: "\(#function): Connecting with selected connection parameters")
+                    log_callback_str(message: "Connecting SPICE Session to \(self.address), port: \(self.port), tlsPort: \(self.tlsPort)")
                     self.cl = initializeSpice(Int32(self.instance),
                                               Int32(self.width),
                                               Int32(self.height),
@@ -147,14 +74,14 @@ class SpiceSession: RemoteSession {
                                               log_callback,
                                               clipboard_callback,
                                               yes_no_dialog_callback,
-                                              UnsafeMutablePointer<Int8>(mutating: (address as NSString).utf8String),
-                                              UnsafeMutablePointer<Int8>(mutating: (port as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (self.address as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (self.port as NSString).utf8String),
                                               nil,
-                                              UnsafeMutablePointer<Int8>(mutating: (tlsPort as NSString).utf8String),
-                                              UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String),
-                                              UnsafeMutablePointer<Int8>(mutating: (certAuthorityFile as NSString).utf8String),
-                                              UnsafeMutablePointer<Int8>(mutating: (certSubject as NSString).utf8String),
-                                              audioEnabled)
+                                              UnsafeMutablePointer<Int8>(mutating: (self.tlsPort as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (self.pass as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (self.certAuthorityFile as NSString).utf8String),
+                                              UnsafeMutablePointer<Int8>(mutating: (self.certSubject as NSString).utf8String),
+                                              self.audioEnabled)
                 }
                 if self.cl != nil {
                     self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
@@ -166,6 +93,47 @@ class SpiceSession: RemoteSession {
                 failure_callback_str(instance: self.instance, title: title)
             }
         }
+    }
+    
+    override func connect(currentConnection: [String:String]) {
+        self.consoleFile = currentConnection["consoleFile"] ?? ""
+        self.sshAddress = currentConnection["sshAddress"] ?? ""
+        self.sshPort = currentConnection["sshPort"] ?? ""
+        self.sshUser = currentConnection["sshUser"] ?? ""
+        self.sshPass = currentConnection["sshPass"] ?? ""
+        self.port = currentConnection["port"] ?? ""
+        self.tlsPort = currentConnection["tlsPort"] ?? ""
+        self.address = currentConnection["address"] ?? ""
+        self.sshPassphrase = currentConnection["sshPassphrase"] ?? ""
+        self.sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
+        self.certSubject = currentConnection["certSubject"] ?? ""
+        self.certAuthority = currentConnection["certAuthority"] ?? ""
+        self.keyboardLayout = currentConnection["keyboardLayout"] ??
+                                Constants.DEFAULT_LAYOUT
+        self.audioEnabled = Bool(currentConnection["audioEnabled"] ?? "true")!
+
+        self.certAuthorityFile = Utils.writeToFile(name: "ca.crt", text: certAuthority)
+
+        self.sshForwardPort = String(arc4random_uniform(30000) + 30000)
+        
+        layoutMap = Utils.loadStringOfIntArraysToMap(
+                        source: Utils.getBundleFileContents(
+                            name: Constants.LAYOUT_PATH + keyboardLayout))
+        
+        if sshAddress != "" {
+            self.stateKeeper.sshTunnelingStarted = false
+            // FIXME: Forward to whichever port is not -1 preferring TLS port
+            // FIXME: Forward to both ports if both are not -1
+            let forwardToAddress = self.address
+            let forwardToPort = self.port
+            self.address = "127.0.0.1"
+            self.port = self.sshForwardPort
+            startSshForwardingOnBackgroundThread(forwardToAddress, forwardToPort)
+        }
+        
+        self.pass = currentConnection["password"] ?? ""
+
+        startSpiceSessionOnBackgroundThread()
     }
         
     override func disconnect() {

@@ -61,7 +61,7 @@ func unlock_write_tls_callback_swift(instance: Int32) -> Void {
 }
 
 func ssh_forward_success() -> Void {
-    log_callback_str(message: "SSH library is telling us we can proceed with the VNC connection")
+    log_callback_str(message: "SSH library is telling it succeeded to set up SSH forwarding")
     globalStateKeeper?.sshForwardingStatus = true
     globalStateKeeper?.sshForwardingLock.unlock()
 }
@@ -139,11 +139,13 @@ func try_converting_utf_codepoints(clipboard: UnsafeMutablePointer<UInt8>?, size
 
 func utf8_clipboard_callback(clipboard: UnsafeMutablePointer<UInt8>?, size: Int) -> Void {
     log_callback_str(message: "utf8_clipboard_callback")
-    var clipboardContents = String(validatingUTF8: cast_uint8_to_cchar(clipboard!))
-    if clipboardContents == nil {
-        clipboardContents = try_converting_utf_codepoints(clipboard: clipboard, size: size)
+    if clipboard != nil {
+        var clipboardContents = String(validatingUTF8: cast_uint8_to_cchar(clipboard!))
+        if clipboardContents == nil {
+            clipboardContents = try_converting_utf_codepoints(clipboard: clipboard, size: size)
+        }
+        UIPasteboard.general.string = clipboardContents
     }
-    UIPasteboard.general.string = clipboardContents
 }
 
 
@@ -279,6 +281,22 @@ class RemoteSession {
     var width: Int
     var height: Int
     var cl: UnsafeMutableRawPointer?
+
+    var sshAddress: String = ""
+    var sshPort: String = ""
+    var sshUser: String = ""
+    var sshPass: String = ""
+    var port: String = ""
+    var address: String = ""
+    var sshPassphrase: String = ""
+    var sshPrivateKey: String = ""
+    var keyboardLayout: String = ""
+    var audioEnabled: Bool = false
+    var sshForwardPort: String = ""
+
+    var domain: String = ""
+    var user: String = ""
+    var pass: String = ""
     
     class var LCONTROL: Int { return 29 }
     class var RCONTROL: Int { return 285 }
@@ -469,5 +487,59 @@ class RemoteSession {
         let clientClipboardContentsPtr = UnsafeMutablePointer<Int8>(mutating: (clipboardStr as NSString).utf8String)
         let length = clipboardStr.lengthOfBytes(using: .utf8)
         clientCutText(stateKeeper.getCurrentInstance(), clientClipboardContentsPtr, Int32(length))
+    }
+    
+    func waitForSshThreadToObtainLock() -> Bool {
+        // Wait until the SSH tunnel lock is obtained by the thread which sets up ssh tunneling.
+        while self.stateKeeper.sshTunnelingStarted != true {
+            log_callback_str(message: "Waiting for SSH thread to start work")
+            sleep(1)
+        }
+        log_callback_str(message: "Waiting for SSH forwarding to complete by trying to obtain its lock")
+        // Wait for SSH Tunnel to be established for 60 seconds
+        let continueConnecting = self.stateKeeper.sshForwardingLock.lock(before: Date(timeIntervalSinceNow: 60))
+        return continueConnecting
+    }
+    
+    func determineSshTunnelingStatusIfEnabled(sshAddress: String, _ continueConnecting: inout Bool, _ title: inout String) {
+        if sshAddress != "" {
+            continueConnecting = self.waitForSshThreadToObtainLock()
+            if !continueConnecting {
+                title = "SSH_TUNNEL_TIMEOUT_TITLE"
+            } else if (!self.stateKeeper.sshForwardingStatus) {
+                title = "SSH_TUNNEL_CONNECTION_FAILURE_TITLE"
+                continueConnecting = false
+            } else {
+                log_callback_str(message: "SSH Tunnel indicated to be successful")
+                self.stateKeeper.sshForwardingLock.unlock()
+            }
+        }
+    }
+    
+    func startSshForwardingOnBackgroundThread(_ forwardToAddress: String, _ forwardToPort: String) {
+        Background {
+            self.stateKeeper.sshForwardingLock.unlock()
+            self.stateKeeper.sshForwardingLock.lock()
+            self.stateKeeper.sshTunnelingStarted = true
+            log_callback_str(message: "Setting up SSH forwarding from \(self.address):\(self.port)")
+            log_callback_str(message: "Setting up SSH forwarding to \(forwardToAddress):\(forwardToPort)")
+            setupSshPortForward(
+                Int32(self.stateKeeper.currInst),
+                failure_callback_swift,
+                ssh_forward_success,
+                ssh_forward_failure,
+                log_callback,
+                yes_no_dialog_callback,
+                UnsafeMutablePointer<Int8>(mutating: (self.sshAddress as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshPort as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshUser as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshPass as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshPassphrase as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshPrivateKey as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (self.sshForwardPort as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
+                UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
+        }
     }
 }

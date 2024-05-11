@@ -22,80 +22,17 @@ import SwiftUI
 
 
 class VncSession: RemoteSession {
-    override func connect(currentConnection: [String:String]) {
-        let sshAddress = currentConnection["sshAddress"] ?? ""
-        let sshPort = currentConnection["sshPort"] ?? ""
-        let sshUser = currentConnection["sshUser"] ?? ""
-        let sshPass = currentConnection["sshPass"] ?? ""
-        let vncPort = currentConnection["port"] ?? ""
-        let vncAddress = currentConnection["address"] ?? ""
-        let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
-        let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
-
-        let sshForwardPort = String(arc4random_uniform(30000) + 30000)
-        
-        var addressAndPort = vncAddress + ":" + vncPort
-
-        if sshAddress != "" {
-            self.stateKeeper.sshTunnelingStarted = false
-            Background {
-                self.stateKeeper.sshForwardingLock.unlock()
-                self.stateKeeper.sshForwardingLock.lock()
-                self.stateKeeper.sshTunnelingStarted = true
-                log_callback_str(message: "Setting up SSH forwarding")
-                setupSshPortForward(
-                    Int32(self.stateKeeper.currInst),
-                    failure_callback_swift,
-                    ssh_forward_success,
-                    ssh_forward_failure,
-                    log_callback,
-                    yes_no_dialog_callback,
-                    UnsafeMutablePointer<Int8>(mutating: (sshAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshUser as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPass as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPassphrase as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (vncAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (vncPort as NSString).utf8String))
-            }
-            addressAndPort = "127.0.0.1" + ":" + sshForwardPort
-        }
-        
-        let user = currentConnection["username"] ?? ""
-        let pass = currentConnection["password"] ?? ""
-        // TODO: Write out CA to a file if keeping it
-        //let cert = currentConnection["cert"] ?? ""
-
+    
+    fileprivate func startVncSessionOnBackgroundThread() {        
         Background {
             // Make it highly probable the SSH thread would obtain the lock before the VNC one does.
             self.stateKeeper.yesNoDialogLock.unlock()
             var title = ""
             var continueConnecting = true
-            if sshAddress != "" {
-                // Wait until the SSH tunnel lock is obtained by the thread which sets up ssh tunneling.
-                while self.stateKeeper.sshTunnelingStarted != true {
-                    log_callback_str(message: "Waiting for SSH thread to start work")
-                    sleep(1)
-                }
-                log_callback_str(message: "Waiting for SSH forwarding to complete successfully")
-                // Wait for SSH Tunnel to be established for 60 seconds
-                continueConnecting = self.stateKeeper.sshForwardingLock.lock(before: Date(timeIntervalSinceNow: 60))
-                if !continueConnecting {
-                    title = "SSH_TUNNEL_TIMEOUT_TITLE"
-                } else if (self.stateKeeper.sshForwardingStatus != true) {
-                    title = "SSH_TUNNEL_CONNECTION_FAILURE_TITLE"
-                    continueConnecting = false
-                } else {
-                    log_callback_str(message: "SSH Tunnel indicated to be successful")
-                    self.stateKeeper.sshForwardingLock.unlock()
-                }
-            }
+            self.determineSshTunnelingStatusIfEnabled(sshAddress: self.sshAddress, &continueConnecting, &title)
             if continueConnecting {
-                log_callback_str(message: "Connecting VNC Session in the background...")
-                
+                let addressAndPort = self.address + ":" + self.port
+                log_callback_str(message: "Connecting VNC Session to \(addressAndPort)")
                 self.cl = initializeVnc(
                     Int32(self.instance),
                     update_callback,
@@ -107,8 +44,8 @@ class VncSession: RemoteSession {
                     unlock_write_tls_callback_swift,
                     yes_no_dialog_callback,
                     UnsafeMutablePointer<Int8>(mutating: (addressAndPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (user as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (pass as NSString).utf8String)
+                    UnsafeMutablePointer<Int8>(mutating: (self.user as NSString).utf8String),
+                    UnsafeMutablePointer<Int8>(mutating: (self.pass as NSString).utf8String)
                 )
                 if self.cl != nil {
                     self.stateKeeper.setCurrentInstance(inst: self.cl)
@@ -121,6 +58,33 @@ class VncSession: RemoteSession {
                 failure_callback_str(instance: self.instance, title: title)
             }
         }
+    }
+    
+    override func connect(currentConnection: [String:String]) {
+        self.sshAddress = currentConnection["sshAddress"] ?? ""
+        self.sshPort = currentConnection["sshPort"] ?? ""
+        self.sshUser = currentConnection["sshUser"] ?? ""
+        self.sshPass = currentConnection["sshPass"] ?? ""
+        self.port = currentConnection["port"] ?? ""
+        self.address = currentConnection["address"] ?? ""
+        self.sshPassphrase = currentConnection["sshPassphrase"] ?? ""
+        self.sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
+
+        self.sshForwardPort = String(arc4random_uniform(30000) + 30000)
+        
+        if sshAddress != "" {
+            self.stateKeeper.sshTunnelingStarted = false
+            let forwardToAddress = self.address
+            let forwardToPort = self.port
+            self.address = "127.0.0.1"
+            self.port = self.sshForwardPort
+            startSshForwardingOnBackgroundThread(forwardToAddress, forwardToPort)
+        }
+        
+        self.user = currentConnection["username"] ?? ""
+        self.pass = currentConnection["password"] ?? ""
+        
+        startVncSessionOnBackgroundThread()
     }
         
     override func disconnect() {

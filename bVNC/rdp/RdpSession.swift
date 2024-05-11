@@ -22,6 +22,13 @@ import SwiftUI
 
 
 class RdpSession: RemoteSession {
+    var gatewayEnabled: Bool = false
+    var gatewayAddress: String = ""
+    var gatewayPort: String = ""
+    var gatewayDomain: String = ""
+    var gatewayUser: String = ""
+    var gatewayPass: String = ""
+
     class var KBD_FLAGS_EXTENDED: Int { return 0x0100 }
     class var KBD_FLAGS_EXTENDED1: Int { return 0x0200 }
     class var KBD_FLAGS_DOWN: Int { return 0x4000 }
@@ -109,93 +116,30 @@ class RdpSession: RemoteSession {
         return gatewayEnabled ? sshForwardPort : gatewayPort
     }
     
-    override func connect(currentConnection: [String:String]) {
-        let sshAddress = currentConnection["sshAddress"] ?? ""
-        let sshPort = currentConnection["sshPort"] ?? ""
-        let sshUser = currentConnection["sshUser"] ?? ""
-        let sshPass = currentConnection["sshPass"] ?? ""
-        var port = currentConnection["port"] ?? ""
-        var address = currentConnection["address"] ?? ""
-        let sshPassphrase = currentConnection["sshPassphrase"] ?? ""
-        let sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
-        let keyboardLayout = currentConnection["keyboardLayout"] ??
-                                Constants.DEFAULT_LAYOUT
-        let audioEnabled = Bool(currentConnection["audioEnabled"] ?? "false")!
-        let gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false")!
-        var gatewayAddress = currentConnection["rdpGatewayAddress"] ?? ""
-        var gatewayPort = currentConnection["rdpGatewayPort"] ?? ""
-
-        let sshForwardPort = String(arc4random_uniform(30000) + 30000)
-        layoutMap = Utils.loadStringOfIntArraysToMap(
-                        source: Utils.getBundleFileContents(
-                            name: Constants.LAYOUT_PATH + keyboardLayout))
-        
-        if sshAddress != "" {
-            self.stateKeeper.sshTunnelingStarted = false
-            let forwardToAddress = getForwardToAddress(gatewayEnabled, gatewayAddress, address)
-            let forwardToPort = getForwardToPort(gatewayEnabled, gatewayPort, port)
-            address = getRdpServerAddress(gatewayEnabled, address)
-            port = getRdpServerPort(gatewayEnabled, port, sshForwardPort)
-            gatewayAddress = getRdpGatewayAddress(gatewayEnabled, gatewayAddress)
-            gatewayPort = getRdpGatewayPort(gatewayEnabled, sshForwardPort, gatewayPort)
-            Background {
-                self.stateKeeper.sshForwardingLock.unlock()
-                self.stateKeeper.sshForwardingLock.lock()
-                self.stateKeeper.sshTunnelingStarted = true
-                log_callback_str(message: "Setting up SSH forwarding to \(address):\(port)")
-                setupSshPortForward(
-                    Int32(self.stateKeeper.currInst),
-                    failure_callback_swift,
-                    ssh_forward_success,
-                    ssh_forward_failure,
-                    log_callback,
-                    yes_no_dialog_callback,
-                    UnsafeMutablePointer<Int8>(mutating: (sshAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshUser as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPass as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPassphrase as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshPrivateKey as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (sshForwardPort as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
+    fileprivate func connectRdpOrShowError(_ continueConnecting: Bool, _ errorTitle: inout String) {
+        if self.cl != nil {
+            self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
+            connectRdpInstance(self.cl)
+        } else {
+            if continueConnecting {
+                // The failure to initiate RDP connection was not due to SSH forwarding failure
+                errorTitle = "APP_MUST_EXIT_TITLE"
+                failure_callback_str(instance: self.instance, title: errorTitle, errorPage: "mustExitErrorMessage")
+            } else {
+                failure_callback_str(instance: self.instance, title: errorTitle)
             }
         }
-        
-        let domain = currentConnection["domain"] ?? ""
-        let user = currentConnection["username"] ?? ""
-        let pass = currentConnection["password"] ?? ""
-        let gatewayDomain = currentConnection["rdpGatewayDomain"] ?? ""
-        let gatewayUser = currentConnection["rdpGatewayUser"] ?? ""
-        let gatewayPass = currentConnection["rdpGatewayPass"] ?? ""
-
+    }
+    
+    fileprivate func startRdpSessionOnBackgroundThread() {
         Background {
-            // Make it highly probable the SSH thread would obtain the lock before the RDP one does.
             self.stateKeeper.yesNoDialogLock.unlock()
-            var title = ""
+            var errorTitle = ""
             var continueConnecting = true
-            if sshAddress != "" {
-                // Wait until the SSH tunnel lock is obtained by the thread which sets up ssh tunneling.
-                while self.stateKeeper.sshTunnelingStarted != true {
-                    log_callback_str(message: "Waiting for SSH thread to start work")
-                    sleep(1)
-                }
-                log_callback_str(message: "Waiting for SSH forwarding to complete successfully")
-                // Wait for SSH Tunnel to be established for 60 seconds
-                continueConnecting = self.stateKeeper.sshForwardingLock.lock(before: Date(timeIntervalSinceNow: 60))
-                if !continueConnecting {
-                    title = "SSH_TUNNEL_TIMEOUT_TITLE"
-                } else if (self.stateKeeper.sshForwardingStatus != true) {
-                    title = "SSH_TUNNEL_CONNECTION_FAILURE_TITLE"
-                    continueConnecting = false
-                } else {
-                    log_callback_str(message: "SSH Tunnel indicated to be successful")
-                    self.stateKeeper.sshForwardingLock.unlock()
-                }
-            }
+            self.determineSshTunnelingStatusIfEnabled(sshAddress: self.sshAddress, &continueConnecting, &errorTitle)
+            
             if continueConnecting {
-                log_callback_str(message: "Connecting RDP Session in the background...")
+                log_callback_str(message: "Connecting RDP Session to \(self.address):\(self.port)")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
                 
                 self.cl = initializeRdp(
@@ -208,29 +152,66 @@ class RdpSession: RemoteSession {
                     log_callback,
                     utf8_clipboard_callback,
                     yes_no_dialog_callback,
-                    self.getUnsafeMutablePointerAsString(address),
-                    self.getUnsafeMutablePointerAsString(port),
-                    self.getUnsafeMutablePointerAsString(domain),
-                    self.getUnsafeMutablePointerAsString(user),
-                    self.getUnsafeMutablePointerAsString(pass),
-                    audioEnabled,
-                    self.getUnsafeMutablePointerAsString(gatewayAddress),
-                    self.getUnsafeMutablePointerAsString(gatewayPort),
-                    self.getUnsafeMutablePointerAsString(gatewayDomain),
-                    self.getUnsafeMutablePointerAsString(gatewayUser),
-                    self.getUnsafeMutablePointerAsString(gatewayPass),
-                    gatewayEnabled
+                    self.getUnsafeMutablePointerAsString(self.address),
+                    self.getUnsafeMutablePointerAsString(self.port),
+                    self.getUnsafeMutablePointerAsString(self.domain),
+                    self.getUnsafeMutablePointerAsString(self.user),
+                    self.getUnsafeMutablePointerAsString(self.pass),
+                    self.audioEnabled,
+                    self.getUnsafeMutablePointerAsString(self.gatewayAddress),
+                    self.getUnsafeMutablePointerAsString(self.gatewayPort),
+                    self.getUnsafeMutablePointerAsString(self.gatewayDomain),
+                    self.getUnsafeMutablePointerAsString(self.gatewayUser),
+                    self.getUnsafeMutablePointerAsString(self.gatewayPass),
+                    self.gatewayEnabled
                 )
             }
-            if self.cl != nil {
-                self.stateKeeper.cl[self.stateKeeper.currInst] = self.cl
-                connectRdpInstance(self.cl)
-                // FIXME: Detect that connection has exited here and react accordingly.
-            } else {
-                title = "APP_MUST_EXIT_TITLE"
-                failure_callback_str(instance: self.instance, title: title, errorPage: "mustExitErrorMessage")
-            }
+            
+            self.connectRdpOrShowError(continueConnecting, &errorTitle)
         }
+    }
+    
+    override func connect(currentConnection: [String:String]) {
+        self.sshAddress = currentConnection["sshAddress"] ?? ""
+        self.sshPort = currentConnection["sshPort"] ?? ""
+        self.sshUser = currentConnection["sshUser"] ?? ""
+        self.sshPass = currentConnection["sshPass"] ?? ""
+        self.port = currentConnection["port"] ?? ""
+        self.address = currentConnection["address"] ?? ""
+        self.sshPassphrase = currentConnection["sshPassphrase"] ?? ""
+        self.sshPrivateKey = currentConnection["sshPrivateKey"] ?? ""
+        self.keyboardLayout = currentConnection["keyboardLayout"] ??
+                                Constants.DEFAULT_LAYOUT
+        self.audioEnabled = Bool(currentConnection["audioEnabled"] ?? "false")!
+        self.gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false")!
+        self.gatewayAddress = currentConnection["rdpGatewayAddress"] ?? ""
+        self.gatewayPort = currentConnection["rdpGatewayPort"] ?? ""
+
+        self.sshForwardPort = String(arc4random_uniform(30000) + 30000)
+        
+        self.layoutMap = Utils.loadStringOfIntArraysToMap(
+                        source: Utils.getBundleFileContents(
+                            name: Constants.LAYOUT_PATH + keyboardLayout))
+        
+        if sshAddress != "" {
+            self.stateKeeper.sshTunnelingStarted = false
+            let forwardToAddress = getForwardToAddress(gatewayEnabled, gatewayAddress, address)
+            let forwardToPort = getForwardToPort(gatewayEnabled, gatewayPort, port)
+            address = getRdpServerAddress(gatewayEnabled, address)
+            port = getRdpServerPort(gatewayEnabled, port, sshForwardPort)
+            gatewayAddress = getRdpGatewayAddress(gatewayEnabled, gatewayAddress)
+            gatewayPort = getRdpGatewayPort(gatewayEnabled, sshForwardPort, gatewayPort)
+            startSshForwardingOnBackgroundThread(forwardToAddress, forwardToPort)
+        }
+        
+        self.domain = currentConnection["domain"] ?? ""
+        self.user = currentConnection["username"] ?? ""
+        self.pass = currentConnection["password"] ?? ""
+        self.gatewayDomain = currentConnection["rdpGatewayDomain"] ?? ""
+        self.gatewayUser = currentConnection["rdpGatewayUser"] ?? ""
+        self.gatewayPass = currentConnection["rdpGatewayPass"] ?? ""
+
+        startRdpSessionOnBackgroundThread()
     }
         
     override func disconnect() {

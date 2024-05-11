@@ -132,7 +132,7 @@ void setupSshPortForward(int instance,
     strncpy(privKeyData, privKeyD, 16383);
 
     int res = startForwarding(instance, argc, argv, ssh_forward_success);
-    client_log ("SSH Result of SSH forwarding: %d\n", res);
+    client_log ("Result of SSH forwarding: %d\n", res);
     if (res == -2 || res == -4) {
         fail_callback(instance, (uint8_t*)"SSH_PASSWORD_AUTHENTICATION_FAILED_TITLE");
     } else if (res < 0) {
@@ -403,7 +403,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     shost = inet_ntoa(sin.sin_addr);
     sport = ntohs(sin.sin_port);
 
-    client_log("SSH Forwarding connection from %s:%d here to remote %s:%d\n",
+    client_log("SSH Forwarding connection from local: %s:%d to remote: %s:%d\n",
         shost, sport, remote_desthost, remote_destport);
 
     channel = libssh2_channel_direct_tcpip_ex(session, remote_desthost,
