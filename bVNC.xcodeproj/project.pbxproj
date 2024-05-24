@@ -26,6 +26,10 @@
 		162940672B8A31220086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		162940682B8A31220086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		162940692B8A31230086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
+		164F78E82C00EFEC0063B590 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
+		164F78E92C00F1020063B590 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8C75A3243AB47700AF0CF3 /* libssl.a */; };
+		164F78EA2C00F12C0063B590 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8C75A1243AB46100AF0CF3 /* libcrypto.a */; };
+		164F78ED2C01077E0063B590 /* spicelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 164F78EC2C01077E0063B590 /* spicelib.a */; };
 		165BCA192B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
 		165BCA1A2B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
 		165BCA1B2B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
@@ -77,7 +81,6 @@
 		AF043A3023B3DADB00C43ED7 /* bVNCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A2F23B3DADB00C43ED7 /* bVNCTests.swift */; };
 		AF043A3B23B3DADB00C43ED7 /* bVNCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */; };
 		AF05185026115F8F00B64D95 /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
-		AF05186026115FE900B64D95 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
 		AF09BD4D26126EC200D1A1D7 /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
 		AF25C1AB2440FB2400513BBD /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
 		AF291AD5242418A200DCD383 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
@@ -115,7 +118,6 @@
 		AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD9260180CF00DAA44B /* libcairo-script-interpreter.a */; };
 		AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC06260180D800DAA44B /* libcairo.a */; };
 		AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF2260180D500DAA44B /* libcharset.a */; };
-		AF44CDC4260197FA00DAA44B /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC14260180DC00DAA44B /* libcrypto.a */; };
 		AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC17260180DD00DAA44B /* libdv.a */; };
 		AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFB260180D600DAA44B /* libexpat.a */; };
 		AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0F260180DB00DAA44B /* libffi.a */; };
@@ -159,7 +161,6 @@
 		AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDB260180D000DAA44B /* libspeex.a */; };
 		AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE9260180D300DAA44B /* libspice-client-glib-2.0.a */; };
 		AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC02260180D700DAA44B /* libspiceglue.a */; };
-		AF44CDF6260197FA00DAA44B /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0B260180DA00DAA44B /* libssl.a */; };
 		AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF1260180D400DAA44B /* libtag.a */; };
 		AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD5260180CE00DAA44B /* libtheora.a */; };
 		AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC11260180DB00DAA44B /* libtheoradec.a */; };
@@ -377,6 +378,7 @@
 		1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 		1624FE0A29A5D90500FD54CA /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		162940622B8A30250086396F /* AddOrEditConnectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrEditConnectionPage.swift; sourceTree = "<group>"; };
+		164F78EC2C01077E0063B590 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = bVNC.xcodeproj/libs_combined/lib/spicelib.a; sourceTree = "<group>"; };
 		165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionListPage.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextView.swift; sourceTree = "<group>"; };
@@ -1180,8 +1182,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				164F78ED2C01077E0063B590 /* spicelib.a in Frameworks */,
+				164F78EA2C00F12C0063B590 /* libcrypto.a in Frameworks */,
+				164F78E92C00F1020063B590 /* libssl.a in Frameworks */,
+				164F78E82C00EFEC0063B590 /* libssh2.a in Frameworks */,
 				1602CFC82A674CB7004A9D89 /* libresolv.9.tbd in Frameworks */,
-				AF05186026115FE900B64D95 /* libssh2.a in Frameworks */,
 				AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */,
 				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
 				AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */,
@@ -1273,7 +1278,6 @@
 				AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */,
 				AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */,
 				AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */,
-				AF44CDC4260197FA00DAA44B /* libcrypto.a in Frameworks */,
 				AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */,
 				AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */,
 				AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */,
@@ -1317,7 +1321,6 @@
 				AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */,
 				AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */,
 				AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */,
-				AF44CDF6260197FA00DAA44B /* libssl.a in Frameworks */,
 				AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */,
 				AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */,
 				AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */,
@@ -1542,6 +1545,7 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				164F78EC2C01077E0063B590 /* spicelib.a */,
 				16C51F002BD5743800565BB6 /* libswresample.a */,
 				16C51EF82BD573E800565BB6 /* libavcodec.a */,
 				16C51EFB2BD573E800565BB6 /* libavfilter.a */,

@@ -325,6 +325,7 @@ rsync -avPL libvncserver/libs_combined/ bVNC.xcodeproj/libs_combined/
 # Make a super duper static lib out of all the other libs
 pushd bVNC.xcodeproj/libs_combined/lib
 /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a libvncclient.a
+/Library/Developer/CommandLineTools/usr/bin//libtool -static -o spicelib.a libcrypto.a libssh2.a libssl.a
 popd
 
 # Copy over SPICE layouts
