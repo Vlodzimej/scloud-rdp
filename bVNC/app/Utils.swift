@@ -132,4 +132,14 @@ struct Utils {
     static func getDefaultAddress() -> String {
         return "127.0.0.1"
     }
+
+    static func getTunneledProtocol() -> String {
+        var tunneledProtocol = "VNC"
+        if isRdp() {
+            tunneledProtocol = "RDP"
+        } else if isSpice() {
+            tunneledProtocol = "SPICE"
+        }
+        return tunneledProtocol
+    }
 }
