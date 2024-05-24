@@ -144,7 +144,6 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 {
     int rc, auth = AUTH_NONE;
     int return_code = 0;
-    long i;
     struct sockaddr_in sin;
     struct sockaddr_in6 addr;
     socklen_t sinlen;
@@ -155,7 +154,6 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     LIBSSH2_CHANNEL *channel = NULL;
     const char *shost;
     unsigned int sport;
-    fd_set fds;
     struct timeval tv;
     ssize_t len, wr;
     char buf[16384];
@@ -169,7 +167,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 
     err = WSAStartup(MAKEWORD(2, 0), &wsadata);
     if(err != 0) {
-        client_log("SSH WSAStartup failed with error: %d\n", err);
+        client_log("libssh2: SSH WSAStartup failed with error: %d\n", err);
         return 1;
     }
 #else
@@ -201,7 +199,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 
     rc = libssh2_init(0);
     if(rc) {
-        client_log("SSH libssh2 initialization failed (%d)\n", rc);
+        client_log("libssh2: SSH libssh2 initialization failed (%d)\n", rc);
         return 1;
     }
     
@@ -209,13 +207,13 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     
     int is_ipv6 = is_address_ipv6(server_ip);
     if (is_ipv6 == 1) {
-        client_log("SSH Address is ipv6, will try to connect over ipv6!\n");
+        client_log("libssh2: SSH Address is ipv6, will try to connect over ipv6!\n");
         sock = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
     } else if (is_ipv6 == 0) {
-        client_log("SSH Address is ipv4, will try to connect over ipv4!\n");
+        client_log("libssh2: SSH Address is ipv4, will try to connect over ipv4!\n");
         sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     } else {
-        client_log("SSH Unknown address format.!\n");
+        client_log("libssh2: SSH Unknown address format.!\n");
         return -1;
     }
     
@@ -227,28 +225,28 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 #else
     if(sock == -1) {
         perror("socket");
-        client_log("SSH Error %s open socket!\n", strerror(errno));
+        client_log("libssh2: SSH Error %s open socket!\n", strerror(errno));
         return -1;
     }
 #endif
     
     sockopt = 1;
-    client_log("SSH Setting socket options SO_NOSIGPIPE, TCP_NODELAY\n");
+    client_log("libssh2: SSH Setting socket options SO_NOSIGPIPE, TCP_NODELAY\n");
     setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &sockopt, sizeof(sockopt));
     setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &sockopt, sizeof(sockopt));
 
     if (is_ipv6 == 1) {
-        client_log("SSH Attempting ipv6 connection\n");
+        client_log("libssh2: SSH Attempting ipv6 connection\n");
         addr.sin6_family = AF_INET6;
         addr.sin6_port = htons(server_ssh_port);
         inet_pton(AF_INET6, server_ip, &addr.sin6_addr);
         addr.sin6_port = htons(server_ssh_port);
         if(connect(sock, (struct sockaddr *)&addr, sizeof(addr)) != 0) {
-            client_log("SSH Failed to connect over ipv6!\n");
+            client_log("libssh2: SSH Failed to connect over ipv6!\n");
             return -1;
         }
     } else {
-        client_log("SSH Attempting ipv4 connection\n");
+        client_log("libssh2: SSH Attempting ipv4 connection\n");
         sin.sin_family = AF_INET;
         sin.sin_addr.s_addr = inet_addr(server_ip);
         if(INADDR_NONE == sin.sin_addr.s_addr) {
@@ -258,26 +256,26 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
         sin.sin_port = htons(server_ssh_port);
         if(connect(sock, (struct sockaddr*)(&sin),
                    sizeof(struct sockaddr_in)) != 0) {
-            client_log("SSH Failed to connect over ipv4!\n");
+            client_log("libssh2: SSH Failed to connect over ipv4!\n");
             return -1;
         }
 	}
 
     /* Create a session instance */
-    client_log("SSH Creating a session instance\n");
+    client_log("libssh2: SSH Creating a session instance\n");
     session = libssh2_session_init();
     if(!session) {
-        client_log("SSH Could not initialize SSH session!\n");
+        client_log("libssh2: SSH Could not initialize SSH session!\n");
         return -1;
     }
 
     /* ... start it up. This will trade welcome banners, exchange keys,
      * and setup crypto, compression, and MAC layers
      */
-    client_log("SSH Session handshake\n");
+    client_log("libssh2: SSH Session handshake\n");
     rc = libssh2_session_handshake(session, sock);
     if(rc) {
-        client_log("SSH Error when starting up SSH session: %d\n", rc);
+        client_log("libssh2: SSH Error when starting up SSH session: %d\n", rc);
         return -1;
     }
 
@@ -288,18 +286,18 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
      */
     fingerprint_sha1 = libssh2_hostkey_hash(session, LIBSSH2_HOSTKEY_HASH_SHA1);
     char *fingerprint_sha1_str = get_human_readable_fingerprint((uint8_t *)fingerprint_sha1, 20);
-    client_log("SHA1 Fingerprint: %s\n", fingerprint_sha1_str);
+    client_log("libssh2: SHA1 Fingerprint: %s\n", fingerprint_sha1_str);
     fingerprint_sha256 = libssh2_hostkey_hash(session, LIBSSH2_HOSTKEY_HASH_SHA256);
     char *fingerprint_sha256_str = get_human_readable_fingerprint((uint8_t *)fingerprint_sha256, 32);
-    client_log("SHA256 Fingerprint: %s\n", fingerprint_sha256_str);
+    client_log("libssh2: SHA256 Fingerprint: %s\n", fingerprint_sha256_str);
     if (!ssh_certificate_verification_callback(instance, fingerprint_sha1_str, fingerprint_sha256_str)) {
-        client_log("SSH User did not accept SSH server certificate.\n");
+        client_log("libssh2: SSH User did not accept SSH server certificate.\n");
         goto shutdown;
     }
 
     /* check what authentication methods are available */
     userauthlist = libssh2_userauth_list(session, username, (uint)strlen(username));
-    client_log("SSH Authentication methods: %s\n", userauthlist);
+    client_log("libssh2: SSH Authentication methods: %s\n", userauthlist);
     if(strstr(userauthlist, "password"))
         auth |= AUTH_PASSWORD;
     if(strstr(userauthlist, "publickey"))
@@ -315,24 +313,24 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 
     if(auth & AUTH_PASSWORD && strcmp(password, "") != 0) {
         if(libssh2_userauth_password(session, username, password)) {
-            client_log("SSH Authentication by password failed.\n");
+            client_log("libssh2: SSH Authentication by password failed.\n");
             return_code = -2;
             goto shutdown;
         }
     }
     else if(auth & AUTH_PUBLICKEY && strcmp(privKeyData, "") != 0) {
         if(libssh2_userauth_publickey_frommemory(session, username, strlen(username), NULL, 0, privKeyData, strlen(privKeyData), privKeyPassphrase)) {
-            client_log("SSH Authentication by public key failed!\n");
+            client_log("libssh2: SSH Authentication by public key failed!\n");
             return_code = -3;
             goto shutdown;
         }
-        client_log("SSH Authentication by public key succeeded.\n");
+        client_log("libssh2: SSH Authentication by public key succeeded.\n");
     }
     else {
         if (strcmp(password, "") == 0 && strcmp(privKeyData, "") == 0) {
-            client_log("SSH Both password and private key are empty!\n");
+            client_log("libssh2: SSH Both password and private key are empty!\n");
         }
-        client_log("SSH No supported authentication methods found!\n");
+        client_log("libssh2: SSH No supported authentication methods found!\n");
         return_code = -4;
         goto shutdown;
     }
@@ -340,13 +338,13 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     listensock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 #ifdef WIN32
     if(listensock == INVALID_SOCKET) {
-        client_log("SSH Failed to open listen socket!\n");
+        client_log("libssh2: SSH Failed to open listen socket!\n");
         return -1;
     }
 #else
     if(listensock == -1) {
         perror("socket");
-        client_log("SSH Error %s opening listen socket!\n", strerror(errno));
+        client_log("libssh2: SSH Error %s opening listen socket!\n", strerror(errno));
         return -1;
     }
 #endif
@@ -357,7 +355,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     sin.sin_addr.s_addr = inet_addr(local_listenip);
     if(INADDR_NONE == sin.sin_addr.s_addr) {
         perror("inet_addr");
-        client_log("SSH Error %s initializing local_listenip %s or local_listenport %d\n",
+        client_log("libssh2: SSH Error %s initializing local_listenip %s or local_listenport %d\n",
                    strerror(errno), local_listenip, local_listenport);
         return_code = -5;
         goto shutdown;
@@ -366,7 +364,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     setsockopt(listensock, SOL_SOCKET, (SO_REUSEADDR|SO_NOSIGPIPE), &sockopt, sizeof(sockopt));
     setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &sockopt, sizeof(sockopt));
     if(-1 == bind(listensock, (struct sockaddr *)&sin, sinlen)) {
-        client_log("SSH Error %s binding listensock with local_listenip %s or local_listenport %d\n",
+        client_log("libssh2: SSH Error %s binding listensock with local_listenip %s or local_listenport %d\n",
                    strerror(errno), local_listenip, local_listenport);
         perror("bind");
         return_code = -6;
@@ -374,14 +372,14 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     }
     if(-1 == listen(listensock, 2)) {
         perror("listen");
-        client_log("SSH Error %s listening on local_listenip %s or local_listenport %d\n",
+        client_log("libssh2: SSH Error %s listening on local_listenip %s or local_listenport %d\n",
                    strerror(errno), local_listenip, local_listenport);
         return_code = -7;
         goto shutdown;
     }
 
     ssh_forward_success();
-    client_log("SSH Waiting for TCP connection on %s:%d...\n",
+    client_log("libssh2: SSH Waiting for TCP connection on %s:%d...\n",
                 inet_ntoa(sin.sin_addr), ntohs(sin.sin_port));
 
     forwardsock = accept(listensock, (struct sockaddr *)&sin, &sinlen);
@@ -394,7 +392,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
 #else
     if(forwardsock == -1) {
         perror("accept");
-        client_log("SSH Error %s accepting forward socket!\n", strerror(errno));
+        client_log("libssh2: SSH Error %s accepting forward socket!\n", strerror(errno));
         return_code = -9;
         goto shutdown;
     }
@@ -403,13 +401,13 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     shost = inet_ntoa(sin.sin_addr);
     sport = ntohs(sin.sin_port);
 
-    client_log("SSH Forwarding connection from local: %s:%d to remote: %s:%d\n",
+    client_log("libssh2: SSH Forwarding connection from local: %s:%d to remote: %s:%d\n",
         shost, sport, remote_desthost, remote_destport);
 
     channel = libssh2_channel_direct_tcpip_ex(session, remote_desthost,
         remote_destport, shost, sport);
     if(!channel) {
-        client_log("SSH Could not open the direct-tcpip channel!\n"
+        client_log("libssh2: SSH Could not open the direct-tcpip channel!\n"
                    "(Note that this can be a problem at the server!"
                    "Please review the server logs.)\n");
         return_code = -10;
@@ -420,37 +418,37 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     libssh2_session_set_blocking(session, 0);
 
     while(1) {
+        fd_set fds;
         FD_ZERO(&fds);
         FD_SET(forwardsock, &fds);
         tv.tv_sec = 0;
         tv.tv_usec = 100000;
-        rc = select(forwardsock + 1, &fds, NULL, NULL, &tv);
+        rc = select((int)(forwardsock + 1), &fds, NULL, NULL, &tv);
         if(-1 == rc) {
-            perror("select");
+            client_log("libssh2: failed to select().\n");
             goto shutdown;
         }
         if(rc && FD_ISSET(forwardsock, &fds)) {
             len = recv(forwardsock, buf, sizeof(buf), 0);
             if(len < 0) {
-                perror("read");
+                client_log("libssh2: failed to recv().\n");
                 goto shutdown;
             }
             else if(0 == len) {
-                client_log("The client at %s:%d disconnected!\n", shost,
-                    sport);
+                client_log("libssh2: The client at %s:%d disconnected!\n", shost, sport);
                 goto shutdown;
             }
             wr = 0;
             while(wr < len) {
-                i = libssh2_channel_write(channel, buf + wr, len - wr);
-                if(LIBSSH2_ERROR_EAGAIN == i) {
+                ssize_t nwritten = libssh2_channel_write(channel, buf + wr, len - wr);
+                if(nwritten == LIBSSH2_ERROR_EAGAIN) {
                     continue;
                 }
-                if(i < 0) {
-                    client_log("libssh2_channel_write: %d\n", i);
+                if(nwritten < 0) {
+                    client_log("libssh2_channel_write: %ld\n", (long)nwritten);
                     goto shutdown;
                 }
-                wr += i;
+                wr += nwritten;
             }
         }
         while(1) {
@@ -458,21 +456,20 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
             if(LIBSSH2_ERROR_EAGAIN == len)
                 break;
             else if(len < 0) {
-                client_log("libssh2_channel_read: %d", (int)len);
+                client_log("libssh2_channel_read: %ld", (long)len);
                 goto shutdown;
             }
             wr = 0;
             while(wr < len) {
-                i = send(forwardsock, buf + wr, len - wr, 0);
-                if(i <= 0) {
-                    perror("write");
+                ssize_t nsent = send(forwardsock, buf + wr, len - wr, 0);
+                if(nsent <= 0) {
+                    client_log("libssh2: failed to send().\n");
                     goto shutdown;
                 }
-                wr += i;
+                wr += nsent;
             }
             if(libssh2_channel_eof(channel)) {
-                client_log("The server at %s:%d disconnected!\n",
-                    remote_desthost, remote_destport);
+                client_log("libssh2: The server at %s:%d disconnected!\n", remote_desthost, remote_destport);
                 goto shutdown;
             }
         }
