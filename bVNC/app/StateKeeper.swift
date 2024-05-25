@@ -40,7 +40,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                             "com.iiordanov.freeaRDP", "com.iiordanov.aSPICE", "com.iiordanov.freeaSPICE"]
     // Enabled application for SSH tunneling
     let sshAppIds = ["com.iiordanov.bVNC", "com.iiordanov.freebVNC", "com.iiordanov.aRDP",
-                     "com.iiordanov.freeaRDP", "com.iiordanov.aSPICE", "com.iiordanov.freeaSPICE"]
+                     "com.iiordanov.freeaRDP"]
     
     var connections: FilterableConnections = FilterableConnections(stateKeeper: nil)
     var settings = UserDefaults.standard
