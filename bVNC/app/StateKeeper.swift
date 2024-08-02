@@ -602,12 +602,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
 
-    func keyboardWillShow(withSize keyboardSize: CGSize) {
-        log_callback_str(message: "Keyboard will be shown, height: \(self.keyboardHeight)")
-        if !self.allowPanning {
-            self.saveImageRect()
-        }
-        self.keyboardHeight = keyboardSize.height
+    func showOnScreenButtonsIfDrawing() {
         if isDrawing {
             self.createAndRepositionButtons()
             self.addButtons(buttons: self.keyboardButtons)
@@ -617,6 +612,15 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.addButtons(buttons: self.topButtons)
             self.setButtonsVisibility(buttons: self.topButtons, isHidden: false)
         }
+    }
+    
+    func keyboardWillShow(withSize keyboardSize: CGSize) {
+        log_callback_str(message: "Keyboard will be shown, height: \(self.keyboardHeight)")
+        if !self.allowPanning {
+            self.saveImageRect()
+        }
+        self.keyboardHeight = keyboardSize.height
+        showOnScreenButtonsIfDrawing()
     }
     
     func keyboardWillHide() {

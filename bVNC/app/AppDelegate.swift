@@ -56,6 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             builder.remove(menu: .window)
             builder.remove(menu: .view)
             
+            let showOnscreenKeysCommand = UICommand(title: "Show On-Screen Keys",
+                      action: #selector(showOnScreenKeys),
+                      discoverabilityTitle: "show on-screen keys")
             let disconnectCommand = UICommand(title: "Disconnect",
                       action: #selector(disconnect),
                       discoverabilityTitle: "disconnect")
@@ -63,9 +66,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                       action: #selector(quit),
                       discoverabilityTitle: "quit")
 
-            let actionsMenu = UIMenu(title: "Actions", image: nil, identifier: UIMenu.Identifier("actions"), children: [disconnectCommand, quitCommand])
+            let actionsMenu = UIMenu(title: "Actions", image: nil, identifier: UIMenu.Identifier("actions"),
+                                     children: [showOnscreenKeysCommand, disconnectCommand, quitCommand])
             builder.replace(menu: .application, with: actionsMenu)
         }
+    }
+    
+    @objc func showOnScreenKeys() {
+        globalStateKeeper?.showOnScreenButtonsIfDrawing()
     }
     
     @objc func disconnect() {
