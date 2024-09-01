@@ -54,6 +54,10 @@
 #define INADDR_NONE (in_addr_t)-1
 #endif
 
+#include <pthread.h>
+
+#define NUM_CHANNELS 10
+
 const char *keyfile1 = NULL;
 const char *keyfile2 = NULL;
 char *privKeyPassphrase = NULL;
@@ -76,6 +80,16 @@ enum {
     AUTH_PUBLICKEY
 };
 
+typedef struct _args {
+    LIBSSH2_CHANNEL *channel;
+    int listensock;
+    int *return_code;
+    struct sockaddr_in sin;
+    socklen_t sinlen;
+    unsigned int sport;
+} args;
+
+pthread_mutex_t lock;
 
 int ssh_certificate_verification_callback(int instance, char* fingerprint_sha1, char* fingerprint_sha256) {
     char user_message[1024];
@@ -140,6 +154,126 @@ void setupSshPortForward(int instance,
     }
 }
 
+static void loop(args *args) {
+    char buf[16384];
+    LIBSSH2_CHANNEL *channel = args->channel;
+    int forwardsock = -1;
+    int listensock = args->listensock;
+    int *return_code = args->return_code;
+    struct sockaddr_in sin = args->sin;
+    socklen_t sinlen = args->sinlen;
+    unsigned int sport = args->sport;
+
+    struct timeval tv;
+    ssize_t len, wr;
+    int rc;
+    fd_set fds1;
+    FD_ZERO(&fds1);
+    FD_SET(listensock, &fds1);
+    tv.tv_sec = 2;
+    tv.tv_usec = 10000;
+    
+    client_log("libssh2: SSH Waiting for TCP connection on %s:%d...\n",
+               inet_ntoa(sin.sin_addr), ntohs(sin.sin_port));
+    
+    rc = select((int)(listensock + 1), &fds1, NULL, NULL, &tv);
+    if (rc <= 0) {
+        client_log("SSH Select on listening socket indicates timeout. This is normal for some SSH channels.\n");
+        *return_code = 0;
+        return;
+    }
+
+    client_log("libssh2: SSH Detected incoming TCP connection.\n");
+
+    forwardsock = accept(listensock, (struct sockaddr *)&sin, &sinlen);
+#ifdef WIN32
+    if(forwardsock == INVALID_SOCKET) {
+        client_log("SSH Failed to accept forward socket!\n");
+        return_code = -8;
+        return;
+    }
+#else
+    if(forwardsock == -1) {
+        perror("accept");
+        client_log("libssh2: SSH Error '%s' accepting forward socket!\n", strerror(errno));
+        return;
+    }
+#endif
+       
+    client_log("libssh2: Starting I/O loop\n");
+
+    while(1) {
+        fd_set fds;
+        FD_ZERO(&fds);
+        FD_SET(forwardsock, &fds);
+        tv.tv_sec = 0;
+        tv.tv_usec = 10000;
+        rc = select((int)(forwardsock + 1), &fds, NULL, NULL, &tv);
+        if(rc < 0) {
+            client_log("libssh2: failed to select().\n");
+            goto threadshutdown;
+        }
+        if(rc && FD_ISSET(forwardsock, &fds)) {
+            len = recv(forwardsock, buf, sizeof(buf), 0);
+            if(len < 0) {
+                client_log("libssh2: failed to recv().\n");
+                goto threadshutdown;
+            }
+            else if(0 == len) {
+                client_log("libssh2: The client at port %d disconnected!\n", sport);
+                goto threadshutdown;
+            }
+            wr = 0;
+            while(wr < len) {
+                pthread_mutex_lock(&lock);
+                ssize_t nwritten = libssh2_channel_write(channel, buf + wr, len - wr);
+                pthread_mutex_unlock(&lock);
+                if(nwritten == LIBSSH2_ERROR_EAGAIN) {
+                    continue;
+                }
+                if(nwritten < 0) {
+                    client_log("libssh2_channel_write: %ld\n", (long)nwritten);
+                    goto threadshutdown;
+                }
+                wr += nwritten;
+            }
+        }
+        while(1) {
+            pthread_mutex_lock(&lock);
+            len = libssh2_channel_read(channel, buf, sizeof(buf));
+            pthread_mutex_unlock(&lock);
+            if(LIBSSH2_ERROR_EAGAIN == len)
+                break;
+            if(len < 0) {
+                client_log("libssh2_channel_read: %ld", (long)len);
+                goto threadshutdown;
+            }
+            wr = 0;
+            while(wr < len) {
+                ssize_t nsent = send(forwardsock, buf + wr, len - wr, 0);
+                if(nsent <= 0) {
+                    client_log("libssh2: failed to send().\n");
+                    goto threadshutdown;
+                }
+                wr += nsent;
+            }
+            if(libssh2_channel_eof(channel)) {
+                client_log("libssh2: The server at %s:%d disconnected!\n", remote_desthost, remote_destport);
+                goto threadshutdown;
+            }
+        }
+    }
+    
+threadshutdown:
+#ifdef WIN32
+    closesocket(forwardsock);
+#else
+    close(listensock);
+    close(forwardsock);
+#endif
+    client_log("libssh2: worker thread exiting.\n");
+}
+
 int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_success)(void))
 {
     int rc, auth = AUTH_NONE;
@@ -151,17 +285,16 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     const char *fingerprint_sha256;
     char *userauthlist;
     LIBSSH2_SESSION *session;
-    LIBSSH2_CHANNEL *channel = NULL;
+    LIBSSH2_CHANNEL *channels[NUM_CHANNELS];
+    pthread_t threads[NUM_CHANNELS];
+    args args[NUM_CHANNELS];
     const char *shost;
     unsigned int sport;
-    struct timeval tv;
-    ssize_t len, wr;
-    char buf[16384];
 
 #ifdef WIN32
     char sockopt;
     SOCKET sock = INVALID_SOCKET;
-    SOCKET listensock = INVALID_SOCKET, forwardsock = INVALID_SOCKET;
+    SOCKET listensock = INVALID_SOCKET;
     WSADATA wsadata;
     int err;
 
@@ -172,7 +305,7 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
     }
 #else
     int sockopt, sock = -1;
-    int listensock = -1, forwardsock = -1;
+    int listensock = -1;
 #endif
     server_ip = malloc(256*sizeof(char));
     username = malloc(256*sizeof(char));
@@ -374,117 +507,69 @@ int startForwarding(int instance, int argc, char *argv[], void (*ssh_forward_suc
         perror("listen");
         client_log("libssh2: SSH Error %s listening on local_listenip %s or local_listenport %d\n",
                    strerror(errno), local_listenip, local_listenport);
-        return_code = -7;
+        return_code = 0;
         goto shutdown;
     }
-
-    ssh_forward_success();
-    client_log("libssh2: SSH Waiting for TCP connection on %s:%d...\n",
-                inet_ntoa(sin.sin_addr), ntohs(sin.sin_port));
-
-    forwardsock = accept(listensock, (struct sockaddr *)&sin, &sinlen);
-#ifdef WIN32
-    if(forwardsock == INVALID_SOCKET) {
-        client_log("SSH Failed to accept forward socket!\n");
-        return_code = -8;
-        goto shutdown;
-    }
-#else
-    if(forwardsock == -1) {
-        perror("accept");
-        client_log("libssh2: SSH Error %s accepting forward socket!\n", strerror(errno));
-        return_code = -9;
-        goto shutdown;
-    }
-#endif
 
     shost = inet_ntoa(sin.sin_addr);
     sport = ntohs(sin.sin_port);
 
     client_log("libssh2: SSH Forwarding connection from local: %s:%d to remote: %s:%d\n",
         shost, sport, remote_desthost, remote_destport);
-
-    channel = libssh2_channel_direct_tcpip_ex(session, remote_desthost,
-        remote_destport, shost, sport);
-    if(!channel) {
-        client_log("libssh2: SSH Could not open the direct-tcpip channel!\n"
-                   "(Note that this can be a problem at the server!"
-                   "Please review the server logs.)\n");
-        return_code = -10;
-        goto shutdown;
+    
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        channels[i] = libssh2_channel_direct_tcpip_ex(session, remote_desthost,
+            remote_destport, shost, sport);
+        if(!channels[i]) {
+            client_log("libssh2: SSH Could not open the direct-tcpip channel!\n"
+                       "(Note that this can be a problem at the server! "
+                       "Please review the server logs.)\n");
+            return_code = -10;
+            goto shutdown;
+        }
+        
+        args[i].channel = channels[i];
+        args[i].listensock = listensock;
+        args[i].return_code = &return_code;
+        args[i].sin = sin;
+        args[i].sinlen = sinlen;
+        args[i].sport = sport;
     }
 
     /* Must use non-blocking IO hereafter due to the current libssh2 API */
     libssh2_session_set_blocking(session, 0);
-
-    while(1) {
-        fd_set fds;
-        FD_ZERO(&fds);
-        FD_SET(forwardsock, &fds);
-        tv.tv_sec = 0;
-        tv.tv_usec = 100000;
-        rc = select((int)(forwardsock + 1), &fds, NULL, NULL, &tv);
-        if(-1 == rc) {
-            client_log("libssh2: failed to select().\n");
-            goto shutdown;
-        }
-        if(rc && FD_ISSET(forwardsock, &fds)) {
-            len = recv(forwardsock, buf, sizeof(buf), 0);
-            if(len < 0) {
-                client_log("libssh2: failed to recv().\n");
-                goto shutdown;
-            }
-            else if(0 == len) {
-                client_log("libssh2: The client at %s:%d disconnected!\n", shost, sport);
-                goto shutdown;
-            }
-            wr = 0;
-            while(wr < len) {
-                ssize_t nwritten = libssh2_channel_write(channel, buf + wr, len - wr);
-                if(nwritten == LIBSSH2_ERROR_EAGAIN) {
-                    continue;
-                }
-                if(nwritten < 0) {
-                    client_log("libssh2_channel_write: %ld\n", (long)nwritten);
-                    goto shutdown;
-                }
-                wr += nwritten;
-            }
-        }
-        while(1) {
-            len = libssh2_channel_read(channel, buf, sizeof(buf));
-            if(LIBSSH2_ERROR_EAGAIN == len)
-                break;
-            else if(len < 0) {
-                client_log("libssh2_channel_read: %ld", (long)len);
-                goto shutdown;
-            }
-            wr = 0;
-            while(wr < len) {
-                ssize_t nsent = send(forwardsock, buf + wr, len - wr, 0);
-                if(nsent <= 0) {
-                    client_log("libssh2: failed to send().\n");
-                    goto shutdown;
-                }
-                wr += nsent;
-            }
-            if(libssh2_channel_eof(channel)) {
-                client_log("libssh2: The server at %s:%d disconnected!\n", remote_desthost, remote_destport);
-                goto shutdown;
-            }
-        }
+    
+    if (pthread_mutex_init(&lock, NULL) != 0) {
+        client_log("libssh2: Mutex init failed\n");
+        return_code = -4;
+        goto shutdown;
     }
+
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        pthread_create(&(threads[i]), NULL, (void *) &loop, &(args[i]));
+    }
+        
+    client_log("libssh2: All threads started, calling ssh_forward_success\n");
+    ssh_forward_success();
+
+    client_log("libssh2: Joining channel threads\n");
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        pthread_join(threads[i], NULL);
+    }
+    
+    client_log("libssh2: Main thread shutting down\n");
 
 shutdown:
 #ifdef WIN32
-    closesocket(forwardsock);
     closesocket(listensock);
 #else
-    close(forwardsock);
     close(listensock);
 #endif
-    if(channel)
-        libssh2_channel_free(channel);
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+        if(return_code == 0 && channels[i] != NULL) {
+            libssh2_channel_free(channels[i]);
+        }
+    }
     libssh2_session_disconnect(session, "Client disconnecting normally");
     libssh2_session_free(session);
 

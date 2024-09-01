@@ -40,7 +40,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                             "com.iiordanov.freeaRDP", "com.iiordanov.aSPICE", "com.iiordanov.freeaSPICE"]
     // Enabled application for SSH tunneling
     let sshAppIds = ["com.iiordanov.bVNC", "com.iiordanov.freebVNC", "com.iiordanov.aRDP",
-                     "com.iiordanov.freeaRDP"]
+                     "com.iiordanov.freeaRDP", "com.iiordanov.freeaSPICE", "com.iiordanov.aSPICE"]
     
     var connections: FilterableConnections = FilterableConnections(stateKeeper: nil)
     var settings = UserDefaults.standard
@@ -509,6 +509,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func requestCredentialsForConnection() {
         log_callback_str(message: "Navigating to request credentials screen")
         UserInterface {
+            self.isDrawing = false;
             self.currentPage = "addOrEditConnection"
         }
     }

@@ -126,6 +126,7 @@ static void ios_post_disconnect(freerdp *instance) {
         case FREERDP_ERROR_CONNECT_NO_OR_MISSING_CREDENTIALS:
         case FREERDP_ERROR_CONNECT_ACCESS_DENIED:
             clientLogCallback("Authentication failed\n");
+            clientLogCallback((char*)last_error_char_str);
             failCallback(i, (uint8_t*)"RDP_AUTHENTICATION_FAILED_TITLE");
             return;
         case FREERDP_ERROR_CONNECT_CANCELLED:
@@ -259,7 +260,7 @@ void *initializeRdp(int i, int width, int height,
 
      instance->context->settings->RemoteFxCodec = TRUE;
      instance->context->settings->SupportGraphicsPipeline = FALSE; // TRUE Breaks connections to Windows
-     
+
      //instance->context->settings->AsyncUpdate = TRUE; // may be freezing connection
      
      //instance->context->settings->CompressionLevel = 1; // Slower
