@@ -601,6 +601,17 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.currentPage = "dismissableMessage"
         }
     }
+    
+    func sendCtrlAltDelIfDrawing() {
+        if isDrawing {
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Control_L, down: true)
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Alt_L, down: true)
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Delete, down: true)
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Delete, down: false)
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Alt_L, down: false)
+            self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Control_L, down: false)
+        }
+    }
 
     func showOnScreenButtonsIfDrawing() {
         if isDrawing {

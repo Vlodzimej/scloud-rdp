@@ -56,6 +56,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             builder.remove(menu: .window)
             builder.remove(menu: .view)
             
+            let sendCtrlAltDel = UICommand(title: "Send Ctrl-Alt-Del",
+                      action: #selector(sendCtrlAltDel),
+                      discoverabilityTitle: "send control alt delete keys")
             let showOnscreenKeysCommand = UICommand(title: "Show On-Screen Keys",
                       action: #selector(showOnScreenKeys),
                       discoverabilityTitle: "show on-screen keys")
@@ -67,9 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                       discoverabilityTitle: "quit")
 
             let actionsMenu = UIMenu(title: "Actions", image: nil, identifier: UIMenu.Identifier("actions"),
-                                     children: [showOnscreenKeysCommand, disconnectCommand, quitCommand])
+                                     children: [sendCtrlAltDel, showOnscreenKeysCommand, disconnectCommand, quitCommand])
             builder.replace(menu: .application, with: actionsMenu)
         }
+    }
+    
+    @objc func sendCtrlAltDel() {
+        globalStateKeeper?.sendCtrlAltDelIfDrawing()
     }
     
     @objc func showOnScreenKeys() {
