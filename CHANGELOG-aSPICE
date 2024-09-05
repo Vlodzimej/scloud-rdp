@@ -1,5 +1,7 @@
 34
-  - Disabled SSH forwarding settings due to no support for forwarding multiple channels
+  - SSH forwarding fixes
+  - Menu item to send Ctrl-Alt-Del
+  - Menu item to show on-screen keys 
 33
   - Bugfix for on-screen disconnect button showing on certain Macs
   - Fix for .vv filew not opening on certain Macs
