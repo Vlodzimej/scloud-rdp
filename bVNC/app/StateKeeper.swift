@@ -76,6 +76,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var minScale: CGFloat = 0
     var macOs: Bool = false
     var iPadOnMacOs: Bool = false
+    var iPhoneOrPad = false
 
     var topSpacing: CGFloat = bH
     var topButtonSpacing: CGFloat = 0.0
@@ -164,6 +165,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var requestingCredentials: Bool = false
     var requestingSshCredentials: Bool = false
 
+    var onScreenKeysHidden: Bool = true
+
     @objc func reDraw() {
         if (self.isDrawing) {
             UserInterface {
@@ -246,6 +249,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    func isiPhoneOrPad() -> Bool {
+        return self.iPhoneOrPad
+    }
+    
     func isOnMacOs() -> Bool {
         return self.macOs 
     }
@@ -267,6 +274,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.iPadOnMacOs = true
             }
         }
+        self.iPhoneOrPad = !macOs && !iPadOnMacOs
+        
         // Load settings for current connection
         interfaceButtons = [:]
         keyboardButtons = [:]
@@ -284,6 +293,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                                         Constants.LAYOUT_PATH)
         }
         self.clipboardMonitor = ClipboardMonitor(stateKeeper: self, repeated: self.isOnMacOs())
+        self.onScreenKeysHidden = true
     }
     
     func connectIfConsoleFileFound(_ destPath: String) -> Bool {
@@ -452,7 +462,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if (wasDrawing) {
             self.remoteSession?.disconnect()
             UserInterface {
-                self.removeButtons()
+                self.removeAllButtons()
                 self.hideKeyboard()
                 self.imageView?.disableTouch()
                 self.imageView?.removeFromSuperview()
@@ -612,16 +622,25 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.remoteSession?.sendUniDirectionalSpecialKeyByXKeySym(key: XK_Control_L, down: false)
         }
     }
+    
+    func toggleOnScreenButtonsIfDrawing() {
+        self.onScreenKeysHidden = !self.onScreenKeysHidden
+        self.setVisibilityOfOnScreenButtonsIfDrawing(hidden: self.onScreenKeysHidden)
+    }
 
-    func showOnScreenButtonsIfDrawing() {
+    func setVisibilityOfOnScreenButtonsIfDrawing(hidden: Bool) {
         if isDrawing {
-            self.createAndRepositionButtons()
+            log_callback_str(message: "setVisibilityOfOnScreenButtonsIfDrawing hidden: \(hidden)")
+            self.addButtons(buttons: self.interfaceButtons)
             self.addButtons(buttons: self.keyboardButtons)
-            self.setButtonsVisibility(buttons: self.keyboardButtons, isHidden: false)
             self.addButtons(buttons: self.modifierButtons)
-            self.setButtonsVisibility(buttons: self.modifierButtons, isHidden: false)
             self.addButtons(buttons: self.topButtons)
-            self.setButtonsVisibility(buttons: self.topButtons, isHidden: false)
+            if !self.macOs {
+                self.setButtonsVisibility(buttons: self.interfaceButtons, isHidden: hidden)
+            }
+            self.setButtonsVisibility(buttons: self.keyboardButtons, isHidden: hidden)
+            self.setButtonsVisibility(buttons: self.modifierButtons, isHidden: hidden)
+            self.setButtonsVisibility(buttons: self.topButtons, isHidden: hidden)
         }
     }
     
@@ -631,7 +650,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.saveImageRect()
         }
         self.keyboardHeight = keyboardSize.height
-        showOnScreenButtonsIfDrawing()
+        if isDrawing {
+            setVisibilityOfOnScreenButtonsIfDrawing(hidden: false)
+            self.createAndRepositionButtons()
+        }
     }
     
     func keyboardWillHide() {
@@ -643,9 +665,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.keyboardHeight = 0
         if isDrawing {
             self.createAndRepositionButtons()
-            self.setButtonsVisibility(buttons: keyboardButtons, isHidden: true)
-            self.setButtonsVisibility(buttons: modifierButtons, isHidden: true)
-            self.setButtonsVisibility(buttons: topButtons, isHidden: true)
+            if self.isiPhoneOrPad() {
+                self.setButtonsVisibility(buttons: keyboardButtons, isHidden: true)
+                self.setButtonsVisibility(buttons: modifierButtons, isHidden: true)
+                self.setButtonsVisibility(buttons: topButtons, isHidden: true)
+            }
         }
     }
     
@@ -751,15 +775,19 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     fileprivate func setUpFirstResponderDepedingOnOS() {
-        if macOs {
-            self.interfaceButtons["keyboardButton"]?.resignFirstResponder()
-        } else {
-            self.interfaceButtons["keyboardButton"]?.becomeFirstResponder()
+        UserInterface {
+            if self.macOs {
+                log_callback_str(message: "\(#function) Running on MacOS, keyboardButton resigning first responder")
+                self.interfaceButtons["keyboardButton"]?.resignFirstResponder()
+            } else {
+                log_callback_str(message: "\(#function) Running on iOS or Designed for iPad on MacOS, keyboardButton becoming first responder")
+                self.interfaceButtons["keyboardButton"]?.becomeFirstResponder()
+            }
         }
     }
     
     fileprivate func showOrHideKeyboardButtonDueToExternalKeyboard() {
-        var externalKeyboardPresent = false
+        var externalKeyboardPresent = self.macOs
         if #available(iOS 14.0, *) {
             log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(String(describing: GCKeyboard.coalesced))")
             externalKeyboardPresent = GCKeyboard.coalesced != nil
@@ -768,6 +796,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             setUpFirstResponderDepedingOnOS()
             log_callback_str(message: "\(#function) Hiding keyboard button because external keyboard was found")
             self.interfaceButtons["keyboardButton"]?.isHidden = true
+            self.setVisibilityOfOnScreenButtonsIfDrawing(hidden: self.onScreenKeysHidden)
         } else {
             log_callback_str(message: "\(#function) Showing keyboard button because external keyboard was not found")
             self.interfaceButtons["keyboardButton"]?.isHidden = false
@@ -781,7 +810,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func overrideInterfaceButtonDataForMacOs() {
-        if self.isOnMacOsOriPadOnMacOs() {
+        if self.macOs {
             self.interfaceButtonData["keyboardButton"]?["lx"] = CGFloat(0.001)
             self.interfaceButtonData["keyboardButton"]?["ly"] = CGFloat(0.001)
         }
@@ -866,26 +895,31 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
         return newButtonDict
     }
+    
+    func addAllButtons() {
+        //log_callback_str(message: "Adding all buttons to superview")
+        self.addButtons(buttons: self.interfaceButtons)
+        self.addButtons(buttons: self.modifierButtons)
+        self.addButtons(buttons: self.keyboardButtons)
+        self.addButtons(buttons: self.topButtons)
+    }
 
     func addButtons(buttons: [String: UIControl]) {
-        //log_callback_str(message: "Adding buttons to superview")
         buttons.forEach(){ button in
             globalWindow!.addSubview(button.value)
         }
     }
 
-    func removeButtons() {
-        //log_callback_str(message: "Removing buttons from superview")
-        self.interfaceButtons.forEach(){ button in
-            button.value.removeFromSuperview()
-        }
-        self.modifierButtons.forEach(){ button in
-            button.value.removeFromSuperview()
-        }
-        self.keyboardButtons.forEach(){ button in
-            button.value.removeFromSuperview()
-        }
-        self.topButtons.forEach(){ button in
+    func removeAllButtons() {
+        //log_callback_str(message: "Removing all buttons from superview")
+        self.removeButtons(buttons: self.interfaceButtons)
+        self.removeButtons(buttons: self.modifierButtons)
+        self.removeButtons(buttons: self.keyboardButtons)
+        self.removeButtons(buttons: self.topButtons)
+    }
+    
+    func removeButtons(buttons: [String: UIControl]) {
+        buttons.forEach(){ button in
             button.value.removeFromSuperview()
         }
     }

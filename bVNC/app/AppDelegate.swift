@@ -59,9 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let sendCtrlAltDel = UICommand(title: "Send Ctrl-Alt-Del",
                       action: #selector(sendCtrlAltDel),
                       discoverabilityTitle: "send control alt delete keys")
-            let showOnscreenKeysCommand = UICommand(title: "Show On-Screen Keys",
-                      action: #selector(showOnScreenKeys),
-                      discoverabilityTitle: "show on-screen keys")
+            let toggleOnscreenKeysCommand = UICommand(title: "Toggle On-Screen Keys",
+                      action: #selector(toggleOnScreenKeys),
+                      discoverabilityTitle: "toggle on-screen keys")
             let disconnectCommand = UICommand(title: "Disconnect",
                       action: #selector(disconnect),
                       discoverabilityTitle: "disconnect")
@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                       discoverabilityTitle: "quit")
 
             let actionsMenu = UIMenu(title: "Actions", image: nil, identifier: UIMenu.Identifier("actions"),
-                                     children: [sendCtrlAltDel, showOnscreenKeysCommand, disconnectCommand, quitCommand])
+                                     children: [sendCtrlAltDel, toggleOnscreenKeysCommand, disconnectCommand, quitCommand])
             builder.replace(menu: .application, with: actionsMenu)
         }
     }
@@ -79,8 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         globalStateKeeper?.sendCtrlAltDelIfDrawing()
     }
     
-    @objc func showOnScreenKeys() {
-        globalStateKeeper?.showOnScreenButtonsIfDrawing()
+    @objc func toggleOnScreenKeys() {
+        globalStateKeeper?.toggleOnScreenButtonsIfDrawing()
     }
     
     @objc func disconnect() {
