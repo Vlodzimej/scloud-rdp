@@ -1,3 +1,6 @@
+35
+  - Bugfix for Esc key breaking input on MacOS
+  - Updated Show On-screen Keys menu item to Toggle them
 34
   - SSH forwarding fixes
   - Menu item to send Ctrl-Alt-Del
