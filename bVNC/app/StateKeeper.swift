@@ -635,7 +635,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.addButtons(buttons: self.keyboardButtons)
             self.addButtons(buttons: self.modifierButtons)
             self.addButtons(buttons: self.topButtons)
-            if !self.macOs {
+            if !self.isOnMacOs() {
                 self.setButtonsVisibility(buttons: self.interfaceButtons, isHidden: hidden)
             }
             self.setButtonsVisibility(buttons: self.keyboardButtons, isHidden: hidden)
@@ -776,7 +776,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     fileprivate func setUpFirstResponderDepedingOnOS() {
         UserInterface {
-            if self.macOs {
+            if self.isOnMacOs() {
                 log_callback_str(message: "\(#function) Running on MacOS, keyboardButton resigning first responder")
                 self.interfaceButtons["keyboardButton"]?.resignFirstResponder()
             } else {
@@ -787,7 +787,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     fileprivate func showOrHideKeyboardButtonDueToExternalKeyboard() {
-        var externalKeyboardPresent = self.macOs
+        var externalKeyboardPresent = self.isOnMacOs()
         if #available(iOS 14.0, *) {
             log_callback_str(message: "\(#function) Checking GCKeyboard.coalesced: \(String(describing: GCKeyboard.coalesced))")
             externalKeyboardPresent = GCKeyboard.coalesced != nil
@@ -817,7 +817,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func overrideButtonVisibilityForMacOs() {
-        if self.isOnMacOsOriPadOnMacOs() {
+        if self.isiPadOnMacOs() {
+            self.interfaceButtons["disconnectButton"]?.isHidden = true
+            self.interfaceButtons["keyboardButton"]?.isHidden = true
+        } else if self.isOnMacOs() {
             self.interfaceButtons["disconnectButton"]?.isHidden = true
             self.interfaceButtons["keyboardButton"]?.isHidden = false
         }
