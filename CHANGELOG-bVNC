@@ -1,6 +1,7 @@
 35
   - Bugfix for Esc key breaking input on MacOS
   - Updated Show On-screen Keys menu item to Toggle them
+  - Fixes for Control combinations, Arrow keys, F-keys and Esc key
 34
   - Menu item to send Ctrl-Alt-Del
   - Menu item to show on-screen keys 
