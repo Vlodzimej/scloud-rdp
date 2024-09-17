@@ -40,7 +40,7 @@ class CustomTextInput: UIButton, UIKeyInput {
             return
         }
         
-        //log_callback_str(message: "Sending: " + text + ", number of characters: " + String(text.count))
+        //print("Sending: " + text + ", number of characters: " + String(text.count))
         for char in text.unicodeScalars {
             Background {
                 self.stateKeeper?.remoteSession?.keyEvent(char: char)
@@ -110,9 +110,17 @@ class CustomTextInput: UIButton, UIKeyInput {
     }
 
     override var keyCommands: [UIKeyCommand]? {
-        return self.stateKeeper?.physicalKeyboardHandler?.keyCommands
+        var commands: [UIKeyCommand] = []
+        for char in self.stateKeeper?.physicalKeyboardHandler?.specialChars ?? [] {
+            let command = UIKeyCommand(input: char, modifierFlags: [], action: #selector(captureCmd))
+            commands += [command]
+            if #available(iOS 15.0, *) {
+                command.wantsPriorityOverSystemBehavior = true
+            }
+        }
+        return (self.stateKeeper?.physicalKeyboardHandler?.keyCommands ?? []) + commands
     }
-    
+
     @objc func captureCmd(sender: UIKeyCommand) {
         self.stateKeeper?.physicalKeyboardHandler?.captureCmd(sender: sender)
     }

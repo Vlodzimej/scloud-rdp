@@ -28,7 +28,31 @@ class PhysicalKeyboardHandler {
     var stateKeeper: StateKeeper?
     var textInput: CustomTextInput?
     var commands: [UIKeyCommand]?
-
+    var specialChars = [
+        UIKeyCommand.inputUpArrow,
+        UIKeyCommand.inputDownArrow,
+        UIKeyCommand.inputLeftArrow,
+        UIKeyCommand.inputRightArrow,
+        UIKeyCommand.f1,
+        UIKeyCommand.f2,
+        UIKeyCommand.f3,
+        UIKeyCommand.f4,
+        UIKeyCommand.f5,
+        UIKeyCommand.f6,
+        UIKeyCommand.f7,
+        UIKeyCommand.f8,
+        UIKeyCommand.f9,
+        UIKeyCommand.f10,
+        UIKeyCommand.f11,
+        UIKeyCommand.f12,
+        UIKeyCommand.inputHome,
+        UIKeyCommand.inputEnd,
+        UIKeyCommand.inputEscape,
+        UIKeyCommand.inputPageUp,
+        UIKeyCommand.inputPageDown,
+        "\u{0009}" // tab
+    ]
+    
     init(stateKeeper: StateKeeper) {
         self.stateKeeper = stateKeeper
         self.textInput = CustomTextInput(stateKeeper: stateKeeper)
@@ -229,30 +253,7 @@ class PhysicalKeyboardHandler {
         // This implementation is able to send a single Start/Super key command, but
         // causes stray Start/Super key to be sent when Command-Tabbing away from the app.
         // adding "" to chars enables this behavior.
-        chars += [
-            UIKeyCommand.inputUpArrow,
-            UIKeyCommand.inputDownArrow,
-            UIKeyCommand.inputLeftArrow,
-            UIKeyCommand.inputRightArrow,
-            UIKeyCommand.f1,
-            UIKeyCommand.f2,
-            UIKeyCommand.f3,
-            UIKeyCommand.f4,
-            UIKeyCommand.f5,
-            UIKeyCommand.f6,
-            UIKeyCommand.f7,
-            UIKeyCommand.f8,
-            UIKeyCommand.f9,
-            UIKeyCommand.f10,
-            UIKeyCommand.f11,
-            UIKeyCommand.f12,
-            UIKeyCommand.inputHome,
-            UIKeyCommand.inputEnd,
-            UIKeyCommand.inputEscape,
-            UIKeyCommand.inputPageUp,
-            UIKeyCommand.inputPageDown,
-            "\u{0009}" // tab
-        ]
+        chars += specialChars
         if #available(iOS 15.0, *) {
             chars += [
                 UIKeyCommand.inputDelete,
