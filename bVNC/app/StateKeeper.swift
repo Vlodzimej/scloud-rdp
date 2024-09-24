@@ -635,7 +635,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.addButtons(buttons: self.keyboardButtons)
             self.addButtons(buttons: self.modifierButtons)
             self.addButtons(buttons: self.topButtons)
-            if !self.isOnMacOs() {
+            if !self.isOnMacOs() && !self.isiPhoneOrPad() {
                 self.setButtonsVisibility(buttons: self.interfaceButtons, isHidden: hidden)
             }
             self.setButtonsVisibility(buttons: self.keyboardButtons, isHidden: hidden)
