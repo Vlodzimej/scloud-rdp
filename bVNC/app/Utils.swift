@@ -91,16 +91,18 @@ struct Utils {
         }
     }
     
-    static func moveUrlToDestinationIfPossible(_ url: URL, _ destPath: String) {
+    static func moveUrlToDestinationIfPossible(_ url: URL, _ destPath: String) -> Bool {
         do {
             log_callback_str(message: "\(#function): Trying to copy \(url) to \(destPath)")
             Utils.deletePathIfNeeded(destPath)
             try FileManager.default.copyItem(atPath: url.path, toPath: destPath)
             log_callback_str(message: "\(#function): Copied \(url) to \(destPath)")
             Utils.deletePathIfNeeded(url.path)
+            return true
         } catch (let error) {
             log_callback_str(message: "\(#function): Cannot copy item at \(url) to \(destPath): \(error)")
         }
+        return false
     }
     
     static func deletePathIfNeeded(_ destPath: String) {

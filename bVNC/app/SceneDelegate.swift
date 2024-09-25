@@ -34,28 +34,36 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    fileprivate func moveVvFileToPrivateStorageAndConnect(_ url: URL) {
+    fileprivate func moveVvFileToPrivateStorageAndConnect(_ url: URL, _ pathString: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let stateKeeper: StateKeeper = appDelegate.stateKeeper
+
         if let docsPath = NSSearchPathForDirectoriesInDomains(
             .documentDirectory, .userDomainMask, true
         ).first {
             let destPath = String(format: "%@/%@", docsPath, "console.vv")
-            Utils.moveUrlToDestinationIfPossible(url, destPath)
-            if !stateKeeper.connectIfConsoleFileFound(destPath) {
+            if Utils.moveUrlToDestinationIfPossible(url, destPath) {
                 log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
+                if !stateKeeper.connectIfConsoleFileFound(destPath) {
+                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
+                }
+            } else {
+                log_callback_str(message: "\(#function) Could not move console.vv trying to use it as is.")
+                if !stateKeeper.connectIfConsoleFileFound(pathString) {
+                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound in place")
+                }
             }
         }
     }
     
-    func connectWithConsoleFile(url: URL) {
+    func connectWithConsoleFile(url: URL, pathString: String) {
         if (url.startAccessingSecurityScopedResource()) {
-            moveVvFileToPrivateStorageAndConnect(url)
+            moveVvFileToPrivateStorageAndConnect(url, pathString)
             url.stopAccessingSecurityScopedResource()
         } else {
             log_callback_str(message: "\(#function) Could not startAccessingSecurityScopedResource, trying without")
             log_callback_str(message: "\(#function) aSPICE may need to be granted Full Disk Access in settings")
-            moveVvFileToPrivateStorageAndConnect(url)
+            moveVvFileToPrivateStorageAndConnect(url, pathString)
         }
     }
     
@@ -70,6 +78,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         log_callback_str(message: "\(#function): \(connectionOptions.urlContexts)")
+        if CommandLine.arguments.count > 1 {
+            let firstArg: String = CommandLine.arguments[1]
+            if firstArg.starts(with: "/") {
+                log_callback_str(message: "\(#function): Found argument that may be a file \(firstArg)")
+                self.connectWithConsoleFile(url: URL(string: String(format: "%@%@", "file://", firstArg))!, pathString: firstArg)
+            }
+        }
         guard (connectionOptions.urlContexts.first?.url) != nil else {
             return
         }
@@ -81,7 +96,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             log_callback_str(message: "\(#function): \(urlContext.url)")
             if (!self.handleUniversalUrl(urlContext: urlContext)) {
                 let url = urlContext.url
-                self.connectWithConsoleFile(url: url)
+                self.connectWithConsoleFile(url: url, pathString: url.pathComponents.joined(separator: "/"))
             }
         }
     }
