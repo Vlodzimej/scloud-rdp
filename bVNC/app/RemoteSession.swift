@@ -293,7 +293,7 @@ class RemoteSession {
     
     var fbW: Int32 = 0
     var fbH: Int32 = 0
-    var data: UnsafeMutableRawPointer?
+    var data: UnsafeMutablePointer<UInt8>?
     var connected: Bool = false
     var reDrawTimer: Timer = Timer()
 
@@ -568,32 +568,19 @@ class RemoteSession {
         }
     }
     
-    func deallocateBufferIfNecessary() {
-        if self.data != nil {
-            self.data?.deallocate()
-            self.data = nil
-        }
-    }
-    
-    func allocateNewBuffer(fbW: Int32, fbH: Int32) {
-        self.data = UnsafeMutableRawPointer.allocate(byteCount: Int(4*fbW*fbH), alignment: 0)
-    }
-    
-    deinit {
-        deallocateBufferIfNecessary()
-    }
-    
     func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
-        self.data?.copyMemory(from: data!, byteCount: Int(4*fbW*fbH))
-
-        let timeNow = CACurrentMediaTime()
-        if (timeNow - lastUpdate < 0.032) {
-            // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
-            self.rescheduleReDrawTimer(data: self.data, fbW: fbW, fbH: fbH)
-        } else {
-            // Drawing a frame normally
-            self.draw(data: self.data, fbW: fbW, fbH: fbH)
-            lastUpdate = CACurrentMediaTime()
+        if self.connected {
+            self.data = data
+            
+            let timeNow = CACurrentMediaTime()
+            if (timeNow - lastUpdate < 0.032) {
+                // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
+                self.rescheduleReDrawTimer(data: self.data, fbW: fbW, fbH: fbH)
+            } else {
+                // Drawing a frame normally
+                self.draw(data: self.data, fbW: fbW, fbH: fbH)
+                lastUpdate = CACurrentMediaTime()
+            }
         }
     }
     

@@ -1038,7 +1038,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         UserInterface {
             autoreleasepool {
                 self.hasDrawnFirstFrame = true
-                self.remoteSession?.allocateNewBuffer(fbW: fbW, fbH: fbH)
                 self.receivedUpdate = true
                 self.imageView?.removeFromSuperview()
                 self.imageView?.image = nil
