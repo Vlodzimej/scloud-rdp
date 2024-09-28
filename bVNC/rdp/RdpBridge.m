@@ -28,8 +28,6 @@
 // libfreerdp gives us exit code 0 for authentication failures to Ubuntu 22.04
 #define FREERDP_ERROR_CONNECT_AUTH_FAILURE_UBUNTU_REMOTE_DESKTOP 0
 
-freerdp* globalInstance = NULL;
-
 static CGContextRef reallocate_buffer(mfInfo *mfi) {
     rdpGdi *gdi = mfi->instance->context->gdi;
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -218,42 +216,38 @@ void *initializeRdp(int i, int width, int height,
     utf8_client_clipboard_callback = cl_clipboard_callback;
     yesNoCallback = y_n_callback;
     
-    if (globalInstance != NULL) {
-        freerdp_free(globalInstance);
-    }
-    
-    globalInstance = ios_freerdp_new();
-    if (!globalInstance) {
+    freerdp* instance = ios_freerdp_new();
+    if (!instance) {
         clientLogCallback("Could not initialize new freerdp instance\n");
         return NULL;
     }
     
-    globalInstance->context->argc = i;
-    globalInstance->context->settings->Domain = domain;
-    globalInstance->context->settings->Username = user;
-    globalInstance->context->settings->Password = pass;
+    instance->context->argc = i;
+    instance->context->settings->Domain = domain;
+    instance->context->settings->Username = user;
+    instance->context->settings->Password = pass;
     
-    globalInstance->context->settings->ServerHostname = addr;
-    globalInstance->context->settings->ServerPort = atoi(port);
-    globalInstance->context->settings->AudioPlayback = enable_sound;
+    instance->context->settings->ServerHostname = addr;
+    instance->context->settings->ServerPort = atoi(port);
+    instance->context->settings->AudioPlayback = enable_sound;
 
-    globalInstance->context->settings->JpegCodec = TRUE;
-    globalInstance->context->settings->JpegQuality = 70;
+    instance->context->settings->JpegCodec = TRUE;
+    instance->context->settings->JpegQuality = 70;
 
-    globalInstance->context->settings->DisableWallpaper = TRUE;
-    globalInstance->context->settings->AllowFontSmoothing = TRUE;
-    globalInstance->context->settings->AllowDesktopComposition = TRUE;
-    globalInstance->context->settings->DisableFullWindowDrag = TRUE;
-    globalInstance->context->settings->DisableMenuAnims = TRUE;
-    globalInstance->context->settings->DisableThemes = TRUE;
-    globalInstance->context->settings->NetworkAutoDetect = TRUE;
+    instance->context->settings->DisableWallpaper = TRUE;
+    instance->context->settings->AllowFontSmoothing = TRUE;
+    instance->context->settings->AllowDesktopComposition = TRUE;
+    instance->context->settings->DisableFullWindowDrag = TRUE;
+    instance->context->settings->DisableMenuAnims = TRUE;
+    instance->context->settings->DisableThemes = TRUE;
+    instance->context->settings->NetworkAutoDetect = TRUE;
      
-    globalInstance->context->settings->AsyncChannels = TRUE;
+    instance->context->settings->AsyncChannels = TRUE;
 
-    globalInstance->context->settings->GfxAVC444 = TRUE;
-    globalInstance->context->settings->GfxH264 = TRUE;
+    instance->context->settings->GfxAVC444 = TRUE;
+    instance->context->settings->GfxH264 = TRUE;
 
-    globalInstance->context->settings->RemoteFxCodec = TRUE;
+    instance->context->settings->RemoteFxCodec = TRUE;
 
     /*
      //globalInstance->context->settings->ChannelCount = 2; // Breaks xrdp connections
@@ -275,38 +269,38 @@ void *initializeRdp(int i, int width, int height,
      //globalInstance->context->settings->CompressionEnabled = TRUE; // Slower
      */
     
-    globalInstance->context->settings->GatewayEnabled = gateway_enabled;
-    globalInstance->context->settings->GatewayHostname = gateway_addr;
-    globalInstance->context->settings->GatewayPort = atoi(gateway_port);
-    globalInstance->context->settings->GatewayUsername = gateway_user;
-    globalInstance->context->settings->GatewayPassword = gateway_pass;
-    globalInstance->context->settings->GatewayDomain = gateway_domain;
+    instance->context->settings->GatewayEnabled = gateway_enabled;
+    instance->context->settings->GatewayHostname = gateway_addr;
+    instance->context->settings->GatewayPort = atoi(gateway_port);
+    instance->context->settings->GatewayUsername = gateway_user;
+    instance->context->settings->GatewayPassword = gateway_pass;
+    instance->context->settings->GatewayDomain = gateway_domain;
 
     //FIXME: Implement dedicated RDP Gateway authentication support via:
     //instance->GatewayAuthenticate
     
     printf("Requesting initial remote resolution to be %dx%d\n", width, height);
-    globalInstance->context->settings->DesktopWidth = width;
-    globalInstance->context->settings->DesktopHeight = height;
-    globalInstance->context->settings->DynamicResolutionUpdate = TRUE;
-    globalInstance->context->settings->RedirectClipboard = TRUE;
+    instance->context->settings->DesktopWidth = width;
+    instance->context->settings->DesktopHeight = height;
+    instance->context->settings->DynamicResolutionUpdate = TRUE;
+    instance->context->settings->RedirectClipboard = TRUE;
 
-    globalInstance->update->DesktopResize = resize_window;
-    globalInstance->update->BitmapUpdate = bitmap_update;
-    globalInstance->update->BeginPaint = begin_paint;
-    globalInstance->update->EndPaint = end_paint;
-    mfInfo *mfi = MFI_FROM_INSTANCE(globalInstance);
+    instance->update->DesktopResize = resize_window;
+    instance->update->BitmapUpdate = bitmap_update;
+    instance->update->BeginPaint = begin_paint;
+    instance->update->EndPaint = end_paint;
+    mfInfo *mfi = MFI_FROM_INSTANCE(instance);
     mfi->context->ServerCutText = serverCutText;
 
-    globalInstance->PostDisconnect = ios_post_disconnect;
-    globalInstance->PostConnect = post_connect;
+    instance->PostDisconnect = ios_post_disconnect;
+    instance->PostConnect = post_connect;
     
     // FIXME: Implement certificate verification
     //instance->VerifyX509Certificate;
-    globalInstance->VerifyCertificateEx = verify_cert;
-    globalInstance->VerifyChangedCertificateEx = verify_changed_cert;
+    instance->VerifyCertificateEx = verify_cert;
+    instance->VerifyChangedCertificateEx = verify_changed_cert;
 
-    return (void *)globalInstance;
+    return (void *)instance;
 }
 
 void connectRdpInstance(void *instance) {
