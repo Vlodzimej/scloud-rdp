@@ -253,27 +253,27 @@ void *initializeRdp(int i, int width, int height,
     globalInstance->context->settings->GfxAVC444 = TRUE;
     globalInstance->context->settings->GfxH264 = TRUE;
 
+    globalInstance->context->settings->RemoteFxCodec = TRUE;
+
     /*
-     //instance->context->settings->ChannelCount = 2; // Breaks xrdp connections
-     //instance->context->settings->SupportDynamicChannels = TRUE;
+     //globalInstance->context->settings->ChannelCount = 2; // Breaks xrdp connections
+     //globalInstance->context->settings->SupportDynamicChannels = TRUE;
 
-     instance->context->settings->GfxSmallCache = TRUE;
-     instance->context->settings->GfxThinClient = TRUE;
-     instance->context->settings->GfxSendQoeAck = TRUE;
-     instance->context->settings->GfxProgressiveV2 = TRUE;
-     instance->context->settings->GfxProgressive = TRUE;
-     instance->context->settings->GfxAVC444v2 = TRUE;
+     globalInstance->context->settings->GfxSmallCache = TRUE;
+     globalInstance->context->settings->GfxThinClient = TRUE;
+     globalInstance->context->settings->GfxSendQoeAck = TRUE;
+     globalInstance->context->settings->GfxProgressiveV2 = TRUE;
+     globalInstance->context->settings->GfxProgressive = TRUE;
+     globalInstance->context->settings->GfxAVC444v2 = TRUE;
 
-     instance->context->settings->RemoteFxCodec = TRUE;
-     instance->context->settings->SupportGraphicsPipeline = FALSE; // TRUE Breaks connections to Windows
+     globalInstance->context->settings->RemoteFxCodec = TRUE;
+     globalInstance->context->settings->SupportGraphicsPipeline = FALSE; // TRUE Breaks connections to Windows
 
-     //instance->context->settings->AsyncUpdate = TRUE; // may be freezing connection
+     //globalInstance->context->settings->AsyncUpdate = TRUE; // may be freezing connection
      
-     //instance->context->settings->CompressionLevel = 1; // Slower
-     //instance->context->settings->CompressionEnabled = TRUE; // Slower
-
+     //globalInstance->context->settings->CompressionLevel = 1; // Slower
+     //globalInstance->context->settings->CompressionEnabled = TRUE; // Slower
      */
-    
     
     globalInstance->context->settings->GatewayEnabled = gateway_enabled;
     globalInstance->context->settings->GatewayHostname = gateway_addr;
