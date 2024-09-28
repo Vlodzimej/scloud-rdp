@@ -212,11 +212,20 @@ class RdpSession: RemoteSession {
         self.gatewayPass = currentConnection["rdpGatewayPass"] ?? ""
 
         startRdpSessionOnBackgroundThread()
+        super.connect(currentConnection: currentConnection)
     }
         
     override func disconnect() {
         synchronized(self) {
             disconnectRdp(self.cl)
+            self.cl = nil
+        }
+        super.disconnect()
+    }
+    
+    fileprivate func sendCursorEventIfConnected(_ remoteX: Float, _ remoteY: Float, _ buttonId: Int) {
+        if (self.stateKeeper.hasDrawnFirstFrame && self.cl != nil) {
+            cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))
         }
     }
     
@@ -225,8 +234,8 @@ class RdpSession: RemoteSession {
                                scrollUp: Bool, scrollDown: Bool) {
         // TODO: Try implementing composite button support.
         
-        let remoteX = Float(self.stateKeeper.fbW) * x / totalX
-        let remoteY = Float(self.stateKeeper.fbH) * y / totalY
+        let remoteX = Float(self.fbW) * x / totalX
+        let remoteY = Float(self.fbH) * y / totalY
         
         var buttonId = RdpSession.MOUSE_BUTTON_MOVE
         
@@ -241,47 +250,39 @@ class RdpSession: RemoteSession {
         let scrollDownStateChanged = updateCurrentState(
             buttonId: RdpSession.MOUSE_BUTTON_SCROLL_DOWN, isDown: scrollDown)
         
-        var message = "Motion event"
         if firstStateChanged {
-            message = "Left button"
             buttonId = RdpSession.MOUSE_BUTTON_LEFT
             if (firstDown) {
                 buttonId |= RdpSession.PTRFLAGS_DOWN
             }
         }
         if secondStateChanged {
-            message = "Middle button"
             buttonId = RdpSession.MOUSE_BUTTON_MIDDLE
             if (secondDown) {
                 buttonId |= RdpSession.PTRFLAGS_DOWN
             }
         }
         if thirdStateChanged {
-            message = "Right button"
             buttonId = RdpSession.MOUSE_BUTTON_RIGHT
             if (thirdDown) {
                 buttonId |= RdpSession.PTRFLAGS_DOWN
             }
         }
         if scrollUpStateChanged {
-            message = "ScrollUp action"
             buttonId = RdpSession.MOUSE_BUTTON_SCROLL_UP
             if (scrollUp) {
                 buttonId |= RdpSession.PTRFLAGS_DOWN
             }
         }
         if scrollDownStateChanged {
-            message = "ScrollDown action"
             buttonId = RdpSession.MOUSE_BUTTON_SCROLL_DOWN
             if (scrollDown) {
                 buttonId |= RdpSession.PTRFLAGS_DOWN
             }
         }
-
-        //print(message, "x:", remoteX, "y:", remoteY, "buttonId:", buttonId)
         
         // FIXME: Send modifier keys when appropriate.
-        cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))
+        sendCursorEventIfConnected(remoteX, remoteY, buttonId)
     }
     
     override func keyEvent(char: Unicode.Scalar) {
@@ -302,36 +303,42 @@ class RdpSession: RemoteSession {
         return Int32(keyFlags)
     }
     
+    fileprivate func sendVkKeyEventIfConnected(_ flags: Int32, _ code: Int32) {
+        if (self.stateKeeper.hasDrawnFirstFrame && self.cl != nil) {
+            vkKeyEvent(self.cl, flags, code)
+        }
+    }
+    
     override func sendUnicodeKeyEvent(char: Int) {
         let scanCodes = getScanCodesForKeyCodeChar(char: char)
         for scanCode in scanCodes {
             var scode = scanCode
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift down")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), getVirtualScanCode(code: RdpSession.LSHIFT))
+                sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_DOWN), getVirtualScanCode(code: RdpSession.LSHIFT))
                 scode &= ~RemoteSession.SCANCODE_SHIFT_MASK
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                 let virtualScanCode = getVirtualScanCode(code: RdpSession.RALT)
                 let keyFlags = getKeyFlagsForScanCode(virtualScanCode, down: true)
                 log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr down")
-                vkKeyEvent(self.cl, keyFlags, virtualScanCode)
+                sendVkKeyEventIfConnected(keyFlags, virtualScanCode)
                 scode &= ~RemoteSession.SCANCODE_ALTGR_MASK
             }
         
             //log_callback_str(message: "RdpSession: sendUnicodeKeyEvent: \(scode)")
-            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
-            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
             
             if scanCode & RemoteSession.SCANCODE_SHIFT_MASK != 0 {
                 log_callback_str(message: "Found SCANCODE_SHIFT_MASK, sending Shift up")
-                vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), getVirtualScanCode(code: RdpSession.LSHIFT))
+                sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_RELEASE), getVirtualScanCode(code: RdpSession.LSHIFT))
             }
             if scanCode & RemoteSession.SCANCODE_ALTGR_MASK != 0 {
                 let virtualScanCode = getVirtualScanCode(code: RdpSession.RALT)
                 let keyFlags = getKeyFlagsForScanCode(virtualScanCode, down: false)
                 log_callback_str(message: "Found SCANCODE_ALTGR_MASK, sending AltGr up")
-                vkKeyEvent(self.cl, keyFlags, virtualScanCode)
+                sendVkKeyEventIfConnected(keyFlags, virtualScanCode)
             }
         }
     }
@@ -361,15 +368,15 @@ class RdpSession: RemoteSession {
             let scode = getVirtualScanCode(code: code)
             let keyFlags = getKeyFlagsForScanCode(Int32(scode), down: down)
             log_callback_str(message: "RdpSession: sendModifier, modifier: \(modifier), code: \(code), scode: \(scode), down: \(down)")
-            vkKeyEvent(self.cl, Int32(keyFlags), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(keyFlags), Int32(scode))
         }
     }
     
     @objc override func sendSpecialKeyByXKeySym(key: Int32) {
         let scanCodes = getScanCodesOrSendKeyIfUnicode(key: key)
         for scode in scanCodes {
-            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
-            vkKeyEvent(self.cl, Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_DOWN), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(RdpSession.KBD_FLAGS_RELEASE), Int32(scode))
         }
     }
     
@@ -378,7 +385,7 @@ class RdpSession: RemoteSession {
         let d: Int = down ? RdpSession.KBD_FLAGS_DOWN : RdpSession.KBD_FLAGS_RELEASE
         for scode in scanCodes {
             log_callback_str(message: "RdpSession: sendSpecialKeyByXKeySym: \(scode)")
-            vkKeyEvent(self.cl, Int32(d), Int32(scode))
+            sendVkKeyEventIfConnected(Int32(d), Int32(scode))
         }
     }
     

@@ -63,16 +63,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var sshTunnelingStarted: Bool = false
     var globalWriteTlsLock: NSLock = NSLock()
     var frames = 0
-    var reDrawTimer: Timer = Timer()
     var superUpKeyTimer: Timer = Timer()
     var orientationTimer: Timer = Timer()
     var fullScreenUpdateTimer: Timer = Timer()
     var partialScreenUpdateTimer: Timer = Timer()
     var recurringPartialScreenUpdateTimer: Timer = Timer()
     var disconnectTimer: Timer = Timer()
-    var fbW: Int32 = 0
-    var fbH: Int32 = 0
-    var data: UnsafeMutablePointer<UInt8>?
     var minScale: CGFloat = 0
     var macOs: Bool = false
     var iPadOnMacOs: Bool = false
@@ -93,6 +89,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     var receivedUpdate: Bool = false;
     var isDrawing: Bool = false;
+    var hasDrawnFirstFrame: Bool = false;
     var isKeptFresh: Bool = false;
     
     var currentTransition: String = "";
@@ -166,27 +163,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var requestingSshCredentials: Bool = false
 
     var onScreenKeysHidden: Bool = true
-
-    @objc func reDraw() {
-        if (self.isDrawing) {
-            UserInterface {
-                self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
-            }
-        }
-    }
     
-    func rescheduleReDrawTimer(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
-        if (self.isDrawing) {
-            UserInterface{
-                self.data = data
-                self.fbW = fbW
-                self.fbH = fbH
-                self.reDrawTimer.invalidate()
-                self.reDrawTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self,
-                                                        selector: #selector(self.reDraw),
-                                                        userInfo: nil, repeats: false)
-            }
-        }
+    @objc func reDraw() {
+        self.remoteSession?.reDraw()
     }
     
     func rescheduleSuperKeyUpTimer() {
@@ -379,6 +358,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         globalWindow!.makeKeyAndVisible()
         self.currInst = (currInst + 1) % maxClCapacity
         self.isDrawing = true
+        self.hasDrawnFirstFrame = false
         self.toggleModifiersIfDown()
         if Utils.isSpice() {
             self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
@@ -429,15 +409,15 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             scheduleDisconnectTimer(interval: 0, wasDrawing: wasDrawing)
         }
     }
-    
+
     @objc func lazyDisconnect() {
         log_callback_str(message: "Lazy disconnecting")
         self.clipboardMonitor?.stopMonitoring()
         self.imageView?.disableTouch()
         self.isDrawing = false
+        self.hasDrawnFirstFrame = false
         self.deregisterFromNotifications()
         self.orientationTimer.invalidate()
-        self.reDrawTimer.invalidate()
         self.fullScreenUpdateTimer.invalidate()
         self.partialScreenUpdateTimer.invalidate()
         self.recurringPartialScreenUpdateTimer.invalidate()
@@ -695,7 +675,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func rescheduleOrientationTimer() {
-        self.reDrawTimer.invalidate()
+        self.remoteSession?.reDrawTimer.invalidate()
         if (self.isDrawing) {
             self.orientationTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(correctTopSpacingForOrientation), userInfo: nil, repeats: false)
         }
@@ -1054,30 +1034,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         exit(0)
     }
     
-    func draw(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32) {
-        UserInterface {
-            autoreleasepool {
-                self.fbW = fbW
-                self.fbH = fbH
-                self.data = data
-                if self.isDrawing {
-                    self.imageView?.image = UIImage.imageFromARGB32Bitmap(
-                        pixels: data,
-                        withWidth: Int(fbW),
-                        withHeight: Int(fbH)
-                    )
-                }
-            }
-        }
-    }
-
     func remoteResized(fbW: Int32, fbH: Int32) {
         UserInterface {
             autoreleasepool {
+                self.hasDrawnFirstFrame = true
+                self.remoteSession?.allocateNewBuffer(fbW: fbW, fbH: fbH)
                 self.receivedUpdate = true
-                self.reDrawTimer.invalidate()
-                self.fbW = fbW
-                self.fbH = fbH
                 self.imageView?.removeFromSuperview()
                 self.imageView?.image = nil
                 self.imageView = nil
@@ -1100,7 +1062,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.showConnectedSession()
                 self.keepSessionRefreshed()
                 if !Utils.isRdp() {
-                    self.reDraw()
+                    self.remoteSession?.reDraw()
                 }
                 self.clipboardMonitor?.startMonitoring()
             }

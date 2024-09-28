@@ -249,7 +249,6 @@ func resize_callback(instance: Int32, fbW: Int32, fbH: Int32) -> Void {
         log_callback_str(message: "Current inst \(globalStateKeeper!.currInst) discarding resize_callback, inst \(instance)")
         return
     }
-
     globalStateKeeper?.remoteResized(fbW: fbW, fbH: fbH)
 }
 
@@ -263,14 +262,8 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
         return false
     }
     
-    let timeNow = CACurrentMediaTime()
-    if (timeNow - lastUpdate < 0.032) {
-        //print("Last frame drawn less than 50ms ago, discarding frame, scheduling redraw")
-        globalStateKeeper?.rescheduleReDrawTimer(data: data, fbW: fbW, fbH: fbH)
-    } else {
-        //print("Drawing a frame normally.")
-        globalStateKeeper?.draw(data: data, fbW: fbW, fbH: fbH)
-        lastUpdate = CACurrentMediaTime()
+    if (globalStateKeeper?.hasDrawnFirstFrame ?? false) {
+        globalStateKeeper?.remoteSession?.updateCallback(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
     }
     return true
 }
@@ -298,6 +291,12 @@ class RemoteSession {
     var user: String = ""
     var pass: String = ""
     
+    var fbW: Int32 = 0
+    var fbH: Int32 = 0
+    var data: UnsafeMutableRawPointer?
+    var connected: Bool = false
+    var reDrawTimer: Timer = Timer()
+
     class var LCONTROL: Int { return 29 }
     class var RCONTROL: Int { return 285 }
     class var LALT: Int { return 56 }
@@ -435,11 +434,12 @@ class RemoteSession {
     }
     
     func connect(currentConnection: [String:String]) {
-        preconditionFailure("This method must be overridden") 
+        connected = true
     }
     
     func disconnect() {
-        preconditionFailure("This method must be overridden")
+        connected = false
+        self.reDrawTimer.invalidate()
     }
 
     func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
@@ -542,4 +542,70 @@ class RemoteSession {
                 UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
         }
     }
+    
+    func draw(data: UnsafeMutableRawPointer?, fbW: Int32, fbH: Int32) {
+        UserInterface {
+            autoreleasepool {
+                self.fbW = fbW
+                self.fbH = fbH
+                if self.stateKeeper.isDrawing {
+                    self.stateKeeper.imageView?.image = UIImage.imageFromARGB32Bitmap(
+                        pixels: data,
+                        withWidth: Int(fbW),
+                        withHeight: Int(fbH)
+                    )
+                }
+            }
+        }
+    }
+    
+    @objc func reDraw() {
+        if (self.stateKeeper.isDrawing) {
+            UserInterface {
+                self.reDrawTimer.invalidate()
+                self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
+            }
+        }
+    }
+    
+    func deallocateBufferIfNecessary() {
+        if self.data != nil {
+            self.data?.deallocate()
+            self.data = nil
+        }
+    }
+    
+    func allocateNewBuffer(fbW: Int32, fbH: Int32) {
+        self.data = UnsafeMutableRawPointer.allocate(byteCount: Int(4*fbW*fbH), alignment: 0)
+    }
+    
+    deinit {
+        deallocateBufferIfNecessary()
+    }
+    
+    func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
+        self.data?.copyMemory(from: data!, byteCount: Int(4*fbW*fbH))
+
+        let timeNow = CACurrentMediaTime()
+        if (timeNow - lastUpdate < 0.032) {
+            // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
+            self.rescheduleReDrawTimer(data: self.data, fbW: fbW, fbH: fbH)
+        } else {
+            // Drawing a frame normally
+            self.draw(data: self.data, fbW: fbW, fbH: fbH)
+            lastUpdate = CACurrentMediaTime()
+        }
+    }
+    
+    func rescheduleReDrawTimer(data: UnsafeMutableRawPointer?, fbW: Int32, fbH: Int32) {
+        if (self.connected) {
+            UserInterface{
+                self.reDrawTimer.invalidate()
+                self.reDrawTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self,
+                                                        selector: #selector(self.reDraw),
+                                                        userInfo: nil, repeats: false)
+            }
+        }
+    }
+    
 }

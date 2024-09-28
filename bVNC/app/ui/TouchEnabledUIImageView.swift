@@ -50,7 +50,7 @@ extension UIImage {
 
 extension UIImage {
 
-    static func imageFromARGB32Bitmap(pixels: UnsafeMutablePointer<UInt8>?, withWidth: Int, withHeight: Int) -> UIImage {
+    static func imageFromARGB32Bitmap(pixels: UnsafeMutableRawPointer?, withWidth: Int, withHeight: Int) -> UIImage {
         guard withWidth > 0 && withHeight > 0 else { return UIImage() }
         guard pixels != nil else { return UIImage() }
         let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -290,11 +290,14 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             synced(self) {
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
-                stateKeeper?.remoteSession?.pointerEvent(
-                    totalX: Float32(self.width), totalY: Float32(self.height),
-                    x: Float32(self.newX), y: Float32(self.newY),
-                    firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
-                    scrollUp: fourthDown, scrollDown: fifthDown)
+                let hasDrawnFirstFrame = stateKeeper?.hasDrawnFirstFrame ?? false
+                if hasDrawnFirstFrame {
+                    stateKeeper?.remoteSession?.pointerEvent(
+                        totalX: Float32(self.width), totalY: Float32(self.height),
+                        x: Float32(self.newX), y: Float32(self.newY),
+                        firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
+                        scrollUp: fourthDown, scrollDown: fifthDown)
+                }
             }
             self.lastX = self.newX
             self.lastY = self.newY

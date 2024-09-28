@@ -134,19 +134,21 @@ class SpiceSession: RemoteSession {
         self.pass = currentConnection["password"] ?? ""
 
         startSpiceSessionOnBackgroundThread()
+        super.connect(currentConnection: currentConnection)
     }
         
     override func disconnect() {
         Background {
             disconnectSpice()
         }
+        super.disconnect()
     }
     
     override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-        let remoteX = Float(self.stateKeeper.fbW) * x / totalX
-        let remoteY = Float(self.stateKeeper.fbH) * y / totalY
+        let remoteX = Float(self.stateKeeper.remoteSession?.fbW ?? 0) * x / totalX
+        let remoteY = Float(self.stateKeeper.remoteSession?.fbH ?? 0) * y / totalY
         
         var isDown = 0
         var buttonId = 0

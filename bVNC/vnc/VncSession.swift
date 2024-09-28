@@ -85,12 +85,14 @@ class VncSession: RemoteSession {
         self.pass = currentConnection["password"] ?? ""
         
         startVncSessionOnBackgroundThread()
+        super.connect(currentConnection: currentConnection)
     }
         
     override func disconnect() {
         Background {
             disconnectVnc(self.cl)
         }
+        super.disconnect()
     }
     
     override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
