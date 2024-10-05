@@ -237,7 +237,11 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
  * the bitmap would be smaller than the screen
  */
 func getMinimumScale(fbW: CGFloat, fbH: CGFloat) -> CGFloat {
-    return min(globalWindow!.bounds.maxX / fbW, globalWindow!.bounds.maxY / fbH);
+    let windowWidth = globalWindow!.bounds.maxX
+    let windowHeight = globalWindow!.bounds.maxY
+    let width = fbW <= 0 ? 1 : windowWidth
+    let height = fbH <= 0 ? 1 : windowHeight
+    return min(windowWidth / width, windowHeight / height);
 }
 
 func widthRatioLessThanHeightRatio(fbW: CGFloat, fbH: CGFloat) -> Bool {
