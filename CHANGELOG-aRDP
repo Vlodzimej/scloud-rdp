@@ -1,6 +1,7 @@
 36
   - Stability improvements
   - Ability to open vv files on command-line
+  - Custom cursor shape for iOS devices
 35
   - Bugfix for Esc key breaking input on MacOS
   - Updated Show On-screen Keys menu item to Toggle them

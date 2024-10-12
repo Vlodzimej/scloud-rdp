@@ -1,5 +1,6 @@
 36
   - Stability improvements
+  - Custom cursor shape for iOS devices
 35
   - Bugfix for Esc key breaking input on MacOS
   - Updated Show On-screen Keys menu item to Toggle them
