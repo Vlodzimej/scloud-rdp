@@ -82,7 +82,7 @@ extension UIImage {
     }
 }
 
-class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
+class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UIPointerInteractionDelegate {
     var fingers = [UITouch?](repeating: nil, count:5)
     var width: CGFloat = 0.0
     var height: CGFloat = 0.0
@@ -170,6 +170,40 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate {
             let interaction = UIContextMenuInteraction(delegate: self)
             self.addInteraction(interaction)
         }
+        if self.stateKeeper?.isiPhoneOrPad() ?? false {
+            customPointerInteraction(on: self, pointerInteractionDelegate: self)
+        }
+    }
+    
+    func customPointerInteraction(on view: UIView, pointerInteractionDelegate: UIPointerInteractionDelegate) {
+        let pointerInteraction = UIPointerInteraction(delegate: pointerInteractionDelegate)
+        view.addInteraction(pointerInteraction)
+    }
+    
+    func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
+        var pointerStyle: UIPointerStyle? = nil
+        let bezierPath = UIBezierPath(cgPath: getPointerShape().cgPath)
+        pointerStyle = UIPointerStyle(shape: UIPointerShape.path(bezierPath))
+        return pointerStyle
+    }
+    
+    func getPointerShape() -> UIBezierPath {
+        let shape = UIBezierPath()
+        shape.move(to: CGPoint(x: 10, y: 6))
+        shape.addLine(to: CGPoint(x: 10, y: 0))
+        shape.addLine(to: CGPoint(x: 6, y: 0))
+        shape.addLine(to: CGPoint(x: 6, y: 6))
+        shape.addLine(to: CGPoint(x: 0, y: 6))
+        shape.addLine(to: CGPoint(x: 0, y: 10))
+        shape.addLine(to: CGPoint(x: 6, y: 10))
+        shape.addLine(to: CGPoint(x: 6, y: 16))
+        shape.addLine(to: CGPoint(x: 10, y: 16))
+        shape.addLine(to: CGPoint(x: 10, y: 10))
+        shape.addLine(to: CGPoint(x: 16, y: 10))
+        shape.addLine(to: CGPoint(x: 16, y: 6))
+        shape.addLine(to: CGPoint(x: 10, y: 6))
+        shape.close()
+        return shape
     }
     
     func handleScroll(translationX: CGFloat, translationY: CGFloat, threshhold: CGFloat) {
