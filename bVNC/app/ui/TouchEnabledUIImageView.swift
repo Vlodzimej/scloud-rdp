@@ -82,6 +82,36 @@ extension UIImage {
     }
 }
 
+extension UIBezierPath {
+
+    class func arrow(from start: CGPoint, to end: CGPoint, tailWidth: CGFloat, headWidth: CGFloat, headLength: CGFloat) -> Self {
+        let length = hypot(end.x - start.x, end.y - start.y)
+        let tailLength = length - headLength
+
+        func p(_ x: CGFloat, _ y: CGFloat) -> CGPoint { return CGPoint(x: x, y: y) }
+        var points: [CGPoint] = [
+            p(0, tailWidth / 2),
+            p(tailLength, tailWidth / 2),
+            p(tailLength, headWidth / 2),
+            p(length, 0),
+            p(tailLength, -headWidth / 2),
+            p(tailLength, -tailWidth / 2),
+            p(0, -tailWidth / 2)
+        ]
+
+        let cosine = (end.x - start.x) / length
+        let sine = (end.y - start.y) / length
+        var transform = CGAffineTransform(a: cosine, b: sine, c: -sine, d: cosine, tx: start.x, ty: start.y)
+
+        let path = CGMutablePath()
+        path.addLines(between: points, transform: transform)
+        path.closeSubpath()
+
+        return self.init(cgPath: path)
+    }
+
+}
+
 class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UIPointerInteractionDelegate {
     var fingers = [UITouch?](repeating: nil, count:5)
     var width: CGFloat = 0.0
@@ -182,28 +212,15 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     
     func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
         var pointerStyle: UIPointerStyle? = nil
-        let bezierPath = UIBezierPath(cgPath: getPointerShape().cgPath)
+        let bezierPath = UIBezierPath.arrow(
+            from: CGPointMake(15, 15),
+            to: CGPointMake(0, 0),
+            tailWidth: 3,
+            headWidth: 10,
+            headLength: 14
+        )
         pointerStyle = UIPointerStyle(shape: UIPointerShape.path(bezierPath))
         return pointerStyle
-    }
-    
-    func getPointerShape() -> UIBezierPath {
-        let shape = UIBezierPath()
-        shape.move(to: CGPoint(x: 10, y: 6))
-        shape.addLine(to: CGPoint(x: 10, y: 0))
-        shape.addLine(to: CGPoint(x: 6, y: 0))
-        shape.addLine(to: CGPoint(x: 6, y: 6))
-        shape.addLine(to: CGPoint(x: 0, y: 6))
-        shape.addLine(to: CGPoint(x: 0, y: 10))
-        shape.addLine(to: CGPoint(x: 6, y: 10))
-        shape.addLine(to: CGPoint(x: 6, y: 16))
-        shape.addLine(to: CGPoint(x: 10, y: 16))
-        shape.addLine(to: CGPoint(x: 10, y: 10))
-        shape.addLine(to: CGPoint(x: 16, y: 10))
-        shape.addLine(to: CGPoint(x: 16, y: 6))
-        shape.addLine(to: CGPoint(x: 10, y: 6))
-        shape.close()
-        return shape
     }
     
     func handleScroll(translationX: CGFloat, translationY: CGFloat, threshhold: CGFloat) {
