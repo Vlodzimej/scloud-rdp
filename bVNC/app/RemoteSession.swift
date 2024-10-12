@@ -239,8 +239,8 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
 func getMinimumScale(fbW: CGFloat, fbH: CGFloat) -> CGFloat {
     let windowWidth = globalWindow!.bounds.maxX
     let windowHeight = globalWindow!.bounds.maxY
-    let width = fbW <= 0 ? 1 : windowWidth
-    let height = fbH <= 0 ? 1 : windowHeight
+    let width = fbW <= 0 ? windowWidth : fbW
+    let height = fbH <= 0 ? windowHeight : fbH
     return min(windowWidth / width, windowHeight / height);
 }
 
