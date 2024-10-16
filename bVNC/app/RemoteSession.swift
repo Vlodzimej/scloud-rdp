@@ -123,7 +123,7 @@ func utf_decoding_clipboard_callback(clipboard: UnsafeMutablePointer<UInt8>?, si
 }
 
 func clipboard_callback(clipboard: UnsafeMutablePointer<CChar>?) -> Void {
-    log_callback_str(message: "clipboard_callback")
+    log_callback_str(message: "clipboard_callback: Detected new server clipboard contents")
     let clipboardContents = String(cString: clipboard!)
     UIPasteboard.general.string = clipboardContents
 }
@@ -487,6 +487,7 @@ class RemoteSession {
             log_callback_str(message: "No currently connected instance, ignoring \(#function)")
             return
         }
+        log_callback_str(message: "clientCutTextInSession: Detected new client clipboard contents")
         let clipboardStr = clientClipboardContents ?? ""
         let clientClipboardContentsPtr = UnsafeMutablePointer<Int8>(mutating: (clipboardStr as NSString).utf8String)
         let length = clipboardStr.lengthOfBytes(using: .utf8)
