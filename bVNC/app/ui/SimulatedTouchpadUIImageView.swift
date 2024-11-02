@@ -22,10 +22,10 @@ import UIKit
 import AudioToolbox
 
 class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
-    var lX: CGFloat = 0.0
-    var lY: CGFloat = 0.0
-    var cX: CGFloat = 0.0
-    var cY: CGFloat = 0.0
+    var prevTouchX: CGFloat = 0.0
+    var prevYouchY: CGFloat = 0.0
+    var touchX: CGFloat = 0.0
+    var touchY: CGFloat = 0.0
     var diffX: CGFloat = 0.0
     var diffY: CGFloat = 0.0
 
@@ -36,8 +36,38 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         panGesture?.maximumNumberOfTouches = 2
         longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
+        // TODO: We need a local pointer, especially for RDP protocol
     }
             
+    fileprivate func panToKeepPointerVisible(_ view: UIView, _ sender: UIPanGestureRecognizer) {
+        let scaleX = view.transform.a
+        let scaleY = view.transform.d
+        let marginX = CGFloat(100)
+        let marginY = CGFloat(100)
+        
+        let frameMinX = -1 * view.frame.minX / scaleX
+        let frameMinY = -1 * view.frame.minY / scaleY
+        let frameMaxX = view.frame.maxX / scaleX + frameMinX
+        let frameMaxY = view.frame.maxY / scaleY + frameMinY
+
+        let pointerX = newX
+        let pointerY = newY
+
+        let minX = frameMinX + marginX
+        let maxX = frameMaxX - marginX
+        let minY = frameMinY + marginY
+        let maxY = frameMaxY - marginY
+        print("panToKeepPointerVisible, bounds: \(minX), \(minY), \(maxX), \(maxY), pointer: \(pointerX) x \(pointerY)")
+        if diffX > 0 && pointerX < minX ||
+            diffY > 0 && pointerY < minY ||
+            diffX < 0 && pointerX > maxX ||
+            diffY < 0 && pointerY > maxY {
+            let newCenterX = view.center.x + diffX
+            let newCenterY = view.center.y + diffY
+            panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
+        }
+    }
+    
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
             self.inPanDragging = false
@@ -67,11 +97,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
                 log_callback_str(message: "\(#function), moving the mouse pointer to \(newX)x\(newY)")
                 self.sendPointerEvent(scrolling: false, moving: true, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: false)
             }
-            /* TODO: Implement panning the screen if cX or cY are close to the visible edge of the screen.
-            let newCenterX = view.center.x + diffX
-            let newCenterY = view.center.y + diffY
-            panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
-             */
+            panToKeepPointerVisible(view, sender)
         }
     }
     
@@ -93,48 +119,51 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
     }
     
     override func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false, gestureBegan: Bool=false) {
-        
+        self.width = touchView.frame.width
+        self.height = touchView.frame.height
+
         let scaleX = touchView.transform.a
         let scaleY = touchView.transform.d
         
-        cX = point.x
-        cY = point.y
+        touchX = point.x
+        touchY = point.y
         if gestureBegan {
             print("setViewParameters: gestureBegan")
-            lX = cX
-            lY = cY
+            prevTouchX = touchX
+            prevYouchY = touchY
         }
         
-        diffX = (lX - cX)*scaleX
-        diffY = (lY - cY)*scaleY
-        lX = cX
-        lY = cY
+        diffX = (prevTouchX - touchX)*scaleX
+        diffY = (prevYouchY - touchY)*scaleY
+        prevTouchX = touchX
+        prevYouchY = touchY
         
         var rX = lastX - diffX
         var rY = lastY - diffY
         
-        let rW = CGFloat(self.stateKeeper?.remoteSession?.width ?? 0)
-        let rH = CGFloat(self.stateKeeper?.remoteSession?.height ?? 0)
-        
-        if rX < 0 {
+        // TODO: Can we get rid of one of fbW and width and fbH and height?
+        let fbW = CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0)
+        let fbH = CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0)
+        let newRemoteX = CGFloat(fbW * rX / self.width)
+        let newRemoteY = CGFloat(fbH * rY / self.height)
+
+        if newRemoteX <= 0 {
             rX = 0
         }
-        if rX > rW {
-            rX = rW
+        if newRemoteX >= fbW {
+            rX = width
         }
-        if rY < 0 {
+        if newRemoteY <= 0 {
             rY = 0
         }
-        if rY > rH {
-            rY = rH
+        if newRemoteY >= fbH {
+            rY = height
         }
 
         newX = rX
         newY = rY
-        print("setViewParameters, diffs: \(diffX)x\(diffY), new coords: \(newX)x\(newY)")
+        //print("setViewParameters, new remote coords: \(newRemoteX)x\(newRemoteY), new coords: \(newX)x\(newY), fbWxfbH: \(fbW)x\(fbH)")
 
-        self.width = touchView.frame.width
-        self.height = touchView.frame.height
         if setDoubleTapCoordinates {
             self.pendingDoubleTap = true
             newDoubleTapX = newX

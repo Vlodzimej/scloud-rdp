@@ -446,7 +446,7 @@ class RemoteSession {
         self.reDrawTimer.invalidate()
     }
 
-    func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
+    func pointerEvent(remoteX: Float, remoteY: Float,
                       firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                       scrollUp: Bool, scrollDown: Bool) {
         preconditionFailure("This method must be overridden")

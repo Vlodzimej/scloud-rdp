@@ -144,12 +144,9 @@ class SpiceSession: RemoteSession {
         super.disconnect()
     }
     
-    override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
+    override func pointerEvent(remoteX: Float, remoteY: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-        let remoteX = Float(self.stateKeeper.remoteSession?.fbW ?? 0) * x / totalX
-        let remoteY = Float(self.stateKeeper.remoteSession?.fbH ?? 0) * y / totalY
-        
         var isDown = 0
         var buttonId = 0
         var stateChanged = 0

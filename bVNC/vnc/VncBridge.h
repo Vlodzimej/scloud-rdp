@@ -43,7 +43,7 @@ void sendUniDirectionalKeyEvent(void *c, const char *characters, bool down);
 bool sendKeyEventInt(void *c, int character);
 void sendKeyEventWithKeySym(void *c, int character);
 void sendUniDirectionalKeyEventWithKeySym(void *c, int sym, bool down);
-void sendPointerEventToServer(void *c, float totalX, float totalY, float x, float y, bool firstDown, bool secondDown,
+void sendPointerEventToServer(void *c, float remoteX, float remoteY, bool firstDown, bool secondDown,
                               bool thirdDown, bool scrollUp, bool scrollDown);
 void checkForError(rfbClient *cl, rfbBool res);
 void cleanup(rfbClient *cl, char* message);

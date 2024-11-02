@@ -95,10 +95,10 @@ class VncSession: RemoteSession {
         super.disconnect()
     }
     
-    override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
+    override func pointerEvent(remoteX: Float, remoteY: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
-        sendPointerEventToServer(self.cl, totalX, totalY, x, y, firstDown, secondDown, thirdDown, scrollUp, scrollDown)
+        sendPointerEventToServer(self.cl, remoteX, remoteY, firstDown, secondDown, thirdDown, scrollUp, scrollDown)
     }
     
     override func keyEvent(char: Unicode.Scalar) {

@@ -388,7 +388,7 @@ void sendUniDirectionalKeyEventWithKeySym(void *c, int sym, bool down) {
     checkForError(cl, SendKeyEvent(cl, sym, down));
 }
 
-void sendPointerEventToServer(void *c, float totalX, float totalY, float x, float y, bool firstDown, bool secondDown, bool thirdDown, bool scrollUp, bool scrollDown) {
+void sendPointerEventToServer(void *c, float remoteX, float remoteY, bool firstDown, bool secondDown, bool thirdDown, bool scrollUp, bool scrollDown) {
     rfbClient *cl = (rfbClient *)c;
     
     if (cl == NULL || !maintainConnection) {
@@ -410,8 +410,6 @@ void sendPointerEventToServer(void *c, float totalX, float totalY, float x, floa
     if (scrollDown) {
         buttonMask = buttonMask | rfbButton5Mask;
     }
-    int remoteX = fbW * x / totalX;
-    int remoteY = fbH * y / totalY;
     //printf("Sending pointer event at %d, %d, with mask %d\n", remoteX, remoteY, buttonMask);
     checkForError(cl, SendPointerEvent(cl, remoteX, remoteY, buttonMask));
 }

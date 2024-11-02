@@ -229,14 +229,10 @@ class RdpSession: RemoteSession {
         }
     }
     
-    override func pointerEvent(totalX: Float, totalY: Float, x: Float, y: Float,
+    override func pointerEvent(remoteX: Float, remoteY: Float,
                                firstDown: Bool, secondDown: Bool, thirdDown: Bool,
                                scrollUp: Bool, scrollDown: Bool) {
         // TODO: Try implementing composite button support.
-        
-        let remoteX = Float(self.fbW) * x / totalX
-        let remoteY = Float(self.fbH) * y / totalY
-        
         var buttonId = RdpSession.MOUSE_BUTTON_MOVE
         
         let firstStateChanged = updateCurrentState(

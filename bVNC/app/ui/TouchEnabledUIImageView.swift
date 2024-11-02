@@ -120,6 +120,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     var lastY: CGFloat = 0.0
     var newX: CGFloat = 0.0
     var newY: CGFloat = 0.0
+    var remoteX: Float = 0.0
+    var remoteY: Float = 0.0
     var newDoubleTapX: CGFloat = 0.0
     var newDoubleTapY: CGFloat = 0.0
     var pendingDoubleTap: Bool = false
@@ -322,8 +324,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     fileprivate func repositionPointerIfScrolling(fourthDown: Bool, fifthDown: Bool) {
         if fourthDown || fifthDown {
             stateKeeper?.remoteSession?.pointerEvent(
-                totalX: Float32(self.width), totalY: Float32(self.height),
-                x: Float32(self.newX), y: Float32(self.newY),
+                remoteX: self.remoteX, remoteY: self.remoteY,
                 firstDown: false, secondDown: false, thirdDown: false,
                 scrollUp: false, scrollDown: false)
         }
@@ -342,10 +343,13 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
                 let hasDrawnFirstFrame = stateKeeper?.hasDrawnFirstFrame ?? false
+                
+                self.remoteX = Float(CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0) * self.newX / self.width)
+                self.remoteY = Float(CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0) * self.newY / self.height)
+
                 if hasDrawnFirstFrame {
                     stateKeeper?.remoteSession?.pointerEvent(
-                        totalX: Float32(self.width), totalY: Float32(self.height),
-                        x: Float32(self.newX), y: Float32(self.newY),
+                        remoteX: remoteX, remoteY: remoteY,
                         firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
                         scrollUp: fourthDown, scrollDown: fifthDown)
                 }
