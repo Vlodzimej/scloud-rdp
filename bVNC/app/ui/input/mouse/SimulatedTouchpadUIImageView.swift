@@ -99,12 +99,12 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
             if (scroll(touchView: view, translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
                        gesturePoint: sender.location(in: view), restorePointerPosition: true)) {
                 log_callback_str(message: "\(#function), scrolled at \(newX)x\(newY)")
+                return
             } else if self.secondDown || self.thirdDown {
                 self.inPanDragging = true
                 let moving = !(sender.state == .ended)
                 log_callback_str(message: "\(#function), second or third button dragging to \(newX)x\(newY)")
-                self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown,
-                                         thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
+                self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
             } else {
                 //log_callback_str(message: "\(#function), moving the mouse pointer to \(newX)x\(newY)")
                 self.sendPointerEvent(scrolling: false, moving: true, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: false)
