@@ -62,19 +62,22 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         
         let centerX = view.center.x
         let centerY = view.center.y
+        var newCenterX = centerX
+        var newCenterY = centerY
 
-        if diffX > 0 && pointerX < visibleMinX ||
-            diffX < 0 && pointerX > visibleMaxX {
-            let newCenterX = view.center.x + diffX
-            panView(sender: sender, newCX: newCenterX, newCY: centerY)
+        if diffX > 0 && pointerX < visibleMinX + 10 {
+            newCenterX = view.center.x + 10
         }
-
-        if diffY > 0 && pointerY < visibleMinY ||
-            diffY < 0 && pointerY > visibleMaxY {
-            let newCenterY = view.center.y + diffY
-            panView(sender: sender, newCX: centerX, newCY: newCenterY)
+        if diffX < 0 && pointerX > visibleMaxX - 10 {
+            newCenterX = view.center.x - 10
         }
-
+        if diffY > 0 && pointerY < visibleMinY + 10 {
+            newCenterY = view.center.y + 10
+        }
+        if diffY < 0 && pointerY > visibleMaxY - 10 {
+            newCenterY = view.center.y - 10
+        }
+        panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
     }
     
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
