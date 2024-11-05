@@ -166,7 +166,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     var prevTranslationY: CGFloat = 0
     var directionUp = false
     var directionDown = false
-
+    let pointerLayer = CAShapeLayer()
+    
     func initialize() {
         isMultipleTouchEnabled = true
         self.width = self.frame.width
@@ -212,15 +213,19 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         view.addInteraction(pointerInteraction)
     }
     
-    func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
-        var pointerStyle: UIPointerStyle? = nil
-        let bezierPath = UIBezierPath.arrow(
-            from: CGPointMake(15, 15),
-            to: CGPointMake(0, 0),
+    fileprivate func mousePointer(fromX: CGFloat, fromY: CGFloat, toX: CGFloat, toY: CGFloat) -> UIBezierPath {
+        return UIBezierPath.arrow(
+            from: CGPointMake(fromX, fromY),
+            to: CGPointMake(toX, toY),
             tailWidth: 3,
             headWidth: 10,
             headLength: 14
         )
+    }
+    
+    func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
+        var pointerStyle: UIPointerStyle? = nil
+        let bezierPath = mousePointer(fromX: 15, fromY: 15, toX: 0, toY: 0)
         pointerStyle = UIPointerStyle(shape: UIPointerShape.path(bezierPath))
         return pointerStyle
     }
@@ -740,5 +745,15 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             }
         }
         return consumed
+    }
+    
+    func drawPointer(x: CGFloat, y: CGFloat, inView view: UIView) {
+        pointerLayer.removeFromSuperlayer()
+        let path = mousePointer(fromX: x + 15, fromY: y + 15, toX: x, toY: y)
+        pointerLayer.path = path.cgPath
+        pointerLayer.opacity = 0.8
+        pointerLayer.fillColor = UIColor.white.cgColor
+        pointerLayer.strokeColor = UIColor.black.cgColor
+        view.layer.addSublayer(pointerLayer)
     }
 }

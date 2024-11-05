@@ -36,7 +36,6 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         panGesture?.maximumNumberOfTouches = 2
         longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
-        // TODO: We need a local pointer, especially for RDP protocol
     }
             
     fileprivate func panToKeepPointerVisible(_ view: UIView, _ sender: UIPanGestureRecognizer) {
@@ -172,7 +171,8 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         newX = rX
         newY = rY
         //print("setViewParameters, new remote coords: \(newRemoteX)x\(newRemoteY), new coords: \(newX)x\(newY), frame wxh: \(width)x\(height)")
-
+        drawPointer(x: newX/scaleX, y: newY/scaleY, inView: self)
+        
         if setDoubleTapCoordinates {
             self.pendingDoubleTap = true
             newDoubleTapX = newX
