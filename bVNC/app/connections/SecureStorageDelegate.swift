@@ -148,14 +148,14 @@ class SecureStorageDelegate {
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
         guard status == errSecSuccess && status != errSecItemNotFound else {
-            log_callback_str(message: "\(#function) Could not load \(account) credentials due to: \(SecCopyErrorMessageString(status, nil)!)")
+            //log_callback_str(message: "\(#function) Could not load \(account) credentials due to: \(SecCopyErrorMessageString(status, nil)!)")
             copyOfConnection[passwordField] = ""
             return connection
         }
         let passwordData = item![kSecValueData as String] as? Data
         let password = String(data: passwordData!, encoding: String.Encoding.utf8)
         copyOfConnection[passwordField] = password
-        log_callback_str(message: "\(#function) Success loading \(account) credentials from secure storage")
+        //log_callback_str(message: "\(#function) Success loading \(account) credentials from secure storage")
         return copyOfConnection
     }
     

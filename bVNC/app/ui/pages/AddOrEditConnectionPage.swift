@@ -38,6 +38,7 @@ struct AddOrEditConnectionPage : View {
     @State var audioEnabled: Bool
     @State var allowZooming: Bool
     @State var allowPanning: Bool
+    @State var touchInputMethod: TouchInputMethod
     @State var showSshTunnelSettings: Bool
     @State var externalId: String
     @State var requiresVpn: Bool
@@ -48,7 +49,7 @@ struct AddOrEditConnectionPage : View {
     @State var rdpGatewayUser: String
     @State var rdpGatewayPass: String
     @State var rdpGatewayEnabled: Bool
-    
+
     func retrieveConnectionDetails() -> [String : String] {
         var connection = [
             "connectionName": self.connectionNameText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -72,6 +73,7 @@ struct AddOrEditConnectionPage : View {
             "audioEnabled": String(self.audioEnabled),
             "allowZooming": String(self.allowZooming),
             "allowPanning": String(self.allowPanning),
+            "touchInputMethod": self.touchInputMethod.rawValue.trimmingCharacters(in: .whitespacesAndNewlines),
             "showSshTunnelSettings": String(self.showSshTunnelSettings),
             "externalId": self.externalId.trimmingCharacters(in: .whitespacesAndNewlines),
             "requiresVpn": String(self.requiresVpn),
@@ -95,7 +97,6 @@ struct AddOrEditConnectionPage : View {
     }
     
     func getKeyboardLayouts() -> [String] {
-        
         return stateKeeper.keyboardLayouts.sorted()
     }
     
@@ -349,7 +350,7 @@ struct AddOrEditConnectionPage : View {
     }
     
     fileprivate func getLayoutAndCertFields() -> some View {
-        return VStack {
+        return VStack(alignment: .leading) {
             if Utils.isSpice() || Utils.isRdp() {
                 HStack {
                     Text("KEYBOARD_LAYOUT_LABEL").font(.title)
@@ -380,11 +381,21 @@ struct AddOrEditConnectionPage : View {
     fileprivate func getUiOptionsFields() -> some View {
         return VStack {
             Text("USER_INTERFACE_SETTINGS_LABEL").font(.title)
-            Toggle(isOn: $allowZooming) {
-                Text("ALLOW_DESKTOP_ZOOMING_LABEL").font(.title)
-            }
-            Toggle(isOn: $allowPanning) {
-                Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
+            VStack(alignment: .leading) {
+                Toggle(isOn: $allowZooming) {
+                    Text("ALLOW_DESKTOP_ZOOMING_LABEL").font(.title)
+                }
+                Toggle(isOn: $allowPanning) {
+                    Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
+                }
+                HStack {
+                    Text("TOUCH_INPUT_METHOD_LABEL").font(.title)
+                    Picker("", selection: $touchInputMethod) {
+                        ForEach(TouchInputMethod.allCases, id: \.self) {
+                            Text(self.stateKeeper.localizedString(for: $0.rawValue)).font(.title)
+                        }
+                    }.font(.title).padding()
+                }
             }
         }.padding()
     }

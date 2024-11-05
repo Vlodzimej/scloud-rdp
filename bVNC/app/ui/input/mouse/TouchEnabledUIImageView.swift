@@ -599,7 +599,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     }
 
     func panView(sender: UIPanGestureRecognizer, newCX: CGFloat = -1.0, newCY: CGFloat = -1.0) -> Void {
-        log_callback_str(message: #function)
+        //log_callback_str(message: #function)
         var tempVerticalOnlyPan = false
         if !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
             // Panning is disallowed and keyboard is not up, not doing anything

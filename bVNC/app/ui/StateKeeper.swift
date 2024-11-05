@@ -1051,7 +1051,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                     self.imageView = ShortTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
                 } else {
                     log_callback_str(message: "Running on iOS")
-                    self.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                    if (self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.simulatedTouchpad.rawValue) {
+                        self.imageView = SimulatedTouchpadUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                    } else {
+                        self.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                    }
                 }
                 self.imageView?.enableGestures()
                 self.imageView?.enableTouch()

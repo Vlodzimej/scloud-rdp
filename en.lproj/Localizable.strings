@@ -109,3 +109,6 @@ Email us directly at support@morpheusly.com for help.
 "VERSION_LABEL" = "Version";
 "SOUND_SETTINGS_LABEL" = "Sound Settings";
 "SOUND_ENABLED_LABEL" = "Remote Sound Enabled";
+"TOUCH_INPUT_METHOD_LABEL" = "Touch Input Type";
+"TOUCH_INPUT_METHOD_DIRECT_SWIPE_PAN" = "Direct, Swipe Pan";
+"TOUCH_INPUT_METHOD_SIMULATED_TOUCHPAD" = "Simulated Touchpad";

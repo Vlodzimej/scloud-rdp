@@ -61,7 +61,7 @@ struct ConnectionsListPage : View {
     
     func getSavedImage(named: String) -> UIImage? {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
-            log_callback_str(message: "\(#function) \(named)")
+            //log_callback_str(message: "\(#function) \(named)")
             return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(named).path)
         }
         return nil
@@ -95,7 +95,7 @@ struct ConnectionsListPage : View {
     
     fileprivate func getThumbnailButtonForConnection(_ i: Int) -> some View {
         let screenshotFile = self.connections[i]["id"] ?? ""
-        log_callback_str(message: "\(#function) \(i) connection out of \(self.connections.count): screenshotFile: \(screenshotFile)")
+        //log_callback_str(message: "\(#function) \(i) connection out of \(self.connections.count): screenshotFile: \(screenshotFile)")
         return Button(action: {
         }) {
             VStack {
