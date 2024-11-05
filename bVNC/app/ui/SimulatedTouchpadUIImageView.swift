@@ -42,30 +42,40 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
     fileprivate func panToKeepPointerVisible(_ view: UIView, _ sender: UIPanGestureRecognizer) {
         let scaleX = view.transform.a
         let scaleY = view.transform.d
-        let marginX = CGFloat(100)
-        let marginY = CGFloat(100)
         
-        let frameMinX = -1 * view.frame.minX / scaleX
-        let frameMinY = -1 * view.frame.minY / scaleY
-        let frameMaxX = view.frame.maxX / scaleX + frameMinX
-        let frameMaxY = view.frame.maxY / scaleY + frameMinY
+        let frameMinX = view.frame.minX / scaleX
+        let frameMinY = view.frame.minY / scaleY
+        let frameMaxX = view.frame.maxX / scaleX
+        let frameMaxY = view.frame.maxY / scaleY
+        
+        let frameW = frameMaxX - frameMinX
+        let frameH = frameMaxY - frameMinY
 
         let pointerX = newX
         let pointerY = newY
+        
+        let visibleMinX = 0 - frameMinX
+        let visibleMaxX = frameW - frameMinX
+        let visibleMinY = 0 - frameMinY
+        let visibleMaxY = frameH - frameMinY
 
-        let minX = frameMinX + marginX
-        let maxX = frameMaxX - marginX
-        let minY = frameMinY + marginY
-        let maxY = frameMaxY - marginY
-        print("panToKeepPointerVisible, bounds: \(minX), \(minY), \(maxX), \(maxY), pointer: \(pointerX) x \(pointerY)")
-        if diffX > 0 && pointerX < minX ||
-            diffY > 0 && pointerY < minY ||
-            diffX < 0 && pointerX > maxX ||
-            diffY < 0 && pointerY > maxY {
+        //print("panToKeepPointerVisible: visible x bounds: \(visibleMinX) to \(visibleMaxX) / y bounds: \(visibleMinY) to \(visibleMaxY), pointer: \(pointerX) x \(pointerY)")
+        
+        let centerX = view.center.x
+        let centerY = view.center.y
+
+        if diffX > 0 && pointerX < visibleMinX ||
+            diffX < 0 && pointerX > visibleMaxX {
             let newCenterX = view.center.x + diffX
-            let newCenterY = view.center.y + diffY
-            panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
+            panView(sender: sender, newCX: newCenterX, newCY: centerY)
         }
+
+        if diffY > 0 && pointerY < visibleMinY ||
+            diffY < 0 && pointerY > visibleMaxY {
+            let newCenterY = view.center.y + diffY
+            panView(sender: sender, newCX: centerX, newCY: newCenterY)
+        }
+
     }
     
     @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
@@ -94,7 +104,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
                 self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown,
                                          thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
             } else {
-                log_callback_str(message: "\(#function), moving the mouse pointer to \(newX)x\(newY)")
+                //log_callback_str(message: "\(#function), moving the mouse pointer to \(newX)x\(newY)")
                 self.sendPointerEvent(scrolling: false, moving: true, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: false)
             }
             panToKeepPointerVisible(view, sender)
@@ -133,15 +143,14 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
             prevYouchY = touchY
         }
         
-        diffX = (prevTouchX - touchX)*scaleX
-        diffY = (prevYouchY - touchY)*scaleY
+        diffX = (prevTouchX - touchX) * scaleX
+        diffY = (prevYouchY - touchY) * scaleY
         prevTouchX = touchX
         prevYouchY = touchY
         
         var rX = lastX - diffX
         var rY = lastY - diffY
         
-        // TODO: Can we get rid of one of fbW and width and fbH and height?
         let fbW = CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0)
         let fbH = CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0)
         let newRemoteX = CGFloat(fbW * rX / self.width)
@@ -151,18 +160,18 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
             rX = 0
         }
         if newRemoteX >= fbW {
-            rX = width
+            rX = width - 1
         }
         if newRemoteY <= 0 {
             rY = 0
         }
         if newRemoteY >= fbH {
-            rY = height
+            rY = height - 1
         }
 
         newX = rX
         newY = rY
-        //print("setViewParameters, new remote coords: \(newRemoteX)x\(newRemoteY), new coords: \(newX)x\(newY), fbWxfbH: \(fbW)x\(fbH)")
+        //print("setViewParameters, new remote coords: \(newRemoteX)x\(newRemoteY), new coords: \(newX)x\(newY), frame wxh: \(width)x\(height)")
 
         if setDoubleTapCoordinates {
             self.pendingDoubleTap = true
