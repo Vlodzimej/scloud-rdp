@@ -28,7 +28,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
     var touchY: CGFloat = 0.0
     var diffX: CGFloat = 0.0
     var diffY: CGFloat = 0.0
-
+    
     override func initialize() {
         super.initialize()
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
@@ -37,45 +37,43 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
         pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
     }
-            
+    
     fileprivate func panToKeepPointerVisible(_ view: UIView, _ sender: UIPanGestureRecognizer) {
         let scaleX = view.transform.a
         let scaleY = view.transform.d
         
-        let frameMinX = view.frame.minX / scaleX
-        let frameMinY = view.frame.minY / scaleY
-        let frameMaxX = view.frame.maxX / scaleX
-        let frameMaxY = view.frame.maxY / scaleY
+        let frameMinX = view.frame.minX
+        let frameMinY = view.frame.minY
         
-        let frameW = frameMaxX - frameMinX
-        let frameH = frameMaxY - frameMinY
-
+        let frameW = view.frame.width
+        let frameH = view.frame.height
+        
         let pointerX = newX
         let pointerY = newY
         
-        let visibleMinX = 0 - frameMinX
-        let visibleMaxX = frameW - frameMinX
-        let visibleMinY = 0 - frameMinY
-        let visibleMaxY = frameH - frameMinY
-
-        //print("panToKeepPointerVisible: visible x bounds: \(visibleMinX) to \(visibleMaxX) / y bounds: \(visibleMinY) to \(visibleMaxY), pointer: \(pointerX) x \(pointerY)")
+        let visibleMinX = 0 - frameMinX + 20
+        let visibleMaxX = frameW / scaleX - frameMinX - 20
+        let visibleMinY = 0 - frameMinY + 20
+        let visibleMaxY = frameH / scaleY - frameMinY - 20
+        
+        //print("panToKeepPointerVisible: x: \(round(visibleMinX)) to \(round(visibleMaxX)) / y : \(round(visibleMinY)) to \(round(visibleMaxY)), pointer: \(round(pointerX)) x \(round(pointerY))")
         
         let centerX = view.center.x
         let centerY = view.center.y
         var newCenterX = centerX
         var newCenterY = centerY
-
-        if diffX > 0 && pointerX < visibleMinX + 10 {
-            newCenterX = view.center.x + 10
+        
+        if diffX > 0 && pointerX < visibleMinX {
+            newCenterX = centerX + min(diffX, 20)
         }
-        if diffX < 0 && pointerX > visibleMaxX - 10 {
-            newCenterX = view.center.x - 10
+        if diffX < 0 && pointerX > visibleMaxX {
+            newCenterX = centerX + min(diffX, 20)
         }
-        if diffY > 0 && pointerY < visibleMinY + 10 {
-            newCenterY = view.center.y + 10
+        if diffY > 0 && pointerY < visibleMinY {
+            newCenterY = centerY + min(diffY, 20)
         }
-        if diffY < 0 && pointerY > visibleMaxY - 10 {
-            newCenterY = view.center.y - 10
+        if diffY < 0 && pointerY > visibleMaxY {
+            newCenterY = centerY + min(diffY, 20)
         }
         panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
     }
@@ -93,12 +91,12 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
             let scaleX = sender.view!.transform.a
             let scaleY = sender.view!.transform.d
             self.setViewParameters(point: sender.location(in: view), touchView: view)
-
+            
             // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
             let translation = sender.translation(in: sender.view)
             if (scroll(touchView: view, translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
                        gesturePoint: sender.location(in: view), restorePointerPosition: true)) {
-                log_callback_str(message: "\(#function), scrolled at \(newX)x\(newY)")
+                //log_callback_str(message: "\(#function), scrolled at \(newX)x\(newY)")
                 return
             } else if self.secondDown || self.thirdDown {
                 self.inPanDragging = true
@@ -133,7 +131,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
     override func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false, gestureBegan: Bool=false) {
         self.width = touchView.frame.width
         self.height = touchView.frame.height
-
+        
         let scaleX = touchView.transform.a
         let scaleY = touchView.transform.d
         
@@ -157,20 +155,20 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         let fbH = CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0)
         let newRemoteX = CGFloat(fbW * rX / self.width)
         let newRemoteY = CGFloat(fbH * rY / self.height)
-
+        
         if newRemoteX <= 0 {
             rX = 0
         }
         if newRemoteX >= fbW {
-            rX = width - 1
+            rX = width
         }
         if newRemoteY <= 0 {
             rY = 0
         }
         if newRemoteY >= fbH {
-            rY = height - 1
+            rY = height
         }
-
+        
         newX = rX
         newY = rY
         //print("setViewParameters, new remote coords: \(newRemoteX)x\(newRemoteY), new coords: \(newX)x\(newY), frame wxh: \(width)x\(height)")

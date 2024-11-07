@@ -603,7 +603,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         }
     }
 
-    func panView(sender: UIPanGestureRecognizer, newCX: CGFloat = -1.0, newCY: CGFloat = -1.0) -> Void {
+    func panView(sender: UIPanGestureRecognizer, newCX: CGFloat? = nil, newCY: CGFloat? = nil) -> Void {
         //log_callback_str(message: #function)
         var tempVerticalOnlyPan = false
         if !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
@@ -623,17 +623,25 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             self.inPanning = true
             var newCenterX = view.center.x + scaleX*translation.x
             var newCenterY = view.center.y + scaleY*translation.y
-            if (newCX >= 0 && newCY >= 0) {
-                newCenterX = newCX
-                newCenterY = newCY
+            if (newCX != nil && newCY != nil) {
+                newCenterX = newCX!
+                newCenterY = newCY!
             }
             let scaledWidth = sender.view!.frame.width/scaleX
             let scaledHeight = sender.view!.frame.height/scaleY
             
-            if sender.view!.frame.minX/scaleX >= 50/scaleX && view.center.x - newCenterX < 0 { newCenterX = view.center.x }
-            if sender.view!.frame.minY/scaleY >= 50/scaleY + globalStateKeeper!.topSpacing/scaleY && view.center.y - newCenterY < 0 { newCenterY = view.center.y }
-            if sender.view!.frame.minX/scaleX <= -50/scaleX - (scaleX-1.0)*scaledWidth/scaleX && newCenterX - view.center.x < 0 { newCenterX = view.center.x }
-            if sender.view!.frame.minY/scaleY <= -50/scaleY - globalStateKeeper!.keyboardHeight/scaleY - (scaleY-1.0)*scaledHeight/scaleY && newCenterY - view.center.y < 0 { newCenterY = view.center.y }
+            if sender.view!.frame.minX/scaleX >= 50/scaleX && view.center.x - newCenterX < 0 {
+                newCenterX = view.center.x
+            }
+            if sender.view!.frame.minY/scaleY >= 50/scaleY + globalStateKeeper!.topSpacing/scaleY && view.center.y - newCenterY < 0 {
+                newCenterY = view.center.y
+            }
+            if sender.view!.frame.minX/scaleX <= -50/scaleX - (scaleX-1.0)*scaledWidth/scaleX && newCenterX - view.center.x < 0 {
+                newCenterX = view.center.x
+            }
+            if sender.view!.frame.minY/scaleY <= -50/scaleY - globalStateKeeper!.keyboardHeight/scaleY - (scaleY-1.0)*scaledHeight/scaleY && newCenterY - view.center.y < 0 {
+                newCenterY = view.center.y
+            }
             
             if tempVerticalOnlyPan {
                 // Do not allow panning sideways if this is a temporary vertical pan
