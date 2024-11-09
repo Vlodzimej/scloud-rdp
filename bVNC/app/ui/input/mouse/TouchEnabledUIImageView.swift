@@ -341,9 +341,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             return
         }
         
-        //let timeNow = CACurrentMediaTime();
-        //let timeDiff = timeNow - self.timeLast
-        if !moving || (abs(self.lastX - self.newX) > 1.0 || abs(self.lastY - self.newY) > 1.0) {
+        if !moving || (abs(self.lastX - self.newX) > 0 || abs(self.lastY - self.newY) > 0) {
             synced(self) {
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
@@ -361,7 +359,6 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             }
             self.lastX = self.newX
             self.lastY = self.newY
-            //self.timeLast = timeNow
             self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.3, fullScreenUpdate: false, recurring: false)
         }
     }
