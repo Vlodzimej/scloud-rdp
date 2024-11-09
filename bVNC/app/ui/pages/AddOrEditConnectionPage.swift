@@ -388,13 +388,15 @@ struct AddOrEditConnectionPage : View {
                 Toggle(isOn: $allowPanning) {
                     Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
                 }
-                HStack {
-                    Text("TOUCH_INPUT_METHOD_LABEL").font(.title)
-                    Picker("", selection: $touchInputMethod) {
-                        ForEach(TouchInputMethod.allCases, id: \.self) {
-                            Text(self.stateKeeper.localizedString(for: $0.rawValue)).font(.title)
-                        }
-                    }.font(.title).padding()
+                if(!self.stateKeeper.isOnMacOsOriPadOnMacOs()) {
+                    HStack {
+                        Text("TOUCH_INPUT_METHOD_LABEL").font(.title)
+                        Picker("", selection: $touchInputMethod) {
+                            ForEach(TouchInputMethod.allCases, id: \.self) {
+                                Text(self.stateKeeper.localizedString(for: $0.rawValue)).font(.title)
+                            }
+                        }.font(.title).padding()
+                    }
                 }
             }
         }.padding()
