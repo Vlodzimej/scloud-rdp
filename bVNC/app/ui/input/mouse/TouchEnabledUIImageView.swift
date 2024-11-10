@@ -130,7 +130,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     let timeThreshold: Double = 0.02
     var tapLast: Double = 0
     let doubleTapTimeThreshold: Double = 0.5
-    let doubleTapDistanceThreshold: CGFloat = 20.0
+    let doubleTapDistanceThreshold: CGFloat = 30.0
     var touchEnabled: Bool = false
     var firstDown: Bool = false
     var secondDown: Bool = false
@@ -230,7 +230,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         return pointerStyle
     }
     
-    func handleScroll(translationX: CGFloat, translationY: CGFloat, threshhold: CGFloat) {
+    func handleScroll(translationX: CGFloat, translationY: CGFloat, threshold: CGFloat) {
         if prevTranslationY - translationY < 0 {
             if directionDown {
                 resetScrollParameters()
@@ -243,7 +243,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             directionDown = true
         }
         prevTranslationY = translationY
-        if abs(prevActionedTranslationY - translationY) >= threshhold {
+        if abs(prevActionedTranslationY - translationY) >= threshold {
             prevActionedTranslationY = translationY
             sendDownThenUpEvent(scrolling: true, moving: false, firstDown: false, secondDown: false, thirdDown: false,
                                 fourthDown: directionUp, fifthDown: directionDown)
@@ -252,7 +252,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     
     @objc func handleScroll(_ sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: sender.view)
-        self.handleScroll(translationX: translation.x, translationY: translation.y, threshhold: 40)
+        self.handleScroll(translationX: translation.x, translationY: translation.y, threshold: 40)
     }
 
     override init(image: UIImage?) {
@@ -310,7 +310,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
                 if ((!moving && !scrolling) || (moving || scrolling) && timeDiff >= self.timeThreshold) {
                     self.sendPointerEvent(scrolling: scrolling, moving: moving, firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown, fourthDown: fourthDown, fifthDown: fifthDown)
                     if (!moving) {
-                        //log_callback_str(message: "Sleeping \(self.timeThreshhold)s before sending up event.")
+                        //log_callback_str(message: "Sleeping \(self.timeThreshold)s before sending up event.")
                         Thread.sleep(forTimeInterval: self.timeThreshold)
                         self.sendPointerEvent(scrolling: scrolling, moving: moving, firstDown: false, secondDown: false, thirdDown: false, fourthDown: false, fifthDown: false)
                     }
@@ -588,7 +588,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
                         newX = newDoubleTapX
                         newY = newDoubleTapY
                     } else {
-                        log_callback_str(message: "Second tap was \(distance) away from first, threshhold: \(doubleTapDistanceThreshold).")
+                        log_callback_str(message: "Second tap was \(distance) away from first, threshold: \(doubleTapDistanceThreshold).")
                     }
                 }
                 self.tapLast = timeNow
@@ -739,7 +739,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             let oX = lastX
             let oY = lastY
             
-            self.handleScroll(translationX: translation.x, translationY: translation.y, threshhold: 40)
+            self.handleScroll(translationX: translation.x, translationY: translation.y, threshold: 40)
             
             if restorePointerPosition {
                 // keep pointer where it was when the scroll event started
