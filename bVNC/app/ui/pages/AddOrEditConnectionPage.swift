@@ -49,7 +49,9 @@ struct AddOrEditConnectionPage : View {
     @State var rdpGatewayUser: String
     @State var rdpGatewayPass: String
     @State var rdpGatewayEnabled: Bool
-
+    @State var generateSshKeyButtonClicked: Bool = false
+    @State var instructions = "If you generate a key within the app, the private key will automatically be copied to your clipboard.\n\nPaste it into a file private.pem.\n\nRun the following commands to get a public key string for your authorized_keys file:\n\nchmod go-rwx private.pem\nssh-keygen -f private.pem -y\n"
+    
     func retrieveConnectionDetails() -> [String : String] {
         var connection = [
             "connectionName": self.connectionNameText.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -198,6 +200,20 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
+    fileprivate func getGenerateSshKeyButton() -> Button<some View> {
+        return Button(action: {
+            let generator = SshKeyGenerator()
+            let privateKey = generator.generatePrivateKey(type: kSecAttrKeyTypeEC, bits: 521)
+            if (privateKey != nil) {
+                sshPrivateKeyText = generator.privateKeytoBase64String(privateKey: privateKey!) ?? ""
+                UIPasteboard.general.string = sshPrivateKeyText
+            }
+            generateSshKeyButtonClicked = true
+        }) {
+            getButton(imageName: "bubbles.and.sparkles", textLabel: "GENERATE_SSH_KEY_LABEL")
+        }
+    }
+    
     fileprivate func getHelpButtonActions() {
         var help_messages_list: [LocalizedStringKey] = ["VNC_CONNECTION_SETUP_HELP_TEXT", "UI_SETUP_HELP_TEXT"]
         if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
@@ -288,14 +304,14 @@ struct AddOrEditConnectionPage : View {
                     getTextField(text: "SSH_PORT_LABEL", binding: $sshPortText)
                     getSshCredentialsFields()
                     getSecureField(text: "SSH_PASSPHRASE_LABEL", binding: $sshPassphraseText)
+                    getGenerateSshKeyButton()
+                    if (generateSshKeyButtonClicked) {
+                        MultilineTextView(placeholder: "", text: $instructions, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
+                    }
                     VStack {
+                        Text("SSH_KEY_LABEL").font(.title)
                         Divider()
-                        HStack {
-                            Text("SSH_KEY_LABEL").font(.title)
-                            Divider()
-                            MultilineTextView(placeholder: "", text: $sshPrivateKeyText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
-                            Divider()
-                        }
+                        MultilineTextView(placeholder: "", text: $sshPrivateKeyText, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
                         Divider()
                     }
                 }

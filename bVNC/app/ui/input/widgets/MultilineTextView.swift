@@ -34,16 +34,18 @@ struct MultilineTextView: UIViewRepresentable {
         // Decrease priority of content resistance, so content would not push external layout set in SwiftUI
         textView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
+        textView.isMultipleTouchEnabled = true
         textView.isSelectable = true
         textView.isScrollEnabled = false
-        textView.isEditable = false
+        textView.isEditable = true
         textView.isUserInteractionEnabled = true
         textView.backgroundColor = UIColor(white: 0.0, alpha: 1.0)
         
         // Set the placeholder
         textView.text = placeholder
         textView.textColor = UIColor.white
-        
+        textView.font = UIFont.systemFont(ofSize: 20.0)
+
         return textView
     }
     

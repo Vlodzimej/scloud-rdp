@@ -49,6 +49,10 @@
 		167176C72838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
 		167176C82838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
 		167176C92838248F00D8719B /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		167E59E82CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
+		167E59E92CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
+		167E59EA2CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
+		167E59EB2CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
 		168225402B8A2E5900EF07E3 /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		168B8AF32BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
 		168B8AF42BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
@@ -388,6 +392,7 @@
 		164F78EC2C01077E0063B590 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = bVNC.xcodeproj/libs_combined/lib/spicelib.a; sourceTree = "<group>"; };
 		165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionListPage.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
+		167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshKeyGenerator.swift; sourceTree = "<group>"; };
 		1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextView.swift; sourceTree = "<group>"; };
 		168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1523,6 +1528,7 @@
 			children = (
 				AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */,
 				AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */,
+				167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */,
 			);
 			path = ssh;
 			sourceTree = "<group>";
@@ -2670,6 +2676,7 @@
 				AF043A1923B3DADA00C43ED7 /* AppDelegate.swift in Sources */,
 				AF043A1B23B3DADA00C43ED7 /* SceneDelegate.swift in Sources */,
 				AF59A3D4242CE9E100658CE6 /* KeyboardObserving.swift in Sources */,
+				167E59E82CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */,
 				AF53DCB32402391600569F19 /* StateKeeper.swift in Sources */,
 				162940632B8A30250086396F /* AddOrEditConnectionPage.swift in Sources */,
 				16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
@@ -2732,6 +2739,7 @@
 				AF30D1A0253396EF00BA7A62 /* SceneDelegate.swift in Sources */,
 				AF30D1A1253396EF00BA7A62 /* KeyboardObserving.swift in Sources */,
 				AFF6D39E260FE8B20077F6D2 /* Utils.swift in Sources */,
+				167E59E92CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */,
 				162940642B8A311D0086396F /* AddOrEditConnectionPage.swift in Sources */,
 				165D67D526ADD7ED00E27D6E /* RemoteSession.swift in Sources */,
 				16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
@@ -2776,6 +2784,7 @@
 				AFB2C8DA26001F4D00E2859F /* LongTapDragUIImageView.swift in Sources */,
 				AFB2C8DB26001F4D00E2859F /* AppDelegate.swift in Sources */,
 				AFB2C8DC26001F4D00E2859F /* SceneDelegate.swift in Sources */,
+				167E59EA2CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */,
 				162940652B8A311E0086396F /* AddOrEditConnectionPage.swift in Sources */,
 				AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */,
 				16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
@@ -2820,6 +2829,7 @@
 				AFB3911C274F564A0059F91F /* RemoteSession.swift in Sources */,
 				AFB391DD274F59C90059F91F /* SpiceSessionDummy.swift in Sources */,
 				AFB3911D274F564A0059F91F /* LongTapDragUIImageView.swift in Sources */,
+				167E59EB2CE58CE700C6DAA7 /* SshKeyGenerator.swift in Sources */,
 				162940662B8A311E0086396F /* AddOrEditConnectionPage.swift in Sources */,
 				AFB3911E274F564A0059F91F /* AppDelegate.swift in Sources */,
 				16CF04EA293EB248000C3DF0 /* FilterableConnections.swift in Sources */,
