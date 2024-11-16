@@ -432,7 +432,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: "\(#function) called")
         self.currInst = (currInst + 1) % maxClCapacity
         if !self.disconnectedDueToBackgrounding && self.receivedUpdate {
-            _ = self.connections.saveImage(image: self.captureScreen(imageView: self.imageView ?? UIImageView()))
+            _ = self.connections.saveImage(image: self.captureScreen(imageView: self.imageView))
         }
         UserInterface {
             self.toggleModifiersIfDown()
@@ -560,6 +560,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showDisconnectionPage() {
+        self.imageView = nil
         UserInterface {
             self.localizedTitle = ""
             self.message = ""
@@ -569,15 +570,16 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showConnections() {
+        self.imageView = nil
         UserInterface {
             self.connections.loadConnections()
             self.currentPage = "connectionsList"
             self.recreateMainPage()
-            self.imageView = nil
         }
     }
     
     func showError(title: LocalizedStringKey, errorPage: String) {
+        self.imageView = nil
         self.localizedTitle = title
         UserInterface {
             self.currentPage = errorPage
@@ -585,6 +587,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
 
     func showLog(title: LocalizedStringKey, text: String) {
+        self.imageView = nil
         self.localizedTitle = title
         self.message = text
         UserInterface {
@@ -998,9 +1001,14 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
-    func captureScreen(imageView: UIImageView) -> UIImage {
+    func captureScreen(imageView: UIImageView?) -> UIImage {
+        let emptyImage = UIImage()
+        guard let imageView = imageView else {
+            print("You didn't provide a name!")
+            return emptyImage
+        }
         UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, UIScreen.main.scale)
-        guard let currentContext = UIGraphicsGetCurrentContext() else { return UIImage() }
+        guard let currentContext = UIGraphicsGetCurrentContext() else { return emptyImage }
         imageView.layer.render(in: currentContext)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

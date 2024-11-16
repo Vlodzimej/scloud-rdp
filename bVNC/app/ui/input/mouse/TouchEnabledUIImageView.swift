@@ -24,31 +24,6 @@ import GameController
 let insetDimension: CGFloat = 0
 
 extension UIImage {
-    func imageWithInsets(insets: UIEdgeInsets) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(
-            CGSize(width: self.size.width + insets.left + insets.right,
-                   height: self.size.height + insets.top + insets.bottom), false, self.scale)
-        let _ = UIGraphicsGetCurrentContext()
-        let origin = CGPoint(x: insets.left, y: insets.top)
-        self.draw(at: origin)
-        let imageWithInsets = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return imageWithInsets
-    }
-}
-
-extension UIImage {
-    func image(byDrawingImage image: UIImage, inRect rect: CGRect) -> UIImage! {
-        UIGraphicsBeginImageContext(size)
-        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        image.draw(in: rect)
-        let result = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return result
-    }
-}
-
-extension UIImage {
 
     static func imageFromARGB32Bitmap(pixels: UnsafeMutableRawPointer?, withWidth: Int, withHeight: Int) -> UIImage {
         guard withWidth > 0 && withHeight > 0 else { return UIImage() }
