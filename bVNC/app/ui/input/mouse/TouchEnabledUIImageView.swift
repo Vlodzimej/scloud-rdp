@@ -345,17 +345,14 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             synced(self) {
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
-                let hasDrawnFirstFrame = stateKeeper?.hasDrawnFirstFrame ?? false
-                
+
                 self.remoteX = Float(CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0) * self.newX / self.width)
                 self.remoteY = Float(CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0) * self.newY / self.height)
 
-                if hasDrawnFirstFrame {
-                    stateKeeper?.remoteSession?.pointerEvent(
-                        remoteX: remoteX, remoteY: remoteY,
-                        firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
-                        scrollUp: fourthDown, scrollDown: fifthDown)
-                }
+                stateKeeper?.remoteSession?.pointerEvent(
+                    remoteX: remoteX, remoteY: remoteY,
+                    firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
+                    scrollUp: fourthDown, scrollDown: fifthDown)
             }
             self.lastX = self.newX
             self.lastY = self.newY

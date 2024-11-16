@@ -224,7 +224,7 @@ class RdpSession: RemoteSession {
     }
     
     fileprivate func sendCursorEventIfConnected(_ remoteX: Float, _ remoteY: Float, _ buttonId: Int) {
-        if (self.stateKeeper.hasDrawnFirstFrame && self.cl != nil) {
+        if (self.connected && self.hasDrawnFirstFrame && self.cl != nil) {
             cursorEvent(self.cl, Int32(remoteX), Int32(remoteY), Int32(buttonId))
         }
     }
@@ -300,7 +300,7 @@ class RdpSession: RemoteSession {
     }
     
     fileprivate func sendVkKeyEventIfConnected(_ flags: Int32, _ code: Int32) {
-        if (self.stateKeeper.hasDrawnFirstFrame && self.cl != nil) {
+        if (self.connected && self.hasDrawnFirstFrame && self.cl != nil) {
             vkKeyEvent(self.cl, flags, code)
         }
     }

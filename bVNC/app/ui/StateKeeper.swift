@@ -87,12 +87,11 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var cl: [UnsafeMutableRawPointer?]
     var maxClCapacity = 1000
     
-    var receivedUpdate: Bool = false;
-    var isDrawing: Bool = false;
-    var hasDrawnFirstFrame: Bool = false;
-    var isKeptFresh: Bool = false;
+    var receivedUpdate: Bool = false
+    var isDrawing: Bool = false
+    var isKeptFresh: Bool = false
     
-    var currentTransition: String = "";
+    var currentTransition: String = ""
     var logLock: NSLock = NSLock()
 
     var allowZooming = true
@@ -262,7 +261,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         topButtons = [:]
         cl = Array<UnsafeMutableRawPointer?>(
             repeating: UnsafeMutableRawPointer.allocate(byteCount: 0, alignment: MemoryLayout<UInt8>.alignment),
-            count: maxClCapacity);
+            count: maxClCapacity)
 
         super.init()
         connections = FilterableConnections(stateKeeper: self)
@@ -342,10 +341,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
      */
     func connect(connection: [String: String]) {
         log_callback_str(message: #function)
+        self.showConnectionInProgress()
         self.requestingCredentials = false
         self.requestingSshCredentials = false
         self.clipboardMonitor?.startMonitoring()
-        self.showConnectionInProgress()
         self.receivedUpdate = false
         log_callback_str(message: "Connecting and navigating to the connection screen")
         self.yesNoDialogResponse = 0
@@ -358,7 +357,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         globalWindow!.makeKeyAndVisible()
         self.currInst = (currInst + 1) % maxClCapacity
         self.isDrawing = true
-        self.hasDrawnFirstFrame = false
         self.toggleModifiersIfDown()
         if Utils.isSpice() {
             self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
@@ -386,6 +384,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
 
     func showConnectionInProgress() {
+        self.imageView = nil
         UserInterface {
             self.currentPage = "connectionInProgress"
         }
@@ -415,12 +414,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.clipboardMonitor?.stopMonitoring()
         self.imageView?.disableTouch()
         self.isDrawing = false
-        self.hasDrawnFirstFrame = false
         self.deregisterFromNotifications()
         self.orientationTimer.invalidate()
         self.fullScreenUpdateTimer.invalidate()
         self.partialScreenUpdateTimer.invalidate()
         self.recurringPartialScreenUpdateTimer.invalidate()
+        self.remoteSession = nil
     }
 
     @objc func disconnect(sender: Timer) {
@@ -499,7 +498,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func requestCredentialsForConnection() {
         log_callback_str(message: "Navigating to request credentials screen")
         UserInterface {
-            self.isDrawing = false;
+            self.isDrawing = false
             self.currentPage = "addOrEditConnection"
         }
     }
@@ -574,6 +573,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.connections.loadConnections()
             self.currentPage = "connectionsList"
             self.recreateMainPage()
+            self.imageView = nil
         }
     }
     
@@ -1037,7 +1037,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func remoteResized(fbW: Int32, fbH: Int32) {
         UserInterface {
             autoreleasepool {
-                self.hasDrawnFirstFrame = true
                 self.receivedUpdate = true
                 self.imageView?.removeFromSuperview()
                 self.imageView?.image = nil
@@ -1068,6 +1067,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                     self.remoteSession?.reDraw()
                 }
                 self.clipboardMonitor?.startMonitoring()
+                self.remoteSession?.hasDrawnFirstFrame = true
             }
         }
     }
@@ -1086,7 +1086,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     // Used to simulate failure with signal_handler
     @objc func fail() {
         Background {
-            signal_handler(13, nil, nil);
+            signal_handler(13, nil, nil)
         }
     }
     var failureTimer: Timer?

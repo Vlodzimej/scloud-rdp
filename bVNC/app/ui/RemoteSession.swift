@@ -266,7 +266,7 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
         return false
     }
     
-    if (globalStateKeeper?.hasDrawnFirstFrame ?? false) {
+    if (globalStateKeeper?.remoteSession?.hasDrawnFirstFrame ?? false) {
         globalStateKeeper?.remoteSession?.updateCallback(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
     }
     return true
@@ -299,6 +299,7 @@ class RemoteSession {
     var fbH: Int32 = 0
     var data: UnsafeMutablePointer<UInt8>?
     var connected: Bool = false
+    var hasDrawnFirstFrame: Bool = false
     var reDrawTimer: Timer = Timer()
 
     class var LCONTROL: Int { return 29 }
