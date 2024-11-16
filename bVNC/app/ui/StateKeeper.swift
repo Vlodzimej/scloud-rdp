@@ -51,6 +51,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var yesNoDialogLock: NSLock = NSLock()
     var yesNoDialogResponse: Int32 = 0
     var imageView: TouchEnabledUIImageView?
+    var captureImageView: TouchEnabledUIImageView?
     var remoteSession: RemoteSession?
     var modifierButtons: [String: UIControl]
     var keyboardButtons: [String: UIControl]
@@ -383,8 +384,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return self.currentPage == "disconnectionInProgress"
     }
 
-    func showConnectionInProgress() {
+    fileprivate func setCaptureViewAndNullifyImageView() {
+        self.captureImageView = imageView
         self.imageView = nil
+    }
+    
+    func showConnectionInProgress() {
+        setCaptureViewAndNullifyImageView()
         UserInterface {
             self.currentPage = "connectionInProgress"
         }
@@ -432,7 +438,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         log_callback_str(message: "\(#function) called")
         self.currInst = (currInst + 1) % maxClCapacity
         if !self.disconnectedDueToBackgrounding && self.receivedUpdate {
-            _ = self.connections.saveImage(image: self.captureScreen(imageView: self.imageView))
+            _ = self.connections.saveImage(image: self.captureScreen(imageView: self.captureImageView))
         }
         UserInterface {
             self.toggleModifiersIfDown()
@@ -560,7 +566,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showDisconnectionPage() {
-        self.imageView = nil
+        setCaptureViewAndNullifyImageView()
         UserInterface {
             self.localizedTitle = ""
             self.message = ""
@@ -570,7 +576,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showConnections() {
-        self.imageView = nil
+        setCaptureViewAndNullifyImageView()
         UserInterface {
             self.connections.loadConnections()
             self.currentPage = "connectionsList"
@@ -579,7 +585,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showError(title: LocalizedStringKey, errorPage: String) {
-        self.imageView = nil
+        setCaptureViewAndNullifyImageView()
         self.localizedTitle = title
         UserInterface {
             self.currentPage = errorPage
@@ -587,7 +593,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
 
     func showLog(title: LocalizedStringKey, text: String) {
-        self.imageView = nil
+        setCaptureViewAndNullifyImageView()
         self.localizedTitle = title
         self.message = text
         UserInterface {

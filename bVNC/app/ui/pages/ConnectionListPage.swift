@@ -19,7 +19,7 @@ struct ConnectionsListPage : View {
             self.stateKeeper.currentPage = "connectionInProgress"
             let connection = self.elementAt(index: index)
             let requiresVpn = connection["requiresVpn"] == "true"
-            if requiresVpn {
+            if requiresVpn && !self.stateKeeper.isOnMacOsOriPadOnMacOs() {
                 self.launchVpnUrl(connection: connection)
             } else {
                 self.stateKeeper.connectSaved(connection: connection)
