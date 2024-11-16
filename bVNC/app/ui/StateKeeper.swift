@@ -51,7 +51,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var yesNoDialogLock: NSLock = NSLock()
     var yesNoDialogResponse: Int32 = 0
     var imageView: TouchEnabledUIImageView?
-    var captureImageView: TouchEnabledUIImageView?
+    var captureImageView: UIImageView?
     var remoteSession: RemoteSession?
     var modifierButtons: [String: UIControl]
     var keyboardButtons: [String: UIControl]
@@ -585,7 +585,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     func showError(title: LocalizedStringKey, errorPage: String) {
-        setCaptureViewAndNullifyImageView()
         self.localizedTitle = title
         UserInterface {
             self.currentPage = errorPage
@@ -593,7 +592,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
 
     func showLog(title: LocalizedStringKey, text: String) {
-        setCaptureViewAndNullifyImageView()
         self.localizedTitle = title
         self.message = text
         UserInterface {
@@ -1010,7 +1008,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func captureScreen(imageView: UIImageView?) -> UIImage {
         let emptyImage = UIImage()
         guard let imageView = imageView else {
-            print("You didn't provide a name!")
             return emptyImage
         }
         UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, UIScreen.main.scale)
