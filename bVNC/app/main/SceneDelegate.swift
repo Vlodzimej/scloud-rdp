@@ -34,23 +34,28 @@ class MyUIHostingController<Content> : UIHostingController<Content> where Conten
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    fileprivate func moveVvFileToPrivateStorageAndConnect(_ url: URL, _ pathString: String) {
+    fileprivate func moveConfigFileToPrivateStorageAndConnect(_ url: URL, _ pathString: String) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let stateKeeper: StateKeeper = appDelegate.stateKeeper
 
         if let docsPath = NSSearchPathForDirectoriesInDomains(
             .documentDirectory, .userDomainMask, true
         ).first {
-            let destPath = String(format: "%@/%@", docsPath, "console.vv")
-            if Utils.moveUrlToDestinationIfPossible(url, destPath) {
-                log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
-                if !stateKeeper.connectIfConsoleFileFound(destPath) {
-                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound")
+            var destPath = String(format: "%@/%@", docsPath, "console.vv")
+            var deleteFile = true
+            if (Utils.isRdp()) {
+                deleteFile = false
+                destPath = String(format: "%@/%@", docsPath, "config.rdp")
+            }
+            if Utils.copyUrlToDestinationIfPossible(url, destPath, deleteFile) {
+                log_callback_str(message: "\(#function) Could not connectIfConfigFileFound")
+                if !stateKeeper.connectIfConfigFileFound(destPath) {
+                    log_callback_str(message: "\(#function) Could not connectIfConfigFileFound")
                 }
             } else {
-                log_callback_str(message: "\(#function) Could not move console.vv trying to use it as is.")
-                if !stateKeeper.connectIfConsoleFileFound(pathString) {
-                    log_callback_str(message: "\(#function) Could not connectIfConsoleFileFound in place")
+                log_callback_str(message: "\(#function) Could not move \(destPath) trying to use it as is.")
+                if !stateKeeper.connectIfConfigFileFound(pathString) {
+                    log_callback_str(message: "\(#function) Could not connectIfConfigFileFound in place")
                 }
             }
         }
@@ -58,12 +63,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func connectWithConsoleFile(url: URL, pathString: String) {
         if (url.startAccessingSecurityScopedResource()) {
-            moveVvFileToPrivateStorageAndConnect(url, pathString)
+            moveConfigFileToPrivateStorageAndConnect(url, pathString)
             url.stopAccessingSecurityScopedResource()
         } else {
             log_callback_str(message: "\(#function) Could not startAccessingSecurityScopedResource, trying without")
             log_callback_str(message: "\(#function) aSPICE may need to be granted Full Disk Access in settings")
-            moveVvFileToPrivateStorageAndConnect(url, pathString)
+            moveConfigFileToPrivateStorageAndConnect(url, pathString)
         }
     }
     

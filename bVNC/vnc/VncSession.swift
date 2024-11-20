@@ -89,10 +89,12 @@ class VncSession: RemoteSession {
     }
         
     override func disconnect() {
-        Background {
-            disconnectVnc(self.cl)
+        if self.connected {
+            super.disconnect()
+            Background {
+                disconnectVnc(self.cl)
+            }
         }
-        super.disconnect()
     }
     
     override func pointerEvent(remoteX: Float, remoteY: Float,

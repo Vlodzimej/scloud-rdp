@@ -33,4 +33,6 @@ class Constants {
     class var MIN_RESOLUTION_SCALE_UP_FACTOR: Double { return 1.5 }
     class var SCROLL_TOLERANCE: Double { return 1.2 }
     class var DEFAULT_BUNDLE_ID: String { return "com.iiordanov.bVNC" }
+    class var DEFAULT_DESKTOP_SCALE_FACTOR: Int { return 100 }
+    class var SCALE_FACTOR_ENTRIES: Array<Int> { return Array(100...500) }
 }

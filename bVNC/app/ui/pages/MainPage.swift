@@ -86,7 +86,9 @@ struct MainPage : View {
                     rdpGatewayDomain: selectedConnection["rdpGatewayDomain"] ?? "",
                     rdpGatewayUser: selectedConnection["rdpGatewayUser"] ?? "",
                     rdpGatewayPass: selectedConnection["rdpGatewayPass"] ?? "",
-                    rdpGatewayEnabled: Bool(selectedConnection["rdpGatewayEnabled"] ?? "false") ?? false
+                    rdpGatewayEnabled: Bool(selectedConnection["rdpGatewayEnabled"] ?? "false") ?? false,
+                    consoleFile: selectedConnection["consoleFile"] ?? "",
+                    desktopScaleFactor: Utils.getScaleFactor(selectedConnection["desktopScaleFactor"])
                 )
 
 
@@ -152,7 +154,9 @@ struct MainPageA_Previews : PreviewProvider {
             rdpGatewayDomain: "",
             rdpGatewayUser: "",
             rdpGatewayPass: "",
-            rdpGatewayEnabled: false
+            rdpGatewayEnabled: false,
+            consoleFile: "",
+            desktopScaleFactor: Constants.DEFAULT_DESKTOP_SCALE_FACTOR
         )
     }
 }

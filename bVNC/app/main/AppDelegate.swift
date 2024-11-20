@@ -87,14 +87,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         globalStateKeeper?.scheduleDisconnectTimerFromButton()
     }
 
-    @objc func quit() {
-        disconnect()
+    static func exitApp() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
-             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-              exit(0)
-             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                exit(0)
+            }
         }
+    }
+    
+    @objc func quit() {
+        disconnect()
+        AppDelegate.exitApp()
     }
 }
 

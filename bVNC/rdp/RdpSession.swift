@@ -28,6 +28,8 @@ class RdpSession: RemoteSession {
     var gatewayDomain: String = ""
     var gatewayUser: String = ""
     var gatewayPass: String = ""
+    var configFile: String = ""
+    var desktopScaleFactor: Int = Constants.DEFAULT_DESKTOP_SCALE_FACTOR
 
     class var KBD_FLAGS_EXTENDED: Int { return 0x0100 }
     class var KBD_FLAGS_EXTENDED1: Int { return 0x0200 }
@@ -139,19 +141,21 @@ class RdpSession: RemoteSession {
             self.determineSshTunnelingStatusIfEnabled(sshAddress: self.sshAddress, &continueConnecting, &errorTitle)
             
             if continueConnecting {
-                log_callback_str(message: "Connecting RDP Session to \(self.address):\(self.port)")
+                log_callback_str(message: "Connecting RDP Session to \(self.address):\(self.port) or file \(self.configFile)")
                 log_callback_str(message: "RDP Session width: \(self.width), height: \(self.height)")
                 
                 self.cl = initializeRdp(
                     Int32(self.instance),
                     Int32(self.width),
                     Int32(self.height),
+                    Int32(self.desktopScaleFactor),
                     update_callback,
                     resize_callback,
                     failure_callback_swift,
                     log_callback,
                     utf8_clipboard_callback,
                     yes_no_dialog_callback,
+                    self.getUnsafeMutablePointerAsString(self.configFile),
                     self.getUnsafeMutablePointerAsString(self.address),
                     self.getUnsafeMutablePointerAsString(self.port),
                     self.getUnsafeMutablePointerAsString(self.domain),
@@ -186,6 +190,8 @@ class RdpSession: RemoteSession {
         self.gatewayEnabled = Bool(currentConnection["rdpGatewayEnabled"] ?? "false")!
         self.gatewayAddress = currentConnection["rdpGatewayAddress"] ?? ""
         self.gatewayPort = currentConnection["rdpGatewayPort"] ?? ""
+        self.configFile = currentConnection["consoleFile"] ?? ""
+        self.desktopScaleFactor = Utils.getScaleFactor(currentConnection["desktopScaleFactor"])
 
         self.sshForwardPort = String(arc4random_uniform(30000) + 30000)
         
@@ -216,11 +222,14 @@ class RdpSession: RemoteSession {
     }
         
     override func disconnect() {
-        synchronized(self) {
-            disconnectRdp(self.cl)
-            self.cl = nil
+        if self.connected {
+            super.disconnect()
+            self.connected = false
+            synchronized(self) {
+                disconnectRdp(self.cl)
+                self.cl = nil
+            }
         }
-        super.disconnect()
     }
     
     fileprivate func sendCursorEventIfConnected(_ remoteX: Float, _ remoteY: Float, _ buttonId: Int) {

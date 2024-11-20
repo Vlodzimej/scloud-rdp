@@ -138,10 +138,12 @@ class SpiceSession: RemoteSession {
     }
         
     override func disconnect() {
-        Background {
-            disconnectSpice()
+        if self.connected {
+            super.disconnect()
+            Background {
+                disconnectSpice()
+            }
         }
-        super.disconnect()
     }
     
     override func pointerEvent(remoteX: Float, remoteY: Float,

@@ -105,7 +105,14 @@ func failure_callback_swift(instance: Int32, message: UnsafeMutablePointer<UInt8
         globalStateKeeper?.requestSshCredentials()
     } else if message_str.contains("AUTHENTICATION_FAILED_TITLE") {
         log_callback_str(message: "Detected authentication failure, requesting credentials")
+        globalStateKeeper?.disconnect(wasDrawing: false)
         globalStateKeeper?.requestCredentials()
+    } else if message_str.contains("CONNECTION_FAILURE_TITLE") {
+        log_callback_str(message: "Rdp connection failure")
+        if globalStateKeeper?.isCurrentSessionConnected() ?? false {
+            log_callback_str(message: "Session shows it is connected, so this is an unexpected disconnection")
+            failure_callback_str(instance: Int(instance), title: String(cString: message!))
+        }
     } else if message != nil {
         log_callback_str(message: "Will show error dialog with title: \(String(cString: message!))")
         failure_callback_str(instance: Int(instance), title: String(cString: message!))

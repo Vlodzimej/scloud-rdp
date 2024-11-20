@@ -91,13 +91,15 @@ struct Utils {
         }
     }
     
-    static func moveUrlToDestinationIfPossible(_ url: URL, _ destPath: String) -> Bool {
+    static func copyUrlToDestinationIfPossible(_ url: URL, _ destPath: String, _ delete: Bool) -> Bool {
         do {
             log_callback_str(message: "\(#function): Trying to copy \(url) to \(destPath)")
             Utils.deletePathIfNeeded(destPath)
             try FileManager.default.copyItem(atPath: url.path, toPath: destPath)
             log_callback_str(message: "\(#function): Copied \(url) to \(destPath)")
-            Utils.deletePathIfNeeded(url.path)
+            if delete {
+                Utils.deletePathIfNeeded(url.path)
+            }
             return true
         } catch (let error) {
             log_callback_str(message: "\(#function): Cannot copy item at \(url) to \(destPath): \(error)")
@@ -143,5 +145,11 @@ struct Utils {
             tunneledProtocol = "SPICE"
         }
         return tunneledProtocol
+    }
+    
+    static func getScaleFactor(_ scaleFactor: String?) -> Int {
+        let defaultValue = Constants.DEFAULT_DESKTOP_SCALE_FACTOR
+        let defaultValueStr = String(defaultValue)
+        return Int(scaleFactor ?? defaultValueStr) ?? defaultValue
     }
 }

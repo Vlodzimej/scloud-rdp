@@ -20,13 +20,14 @@
 #ifndef RdpBridge_h
 #define RdpBridge_h
 
-void *initializeRdp(int instance, int width, int height,
+void *initializeRdp(int instance, int width, int height, int desktopScaleFactor,
                     pFrameBufferUpdateCallback fb_update_callback,
                     pFrameBufferResizeCallback fb_resize_callback,
                     pFailCallback fail_callback,
                     pClientLogCallback cl_log_callback,
                     pClientClipboardCallback cl_clipboard_callback,
                     pYesNoCallback y_n_callback,
+                    char* configFile,
                     char* addr,
                     char* port,
                     char *domain,

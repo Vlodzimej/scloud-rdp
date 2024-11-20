@@ -113,3 +113,4 @@ Email us directly at support@morpheusly.com for help.
 "TOUCH_INPUT_METHOD_DIRECT_SWIPE_PAN" = "Direct, Swipe Pan";
 "TOUCH_INPUT_METHOD_SIMULATED_TOUCHPAD" = "Simulated Touchpad";
 "GENERATE_SSH_KEY_LABEL" = "Generate SSH Key";
+"DESKTOP_SCALE_LABEL" = "Desktop Scale Factor";

@@ -275,24 +275,34 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.onScreenKeysHidden = true
     }
     
-    func connectIfConsoleFileFound(_ destPath: String) -> Bool {
+    func connectIfConfigFileFound(_ destPath: String) -> Bool {
         let fileContents = Utils.getFileContents(path: destPath)
         var result = false
-        if fileContents.starts(with: "[virt-viewer]") {
+        if Utils.isSpice() && fileContents.starts(with: "[virt-viewer]") {
             log_callback_str(message: "\(#function): File at \(destPath) starts with [virt-viewer], connecting.")
             self.connectWithConsoleFile(consoleFile: destPath)
             result = true
+        } else if Utils.isRdp() {
+            log_callback_str(message: "\(#function): File at \(destPath) must be an RDP file, connecting.")
+            self.connectWithConsoleFile(consoleFile: destPath)
+            result = true
         } else {
-            log_callback_str(message: "\(#function): File at \(destPath) does not start with [virt-viewer], ignoring.")
+            log_callback_str(message: "\(#function): File at \(destPath) not supported, ignoring.")
         }
         return result
     }
     
     func connectWithConsoleFile (consoleFile: String) {
+        if Utils.isRdp() && self.remoteSession?.connected ?? false {
+            log_callback_str(message: "\(#function): Connecting via RDP console file while connected is currently not supported")
+            return
+        }
+
         self.connectedWithConsoleFileOrUri = true
         var connection: [String: String] = self.connections.defaultSettings
         connection["consoleFile"] = consoleFile
         connection["id"] = ""
+        self.connections.selectedConnection = connection
         self.connect(connection: connection)
     }
 
@@ -425,7 +435,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.fullScreenUpdateTimer.invalidate()
         self.partialScreenUpdateTimer.invalidate()
         self.recurringPartialScreenUpdateTimer.invalidate()
-        self.remoteSession = nil
     }
 
     @objc func disconnect(sender: Timer) {
@@ -437,6 +446,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func disconnect(wasDrawing: Bool) {
         log_callback_str(message: "\(#function) called")
         self.currInst = (currInst + 1) % maxClCapacity
+        
         if !self.disconnectedDueToBackgrounding && self.receivedUpdate {
             _ = self.connections.saveImage(image: self.captureScreen(imageView: self.captureImageView))
         }
@@ -444,8 +454,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
             self.toggleModifiersIfDown()
         }
         log_callback_str(message: "wasDrawing(): \(wasDrawing)")
+        self.remoteSession?.disconnect()
         if (wasDrawing) {
-            self.remoteSession?.disconnect()
             UserInterface {
                 self.removeAllButtons()
                 self.hideKeyboard()
@@ -473,11 +483,16 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     @objc func scheduleDisconnectTimer(interval: Double = 1, wasDrawing: Bool) {
-        UserInterface {
-            log_callback_str(message: "Scheduling disconnect")
-            self.lazyDisconnect()
-            self.disconnectTimer.invalidate()
-            self.disconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.disconnect(sender:)), userInfo: wasDrawing, repeats: false)
+        // Workaround for crash within LibFreeRDP when disconnecting after starting with an RDP file
+        if Utils.isRdp() && globalStateKeeper?.connectedWithConsoleFileOrUri ?? false {
+            AppDelegate.exitApp()
+        } else {
+            UserInterface {
+                log_callback_str(message: "Scheduling disconnect")
+                self.lazyDisconnect()
+                self.disconnectTimer.invalidate()
+                self.disconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.disconnect(sender:)), userInfo: wasDrawing, repeats: false)
+            }
         }
     }
     
@@ -1091,6 +1106,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func requestSshCredentials() {
         self.requestingSshCredentials = true
         self.requestCredentialsForConnection()
+    }
+    
+    func isCurrentSessionConnected() -> Bool? {
+        return self.remoteSession?.connected
     }
     
 	/*

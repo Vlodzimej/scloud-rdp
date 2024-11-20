@@ -49,6 +49,9 @@ struct AddOrEditConnectionPage : View {
     @State var rdpGatewayUser: String
     @State var rdpGatewayPass: String
     @State var rdpGatewayEnabled: Bool
+    @State var consoleFile: String
+    @State var desktopScaleFactor: Int
+
     @State var generateSshKeyButtonClicked: Bool = false
     @State var instructions = "If you generate a key within the app, the private key will automatically be copied to your clipboard.\n\nPaste it into a file private.pem.\n\nRun the following commands to get a public key string for your authorized_keys file:\n\nchmod go-rwx private.pem\nssh-keygen -f private.pem -y\n"
     
@@ -80,6 +83,8 @@ struct AddOrEditConnectionPage : View {
             "externalId": self.externalId.trimmingCharacters(in: .whitespacesAndNewlines),
             "requiresVpn": String(self.requiresVpn),
             "vpnUriScheme": self.vpnUriScheme.trimmingCharacters(in: .whitespacesAndNewlines),
+            "consoleFile": self.consoleFile.trimmingCharacters(in: .whitespacesAndNewlines),
+            "desktopScaleFactor": String(self.desktopScaleFactor).trimmingCharacters(in: .whitespacesAndNewlines),
         ]
         if Utils.isSpice() {
             connection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -152,7 +157,9 @@ struct AddOrEditConnectionPage : View {
             self.stateKeeper.requestingSshCredentials = false
             selectedConnection["saveSshCredentials"] = String(saveCredentials)
         }
-        self.stateKeeper.connections.overwriteOneConnectionAndNavigate(connection: selectedConnection)
+        if !self.stateKeeper.connectedWithConsoleFileOrUri {
+            self.stateKeeper.connections.overwriteOneConnectionAndNavigate(connection: selectedConnection)
+        }
         self.stateKeeper.connect(connection: selectedConnection)
     }
     
@@ -404,7 +411,7 @@ struct AddOrEditConnectionPage : View {
                 Toggle(isOn: $allowPanning) {
                     Text("ALLOW_DESKTOP_PANNING_LABEL").font(.title)
                 }
-                if(!self.stateKeeper.isOnMacOsOriPadOnMacOs()) {
+                if !self.stateKeeper.isOnMacOsOriPadOnMacOs() {
                     HStack {
                         Text("TOUCH_INPUT_METHOD_LABEL").font(.title)
                         Picker("", selection: $touchInputMethod) {
@@ -412,6 +419,16 @@ struct AddOrEditConnectionPage : View {
                                 Text(self.stateKeeper.localizedString(for: $0.rawValue)).font(.title)
                             }
                         }.font(.title).padding()
+                    }
+                }
+                if Utils.isRdp() {
+                    HStack {
+                        Text("DESKTOP_SCALE_LABEL").font(.title)
+                        Picker("", selection: $desktopScaleFactor) {
+                            ForEach(Constants.SCALE_FACTOR_ENTRIES, id: \.self) { scale in
+                                Text("\(scale)").tag(scale)
+                            }
+                        }.pickerStyle(.wheel)
                     }
                 }
             }
