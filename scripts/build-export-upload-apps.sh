@@ -47,7 +47,6 @@ function parse_options() {
     shift $((OPTIND-1))
 }
 
-
 function check_credentials() {
     if [ -z "$AUSERNAME" ] || [ -z "$APASSWORD" ]
     then
@@ -74,13 +73,26 @@ function increment_project_version() {
     sed -i.bak "s/CURRENT_PROJECT_VERSION = ${CURRENT_PROJECT_VERSION}/CURRENT_PROJECT_VERSION = ${NEXT_PROJECT_VERSION}/" ${PROJ_FILE}/project.pbxproj
 }
 
-function check_uniqueness_of_project_version() {
+function get_project_version() {
     NUMBER_OF_VERSIONS="$(grep CURRENT_PROJECT_VERSION ${PROJ_FILE}/project.pbxproj | uniq | wc -l | xargs)"
     if [ "${NUMBER_OF_VERSIONS}" -gt "1" ]
     then
         echo "Error: CURRENT_PROJECT_VERSION is not the same across all the apps, exiting"
         exit 3
     fi
+    CURRENT_PROJECT_VERSION="$(grep CURRENT_PROJECT_VERSION ${PROJ_FILE}/project.pbxproj | head -n 1 | sed 's/CURRENT_PROJECT_VERSION = \(.*\);/\1/' | xargs)"
+    echo ${CURRENT_PROJECT_VERSION}
+}
+
+function get_marketing_version() {
+    NUMBER_OF_VERSIONS="$(grep MARKETING_VERSION ${PROJ_FILE}/project.pbxproj | uniq | wc -l | xargs)"
+    if [ "${NUMBER_OF_VERSIONS}" -gt "1" ]
+    then
+        echo "Error: MARKETING_VERSION is not the same across all the apps, exiting"
+        exit 3
+    fi
+    MARKETING_VERSION="$(grep MARKETING_VERSION ${PROJ_FILE}/project.pbxproj | head -n 1 | sed 's/MARKETING_VERSION = \(.*\);/\1/' | xargs)"
+    echo $MARKETING_VERSION
 }
 
 function build_export_archive_apps() {
@@ -139,9 +151,13 @@ parse_options
 
 check_credentials
 
-check_uniqueness_of_project_version
+NEXT_PROJECT_VERSION=$(get_project_version)
+MARKETING_VERSION=$(get_marketing_version)
 
 increment_project_version
+
+git add -u ${PROJ_FILE}/project.pbxproj
+git commit -m "Version v${MARKETING_VERSION}, Build ${NEXT_PROJECT_VERSION}"
 
 build_export_archive_apps
 
