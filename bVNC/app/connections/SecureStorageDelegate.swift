@@ -108,7 +108,7 @@ class SecureStorageDelegate {
         let query: [String: Any] = getBaseQuery(account)
         let status = SecItemDelete(query as CFDictionary)
         guard status == errSecSuccess else {
-            log_callback_str(message: "\(#function) Error \(SecCopyErrorMessageString(status, nil)!) deleting \(account) credentials from secure storage")
+            log_callback_str(message: "\(#function) Error '\(SecCopyErrorMessageString(status, nil)!)', status \(status) deleting \(account) credentials from secure storage")
             return
         }
         log_callback_str(message: "\(#function) Success deleting \(account) credentials from secure storage")

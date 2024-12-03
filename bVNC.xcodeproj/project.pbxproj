@@ -73,6 +73,58 @@
 		16E230E42CFE66B7003C9768 /* build-libs.conf in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E12CFE66B6003C9768 /* build-libs.conf */; };
 		16E230E52CFE66B7003C9768 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E22CFE66B7003C9768 /* README.md */; };
 		16E230E62CFE66B7003C9768 /* build-libs.sh in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E32CFE66B7003C9768 /* build-libs.sh */; };
+		16E230E92CFEBDC8003C9768 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
+		16E230EA2CFEBDC8003C9768 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		16E230EB2CFEBDC8003C9768 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
+		16E230EC2CFEBDC8003C9768 /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
+		16E230ED2CFEBDC8003C9768 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
+		16E230EE2CFEBDC8003C9768 /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		16E230EF2CFEBDC8003C9768 /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
+		16E230F02CFEBDC8003C9768 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
+		16E230F12CFEBDC8003C9768 /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
+		16E230F22CFEBDC8003C9768 /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
+		16E230F32CFEBDC8003C9768 /* VncSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB024022C8C00569F19 /* VncSession.swift */; };
+		16E230F42CFEBDC8003C9768 /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		16E230F52CFEBDC8003C9768 /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
+		16E230F62CFEBDC8003C9768 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		16E230F72CFEBDC8003C9768 /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
+		16E230F82CFEBDC8003C9768 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
+		16E230F92CFEBDC8003C9768 /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		16E230FA2CFEBDC8003C9768 /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		16E230FB2CFEBDC8003C9768 /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
+		16E230FC2CFEBDC8003C9768 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
+		16E230FD2CFEBDC8003C9768 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
+		16E230FE2CFEBDC8003C9768 /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
+		16E230FF2CFEBDC8003C9768 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
+		16E231002CFEBDC8003C9768 /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
+		16E231012CFEBDC8003C9768 /* AddOrEditConnectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162940622B8A30250086396F /* AddOrEditConnectionPage.swift */; };
+		16E231022CFEBDC8003C9768 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		16E231032CFEBDC8003C9768 /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
+		16E231042CFEBDC8003C9768 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
+		16E231052CFEBDC8003C9768 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
+		16E231062CFEBDC8003C9768 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		16E231072CFEBDC8003C9768 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
+		16E231082CFEBDC8003C9768 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
+		16E231092CFEBDC8003C9768 /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
+		16E2310A2CFEBDC8003C9768 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
+		16E2310B2CFEBDC8003C9768 /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
+		16E2310C2CFEBDC8003C9768 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
+		16E2310D2CFEBDC8003C9768 /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
+		16E2310E2CFEBDC8003C9768 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
+		16E231102CFEBDC8003C9768 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
+		16E231142CFEBDC8003C9768 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
+		16E231152CFEBDC8003C9768 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
+		16E231162CFEBDC8003C9768 /* build-libs.sh in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E32CFE66B7003C9768 /* build-libs.sh */; };
+		16E231172CFEBDC8003C9768 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E22CFE66B7003C9768 /* README.md */; };
+		16E231182CFEBDC8003C9768 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
+		16E231192CFEBDC8003C9768 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
+		16E2311A2CFEBDC8003C9768 /* build-libs.conf in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E12CFE66B6003C9768 /* build-libs.conf */; };
+		16E2311B2CFEBDC8003C9768 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
+		16E2311C2CFEBDC8003C9768 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
+		16E2311D2CFEBDC8003C9768 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
+		16E2311E2CFEBDC8003C9768 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
+		16E231262CFEBF72003C9768 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E231252CFEBF72003C9768 /* libz.tbd */; };
+		16E231282CFEBF8A003C9768 /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16E231272CFEBF8A003C9768 /* superlib.a */; };
 		16E4FC612B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
 		16E4FC622B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
 		16E4FC632B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
@@ -410,6 +462,9 @@
 		16E230E12CFE66B6003C9768 /* build-libs.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "build-libs.conf"; sourceTree = "<group>"; };
 		16E230E22CFE66B7003C9768 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16E230E32CFE66B7003C9768 /* build-libs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "build-libs.sh"; sourceTree = "<group>"; };
+		16E231232CFEBDC8003C9768 /* bVNC Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bVNC Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		16E231252CFEBF72003C9768 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		16E231272CFEBF8A003C9768 /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/superlib.a; sourceTree = "<group>"; };
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
 		16F948522BA9045D009B919D /* SecureStorageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageDelegate.swift; sourceTree = "<group>"; };
@@ -1162,6 +1217,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		16E2310F2CFEBDC8003C9768 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16E231102CFEBDC8003C9768 /* libresolv.9.tbd in Frameworks */,
+				16E231262CFEBF72003C9768 /* libz.tbd in Frameworks */,
+				16E231282CFEBF8A003C9768 /* superlib.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AF043A1223B3DADA00C43ED7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1575,6 +1640,7 @@
 				AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */,
 				AFB2C8F326001F4D00E2859F /* aSPICE.app */,
 				AFB391D1274F564A0059F91F /* aRDP.app */,
+				16E231232CFEBDC8003C9768 /* bVNC Pro.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1640,6 +1706,8 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				16E231272CFEBF8A003C9768 /* superlib.a */,
+				16E231252CFEBF72003C9768 /* libz.tbd */,
 				164F78EC2C01077E0063B590 /* spicelib.a */,
 				16C51F002BD5743800565BB6 /* libswresample.a */,
 				16C51EF82BD573E800565BB6 /* libavcodec.a */,
@@ -2340,6 +2408,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		16E230E72CFEBDC8003C9768 /* bVNC-macos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16E231202CFEBDC8003C9768 /* Build configuration list for PBXNativeTarget "bVNC-macos" */;
+			buildPhases = (
+				16E230E82CFEBDC8003C9768 /* Sources */,
+				16E2310F2CFEBDC8003C9768 /* Frameworks */,
+				16E231132CFEBDC8003C9768 /* Resources */,
+				16E2311F2CFEBDC8003C9768 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "bVNC-macos";
+			productName = bVNC;
+			productReference = 16E231232CFEBDC8003C9768 /* bVNC Pro.app */;
+			productType = "com.apple.product-type.application";
+		};
 		AF043A1423B3DADA00C43ED7 /* bVNC */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AF043A3F23B3DADB00C43ED7 /* Build configuration list for PBXNativeTarget "bVNC" */;
@@ -2503,6 +2589,7 @@
 				AF30D194253396EF00BA7A62 /* SimpleRemoteTest */,
 				AFB2C8CD26001F4D00E2859F /* aSPICE */,
 				AFB3910E274F564A0059F91F /* aRDP */,
+				16E230E72CFEBDC8003C9768 /* bVNC-macos */,
 			);
 		};
 /* End PBXProject section */
@@ -2518,6 +2605,24 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		16E231132CFEBDC8003C9768 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16E231142CFEBDC8003C9768 /* aSPICE-Info.plist in Resources */,
+				16E231152CFEBDC8003C9768 /* LaunchScreen.storyboard in Resources */,
+				16E231162CFEBDC8003C9768 /* build-libs.sh in Resources */,
+				16E231172CFEBDC8003C9768 /* README.md in Resources */,
+				16E231182CFEBDC8003C9768 /* Localizable.strings in Resources */,
+				16E231192CFEBDC8003C9768 /* Preview Assets.xcassets in Resources */,
+				16E2311A2CFEBDC8003C9768 /* build-libs.conf in Resources */,
+				16E2311B2CFEBDC8003C9768 /* Assets.xcassets in Resources */,
+				16E2311C2CFEBDC8003C9768 /* aRDP-Info.plist in Resources */,
+				16E2311D2CFEBDC8003C9768 /* PrivacyInfo.xcprivacy in Resources */,
+				16E2311E2CFEBDC8003C9768 /* Simple Remote-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AF043A1323B3DADA00C43ED7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2591,6 +2696,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		16E2311F2CFEBDC8003C9768 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
+		};
 		AF30D1B0253396EF00BA7A62 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2662,6 +2784,51 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		16E230E82CFEBDC8003C9768 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16E230E92CFEBDC8003C9768 /* ConnectionListPage.swift in Sources */,
+				16E230EA2CFEBDC8003C9768 /* Constants.swift in Sources */,
+				16E230EB2CFEBDC8003C9768 /* SshPortForwarder.c in Sources */,
+				16E230EC2CFEBDC8003C9768 /* MultilineTextView.swift in Sources */,
+				16E230ED2CFEBDC8003C9768 /* StringExtension.swift in Sources */,
+				16E230EE2CFEBDC8003C9768 /* SecureStorageDelegate.swift in Sources */,
+				16E230EF2CFEBDC8003C9768 /* CustomTextInput.swift in Sources */,
+				16E230F02CFEBDC8003C9768 /* ToggleButton.swift in Sources */,
+				16E230F12CFEBDC8003C9768 /* ucs2xkeysym.c in Sources */,
+				16E230F22CFEBDC8003C9768 /* LocalizedStringKey.swift in Sources */,
+				16E230F32CFEBDC8003C9768 /* VncSession.swift in Sources */,
+				16E230F42CFEBDC8003C9768 /* RemoteBridge.c in Sources */,
+				16E230F52CFEBDC8003C9768 /* StoreReviewHelper.swift in Sources */,
+				16E230F62CFEBDC8003C9768 /* ClipboardMonitor.swift in Sources */,
+				16E230F72CFEBDC8003C9768 /* SystemMonitor.m in Sources */,
+				16E230F82CFEBDC8003C9768 /* PhysicalKeyboardHandler.swift in Sources */,
+				16E230F92CFEBDC8003C9768 /* SimulatedTouchpadUIImageView.swift in Sources */,
+				16E230FA2CFEBDC8003C9768 /* RemoteSession.swift in Sources */,
+				16E230FB2CFEBDC8003C9768 /* LongTapDragUIImageView.swift in Sources */,
+				16E230FC2CFEBDC8003C9768 /* AppDelegate.swift in Sources */,
+				16E230FD2CFEBDC8003C9768 /* SceneDelegate.swift in Sources */,
+				16E230FE2CFEBDC8003C9768 /* KeyboardObserving.swift in Sources */,
+				16E230FF2CFEBDC8003C9768 /* SshKeyGenerator.swift in Sources */,
+				16E231002CFEBDC8003C9768 /* StateKeeper.swift in Sources */,
+				16E231012CFEBDC8003C9768 /* AddOrEditConnectionPage.swift in Sources */,
+				16E231022CFEBDC8003C9768 /* FilterableConnections.swift in Sources */,
+				16E231032CFEBDC8003C9768 /* VncBridge.c in Sources */,
+				16E231042CFEBDC8003C9768 /* MainPage.swift in Sources */,
+				16E231052CFEBDC8003C9768 /* Utility.c in Sources */,
+				16E231062CFEBDC8003C9768 /* ShortTapDragUIImageView.swift in Sources */,
+				16E231072CFEBDC8003C9768 /* Utilities.m in Sources */,
+				16E231082CFEBDC8003C9768 /* TouchEnabledUIImageView.swift in Sources */,
+				16E231092CFEBDC8003C9768 /* SpiceSessionDummy.swift in Sources */,
+				16E2310A2CFEBDC8003C9768 /* MiscellaneousPages.swift in Sources */,
+				16E2310B2CFEBDC8003C9768 /* RdpSessionDummy.swift in Sources */,
+				16E2310C2CFEBDC8003C9768 /* Utils.swift in Sources */,
+				16E2310D2CFEBDC8003C9768 /* TouchInputType.swift in Sources */,
+				16E2310E2CFEBDC8003C9768 /* HelpPage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AF043A1123B3DADA00C43ED7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2903,6 +3070,139 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		16E231212CFEBDC8003C9768 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-MacOS";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 151;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"BVNC=1",
+					"DEBUG=1",
+				);
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
+					"$(SDKROOT)/usr/lib/swift",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 39;
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
+				PRELINK_LIBS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC;
+				PRODUCT_NAME = "bVNC Pro";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		16E231222CFEBDC8003C9768 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-MacOS";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 151;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "BVNC=1";
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+				);
+				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
+					"$(SDKROOT)/usr/lib/swift",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 39;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
+				PRELINK_LIBS = "";
+				"PRELINK_LIBS[arch=*]" = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC;
+				PRODUCT_NAME = "bVNC Pro";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
 		AF043A3D23B3DADB00C43ED7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3600,6 +3900,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		16E231202CFEBDC8003C9768 /* Build configuration list for PBXNativeTarget "bVNC-macos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16E231212CFEBDC8003C9768 /* Debug */,
+				16E231222CFEBDC8003C9768 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AF043A1023B3DADA00C43ED7 /* Build configuration list for PBXProject "bVNC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

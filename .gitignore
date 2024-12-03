@@ -5,7 +5,6 @@ libjpeg-turbo
 bVNC.xcodeproj/libs_combined/
 bVNC.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 bVNC.xcodeproj/project.xcworkspace/xcuserdata/
-bVNC.xcodeproj/xcshareddata/
 iSSH2
 bVNC.xcodeproj/ios_universal
 aspice-lib-ios/recipes
