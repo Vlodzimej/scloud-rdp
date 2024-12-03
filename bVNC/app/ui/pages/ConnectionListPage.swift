@@ -33,7 +33,7 @@ struct ConnectionsListPage : View {
         let port = connection["port"]!
         let externalId = connection["externalId"]!
 
-        var tunneledProtocol = Utils.getTunneledProtocol()
+        let tunneledProtocol = Utils.getTunneledProtocol()
 
         guard let url = URL(
             string: "\(scheme)://\(host):\(port)/tunnel?tunnelAction=start&remotePort=\(port)&tunneledProtocol=\(tunneledProtocol)&externalId=\(externalId)"
