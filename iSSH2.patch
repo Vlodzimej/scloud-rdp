@@ -1,9 +1,284 @@
 diff --git a/catalyst.sh b/catalyst.sh
-index c9c44b4..3ca586e 100755
+index 8641403..c3b08d9 100755
 --- a/catalyst.sh
 +++ b/catalyst.sh
-@@ -219,3 +219,4 @@ echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${
- echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \\
- echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
- lipo -info ./openssl_iphoneos/lib/libssl.a
-+rsync -avP ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/include/ ./openssl_iphoneos/include/
+@@ -176,46 +176,85 @@ else
+   echo "SDK version: $SDK_VERSION"
+ fi
+ 
+-echo "Xcode version: $XCODE_VERSION (Automatically detected)"
+-echo "Architectures: $ARCHS"
+-echo "Platform: $SDK_PLATFORM"
+-echo "Platform min version: $MIN_VERSION"
+-echo
++#echo "Xcode version: $XCODE_VERSION (Automatically detected)"
++#echo "Architectures: $ARCHS"
++#echo "Platform: $SDK_PLATFORM"
++#echo "Platform min version: $MIN_VERSION"
++#echo
+ 
+ #Build
+ 
+ set -e
+ 
+-rm -rf $TMPDIR/iSSH2
+-./iSSH2.sh --platform=iphoneos --min-version=8.0 --sdk-version=$SDK_VERSION --archs="arm64 arm64e"
+-rm -rf ./libssh2_iphoneos/lib
+-rm -rf ./openssl_iphoneos/lib
+-OSX_MIN_VERSION="10.15"
+-OSX_SDK_PLATFORM="MacOSX"
+-OSX_SDK_VERSION=`xcrun --sdk macosx --show-sdk-version`
+-echo CFLAGS="-target x86_64-apple-ios-macabi" ./iSSH2cat.sh --platform=iphoneos --target=macosx --min-version=$OSX_MIN_VERSION --archs="x86_64" --sdk-version=$SDK_VERSION
+-CFLAGS="-target x86_64-apple-ios-macabi" ./iSSH2cat.sh --platform=iphoneos --target=macosx --min-version=$OSX_MIN_VERSION --archs="x86_64" --sdk-version=$SDK_VERSION
+-echo "Building fat files"
+-mkdir -p ./libssh2_iphoneos/lib
+-mkdir -p ./openssl_iphoneos/lib
+-lipo -create ${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libssh2.a \
+-${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64/install/lib/libssh2.a \
+-${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64e/install/lib/libssh2.a -output ./libssh2_iphoneos/lib/libssh2.a
+-echo lipo -create \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libssh2.a \\
+-echo \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64/install/lib/libssh2.a \\
+-echo \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64e/install/lib/libssh2.a -output ./libssh2_iphoneos/lib/libssh2.a
+-lipo -info ./libssh2_iphoneos/lib/libssh2.a
+-lipo -create ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libcrypto.a \
+-${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libcrypto.a \
+-${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libcrypto.a -output ./openssl_iphoneos/lib/libcrypto.a
+-echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libcrypto.a \\
+-echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libcrypto.a \\
+-echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libcrypto.a -output ./openssl_iphoneos/lib/libcrypto.a
+-lipo -info ./openssl_iphoneos/lib/libcrypto.a
+-lipo -create ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libssl.a \
+-${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \
+-${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
+-echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/lib/libssl.a \\
+-echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \\
+-echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
+-lipo -info ./openssl_iphoneos/lib/libssl.a
++function build_iphoneos() {
++  rm -rf $TMPDIR/iSSH2
++
++  rm -rf ./libssh2_iphoneos/lib
++  rm -rf ./openssl_iphoneos/lib
++  mkdir -p ./libssh2_iphoneos/lib
++  mkdir -p ./openssl_iphoneos/lib
++
++  ./iSSH2.sh --platform=iphoneos --min-version=8.0 --sdk-version=$SDK_VERSION --archs="arm64 arm64e"
++
++  echo "Building iphoneos fat files"
++  lipo -create \
++  ${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64/install/lib/libssh2.a \
++  ${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64e/install/lib/libssh2.a -output ./libssh2_iphoneos/lib/libssh2.a
++  echo lipo -create \\
++  echo \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64/install/lib/libssh2.a \\
++  echo \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/iPhoneOS_$SDK_VERSION-arm64e/install/lib/libssh2.a -output ./libssh2_iphoneos/lib/libssh2.a
++  lipo -info ./libssh2_iphoneos/lib/libssh2.a
++  lipo -create \
++  ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libcrypto.a \
++  ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libcrypto.a -output ./openssl_iphoneos/lib/libcrypto.a
++  echo lipo -create \\
++  echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libcrypto.a \\
++  echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libcrypto.a -output ./openssl_iphoneos/lib/libcrypto.a
++  lipo -info ./openssl_iphoneos/lib/libcrypto.a
++  lipo -create \
++  ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \
++  ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
++  echo lipo \\
++  echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/libssl.a \\
++  echo \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64e/libssl.a -output ./openssl_iphoneos/lib/libssl.a
++  lipo -info ./openssl_iphoneos/lib/libssl.a
++  rsync -avP ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/iPhoneOS_$SDK_VERSION-arm64/include/ ./openssl_iphoneos/include/
++}
++
++function build_macosx() {
++  rm -rf ${TMPDIR}iSSH2
++
++  rm -rf ./libssh2_macosx/lib
++  rm -rf ./openssl_macosx/lib
++  OSX_MIN_VERSION="10.15"
++  OSX_SDK_PLATFORM="MacOSX"
++  OSX_SDK_VERSION=`xcrun --sdk macosx --show-sdk-version`
++
++  mkdir -p ./libssh2_macosx/lib
++  mkdir -p ./openssl_macosx/lib
++
++  echo "Building Mac Catalyst for architectures x86_64 and arm64"
++  for ARCH in x86_64 arm64
++  do
++    echo CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION
++    CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION
++  done
++
++  echo "Building macosx fat files"
++  lipo -create ${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libssh2.a -output ./libssh2_macosx/lib/libssh2.a
++  echo lipo -create \${TMPDIR}iSSH2/libssh2-$LIBSSH_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libssh2.a -output ./libssh2_macosx/lib/libssh2.a
++  lipo -info ./libssh2_macosx/lib/libssh2.a
++
++  lipo -create ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libcrypto.a -output ./openssl_macosx/lib/libcrypto.a
++  echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libcrypto.a -output ./openssl_macosx/lib/libcrypto.a
++  lipo -info ./openssl_macosx/lib/libcrypto.a
++
++  lipo -create ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libssl.a -output ./openssl_macosx/lib/libssl.a
++  echo lipo -create \${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-*/install/lib/libssl.a -output ./openssl_macosx/lib/libssl.a
++  lipo -info ./openssl_macosx/lib/libssl.a
++
++rsync -avP ${TMPDIR}iSSH2/openssl-$LIBSSL_VERSION/${OSX_SDK_PLATFORM}_${OSX_MIN_VERSION}-x86_64/install/include/ ./openssl_macosx/include/
++}
++
++build_iphoneos
++build_macosx
+diff --git a/iSSH2cat-libssh2.sh b/iSSH2cat-libssh2.sh
+index 44577e0..0299d5d 100755
+--- a/iSSH2cat-libssh2.sh
++++ b/iSSH2cat-libssh2.sh
+@@ -43,21 +43,22 @@ set -e
+ 
+ OSX_PLATFORM="macosx"
+ OSX_VERSION=10.15
+-OSX_PLATFORM="$(platformName "$OSX_PLATFORM" "x86_64")"
+-OSX_PLATFORM_OUT="$LIBSSHDIR/${OSX_PLATFORM}_$OSX_VERSION-x86_64/install"
+-OSX_LIPO_SSH2="$OSX_PLATFORM_OUT/lib/libssh2.a"
+ 
+ echo "Building Libssh2 $LIBSSH_VERSION:"
+ 
+ for ARCH in $ARCHS
+ do
++  OSX_PLATFORM="$(platformName "$OSX_PLATFORM" "$ARCH")"
++  OSX_PLATFORM_OUT="$LIBSSHDIR/${OSX_PLATFORM}_$OSX_VERSION-$ARCH/install"
++  OSX_LIPO_SSH2="$OSX_PLATFORM_OUT/lib/libssh2.a"
++
+   PLATFORM="$(platformName "$SDK_PLATFORM" "$ARCH")"
+   OPENSSLDIR="$BASEPATH/openssl_$SDK_PLATFORM/"
+   PLATFORM_SRC="$LIBSSHDIR/${PLATFORM}_$SDK_VERSION-$ARCH/src"
+   PLATFORM_OUT="$LIBSSHDIR/${PLATFORM}_$SDK_VERSION-$ARCH/install"
+   LIPO_SSH2="$LIPO_SSH2 $PLATFORM_OUT/lib/libssh2.a"
+ 
+-  if [[ -f "$PLATFORM_OUT/lib/libssh2.a" ]] && [[ "$ARCH" != "x86_64" ]]; then
++  if [[ -f "$PLATFORM_OUT/lib/libssh2.a" ]] ; then
+     echo "libssh2.a for $ARCH already exists in $PLATFORM_OUT/lib/"
+   else
+     rm -rf "$PLATFORM_SRC"
+@@ -82,7 +83,7 @@ do
+     export CFLAGS="-arch $ARCH -pipe -no-cpp-precomp -isysroot $SDKROOT -m$SDK_PLATFORM-version-min=$MIN_VERSION $EMBED_BITCODE"
+     export CPPFLAGS="-arch $ARCH -pipe -no-cpp-precomp -isysroot $SDKROOT -m$SDK_PLATFORM-version-min=$MIN_VERSION"
+ 
+-    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
+       SDK_PLATFORM="macosx"
+       SDK_VERSION=`xcrun --sdk $SDK_PLATFORM --show-sdk-version`
+       MIN_VERSION=10.15
+@@ -93,7 +94,7 @@ do
+       export SDKROOT="$DEVROOT/SDKs/$PLATFORM$SDK_VERSION.sdk"
+       export CC="$CLANG"
+       export CPP="$CLANG -E"
+-      export CFLAGS="-arch $ARCH -pipe -no-cpp-precomp -isysroot $SDKROOT -target x86_64-apple-ios-macabi -m$SDK_PLATFORM-version-min=$MIN_VERSION $EMBED_BITCODE"
++      export CFLAGS="-arch $ARCH -pipe -no-cpp-precomp -isysroot $SDKROOT -target $ARCH-apple-ios-macabi -m$SDK_PLATFORM-version-min=$MIN_VERSION $EMBED_BITCODE"
+       export CPPFLAGS="-arch $ARCH -pipe -no-cpp-precomp -isysroot $SDKROOT -m$SDK_PLATFORM-version-min=$MIN_VERSION"
+     fi
+     if [[ $(./configure --help | grep -c -- --with-openssl) -eq 0 ]]; then
+@@ -108,10 +109,10 @@ export HOST="$HOST"
+ export CC="$CC"
+ echo CRYPTO_BACKEND_OPTION = $CRYPTO_BACKEND_OPTION
+ echo OPENSSLDIR = $OPENSSLDIR
+-echo CFLAGS="-target x86_64-apple-ios-macabi" ./configure --host=$HOST --prefix="$PLATFORM_OUT" --disable-debug --disable-dependency-tracking --disable-silent-rules --disable-examples-build --without-libz $CRYPTO_BACKEND_OPTION --with-libssl-prefix=$TMPDIR/iSSH2/openssl-$LIBSSL_VERSION/MacOSX_$MIN_VERSION-x86_64/install --disable-shared --enable-static
++echo CFLAGS="-target $ARCH-apple-ios-macabi" ./configure --host=$HOST --prefix="$PLATFORM_OUT" --disable-debug --disable-dependency-tracking --disable-silent-rules --disable-examples-build --without-libz $CRYPTO_BACKEND_OPTION --with-libssl-prefix=$TMPDIR/iSSH2/openssl-$LIBSSL_VERSION/MacOSX_$MIN_VERSION-$ARCH/install --disable-shared --enable-static
+ #bash
+ 
+-     CFLAGS="-target x86_64-apple-ios-macabi" ./configure --host=$HOST --prefix="$PLATFORM_OUT" --disable-debug --disable-dependency-tracking --disable-silent-rules --disable-examples-build --without-libz $CRYPTO_BACKEND_OPTION --with-libssl-prefix=$TMPDIR/iSSH2/openssl-$LIBSSL_VERSION/MacOSX_$MIN_VERSION-x86_64/install --disable-shared --enable-static >> "$LOG" 2>&1
++     CFLAGS="-target x86_64-apple-ios-macabi" ./configure --host=$HOST --prefix="$PLATFORM_OUT" --disable-debug --disable-dependency-tracking --disable-silent-rules --disable-examples-build --without-libz $CRYPTO_BACKEND_OPTION --with-libssl-prefix=$TMPDIR/iSSH2/openssl-$LIBSSL_VERSION/MacOSX_$MIN_VERSION-$ARCH/install --disable-shared --enable-static >> "$LOG" 2>&1
+ 
+ # If you get a popup here to install the Command Line Developer Tools: install them and rerun the script
+ #
+@@ -143,7 +144,7 @@ done
+ 
+ find $PLATFORM_OUT -name libssh2.a
+ 
+-if [[ -f "$OSX_LIPO_SSH2" ]] && [[ "$ARCH" != "x86_64" ]]; then
++if [[ -f "$OSX_LIPO_SSH2" ]] ; then
+   echo "todo: lipo -create $OSX_LIPO_SSH2 $LIPO_SSH2 -output $BASEPATH/libssh2_$SDK_PLATFORM/lib/libssh2.a"
+   touch "$BASEPATH/libssh2_$SDK_PLATFORM/lib/libssh2.a"
+ else
+diff --git a/iSSH2cat-openssl.sh b/iSSH2cat-openssl.sh
+index 9bb8183..4c84181 100755
+--- a/iSSH2cat-openssl.sh
++++ b/iSSH2cat-openssl.sh
+@@ -57,7 +57,7 @@ do
+   LIPO_LIBSSL="$LIPO_LIBSSL $OPENSSLDIR/libssl.a"
+   LIPO_LIBCRYPTO="$LIPO_LIBCRYPTO $OPENSSLDIR/libcrypto.a"
+ 
+-  if [[ -f "$OPENSSLDIR/libssl.a" ]] && [[ -f "$OPENSSLDIR/libcrypto.a" ]] && [[ "$ARCH" != "x86_64" ]]; then
++  if [[ -f "$OPENSSLDIR/libssl.a" ]] && [[ -f "$OPENSSLDIR/libcrypto.a" ]] ; then
+     echo "libssl.a and libcrypto.a for $ARCH already exist in $OPENSSLDIR"
+   else
+     rm -rf "$OPENSSLDIR"
+@@ -67,8 +67,8 @@ do
+     LOG="$OPENSSLDIR/build-openssl.log"
+     touch $LOG
+ 
+-    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
+-      HOST="darwin64-x86_64-cc"
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
++      HOST="darwin64-$ARCH-cc"
+       SDK_PLATFORM="macosx"
+       CONF="no-shared"
+       SDK_VERSION=`xcrun --sdk $SDK_PLATFORM --show-sdk-version`
+@@ -90,28 +90,26 @@ do
+     CONF="$CONF -m$SDK_PLATFORM-version-min=$MIN_VERSION $EMBED_BITCODE"
+     ./Configure $HOST --prefix=$PLATFORM_OUT $CONF
+ 
+-    if [[ "$ARCH" == "x86_64" ]]; then
+-      sed -ie "s!^CFLAG=!CFLAG=-isysroot $SDKROOT !" "Makefile"
+-      if [[ "$MIN_VERSION" == "10.15" ]]; then
+-        echo "Building OpenSSL $LIBSSL_VERSION $ARCH for $HOST, please wait..."
+-      fi
++    sed -ie "s!^CFLAG=!CFLAG=-isysroot $SDKROOT !" "Makefile"
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
++      echo "Building OpenSSL $LIBSSL_VERSION $ARCH for $HOST, please wait..."
+     fi
+     make depend >> "$LOG" 2>&1
+     make -j "$BUILD_THREADS" build_libs >> "$LOG" 2>&1
+-    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
+       mkdir -p $PLATFORM_OUT
+       make install >> "$LOG" 2>&1
+     fi
+ #bash
+-    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
+-      SDK_PLATFORM="iphoneos"
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
++      SDK_PLATFORM="macosx"
+       echo "SDK_VERSION = $SDK_VERSION"
+       SDK_VERSION="14.4"
+       PLATFORM="$(platformName "$SDK_PLATFORM" "$ARCH")"
+       OPENSSLDIR="$LIBSSLDIR/${PLATFORM}_$MIN_VERSION-$ARCH"
+     fi
+ 
+-    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
++    if [[ "$MIN_VERSION" == "10.15" ]]; then
+       echo "- Mac Catalyst for $HOST $ARCH done!"
+     else
+       echo "- $PLATFORM $ARCH done!"
+diff --git a/iSSH2cat.sh b/iSSH2cat.sh
+index 776511a..3ba6f42 100755
+--- a/iSSH2cat.sh
++++ b/iSSH2cat.sh
+@@ -202,7 +202,7 @@ if [[  "$SDK_PLATFORM" == "macosx" ]] || [[ "$SDK_PLATFORM" == "iphoneos" ]] ||
+         fi
+       fi
+ 
+-      ARCHS="$ARCHS x86_64"
++      #ARCHS="$ARCHS x86_64"
+ 
+       if [[ $(version "$MIN_VERSION") < $(version "10.0") ]]; then
+         ARCHS="$ARCHS"
+@@ -284,9 +284,9 @@ echo
+ set -e
+ 
+ if [[ $BUILD_SSL == true ]]; then
+-  "$BASEPATH/iSSH2cat-openssl.sh" || echo "Never mind"
++  "$BASEPATH/iSSH2cat-openssl.sh"
+ fi
+ 
+ if [[ $BUILD_SSH == true ]]; then
+-  "$BASEPATH/iSSH2cat-libssh2.sh" || echo "Never mind"
++  "$BASEPATH/iSSH2cat-libssh2.sh"
+ fi

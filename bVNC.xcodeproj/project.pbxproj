@@ -70,6 +70,9 @@
 		16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04EA293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		16E230E42CFE66B7003C9768 /* build-libs.conf in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E12CFE66B6003C9768 /* build-libs.conf */; };
+		16E230E52CFE66B7003C9768 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E22CFE66B7003C9768 /* README.md */; };
+		16E230E62CFE66B7003C9768 /* build-libs.sh in Resources */ = {isa = PBXBuildFile; fileRef = 16E230E32CFE66B7003C9768 /* build-libs.sh */; };
 		16E4FC612B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
 		16E4FC622B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
 		16E4FC632B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
@@ -404,6 +407,9 @@
 		16C51EFB2BD573E800565BB6 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = bVNC.xcodeproj/ios_universal/lib/libavfilter.a; sourceTree = "<group>"; };
 		16C51F002BD5743800565BB6 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = bVNC.xcodeproj/ios_universal/lib/libswresample.a; sourceTree = "<group>"; };
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
+		16E230E12CFE66B6003C9768 /* build-libs.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "build-libs.conf"; sourceTree = "<group>"; };
+		16E230E22CFE66B7003C9768 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		16E230E32CFE66B7003C9768 /* build-libs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "build-libs.sh"; sourceTree = "<group>"; };
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
 		16F948522BA9045D009B919D /* SecureStorageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageDelegate.swift; sourceTree = "<group>"; };
@@ -1547,6 +1553,9 @@
 		AF043A0C23B3DADA00C43ED7 = {
 			isa = PBXGroup;
 			children = (
+				16E230E12CFE66B6003C9768 /* build-libs.conf */,
+				16E230E32CFE66B7003C9768 /* build-libs.sh */,
+				16E230E22CFE66B7003C9768 /* README.md */,
 				AFF808432487533C00A6B35E /* Localizable.strings */,
 				AF043A1723B3DADA00C43ED7 /* bVNC */,
 				AF043A2E23B3DADB00C43ED7 /* bVNCTests */,
@@ -2515,8 +2524,11 @@
 			files = (
 				16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */,
 				AF043A2523B3DADB00C43ED7 /* LaunchScreen.storyboard in Resources */,
+				16E230E62CFE66B7003C9768 /* build-libs.sh in Resources */,
+				16E230E52CFE66B7003C9768 /* README.md in Resources */,
 				AFF808412487533C00A6B35E /* Localizable.strings in Resources */,
 				AF043A2223B3DADB00C43ED7 /* Preview Assets.xcassets in Resources */,
+				16E230E42CFE66B7003C9768 /* build-libs.conf in Resources */,
 				AF043A1F23B3DADB00C43ED7 /* Assets.xcassets in Resources */,
 				16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */,
 				168B8AF52BB8D01200EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
