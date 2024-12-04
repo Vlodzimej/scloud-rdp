@@ -1,8 +1,16 @@
 diff --git a/catalyst.sh b/catalyst.sh
-index 8641403..c3b08d9 100755
+index 8641403..423dc5c 100755
 --- a/catalyst.sh
 +++ b/catalyst.sh
-@@ -176,46 +176,85 @@ else
+@@ -61,7 +61,6 @@ version () {
+ 
+ export SDK_VERSION=
+ export LIBSSH_VERSION=
+-export LIBSSL_VERSION=
+ export MIN_VERSION=8.0
+ export ARCHS=x86_64
+ export SDK_PLATFORM=iphoneos
+@@ -176,46 +175,85 @@ else
    echo "SDK version: $SDK_VERSION"
  fi
  
@@ -62,7 +70,7 @@ index 8641403..c3b08d9 100755
 +  mkdir -p ./libssh2_iphoneos/lib
 +  mkdir -p ./openssl_iphoneos/lib
 +
-+  ./iSSH2.sh --platform=iphoneos --min-version=8.0 --sdk-version=$SDK_VERSION --archs="arm64 arm64e"
++  ./iSSH2.sh --platform=iphoneos --min-version=8.0 --sdk-version=$SDK_VERSION --openssl=$LIBSSL_VERSION --archs="arm64 arm64e"
 +
 +  echo "Building iphoneos fat files"
 +  lipo -create \
@@ -104,8 +112,8 @@ index 8641403..c3b08d9 100755
 +  echo "Building Mac Catalyst for architectures x86_64 and arm64"
 +  for ARCH in x86_64 arm64
 +  do
-+    echo CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION
-+    CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION
++    echo CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION --openssl=$LIBSSL_VERSION
++    CFLAGS="-target ${ARCH}-apple-ios-macabi" ./iSSH2cat.sh --no-bitcode --platform=macosx --target=macosx --min-version=$OSX_MIN_VERSION --archs="${ARCH}" --sdk-version=$SDK_VERSION --openssl=$LIBSSL_VERSION
 +  done
 +
 +  echo "Building macosx fat files"
@@ -126,6 +134,25 @@ index 8641403..c3b08d9 100755
 +
 +build_iphoneos
 +build_macosx
+diff --git a/iSSH2-openssl.sh b/iSSH2-openssl.sh
+index f17de4a..dc1e4fd 100755
+--- a/iSSH2-openssl.sh
++++ b/iSSH2-openssl.sh
+@@ -37,7 +37,13 @@ mkdir -p "$LIBSSLDIR"
+ 
+ LIBSSL_TAR="openssl-$LIBSSL_VERSION.tar.gz"
+ 
+-downloadFile "https://github.com/openssl/openssl/releases/download/openssl-$LIBSSL_VERSION/$LIBSSL_TAR" "$LIBSSLDIR/$LIBSSL_TAR"
++v=$(echo $LIBSSL_VERSION | cut -c1-1)
++if [ "$v" -le "1" ]
++then
++  downloadFile "https://github.com/openssl/openssl/releases/download/OpenSSL_$(echo $LIBSSL_VERSION | sed 's/\./_/g')/$LIBSSL_TAR" "$LIBSSLDIR/$LIBSSL_TAR"
++else
++  downloadFile "https://github.com/openssl/openssl/releases/download/openssl-$LIBSSL_VERSION/$LIBSSL_TAR" "$LIBSSLDIR/$LIBSSL_TAR"
++fi
+ 
+ LIBSSLSRC="$LIBSSLDIR/src/"
+ mkdir -p "$LIBSSLSRC"
 diff --git a/iSSH2cat-libssh2.sh b/iSSH2cat-libssh2.sh
 index 44577e0..0299d5d 100755
 --- a/iSSH2cat-libssh2.sh
@@ -198,7 +225,7 @@ index 44577e0..0299d5d 100755
    touch "$BASEPATH/libssh2_$SDK_PLATFORM/lib/libssh2.a"
  else
 diff --git a/iSSH2cat-openssl.sh b/iSSH2cat-openssl.sh
-index 9bb8183..4c84181 100755
+index 9bb8183..e3763c9 100755
 --- a/iSSH2cat-openssl.sh
 +++ b/iSSH2cat-openssl.sh
 @@ -57,7 +57,7 @@ do
@@ -221,7 +248,7 @@ index 9bb8183..4c84181 100755
        SDK_PLATFORM="macosx"
        CONF="no-shared"
        SDK_VERSION=`xcrun --sdk $SDK_PLATFORM --show-sdk-version`
-@@ -90,28 +90,26 @@ do
+@@ -90,28 +90,30 @@ do
      CONF="$CONF -m$SDK_PLATFORM-version-min=$MIN_VERSION $EMBED_BITCODE"
      ./Configure $HOST --prefix=$PLATFORM_OUT $CONF
  
@@ -238,6 +265,10 @@ index 9bb8183..4c84181 100755
      make -j "$BUILD_THREADS" build_libs >> "$LOG" 2>&1
 -    if [[ "$ARCH" == "x86_64" ]] && [[ "$MIN_VERSION" == "10.15" ]]; then
 +    if [[ "$MIN_VERSION" == "10.15" ]]; then
++      if [ -f $PLATFORM_OUT ]
++      then
++        rm -f $PLATFORM_OUT
++      fi
        mkdir -p $PLATFORM_OUT
        make install >> "$LOG" 2>&1
      fi

@@ -187,11 +187,18 @@ EOF
 }
 
 function build_issh2 {
+  OPENSSL_VERSION=$1
   # Clone and build libssh2
   export CFLAGS=""
-  if git clone https://github.com/Jan-E/iSSH2.git
+  DIR=iSSH2
+  if [ -n "$OPENSSL_VERSION" ]
   then
-    pushd iSSH2
+    DIR=iSSH2-$OPENSSL_VERSION
+    export LIBSSL_VERSION=$OPENSSL_VERSION
+  fi
+  if git clone https://github.com/Jan-E/iSSH2.git $DIR
+  then
+    pushd $DIR
     git checkout ${ISSH2_VERSION}
     echo "libssh2 Mac Catalyst build"
     echo "Patching Jan-E/iSSH2"
@@ -355,6 +362,7 @@ function build_rdp_dependencies() {
 set_up_ios_cmake
 build_jpeg_turbo
 build_issh2
+build_issh2 1.1.1w
 build_libvncserver
 lipo_libvncserver
 create_super_and_spice_libs

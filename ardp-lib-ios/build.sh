@@ -26,7 +26,7 @@ then
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
       -DWITH_SSE2=OFF \
-      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2/openssl_iphoneos) \
+      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2-1.1.1w/openssl_iphoneos) \
       -DJPEG_LIBRARY=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/lib) \
       -DJPEG_INCLUDE_DIR=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/include) \
       -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero/build/dist/ios_universal) \
@@ -67,7 +67,7 @@ then
       -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
       -DWITH_NEON=OFF \
       -DWITH_SSE2=OFF \
-      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2/openssl_macosx) \
+      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2-1.1.1w/openssl_macosx) \
       -DJPEG_LIBRARY=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/lib) \
       -DJPEG_INCLUDE_DIR=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/include) \
       -DWITH_JPEG=ON \
@@ -106,7 +106,7 @@ then
       -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
       -DWITH_NEON=OFF \
       -DWITH_SSE2=OFF \
-      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2/openssl_macosx) \
+      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2-1.1.1w/openssl_macosx) \
       -DJPEG_LIBRARY=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/lib) \
       -DJPEG_INCLUDE_DIR=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/include) \
       -DWITH_JPEG=ON \
@@ -136,7 +136,17 @@ done
 
 for platform in iphoneos maccatalyst
 do
-  libtool -static -o duperlib.a libs_$platform/*
+  issh_platform="$platform"
+  if [ "$platform" == "maccatalyst" ]
+  then
+    issh_platform="macosx"
+  fi
+  deps="libs_$platform/* ../iSSH2-1.1.1w/openssl_$issh_platform/lib/* ../iSSH2-1.1.1w/libssh2_$issh_platform/lib/*"
+  if [ "$platform" == "iphoneos" ]
+  then
+    deps="$deps ../aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libav*.a ../aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libswresample.a"
+  fi
+  libtool -static -o duperlib.a $deps
   mv duperlib.a ../bVNC.xcodeproj/libs_combined_$platform/lib/
 
   # Make all include files available to the project

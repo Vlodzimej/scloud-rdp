@@ -14,37 +14,35 @@ BUILD=false
 ARCHIVE=false
 UPLOAD=false
 
+while getopts ":bauf:" o
+do
+    case "${o}" in
+        b)
+            BUILD=true
+            ;;
+        a)
+            ARCHIVE=true
+            ;;
+        u)
+            UPLOAD=true
+            ;;
+        f)
+            APPS="${OPTARG}"
+            [[ ! $APPS =~ aRDP|bVNC|aSPICE ]] && {
+                echo "Provide one or more app to build, archive, or upload"
+                exit 1
+            }
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
 function usage() {
     echo "Usage: $0 [-bau] [-f <quoted list of apps>]" 1>&2
     exit 1
-}
-
-function parse_options() {
-    while getopts ":bauf:" o
-    do
-        case "${o}" in
-            b)
-                BUILD=true
-                ;;
-            a)
-                ARCHIVE=true
-                ;;
-            u)
-                UPLOAD=true
-                ;;
-            f)
-                APPS="${OPTARG}"
-                [[ ! $APPS =~ aRDP|bVNC|aSPICE ]] && {
-                    echo "Provide one or more app to build, archive, or upload"
-                    exit 1
-                }
-                ;;
-            *)
-                usage
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
 }
 
 function check_credentials() {
@@ -96,15 +94,27 @@ function get_marketing_version() {
 }
 
 function build_export_archive_apps() {
-    for scheme in $APPS
+    echo "Building apps: $APPS"
+    for app in $APPS
     do
-        for destination in 'generic/platform=iOS' 'platform=macOS,variant=Mac Catalyst,arch=x86_64'
+        SCHEME="$app"
+        for destination in 'generic/platform=iOS' 'platform=macOS,variant=Mac Catalyst'
         do
-            if [ "$destination" == 'platform=macOS,variant=Mac Catalyst,arch=x86_64' ]
+            DESTINATION="${destination}"
+            ARCHIVE_FLAGS=""
+            if [ "$destination" == 'platform=macOS,variant=Mac Catalyst' ]
             then
+                if [ "$app" == "aSPICE" ]
+                then
+                    DESTINATION="${DESTINATION},arch=x86_64"
+                    ARCHIVE_FLAGS="EXCLUDED_ARCHS=arm64"
+                fi
+                if [ "$app" == "bVNC" -o "$app" == "aRDP" ]
+                then
+                    SCHEME="$SCHEME-macos"
+                fi
                 EXPORT_EXTENSION=pkg
                 UPLOAD_TYPE=macos
-                ARCHIVE_FLAGS="EXCLUDED_ARCHS=arm64"
             elif [ "$destination" == 'generic/platform=iOS' ]
             then
                 EXPORT_EXTENSION=ipa
@@ -116,14 +126,14 @@ function build_export_archive_apps() {
             
             if [ -n "$BUILD" ]
             then
-                xcodebuild clean -project $PROJ_FILE -scheme "$scheme" -destination "$destination"
-                xcodebuild build -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination"
+                xcodebuild clean -project $PROJ_FILE -scheme "$SCHEME" -destination "$DESTINATION"
+                xcodebuild build -project $PROJ_FILE -scheme "$SCHEME" -configuration "$buildconfig" -destination "$DESTINATION"
             fi
 
             if [ -n "$ARCHIVE" ]
             then
-                xcodebuild archive -project $PROJ_FILE -scheme "$scheme" -configuration "$buildconfig" -destination "$destination" $ARCHIVE_FLAGS
-                ARCHIVE_PATH=$(ls -datr $HOME/Library/Developer/Xcode/Archives/$DATE/$scheme* | tail -1)
+                xcodebuild archive -project $PROJ_FILE -scheme "$SCHEME" -configuration "$buildconfig" -destination "$DESTINATION" $ARCHIVE_FLAGS
+                ARCHIVE_PATH=$(ls -datr $HOME/Library/Developer/Xcode/Archives/$DATE/$app* | tail -1)
                 while ! xcodebuild -exportArchive -exportOptionsPlist $EXPORT_OPTS_FILE -allowProvisioningUpdates -archivePath "$ARCHIVE_PATH" -exportPath $EXPORT_PATH
                 do
                 echo Retrying exportArchive
@@ -133,7 +143,7 @@ function build_export_archive_apps() {
 
             if [ -n "$UPLOAD" ]
             then
-                UPLOAD_FILE=$EXPORT_PATH/$scheme.$EXPORT_EXTENSION
+                UPLOAD_FILE=$(ls -1 $EXPORT_PATH/$app*.$EXPORT_EXTENSION)
                 echo "Uploading $UPLOAD_FILE to App Store"
                 xcrun altool --upload-app -t $UPLOAD_TYPE -f "$UPLOAD_FILE" -u $AUSERNAME -p $APASSWORD || true
             fi
@@ -145,9 +155,8 @@ function output_changelog() {
     for a in $APPS ; do echo $a ; head -n15 ../CHANGELOG-$a ; echo ; echo ; done
 }
 
-mkdir -p $BASE_EXPORT_PATH
 
-parse_options
+mkdir -p $BASE_EXPORT_PATH
 
 check_credentials
 
