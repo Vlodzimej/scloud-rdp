@@ -1,0 +1,49 @@
+diff --git a/recipes/gst-plugins-base-1.0.recipe b/recipes/gst-plugins-base-1.0.recipe
+index 97ac4de5..25e3f761 100644
+--- a/recipes/gst-plugins-base-1.0.recipe
++++ b/recipes/gst-plugins-base-1.0.recipe
+@@ -6,10 +6,10 @@ class Recipe(custom.GStreamer):
+     btype = BuildType.MESON
+     tarball_checksum = 'ebd57b1be924c6e24f327dd55bab9d8fbaaebe5e1dc8fca784182ab2b12d23eb'
+     meson_options = {# enabled plugins
+-                     'gl': 'enabled',
+-                     'gl-graphene': 'enabled',
+-                     'gl-png': 'enabled',
+-                     'gl-jpeg': 'enabled',
++                     'gl': 'disabled',
++                     'gl-graphene': 'disabled',
++                     'gl-png': 'disabled',
++                     'gl-jpeg': 'disabled',
+                      'ogg': 'enabled',
+                      'opus': 'enabled',
+                      'pango': 'enabled',
+@@ -29,7 +29,7 @@ class Recipe(custom.GStreamer):
+                  'libgstapp-1.0', 'libgstaudio-1.0',
+                  'libgstfft-1.0', 'libgstpbutils-1.0', 'libgstriff-1.0', 'libgstrtp-1.0',
+                  'libgstrtsp-1.0', 'libgstsdp-1.0', 'libgsttag-1.0',
+-                 'libgstvideo-1.0', 'libgstgl-1.0']
++                 'libgstvideo-1.0']
+ 
+     files_plugins_core = [
+              '%(libdir)s/gstreamer-1.0/libgstadder%(mext)s',
+@@ -122,8 +122,6 @@ class Recipe(custom.GStreamer):
+             '%(libdir)s/pkgconfig/gstreamer-app-1.0.pc',
+             '%(libdir)s/pkgconfig/gstreamer-audio-1.0.pc',
+             '%(libdir)s/pkgconfig/gstreamer-fft-1.0.pc',
+-            '%(libdir)s/pkgconfig/gstreamer-gl-1.0.pc',
+-            '%(libdir)s/pkgconfig/gstreamer-gl-prototypes-1.0.pc',
+             '%(libdir)s/pkgconfig/gstreamer-pbutils-1.0.pc',
+             '%(libdir)s/pkgconfig/gstreamer-riff-1.0.pc',
+             '%(libdir)s/pkgconfig/gstreamer-rtp-1.0.pc',
+@@ -143,11 +141,9 @@ class Recipe(custom.GStreamer):
+     ]
+ 
+     files_plugins_sys = [
+-            '%(libdir)s/gstreamer-1.0/libgstopengl%(mext)s',
+     ]
+ 
+     files_plugins_sys_devel = [
+-             '%(libdir)s/gstreamer-1.0/libgstopengl.a', '%(libdir)s/gstreamer-1.0/libgstopengl.la',
+     ]
+ 
+     platform_files_plugins_codecs = {}

@@ -5,7 +5,22 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>aRDP Pro</string>
+	<string>aSPICE Pro</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>vv</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.vv</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,15 +39,17 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.iiordanov.aRDP</string>
+			<string>com.iiordanov.aSPICE</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>rdp</string>
+				<string>spice</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -41,8 +58,6 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This application is able to use your microphone to send audio to the remote server.</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -91,38 +106,22 @@
 				<string>public.archive</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>rdp</string>
+			<string>vv</string>
 			<key>UTTypeIconFiles</key>
 			<array/>
 			<key>UTTypeIdentifier</key>
-			<string>com.rdp</string>
+			<string>com.vv</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>rdp</string>
+					<string>vv</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>
-					<string>application/rdp</string>
-					<string>application/x-rdp</string>
+					<string>application/x-virt-viewer</string>
 				</array>
 			</dict>
-		</dict>
-	</array>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>rdp</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>com.rdp</string>
-			</array>
 		</dict>
 	</array>
 	<key>UTImportedTypeDeclarations</key>
@@ -134,21 +133,20 @@
 				<string>public.archive</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>rdp</string>
+			<string>vv</string>
 			<key>UTTypeIconFiles</key>
 			<array/>
 			<key>UTTypeIdentifier</key>
-			<string>com.rdp</string>
+			<string>com.vv</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>rdp</string>
+					<string>vv</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>
-					<string>application/rdp</string>
-					<string>application/x-rdp</string>
+					<string>application/x-virt-viewer</string>
 				</array>
 			</dict>
 		</dict>

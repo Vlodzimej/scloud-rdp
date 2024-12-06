@@ -206,7 +206,7 @@ function build_issh2 {
     ./catalyst.sh
     popd
   else
-    echo "Found libssh2 directory, assuming it is built, please remove with 'rm -rf iSSH2' to rebuild"
+    echo "Found libssh2 directory, assuming it is built, please remove directory $DIR to rebuild"
     sleep 2
   fi
 
@@ -367,5 +367,5 @@ build_libvncserver
 lipo_libvncserver
 create_super_and_spice_libs
 copy_spice_keyboard_layouts_from_android_project
-#build_spice_dependencies
-#build_rdp_dependencies
+build_spice_dependencies
+build_rdp_dependencies

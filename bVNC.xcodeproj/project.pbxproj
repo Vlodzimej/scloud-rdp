@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1602CFC82A674CB7004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
 		1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
 		1602CFCA2A674CCE004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
 		1602CFCB2A674CD8004A9D89 /* libresolv.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1602CFC72A674CB7004A9D89 /* libresolv.9.tbd */; };
@@ -75,17 +74,70 @@
 		162940682B8A31220086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		162940692B8A31230086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		162C39942D00A93200DD5610 /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161A28CB2CFFD7A500FA2BC2 /* duperlib.a */; };
-		162C39962D00C3C700DD5610 /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39952D00C3B800DD5610 /* duperlib.a */; };
+		162C39A02D03558D00DD5610 /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39952D00C3B800DD5610 /* duperlib.a */; };
+		162C39A22D0356C700DD5610 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A12D0356BB00DD5610 /* libssl.a */; };
+		162C39A42D0356E000DD5610 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A32D0356D200DD5610 /* libcrypto.a */; };
+		162C39A72D035CA800DD5610 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
+		162C39A82D035CA800DD5610 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
+		162C39A92D035CA800DD5610 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
+		162C39AA2D035CA800DD5610 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624FE0A29A5D90500FD54CA /* StringExtension.swift */; };
+		162C39AB2D035CA800DD5610 /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
+		162C39AC2D035CA800DD5610 /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		162C39AD2D035CA800DD5610 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
+		162C39AE2D035CA800DD5610 /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
+		162C39AF2D035CA800DD5610 /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
+		162C39B02D035CA800DD5610 /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
+		162C39B12D035CA800DD5610 /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
+		162C39B22D035CA800DD5610 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
+		162C39B32D035CA800DD5610 /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
+		162C39B42D035CA800DD5610 /* ClipboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */; };
+		162C39B52D035CA800DD5610 /* StoreReviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */; };
+		162C39B62D035CA800DD5610 /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
+		162C39B72D035CA800DD5610 /* SimulatedTouchpadUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */; };
+		162C39B82D035CA800DD5610 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
+		162C39B92D035CA800DD5610 /* RemoteSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */; };
+		162C39BA2D035CA800DD5610 /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
+		162C39BB2D035CA800DD5610 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */; };
+		162C39BC2D035CA800DD5610 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */; };
+		162C39BD2D035CA800DD5610 /* SshKeyGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */; };
+		162C39BE2D035CA800DD5610 /* AddOrEditConnectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162940622B8A30250086396F /* AddOrEditConnectionPage.swift */; };
+		162C39BF2D035CA800DD5610 /* SpiceBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9CF260128A000DAA44B /* SpiceBridge.c */; };
+		162C39C02D035CA800DD5610 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
+		162C39C12D035CA800DD5610 /* KeyboardObserving.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */; };
+		162C39C22D035CA800DD5610 /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
+		162C39C32D035CA800DD5610 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
+		162C39C42D035CA800DD5610 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
+		162C39C52D035CA800DD5610 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		162C39C62D035CA800DD5610 /* SpiceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */; };
+		162C39C72D035CA800DD5610 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
+		162C39C82D035CA800DD5610 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
+		162C39C92D035CA800DD5610 /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
+		162C39CA2D035CA800DD5610 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
+		162C39CB2D035CA800DD5610 /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
+		162C39CC2D035CA800DD5610 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
+		162C3A682D035CA800DD5610 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */; };
+		162C3A692D035CA800DD5610 /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
+		162C3A6A2D035CA800DD5610 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
+		162C3A6B2D035CA800DD5610 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
+		162C3A6C2D035CA800DD5610 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
+		162C3A6D2D035CA800DD5610 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
+		162C3C102D03658E00DD5610 /* gigalib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C3C0F2D03658300DD5610 /* gigalib.a */; };
+		162C3C182D036BC000DD5610 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C3C152D036BB000DD5610 /* libiconv.2.tbd */; };
+		162C3C192D036BFE00DD5610 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39902D0097E200DD5610 /* libssh2.a */; };
+		162C3C1A2D036C0E00DD5610 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39802D00971300DD5610 /* libssl.a */; };
+		162C3C1B2D036C2200DD5610 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8C75A1243AB46100AF0CF3 /* libcrypto.a */; };
+		162C3C1E2D03910E00DD5610 /* gigalib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C3C1D2D0390E900DD5610 /* gigalib.a */; };
+		162C3C1F2D03912B00DD5610 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A32D0356D200DD5610 /* libcrypto.a */; };
+		162C3C202D03912C00DD5610 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A12D0356BB00DD5610 /* libssl.a */; };
+		162C3C222D03913B00DD5610 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C3C212D03912C00DD5610 /* libssh2.a */; };
+		162C3C232D03914100DD5610 /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C3C152D036BB000DD5610 /* libiconv.2.tbd */; };
+		162C3C242D039DC100DD5610 /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161A287B2CFFC38000FA2BC2 /* superlib.a */; };
 		163A502E2CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
 		163A502F2CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
 		163A50302CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
 		163A50312CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
 		163A50322CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
 		163A50332CD9B4E5003BC6AE /* TouchInputType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */; };
-		164F78E82C00EFEC0063B590 /* libssh2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFECDF212439D9C6000E1E9A /* libssh2.a */; };
-		164F78E92C00F1020063B590 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8C75A3243AB47700AF0CF3 /* libssl.a */; };
-		164F78EA2C00F12C0063B590 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF8C75A1243AB46100AF0CF3 /* libcrypto.a */; };
-		164F78ED2C01077E0063B590 /* spicelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 164F78EC2C01077E0063B590 /* spicelib.a */; };
 		165BCA192B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
 		165BCA1A2B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
 		165BCA1B2B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
@@ -212,7 +264,6 @@
 		AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
 		AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
-		AF30D1AA253396EF00BA7A62 /* superlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF25C1A1243C085600513BBD /* superlib.a */; };
 		AF30D1AC253396EF00BA7A62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
 		AF30D1AD253396EF00BA7A62 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
 		AF30D1AE253396EF00BA7A62 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
@@ -221,153 +272,6 @@
 		AF44C9C72601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9C82601287900DAA44B /* RemoteBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9C32601287900DAA44B /* RemoteBridge.c */; };
 		AF44C9D4260128A000DAA44B /* SpiceBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF44C9CF260128A000DAA44B /* SpiceBridge.c */; };
-		AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDE260180D000DAA44B /* libgstaudio-1.0.a */; };
-		AF44CDBF260197FA00DAA44B /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC19260180DD00DAA44B /* libbz2.a */; };
-		AF44CDC0260197FA00DAA44B /* libcairo-gobject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFC260180D600DAA44B /* libcairo-gobject.a */; };
-		AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD9260180CF00DAA44B /* libcairo-script-interpreter.a */; };
-		AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC06260180D800DAA44B /* libcairo.a */; };
-		AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF2260180D500DAA44B /* libcharset.a */; };
-		AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC17260180DD00DAA44B /* libdv.a */; };
-		AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFB260180D600DAA44B /* libexpat.a */; };
-		AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0F260180DB00DAA44B /* libffi.a */; };
-		AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD6260180CE00DAA44B /* libFLAC.a */; };
-		AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC04260180D800DAA44B /* libfontconfig.a */; };
-		AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC01260180D700DAA44B /* libfreetype.a */; };
-		AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD0260180CD00DAA44B /* libgdk_pixbuf-2.0.a */; };
-		AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDC260180D000DAA44B /* libgio-2.0.a */; };
-		AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC10260180DB00DAA44B /* libglib-2.0.a */; };
-		AF44CDCF260197FA00DAA44B /* libgmodule-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC07260180D800DAA44B /* libgmodule-2.0.a */; };
-		AF44CDD0260197FA00DAA44B /* libgobject-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD2260180CE00DAA44B /* libgobject-2.0.a */; };
-		AF44CDD1260197FA00DAA44B /* libgraphene-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD8260180CF00DAA44B /* libgraphene-1.0.a */; };
-		AF44CDD2260197FA00DAA44B /* libgstallocators-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD1260180CD00DAA44B /* libgstallocators-1.0.a */; };
-		AF44CDD3260197FA00DAA44B /* libgstapp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD3260180CE00DAA44B /* libgstapp-1.0.a */; };
-		AF44CDD4260197FA00DAA44B /* libgstbase-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFE260180D600DAA44B /* libgstbase-1.0.a */; };
-		AF44CDD5260197FA00DAA44B /* libgstcheck-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDA260180CF00DAA44B /* libgstcheck-1.0.a */; };
-		AF44CDD6260197FA00DAA44B /* libgstcontroller-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEE260180D400DAA44B /* libgstcontroller-1.0.a */; };
-		AF44CDD7260197FA00DAA44B /* libgstfft-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC09260180D900DAA44B /* libgstfft-1.0.a */; };
-		AF44CDD8260197FA00DAA44B /* libgstnet-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEF260180D400DAA44B /* libgstnet-1.0.a */; };
-		AF44CDD9260197FA00DAA44B /* libgstpbutils-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE8260180D200DAA44B /* libgstpbutils-1.0.a */; };
-		AF44CDDA260197FA00DAA44B /* libgstreamer-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFF260180D700DAA44B /* libgstreamer-1.0.a */; };
-		AF44CDDB260197FA00DAA44B /* libgstriff-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE7260180D200DAA44B /* libgstriff-1.0.a */; };
-		AF44CDDC260197FA00DAA44B /* libgstrtp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF9260180D500DAA44B /* libgstrtp-1.0.a */; };
-		AF44CDDD260197FA00DAA44B /* libgstrtsp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFA260180D500DAA44B /* libgstrtsp-1.0.a */; };
-		AF44CDDE260197FA00DAA44B /* libgstsdp-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC08260180D900DAA44B /* libgstsdp-1.0.a */; };
-		AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE1260180D100DAA44B /* libgsttag-1.0.a */; };
-		AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEC260180D300DAA44B /* libgstvideo-1.0.a */; };
-		AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE4260180D200DAA44B /* libgthread-2.0.a */; };
-		AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE0260180D100DAA44B /* libintl.a */; };
-		AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC18260180DD00DAA44B /* libjpeg.a */; };
-		AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC00260180D700DAA44B /* libjson-glib-1.0.a */; };
-		AF44CDE7260197FA00DAA44B /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE3260180D100DAA44B /* libmp3lame.a */; };
-		AF44CDE8260197FA00DAA44B /* libmpg123.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEA260180D300DAA44B /* libmpg123.a */; };
-		AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC03260180D800DAA44B /* libogg.a */; };
-		AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD7260180CF00DAA44B /* libopus.a */; };
-		AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBEB260180D300DAA44B /* liborc-0.4.a */; };
-		AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBFD260180D600DAA44B /* libpixman-1.a */; };
-		AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0A260180D900DAA44B /* libpng16.a */; };
-		AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD4260180CE00DAA44B /* libpsl.a */; };
-		AF44CDF2260197FA00DAA44B /* libsoup-2.4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBED260180D400DAA44B /* libsoup-2.4.a */; };
-		AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDB260180D000DAA44B /* libspeex.a */; };
-		AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE9260180D300DAA44B /* libspice-client-glib-2.0.a */; };
-		AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC02260180D700DAA44B /* libspiceglue.a */; };
-		AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF1260180D400DAA44B /* libtag.a */; };
-		AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBD5260180CE00DAA44B /* libtheora.a */; };
-		AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC11260180DB00DAA44B /* libtheoradec.a */; };
-		AF44CDFA260197FA00DAA44B /* libtheoraenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDD260180D000DAA44B /* libtheoraenc.a */; };
-		AF44CDFB260197FA00DAA44B /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBE5260180D200DAA44B /* libtiff.a */; };
-		AF44CDFC260197FA00DAA44B /* libvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF0260180D400DAA44B /* libvorbis.a */; };
-		AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBDF260180D100DAA44B /* libvorbisenc.a */; };
-		AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC13260180DC00DAA44B /* libvorbisfile.a */; };
-		AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CBF8260180D500DAA44B /* libvorbisidec.a */; };
-		AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0D260180DA00DAA44B /* libvpx.a */; platformFilter = ios; };
-		AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC16260180DD00DAA44B /* libwavpack.a */; };
-		AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC0E260180DA00DAA44B /* libxml2.a */; };
-		AF44CE03260197FA00DAA44B /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CC1A260180DD00DAA44B /* libz.a */; };
-		AF44CE6F2601A16600DAA44B /* libiconv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CE6E2601A16600DAA44B /* libiconv.a */; };
-		AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE5260180A600DAA44B /* libgstadder.a */; };
-		AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEF260180A700DAA44B /* libgstalaw.a */; };
-		AF44CE9A2601A32B00DAA44B /* libgstalpha.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE8260180A700DAA44B /* libgstalpha.a */; };
-		AF44CE9B2601A32B00DAA44B /* libgstalphacolor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD1260180A300DAA44B /* libgstalphacolor.a */; };
-		AF44CE9C2601A32B00DAA44B /* libgstapetag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD6260180A300DAA44B /* libgstapetag.a */; };
-		AF44CE9D2601A32B00DAA44B /* libgstapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB72601809F00DAA44B /* libgstapp.a */; };
-		AF44CE9E2601A32B00DAA44B /* libgstaudioconvert.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB9260180A000DAA44B /* libgstaudioconvert.a */; };
-		AF44CE9F2601A32B00DAA44B /* libgstaudiofx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA982601809700DAA44B /* libgstaudiofx.a */; };
-		AF44CEA02601A32B00DAA44B /* libgstaudiomixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB12601809E00DAA44B /* libgstaudiomixer.a */; };
-		AF44CEA12601A32B00DAA44B /* libgstaudioparsers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7E2601809400DAA44B /* libgstaudioparsers.a */; };
-		AF44CEA22601A32B00DAA44B /* libgstaudiorate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8E2601809600DAA44B /* libgstaudiorate.a */; };
-		AF44CEA32601A32B00DAA44B /* libgstaudioresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB09260180AB00DAA44B /* libgstaudioresample.a */; };
-		AF44CEA42601A32B00DAA44B /* libgstaudiotestsrc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD0260180A300DAA44B /* libgstaudiotestsrc.a */; };
-		AF44CEA52601A32B00DAA44B /* libgstauparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7D2601809400DAA44B /* libgstauparse.a */; };
-		AF44CEA62601A32B00DAA44B /* libgstautodetect.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAA62601809900DAA44B /* libgstautodetect.a */; };
-		AF44CEA72601A32B00DAA44B /* libgstavi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB52601809F00DAA44B /* libgstavi.a */; };
-		AF44CEA82601A32B00DAA44B /* libgstcairo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8C2601809600DAA44B /* libgstcairo.a */; };
-		AF44CEA92601A32B00DAA44B /* libgstcompositor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB15260180AD00DAA44B /* libgstcompositor.a */; };
-		AF44CEAA2601A32B00DAA44B /* libgstcoreelements.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAA2601809E00DAA44B /* libgstcoreelements.a */; };
-		AF44CEAB2601A32B00DAA44B /* libgstcoretracers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA782601809300DAA44B /* libgstcoretracers.a */; };
-		AF44CEAC2601A32B00DAA44B /* libgstcutter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEB260180A700DAA44B /* libgstcutter.a */; };
-		AF44CEAD2601A32B00DAA44B /* libgstdebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB11260180AC00DAA44B /* libgstdebug.a */; };
-		AF44CEAE2601A32B00DAA44B /* libgstdtmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF2260180A800DAA44B /* libgstdtmf.a */; };
-		AF44CEAF2601A32B00DAA44B /* libgstdv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAF2601809E00DAA44B /* libgstdv.a */; };
-		AF44CEB02601A32B00DAA44B /* libgsteffectv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB05260180AB00DAA44B /* libgsteffectv.a */; };
-		AF44CEB12601A32B00DAA44B /* libgstencoding.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA852601809500DAA44B /* libgstencoding.a */; };
-		AF44CEB22601A32B00DAA44B /* libgstequalizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC6260180A100DAA44B /* libgstequalizer.a */; };
-		AF44CEB32601A32B00DAA44B /* libgstflac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAB2601809E00DAA44B /* libgstflac.a */; };
-		AF44CEB42601A32B00DAA44B /* libgstflv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB0A260180AB00DAA44B /* libgstflv.a */; };
-		AF44CEB52601A32B00DAA44B /* libgstflxdec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACC260180A200DAA44B /* libgstflxdec.a */; };
-		AF44CEB62601A32B00DAA44B /* libgstgdkpixbuf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE1260180A500DAA44B /* libgstgdkpixbuf.a */; };
-		AF44CEB72601A32B00DAA44B /* libgstgio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAE2601809E00DAA44B /* libgstgio.a */; };
-		AF44CEB82601A32B00DAA44B /* libgstgoom.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB20260180AE00DAA44B /* libgstgoom.a */; };
-		AF44CEB92601A32B00DAA44B /* libgstgoom2k1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB13260180AD00DAA44B /* libgstgoom2k1.a */; };
-		AF44CEBA2601A32B00DAA44B /* libgsticydemux.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACB260180A200DAA44B /* libgsticydemux.a */; };
-		AF44CEBB2601A32B00DAA44B /* libgstid3demux.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB42601809F00DAA44B /* libgstid3demux.a */; };
-		AF44CEBC2601A32B00DAA44B /* libgstimagefreeze.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABF260180A000DAA44B /* libgstimagefreeze.a */; };
-		AF44CEBD2601A32B00DAA44B /* libgstinterleave.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEC260180A700DAA44B /* libgstinterleave.a */; };
-		AF44CEBE2601A32B00DAA44B /* libgstisomp4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA992601809700DAA44B /* libgstisomp4.a */; };
-		AF44CEBF2601A32B00DAA44B /* libgstivorbisdec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CACD260180A200DAA44B /* libgstivorbisdec.a */; };
-		AF44CEC02601A32B00DAA44B /* libgstjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAED260180A700DAA44B /* libgstjpeg.a */; };
-		AF44CEC12601A32B00DAA44B /* libgstlame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAA22601809900DAA44B /* libgstlame.a */; };
-		AF44CEC22601A32B00DAA44B /* libgstlevel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8F2601809600DAA44B /* libgstlevel.a */; };
-		AF44CEC32601A32B00DAA44B /* libgstmatroska.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC8260180A100DAA44B /* libgstmatroska.a */; };
-		AF44CEC42601A32B00DAA44B /* libgstmpg123.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC3260180A100DAA44B /* libgstmpg123.a */; };
-		AF44CEC52601A32B00DAA44B /* libgstmulaw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA8A2601809500DAA44B /* libgstmulaw.a */; };
-		AF44CEC62601A32B00DAA44B /* libgstmultifile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB02601809E00DAA44B /* libgstmultifile.a */; };
-		AF44CEC72601A32B00DAA44B /* libgstmultipart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1A260180AE00DAA44B /* libgstmultipart.a */; };
-		AF44CEC82601A32B00DAA44B /* libgstogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA862601809500DAA44B /* libgstogg.a */; };
-		AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD9260180A400DAA44B /* libgstopus.a */; };
-		AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CADC260180A500DAA44B /* libgstosxaudio.a */; };
-		AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFD260180A900DAA44B /* libgstoverlaycomposition.a */; };
-		AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB02260180AA00DAA44B /* libgstplayback.a */; };
-		AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1C260180AE00DAA44B /* libgstpng.a */; };
-		AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF3260180A800DAA44B /* libgstrawparse.a */; };
-		AF44CED02601A32B00DAA44B /* libgstreplaygain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC7260180A100DAA44B /* libgstreplaygain.a */; };
-		AF44CED12601A32B00DAA44B /* libgstrtp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAB22601809F00DAA44B /* libgstrtp.a */; };
-		AF44CED22601A32B00DAA44B /* libgstrtpmanager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE0260180A500DAA44B /* libgstrtpmanager.a */; };
-		AF44CED32601A32B00DAA44B /* libgstrtsp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7A2601809300DAA44B /* libgstrtsp.a */; };
-		AF44CED42601A32B00DAA44B /* libgstshapewipe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAEA260180A700DAA44B /* libgstshapewipe.a */; };
-		AF44CED52601A32B00DAA44B /* libgstsmpte.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC9260180A200DAA44B /* libgstsmpte.a */; };
-		AF44CED62601A32B00DAA44B /* libgstsoup.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABD260180A000DAA44B /* libgstsoup.a */; };
-		AF44CED72601A32B00DAA44B /* libgstspectrum.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAD4260180A300DAA44B /* libgstspectrum.a */; };
-		AF44CED82601A32B00DAA44B /* libgstspeex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB1D260180AE00DAA44B /* libgstspeex.a */; };
-		AF44CED92601A32B00DAA44B /* libgstsubparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9C2601809800DAA44B /* libgstsubparse.a */; };
-		AF44CEDA2601A32B00DAA44B /* libgsttaglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA9D2601809800DAA44B /* libgsttaglib.a */; };
-		AF44CEDB2601A32B00DAA44B /* libgsttcp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CADB260180A400DAA44B /* libgsttcp.a */; };
-		AF44CEDC2601A32B00DAA44B /* libgsttheora.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB10260180AC00DAA44B /* libgsttheora.a */; };
-		AF44CEDD2601A32B00DAA44B /* libgsttypefindfunctions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA882601809500DAA44B /* libgsttypefindfunctions.a */; };
-		AF44CEDE2601A32B00DAA44B /* libgstudp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAF0260180A800DAA44B /* libgstudp.a */; };
-		AF44CEDF2601A32B00DAA44B /* libgstvideobox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE2260180A600DAA44B /* libgstvideobox.a */; };
-		AF44CEE02601A32B00DAA44B /* libgstvideoconvert.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CABE260180A000DAA44B /* libgstvideoconvert.a */; };
-		AF44CEE12601A32B00DAA44B /* libgstvideocrop.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAE4260180A600DAA44B /* libgstvideocrop.a */; };
-		AF44CEE22601A32B00DAA44B /* libgstvideofilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAC5260180A100DAA44B /* libgstvideofilter.a */; };
-		AF44CEE32601A32B00DAA44B /* libgstvideomixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB19260180AD00DAA44B /* libgstvideomixer.a */; };
-		AF44CEE42601A32B00DAA44B /* libgstvideorate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFC260180A900DAA44B /* libgstvideorate.a */; };
-		AF44CEE52601A32B00DAA44B /* libgstvideoscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAAC2601809E00DAA44B /* libgstvideoscale.a */; };
-		AF44CEE62601A32B00DAA44B /* libgstvideotestsrc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA7C2601809400DAA44B /* libgstvideotestsrc.a */; };
-		AF44CEE72601A32B00DAA44B /* libgstvolume.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA772601809300DAA44B /* libgstvolume.a */; };
-		AF44CEE82601A32B00DAA44B /* libgstvorbis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA822601809400DAA44B /* libgstvorbis.a */; };
-		AF44CEE92601A32B00DAA44B /* libgstwavenc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CAFE260180AA00DAA44B /* libgstwavenc.a */; };
-		AF44CEEA2601A32B00DAA44B /* libgstwavpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA962601809700DAA44B /* libgstwavpack.a */; };
-		AF44CEEB2601A32B00DAA44B /* libgstwavparse.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CA972601809700DAA44B /* libgstwavparse.a */; };
-		AF44CEEC2601A32B00DAA44B /* libgsty4menc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF44CB07260180AB00DAA44B /* libgsty4menc.a */; };
 		AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */; };
 		AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
 		AF44CF37260259A300DAA44B /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
@@ -444,7 +348,6 @@
 		AFB391E1274F5A0D0059F91F /* RdpSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */; };
 		AFB391E6274F5A860059F91F /* RdpSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB391E2274F5A820059F91F /* RdpSession.swift */; };
 		AFBBBD7B24C4A1E600F64E4A /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
-		AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE0251E260DBD2D005E851E /* liblz4.a */; };
 		AFE28DE62541405900F127A2 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AFF244E22407985E00F5839B /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
@@ -484,7 +387,6 @@
 		161A28742CFFBE9D00FA2BC2 /* Superlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Superlib.xcframework; path = bVNC.xcodeproj/Superlib.xcframework; sourceTree = "<group>"; };
 		161A287B2CFFC38000FA2BC2 /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/superlib.a; sourceTree = "<group>"; };
 		161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "aRDP Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		161A28C92CFFD72000FA2BC2 /* aRDP copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP copy-Info.plist"; path = "/Users/iordan/software/remote-desktop-clients-ios/aRDP copy-Info.plist"; sourceTree = "<absolute>"; };
 		161A28CB2CFFD7A500FA2BC2 /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/duperlib.a; sourceTree = "<group>"; };
 		1624FE0A29A5D90500FD54CA /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		162940622B8A30250086396F /* AddOrEditConnectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrEditConnectionPage.swift; sourceTree = "<group>"; };
@@ -498,6 +400,253 @@
 		162C398F2D0097E200DD5610 /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/libvncclient.a; sourceTree = "<group>"; };
 		162C39902D0097E200DD5610 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/libssh2.a; sourceTree = "<group>"; };
 		162C39952D00C3B800DD5610 /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/duperlib.a; sourceTree = "<group>"; };
+		162C399F2D03558200DD5610 /* libs_combined_iphoneos */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libs_combined_iphoneos; path = bVNC.xcodeproj/libs_combined_iphoneos; sourceTree = "<group>"; };
+		162C39A12D0356BB00DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssl.a; sourceTree = "<group>"; };
+		162C39A32D0356D200DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
+		162C3A722D035CA800DD5610 /* aSPICE Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "aSPICE Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		162C3A732D035CAA00DD5610 /* aSPICE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE copy-Info.plist"; path = "/Users/iordan/software/remote-desktop-clients-ios/aSPICE copy-Info.plist"; sourceTree = "<absolute>"; };
+		162C3A742D035E1A00DD5610 /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libexpat.a; sourceTree = "<group>"; };
+		162C3A752D035E1B00DD5610 /* libtheoradec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoradec.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtheoradec.a; sourceTree = "<group>"; };
+		162C3A762D035E1B00DD5610 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbis.a; sourceTree = "<group>"; };
+		162C3A772D035E1B00DD5610 /* liborc-0.4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liborc-0.4.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/liborc-0.4.a"; sourceTree = "<group>"; };
+		162C3A782D035E1B00DD5610 /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libfontconfig.a; sourceTree = "<group>"; };
+		162C3A792D035E1B00DD5610 /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libffi.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libffi.a; sourceTree = "<group>"; };
+		162C3A7A2D035E1B00DD5610 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libFLAC.a; sourceTree = "<group>"; };
+		162C3A7B2D035E1B00DD5610 /* libspeex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspeex.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libspeex.a; sourceTree = "<group>"; };
+		162C3A7C2D035E1B00DD5610 /* libsoup-2.4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsoup-2.4.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libsoup-2.4.a"; sourceTree = "<group>"; };
+		162C3A7D2D035E1B00DD5610 /* libgstallocators-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstallocators-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstallocators-1.0.a"; sourceTree = "<group>"; };
+		162C3A7E2D035E1B00DD5610 /* libgsttag-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsttag-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgsttag-1.0.a"; sourceTree = "<group>"; };
+		162C3A7F2D035E1B00DD5610 /* libgstaudio-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstaudio-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstaudio-1.0.a"; sourceTree = "<group>"; };
+		162C3A802D035E1B00DD5610 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libz.a; sourceTree = "<group>"; };
+		162C3A812D035E1B00DD5610 /* libgstriff-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstriff-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstriff-1.0.a"; sourceTree = "<group>"; };
+		162C3A822D035E1B00DD5610 /* libgstsdp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstsdp-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstsdp-1.0.a"; sourceTree = "<group>"; };
+		162C3A832D035E1B00DD5610 /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libcharset.a; sourceTree = "<group>"; };
+		162C3A842D035E1B00DD5610 /* libjson-glib-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjson-glib-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libjson-glib-1.0.a"; sourceTree = "<group>"; };
+		162C3A852D035E1B00DD5610 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libfreetype.a; sourceTree = "<group>"; };
+		162C3A862D035E1B00DD5610 /* libgstfft-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstfft-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstfft-1.0.a"; sourceTree = "<group>"; };
+		162C3A872D035E1B00DD5610 /* libcairo-script-interpreter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcairo-script-interpreter.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libcairo-script-interpreter.a"; sourceTree = "<group>"; };
+		162C3A882D035E1B00DD5610 /* libcairo-gobject.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcairo-gobject.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libcairo-gobject.a"; sourceTree = "<group>"; };
+		162C3A892D035E1B00DD5610 /* libspiceglue.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspiceglue.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libspiceglue.a; sourceTree = "<group>"; };
+		162C3A8A2D035E1B00DD5610 /* libgio-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgio-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgio-2.0.a"; sourceTree = "<group>"; };
+		162C3A8B2D035E1B00DD5610 /* libtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtiff.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtiff.a; sourceTree = "<group>"; };
+		162C3A8C2D035E1B00DD5610 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libjpeg.a; sourceTree = "<group>"; };
+		162C3A8D2D035E1C00DD5610 /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/liblz4.a; sourceTree = "<group>"; };
+		162C3A8E2D035E1C00DD5610 /* libgobject-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgobject-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgobject-2.0.a"; sourceTree = "<group>"; };
+		162C3A8F2D035E1C00DD5610 /* libdv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdv.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libdv.a; sourceTree = "<group>"; };
+		162C3A902D035E1C00DD5610 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libogg.a; sourceTree = "<group>"; };
+		162C3A912D035E1C00DD5610 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libxml2.a; sourceTree = "<group>"; };
+		162C3A922D035E1C00DD5610 /* libpixman-1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpixman-1.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libpixman-1.a"; sourceTree = "<group>"; };
+		162C3A932D035E1C00DD5610 /* libgraphene-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgraphene-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgraphene-1.0.a"; sourceTree = "<group>"; };
+		162C3A942D035E1C00DD5610 /* libgmodule-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgmodule-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgmodule-2.0.a"; sourceTree = "<group>"; };
+		162C3A952D035E1C00DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libcrypto.a; sourceTree = "<group>"; };
+		162C3A962D035E1C00DD5610 /* libgdk_pixbuf-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgdk_pixbuf-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgdk_pixbuf-2.0.a"; sourceTree = "<group>"; };
+		162C3A972D035E1C00DD5610 /* libgstbase-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstbase-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstbase-1.0.a"; sourceTree = "<group>"; };
+		162C3A982D035E1C00DD5610 /* libgstnet-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstnet-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstnet-1.0.a"; sourceTree = "<group>"; };
+		162C3A992D035E1C00DD5610 /* libglib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglib-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libglib-2.0.a"; sourceTree = "<group>"; };
+		162C3A9A2D035E1C00DD5610 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbisfile.a; sourceTree = "<group>"; };
+		162C3A9B2D035E1C00DD5610 /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmp3lame.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libmp3lame.a; sourceTree = "<group>"; };
+		162C3A9C2D035E1C00DD5610 /* libspice-client-glib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspice-client-glib-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libspice-client-glib-2.0.a"; sourceTree = "<group>"; };
+		162C3A9D2D035E1C00DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libssl.a; sourceTree = "<group>"; };
+		162C3A9E2D035E1C00DD5610 /* libgstrtsp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstrtsp-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstrtsp-1.0.a"; sourceTree = "<group>"; };
+		162C3A9F2D035E1C00DD5610 /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libopus.a; sourceTree = "<group>"; };
+		162C3AA02D035E1C00DD5610 /* libtheora.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheora.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtheora.a; sourceTree = "<group>"; };
+		162C3AA12D035E1C00DD5610 /* libvorbisidec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisidec.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbisidec.a; sourceTree = "<group>"; };
+		162C3AA22D035E1C00DD5610 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libpng16.a; sourceTree = "<group>"; };
+		162C3AA32D035E1D00DD5610 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libbz2.a; sourceTree = "<group>"; };
+		162C3AA42D035E1D00DD5610 /* libmpg123.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpg123.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libmpg123.a; sourceTree = "<group>"; };
+		162C3AA52D035E1D00DD5610 /* libgstrtp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstrtp-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstrtp-1.0.a"; sourceTree = "<group>"; };
+		162C3AA62D035E1D00DD5610 /* libtag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtag.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtag.a; sourceTree = "<group>"; };
+		162C3AA72D035E1D00DD5610 /* libpsl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpsl.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libpsl.a; sourceTree = "<group>"; };
+		162C3AA82D035E1D00DD5610 /* libgthread-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgthread-2.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgthread-2.0.a"; sourceTree = "<group>"; };
+		162C3AA92D035E1D00DD5610 /* libgstapp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstapp-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstapp-1.0.a"; sourceTree = "<group>"; };
+		162C3AAA2D035E1D00DD5610 /* libcairo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcairo.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libcairo.a; sourceTree = "<group>"; };
+		162C3AAB2D035E1D00DD5610 /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvpx.a; sourceTree = "<group>"; };
+		162C3AAC2D035E1D00DD5610 /* libtheoraenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoraenc.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtheoraenc.a; sourceTree = "<group>"; };
+		162C3AAD2D035E1D00DD5610 /* libgstvideo-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstvideo-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstvideo-1.0.a"; sourceTree = "<group>"; };
+		162C3AAE2D035E1D00DD5610 /* libwavpack.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwavpack.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libwavpack.a; sourceTree = "<group>"; };
+		162C3AAF2D035E1D00DD5610 /* libgstcheck-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstcheck-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstcheck-1.0.a"; sourceTree = "<group>"; };
+		162C3AB02D035E1E00DD5610 /* libgstcontroller-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstcontroller-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstcontroller-1.0.a"; sourceTree = "<group>"; };
+		162C3AB12D035E1E00DD5610 /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libintl.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libintl.a; sourceTree = "<group>"; };
+		162C3AB22D035E1E00DD5610 /* libgstreamer-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstreamer-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstreamer-1.0.a"; sourceTree = "<group>"; };
+		162C3AB32D035E1E00DD5610 /* libvorbisenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisenc.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbisenc.a; sourceTree = "<group>"; };
+		162C3AB42D035E1E00DD5610 /* libgstpbutils-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstpbutils-1.0.a"; path = "bVNC.xcodeproj/ios_universal.BAK/lib/libgstpbutils-1.0.a"; sourceTree = "<group>"; };
+		162C3AB52D035EB400DD5610 /* libtheoraenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoraenc.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libtheoraenc.a; sourceTree = "<group>"; };
+		162C3AB62D035EB400DD5610 /* libspiceglue.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspiceglue.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libspiceglue.a; sourceTree = "<group>"; };
+		162C3AB72D035EB400DD5610 /* libpostproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpostproc.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpostproc.a; sourceTree = "<group>"; };
+		162C3AB82D035EB400DD5610 /* libtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtiff.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libtiff.a; sourceTree = "<group>"; };
+		162C3AB92D035EB400DD5610 /* libtag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtag.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libtag.a; sourceTree = "<group>"; };
+		162C3ABA2D035EB400DD5610 /* libcairo-script-interpreter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcairo-script-interpreter.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libcairo-script-interpreter.a"; sourceTree = "<group>"; };
+		162C3ABB2D035EB400DD5610 /* libgstrtp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstrtp-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstrtp-1.0.a"; sourceTree = "<group>"; };
+		162C3ABC2D035EB400DD5610 /* libpixman-1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpixman-1.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpixman-1.a"; sourceTree = "<group>"; };
+		162C3ABD2D035EB400DD5610 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libavformat.a; sourceTree = "<group>"; };
+		162C3ABE2D035EB400DD5610 /* libgmodule-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgmodule-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgmodule-2.0.a"; sourceTree = "<group>"; };
+		162C3ABF2D035EB400DD5610 /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/liblz4.a; sourceTree = "<group>"; };
+		162C3AC02D035EB400DD5610 /* libvorbisenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisenc.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libvorbisenc.a; sourceTree = "<group>"; };
+		162C3AC12D035EB400DD5610 /* libintl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libintl.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libintl.a; sourceTree = "<group>"; };
+		162C3AC22D035EB400DD5610 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libz.a; sourceTree = "<group>"; };
+		162C3AC32D035EB400DD5610 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libfreetype.a; sourceTree = "<group>"; };
+		162C3AC42D035EB400DD5610 /* libgstaudio-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstaudio-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstaudio-1.0.a"; sourceTree = "<group>"; };
+		162C3AC52D035EB400DD5610 /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libjpeg.a; sourceTree = "<group>"; };
+		162C3AC62D035EB400DD5610 /* libglib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libglib-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libglib-2.0.a"; sourceTree = "<group>"; };
+		162C3AC72D035EB400DD5610 /* libcairo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcairo.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libcairo.a; sourceTree = "<group>"; };
+		162C3AC82D035EB400DD5610 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libavfilter.a; sourceTree = "<group>"; };
+		162C3AC92D035EB400DD5610 /* libcharset.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcharset.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libcharset.a; sourceTree = "<group>"; };
+		162C3ACA2D035EB500DD5610 /* libsoup-2.4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsoup-2.4.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libsoup-2.4.a"; sourceTree = "<group>"; };
+		162C3ACB2D035EB500DD5610 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libswresample.a; sourceTree = "<group>"; };
+		162C3ACC2D035EB500DD5610 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrwb.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libopencore-amrwb.a"; sourceTree = "<group>"; };
+		162C3ACD2D035EB500DD5610 /* libjson-glib-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libjson-glib-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libjson-glib-1.0.a"; sourceTree = "<group>"; };
+		162C3ACE2D035EB500DD5610 /* libspice-client-glib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspice-client-glib-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libspice-client-glib-2.0.a"; sourceTree = "<group>"; };
+		162C3ACF2D035EB500DD5610 /* libmp3lame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmp3lame.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libmp3lame.a; sourceTree = "<group>"; };
+		162C3AD02D035EB500DD5610 /* libgraphene-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgraphene-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgraphene-1.0.a"; sourceTree = "<group>"; };
+		162C3AD12D035EB500DD5610 /* libgstfft-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstfft-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstfft-1.0.a"; sourceTree = "<group>"; };
+		162C3AD22D035EB500DD5610 /* libfontconfig.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfontconfig.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libfontconfig.a; sourceTree = "<group>"; };
+		162C3AD32D035EB500DD5610 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libopencore-amrnb.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libopencore-amrnb.a"; sourceTree = "<group>"; };
+		162C3AD42D035EB500DD5610 /* libmpg123.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpg123.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libmpg123.a; sourceTree = "<group>"; };
+		162C3AD52D035EB500DD5610 /* libxml2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxml2.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libxml2.a; sourceTree = "<group>"; };
+		162C3AD62D035EB500DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libcrypto.a; sourceTree = "<group>"; };
+		162C3AD72D035EB500DD5610 /* libwavpack.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwavpack.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libwavpack.a; sourceTree = "<group>"; };
+		162C3AD82D035EB500DD5610 /* libopenh264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopenh264.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libopenh264.a; sourceTree = "<group>"; };
+		162C3AD92D035EB500DD5610 /* libgstrtsp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstrtsp-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstrtsp-1.0.a"; sourceTree = "<group>"; };
+		162C3ADA2D035EB500DD5610 /* libffi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libffi.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libffi.a; sourceTree = "<group>"; };
+		162C3ADB2D035EB500DD5610 /* libgthread-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgthread-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgthread-2.0.a"; sourceTree = "<group>"; };
+		162C3ADC2D035EB600DD5610 /* libgstpbutils-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstpbutils-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstpbutils-1.0.a"; sourceTree = "<group>"; };
+		162C3ADD2D035EB600DD5610 /* libcairo-gobject.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcairo-gobject.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libcairo-gobject.a"; sourceTree = "<group>"; };
+		162C3ADE2D035EB600DD5610 /* libpcre2-8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpcre2-8.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpcre2-8.a"; sourceTree = "<group>"; };
+		162C3ADF2D035EB600DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libssl.a; sourceTree = "<group>"; };
+		162C3AE02D035EB600DD5610 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libturbojpeg.a; sourceTree = "<group>"; };
+		162C3AE12D035EB600DD5610 /* libgsttag-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgsttag-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgsttag-1.0.a"; sourceTree = "<group>"; };
+		162C3AE22D035EB600DD5610 /* liborc-0.4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "liborc-0.4.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/liborc-0.4.a"; sourceTree = "<group>"; };
+		162C3AE32D035EB600DD5610 /* libgio-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgio-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgio-2.0.a"; sourceTree = "<group>"; };
+		162C3AE42D035EB600DD5610 /* libpangocairo-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpangocairo-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpangocairo-1.0.a"; sourceTree = "<group>"; };
+		162C3AE52D035EB600DD5610 /* libFLAC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFLAC.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libFLAC.a; sourceTree = "<group>"; };
+		162C3AE62D035EB600DD5610 /* libvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvpx.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libvpx.a; sourceTree = "<group>"; };
+		162C3AE72D035EB600DD5610 /* libgstvideo-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstvideo-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstvideo-1.0.a"; sourceTree = "<group>"; };
+		162C3AE82D035EB600DD5610 /* libpsl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpsl.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpsl.a; sourceTree = "<group>"; };
+		162C3AE92D035EB600DD5610 /* libdv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libdv.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libdv.a; sourceTree = "<group>"; };
+		162C3AEA2D035EB700DD5610 /* libpangoft2-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpangoft2-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpangoft2-1.0.a"; sourceTree = "<group>"; };
+		162C3AEB2D035EB800DD5610 /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libexpat.a; sourceTree = "<group>"; };
+		162C3AEC2D035EB800DD5610 /* libtheora.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheora.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libtheora.a; sourceTree = "<group>"; };
+		162C3AED2D035EB800DD5610 /* libvorbisfile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisfile.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libvorbisfile.a; sourceTree = "<group>"; };
+		162C3AEE2D035EB800DD5610 /* libspeex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libspeex.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libspeex.a; sourceTree = "<group>"; };
+		162C3AEF2D035EB800DD5610 /* libgstreamer-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstreamer-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstreamer-1.0.a"; sourceTree = "<group>"; };
+		162C3AF02D035EB800DD5610 /* libgstcontroller-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstcontroller-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstcontroller-1.0.a"; sourceTree = "<group>"; };
+		162C3AF12D035EB800DD5610 /* libpango-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpango-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpango-1.0.a"; sourceTree = "<group>"; };
+		162C3AF22D035EB800DD5610 /* libgstnet-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstnet-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstnet-1.0.a"; sourceTree = "<group>"; };
+		162C3AF32D035EB900DD5610 /* libtheoradec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoradec.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libtheoradec.a; sourceTree = "<group>"; };
+		162C3AF42D035EB900DD5610 /* libgstallocators-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstallocators-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstallocators-1.0.a"; sourceTree = "<group>"; };
+		162C3AF52D035EB900DD5610 /* libfribidi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfribidi.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libfribidi.a; sourceTree = "<group>"; };
+		162C3AF62D035EB900DD5610 /* libopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopus.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libopus.a; sourceTree = "<group>"; };
+		162C3AF72D035EB900DD5610 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libavcodec.a; sourceTree = "<group>"; };
+		162C3AF82D035EB900DD5610 /* libgstbase-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstbase-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstbase-1.0.a"; sourceTree = "<group>"; };
+		162C3AF92D035EB900DD5610 /* libharfbuzz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libharfbuzz.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libharfbuzz.a; sourceTree = "<group>"; };
+		162C3AFA2D035EB900DD5610 /* libgstsdp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstsdp-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstsdp-1.0.a"; sourceTree = "<group>"; };
+		162C3AFB2D035EB900DD5610 /* libgstapp-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstapp-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstapp-1.0.a"; sourceTree = "<group>"; };
+		162C3AFC2D035EB900DD5610 /* libgdk_pixbuf-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgdk_pixbuf-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgdk_pixbuf-2.0.a"; sourceTree = "<group>"; };
+		162C3AFD2D035EB900DD5610 /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libogg.a; sourceTree = "<group>"; };
+		162C3AFE2D035EB900DD5610 /* libgstcheck-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstcheck-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstcheck-1.0.a"; sourceTree = "<group>"; };
+		162C3AFF2D035EB900DD5610 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libavutil.a; sourceTree = "<group>"; };
+		162C3B002D035EB900DD5610 /* libpng16.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng16.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libpng16.a; sourceTree = "<group>"; };
+		162C3B012D035EB900DD5610 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libvorbis.a; sourceTree = "<group>"; };
+		162C3B022D035EB900DD5610 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libiconv.a; sourceTree = "<group>"; };
+		162C3B032D035EB900DD5610 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libbz2.a; sourceTree = "<group>"; };
+		162C3B042D035EB900DD5610 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/libswscale.a; sourceTree = "<group>"; };
+		162C3B052D035EB900DD5610 /* libgobject-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgobject-2.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgobject-2.0.a"; sourceTree = "<group>"; };
+		162C3B062D035EB900DD5610 /* libgstriff-1.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgstriff-1.0.a"; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/libgstriff-1.0.a"; sourceTree = "<group>"; };
+		162C3B5A2D03631F00DD5610 /* libgstadder.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstadder.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstadder.a"; sourceTree = "<group>"; };
+		162C3B5C2D03634E00DD5610 /* libgstvideotestsrc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideotestsrc.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideotestsrc.a"; sourceTree = "<group>"; };
+		162C3B5D2D03634F00DD5610 /* libgstwavenc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstwavenc.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstwavenc.a"; sourceTree = "<group>"; };
+		162C3B5E2D03634F00DD5610 /* libgstflv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstflv.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstflv.a"; sourceTree = "<group>"; };
+		162C3B5F2D03634F00DD5610 /* libgstaudiotestsrc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudiotestsrc.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudiotestsrc.a"; sourceTree = "<group>"; };
+		162C3B602D03634F00DD5610 /* libgstalpha.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstalpha.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstalpha.a"; sourceTree = "<group>"; };
+		162C3B612D03634F00DD5610 /* libgstreplaygain.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstreplaygain.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstreplaygain.a"; sourceTree = "<group>"; };
+		162C3B622D03634F00DD5610 /* libgstadaptivedemux2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstadaptivedemux2.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstadaptivedemux2.a"; sourceTree = "<group>"; };
+		162C3B632D03634F00DD5610 /* libgstlame.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstlame.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstlame.a"; sourceTree = "<group>"; };
+		162C3B642D03634F00DD5610 /* libgstmultipart.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstmultipart.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstmultipart.a"; sourceTree = "<group>"; };
+		162C3B652D03634F00DD5610 /* libgsttypefindfunctions.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsttypefindfunctions.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsttypefindfunctions.a"; sourceTree = "<group>"; };
+		162C3B662D03634F00DD5610 /* libgstvideobox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideobox.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideobox.a"; sourceTree = "<group>"; };
+		162C3B672D03634F00DD5610 /* libgstinterleave.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstinterleave.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstinterleave.a"; sourceTree = "<group>"; };
+		162C3B682D03634F00DD5610 /* libgstwavparse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstwavparse.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstwavparse.a"; sourceTree = "<group>"; };
+		162C3B692D03634F00DD5610 /* libgstxingmux.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstxingmux.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstxingmux.a"; sourceTree = "<group>"; };
+		162C3B6A2D03634F00DD5610 /* libgstvideorate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideorate.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideorate.a"; sourceTree = "<group>"; };
+		162C3B6B2D03634F00DD5610 /* libgstvpx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvpx.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvpx.a"; sourceTree = "<group>"; };
+		162C3B6C2D03634F00DD5610 /* libgstdv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstdv.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstdv.a"; sourceTree = "<group>"; };
+		162C3B6D2D03634F00DD5610 /* libgsttaglib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsttaglib.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsttaglib.a"; sourceTree = "<group>"; };
+		162C3B6E2D03634F00DD5610 /* libgstauparse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstauparse.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstauparse.a"; sourceTree = "<group>"; };
+		162C3B6F2D03635000DD5610 /* libgstmpg123.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstmpg123.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstmpg123.a"; sourceTree = "<group>"; };
+		162C3B702D03635000DD5610 /* libgstmultifile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstmultifile.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstmultifile.a"; sourceTree = "<group>"; };
+		162C3B712D03635000DD5610 /* libgstamrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstamrnb.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstamrnb.a"; sourceTree = "<group>"; };
+		162C3B722D03635000DD5610 /* libgstaudioresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudioresample.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudioresample.a"; sourceTree = "<group>"; };
+		162C3B732D03635000DD5610 /* libgstavi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstavi.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstavi.a"; sourceTree = "<group>"; };
+		162C3B742D03635000DD5610 /* libgsttheora.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsttheora.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsttheora.a"; sourceTree = "<group>"; };
+		162C3B752D03635000DD5610 /* libgstvideomixer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideomixer.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideomixer.a"; sourceTree = "<group>"; };
+		162C3B762D03635000DD5610 /* libgstsoup.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstsoup.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstsoup.a"; sourceTree = "<group>"; };
+		162C3B772D03635000DD5610 /* libgstflxdec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstflxdec.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstflxdec.a"; sourceTree = "<group>"; };
+		162C3B782D03635000DD5610 /* libgstmatroska.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstmatroska.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstmatroska.a"; sourceTree = "<group>"; };
+		162C3B792D03635000DD5610 /* libgstwavpack.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstwavpack.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstwavpack.a"; sourceTree = "<group>"; };
+		162C3B7A2D03635000DD5610 /* libgstvideofilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideofilter.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideofilter.a"; sourceTree = "<group>"; };
+		162C3B7B2D03635000DD5610 /* libgstcoretracers.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstcoretracers.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstcoretracers.a"; sourceTree = "<group>"; };
+		162C3B7C2D03635100DD5610 /* libgstlevel.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstlevel.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstlevel.a"; sourceTree = "<group>"; };
+		162C3B7D2D03635100DD5610 /* libgstalaw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstalaw.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstalaw.a"; sourceTree = "<group>"; };
+		162C3B7E2D03635100DD5610 /* libgstosxaudio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstosxaudio.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstosxaudio.a"; sourceTree = "<group>"; };
+		162C3B7F2D03635100DD5610 /* libgstudp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstudp.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstudp.a"; sourceTree = "<group>"; };
+		162C3B802D03635100DD5610 /* libgstvideocrop.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideocrop.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideocrop.a"; sourceTree = "<group>"; };
+		162C3B812D03635100DD5610 /* libgstplayback.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstplayback.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstplayback.a"; sourceTree = "<group>"; };
+		162C3B822D03635100DD5610 /* libgstaudiofx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudiofx.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudiofx.a"; sourceTree = "<group>"; };
+		162C3B832D03635100DD5610 /* libgstpango.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstpango.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstpango.a"; sourceTree = "<group>"; };
+		162C3B842D03635100DD5610 /* libgstgoom.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstgoom.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstgoom.a"; sourceTree = "<group>"; };
+		162C3B852D03635200DD5610 /* libgstaudiomixer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudiomixer.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudiomixer.a"; sourceTree = "<group>"; };
+		162C3B862D03635200DD5610 /* libgstsubparse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstsubparse.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstsubparse.a"; sourceTree = "<group>"; };
+		162C3B872D03635200DD5610 /* libgstcompositor.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstcompositor.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstcompositor.a"; sourceTree = "<group>"; };
+		162C3B882D03635200DD5610 /* libgstcoreelements.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstcoreelements.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstcoreelements.a"; sourceTree = "<group>"; };
+		162C3B892D03635200DD5610 /* libgstvolume.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvolume.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvolume.a"; sourceTree = "<group>"; };
+		162C3B8A2D03635200DD5610 /* libgsty4menc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsty4menc.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsty4menc.a"; sourceTree = "<group>"; };
+		162C3B8B2D03635200DD5610 /* libgstdeinterlace.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstdeinterlace.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstdeinterlace.a"; sourceTree = "<group>"; };
+		162C3B8C2D03635200DD5610 /* libgstcairo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstcairo.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstcairo.a"; sourceTree = "<group>"; };
+		162C3B8D2D03635200DD5610 /* libgstshapewipe.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstshapewipe.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstshapewipe.a"; sourceTree = "<group>"; };
+		162C3B8E2D03635200DD5610 /* libgstid3demux.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstid3demux.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstid3demux.a"; sourceTree = "<group>"; };
+		162C3B8F2D03635200DD5610 /* libgstmulaw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstmulaw.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstmulaw.a"; sourceTree = "<group>"; };
+		162C3B902D03635300DD5610 /* libgstgoom2k1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstgoom2k1.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstgoom2k1.a"; sourceTree = "<group>"; };
+		162C3B912D03635300DD5610 /* libgstcutter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstcutter.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstcutter.a"; sourceTree = "<group>"; };
+		162C3B922D03635300DD5610 /* libgstpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstpng.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstpng.a"; sourceTree = "<group>"; };
+		162C3B932D03635300DD5610 /* libgstrtpmanager.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstrtpmanager.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstrtpmanager.a"; sourceTree = "<group>"; };
+		162C3B942D03635300DD5610 /* libgstdtmf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstdtmf.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstdtmf.a"; sourceTree = "<group>"; };
+		162C3B952D03635300DD5610 /* libgstopus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstopus.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstopus.a"; sourceTree = "<group>"; };
+		162C3B962D03635300DD5610 /* libgstamrwbdec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstamrwbdec.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstamrwbdec.a"; sourceTree = "<group>"; };
+		162C3B972D03635300DD5610 /* libgstdebug.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstdebug.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstdebug.a"; sourceTree = "<group>"; };
+		162C3B982D03635300DD5610 /* libgstrtp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstrtp.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstrtp.a"; sourceTree = "<group>"; };
+		162C3B992D03635300DD5610 /* libgstrtsp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstrtsp.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstrtsp.a"; sourceTree = "<group>"; };
+		162C3B9A2D03635300DD5610 /* libgstvideoconvertscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvideoconvertscale.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvideoconvertscale.a"; sourceTree = "<group>"; };
+		162C3B9B2D03635300DD5610 /* libgstaudioparsers.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudioparsers.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudioparsers.a"; sourceTree = "<group>"; };
+		162C3B9C2D03635300DD5610 /* libgstisomp4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstisomp4.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstisomp4.a"; sourceTree = "<group>"; };
+		162C3B9D2D03635300DD5610 /* libgsteffectv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsteffectv.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsteffectv.a"; sourceTree = "<group>"; };
+		162C3B9E2D03635300DD5610 /* libgstapetag.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstapetag.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstapetag.a"; sourceTree = "<group>"; };
+		162C3B9F2D03635400DD5610 /* libgstspectrum.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstspectrum.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstspectrum.a"; sourceTree = "<group>"; };
+		162C3BA02D03635400DD5610 /* libgsttcp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsttcp.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsttcp.a"; sourceTree = "<group>"; };
+		162C3BA12D03635400DD5610 /* libgstvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstvorbis.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstvorbis.a"; sourceTree = "<group>"; };
+		162C3BA22D03635400DD5610 /* libgstsmpte.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstsmpte.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstsmpte.a"; sourceTree = "<group>"; };
+		162C3BA32D03635400DD5610 /* libgstequalizer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstequalizer.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstequalizer.a"; sourceTree = "<group>"; };
+		162C3BA42D03635400DD5610 /* libgstogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstogg.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstogg.a"; sourceTree = "<group>"; };
+		162C3BA52D03635400DD5610 /* libgstimagefreeze.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstimagefreeze.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstimagefreeze.a"; sourceTree = "<group>"; };
+		162C3BA62D03635400DD5610 /* libgsticydemux.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgsticydemux.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgsticydemux.a"; sourceTree = "<group>"; };
+		162C3BA72D03635400DD5610 /* libgstaudioconvert.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudioconvert.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudioconvert.a"; sourceTree = "<group>"; };
+		162C3BA82D03635400DD5610 /* libgstgdkpixbuf.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstgdkpixbuf.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstgdkpixbuf.a"; sourceTree = "<group>"; };
+		162C3BA92D03635400DD5610 /* libgstaudiorate.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstaudiorate.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstaudiorate.a"; sourceTree = "<group>"; };
+		162C3BAA2D03635400DD5610 /* libgstalphacolor.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstalphacolor.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstalphacolor.a"; sourceTree = "<group>"; };
+		162C3BAB2D03635400DD5610 /* libgstoverlaycomposition.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstoverlaycomposition.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstoverlaycomposition.a"; sourceTree = "<group>"; };
+		162C3BAC2D03635400DD5610 /* libgstjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstjpeg.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstjpeg.a"; sourceTree = "<group>"; };
+		162C3BAD2D03635500DD5610 /* libgstrawparse.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstrawparse.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstrawparse.a"; sourceTree = "<group>"; };
+		162C3BAE2D03635500DD5610 /* libgstautodetect.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstautodetect.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstautodetect.a"; sourceTree = "<group>"; };
+		162C3BAF2D03635500DD5610 /* libgstapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstapp.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstapp.a"; sourceTree = "<group>"; };
+		162C3BB02D03635500DD5610 /* libgstencoding.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstencoding.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstencoding.a"; sourceTree = "<group>"; };
+		162C3BB12D03635500DD5610 /* libgstflac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstflac.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstflac.a"; sourceTree = "<group>"; };
+		162C3BB22D03635500DD5610 /* libgstspeex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstspeex.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstspeex.a"; sourceTree = "<group>"; };
+		162C3BB32D03635500DD5610 /* libgstgio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgstgio.a; path = "bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0/libgstgio.a"; sourceTree = "<group>"; };
+		162C3BB42D03639000DD5610 /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/iconv/libiconv.a; sourceTree = "<group>"; };
+		162C3C0F2D03658300DD5610 /* gigalib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gigalib.a; path = bVNC.xcodeproj/ios_universal_maccatalyst/lib/gigalib.a; sourceTree = "<group>"; };
+		162C3C152D036BB000DD5610 /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libiconv.2.tbd; sourceTree = DEVELOPER_DIR; };
+		162C3C162D036BB000DD5610 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
+		162C3C1D2D0390E900DD5610 /* gigalib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gigalib.a; path = bVNC.xcodeproj/ios_universal_iphoneos/lib/gigalib.a; sourceTree = "<group>"; };
+		162C3C212D03912C00DD5610 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssh2.a; sourceTree = "<group>"; };
 		163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchInputType.swift; sourceTree = "<group>"; };
 		164F78EC2C01077E0063B590 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = bVNC.xcodeproj/libs_combined/lib/spicelib.a; sourceTree = "<group>"; };
 		165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionListPage.swift; sourceTree = "<group>"; };
@@ -1282,6 +1431,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		162C39CD2D035CA800DD5610 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				162C3C1A2D036C0E00DD5610 /* libssl.a in Frameworks */,
+				162C3C182D036BC000DD5610 /* libiconv.2.tbd in Frameworks */,
+				162C3C1B2D036C2200DD5610 /* libcrypto.a in Frameworks */,
+				162C3C102D03658E00DD5610 /* gigalib.a in Frameworks */,
+				162C3C192D036BFE00DD5610 /* libssh2.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		16E2310F2CFEBDC8003C9768 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1321,8 +1482,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1602CFCB2A674CD8004A9D89 /* libresolv.9.tbd in Frameworks */,
+				162C3C242D039DC100DD5610 /* superlib.a in Frameworks */,
 				165D67E026ADD8EA00E27D6E /* libz.tbd in Frameworks */,
-				AF30D1AA253396EF00BA7A62 /* superlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1330,159 +1491,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				164F78ED2C01077E0063B590 /* spicelib.a in Frameworks */,
-				164F78EA2C00F12C0063B590 /* libcrypto.a in Frameworks */,
-				164F78E92C00F1020063B590 /* libssl.a in Frameworks */,
-				164F78E82C00EFEC0063B590 /* libssh2.a in Frameworks */,
-				1602CFC82A674CB7004A9D89 /* libresolv.9.tbd in Frameworks */,
-				AFE02520260DBD2E005E851E /* liblz4.a in Frameworks */,
-				AF44CE982601A32B00DAA44B /* libgstadder.a in Frameworks */,
-				AF44CE992601A32B00DAA44B /* libgstalaw.a in Frameworks */,
-				AF44CE9A2601A32B00DAA44B /* libgstalpha.a in Frameworks */,
-				AF44CE9B2601A32B00DAA44B /* libgstalphacolor.a in Frameworks */,
-				AF44CE9C2601A32B00DAA44B /* libgstapetag.a in Frameworks */,
-				AF44CE9D2601A32B00DAA44B /* libgstapp.a in Frameworks */,
-				AF44CE9E2601A32B00DAA44B /* libgstaudioconvert.a in Frameworks */,
-				AF44CE9F2601A32B00DAA44B /* libgstaudiofx.a in Frameworks */,
-				AF44CEA02601A32B00DAA44B /* libgstaudiomixer.a in Frameworks */,
-				AF44CEA12601A32B00DAA44B /* libgstaudioparsers.a in Frameworks */,
-				AF44CEA22601A32B00DAA44B /* libgstaudiorate.a in Frameworks */,
-				AF44CEA32601A32B00DAA44B /* libgstaudioresample.a in Frameworks */,
-				AF44CEA42601A32B00DAA44B /* libgstaudiotestsrc.a in Frameworks */,
-				AF44CEA52601A32B00DAA44B /* libgstauparse.a in Frameworks */,
-				AF44CEA62601A32B00DAA44B /* libgstautodetect.a in Frameworks */,
-				AF44CEA72601A32B00DAA44B /* libgstavi.a in Frameworks */,
-				AF44CEA82601A32B00DAA44B /* libgstcairo.a in Frameworks */,
-				AF44CEA92601A32B00DAA44B /* libgstcompositor.a in Frameworks */,
-				AF44CEAA2601A32B00DAA44B /* libgstcoreelements.a in Frameworks */,
-				AF44CEAB2601A32B00DAA44B /* libgstcoretracers.a in Frameworks */,
-				AF44CEAC2601A32B00DAA44B /* libgstcutter.a in Frameworks */,
-				AF44CEAD2601A32B00DAA44B /* libgstdebug.a in Frameworks */,
-				AF44CEAE2601A32B00DAA44B /* libgstdtmf.a in Frameworks */,
-				AF44CEAF2601A32B00DAA44B /* libgstdv.a in Frameworks */,
-				AF44CEB02601A32B00DAA44B /* libgsteffectv.a in Frameworks */,
-				AF44CEB12601A32B00DAA44B /* libgstencoding.a in Frameworks */,
-				AF44CEB22601A32B00DAA44B /* libgstequalizer.a in Frameworks */,
-				AF44CEB32601A32B00DAA44B /* libgstflac.a in Frameworks */,
-				AF44CEB42601A32B00DAA44B /* libgstflv.a in Frameworks */,
-				AF44CEB52601A32B00DAA44B /* libgstflxdec.a in Frameworks */,
-				AF44CEB62601A32B00DAA44B /* libgstgdkpixbuf.a in Frameworks */,
-				AF44CEB72601A32B00DAA44B /* libgstgio.a in Frameworks */,
-				AF44CEB82601A32B00DAA44B /* libgstgoom.a in Frameworks */,
-				AF44CEB92601A32B00DAA44B /* libgstgoom2k1.a in Frameworks */,
-				AF44CEBA2601A32B00DAA44B /* libgsticydemux.a in Frameworks */,
-				AF44CEBB2601A32B00DAA44B /* libgstid3demux.a in Frameworks */,
-				AF44CEBC2601A32B00DAA44B /* libgstimagefreeze.a in Frameworks */,
-				AF44CEBD2601A32B00DAA44B /* libgstinterleave.a in Frameworks */,
-				AF44CEBE2601A32B00DAA44B /* libgstisomp4.a in Frameworks */,
-				AF44CEBF2601A32B00DAA44B /* libgstivorbisdec.a in Frameworks */,
-				AF44CEC02601A32B00DAA44B /* libgstjpeg.a in Frameworks */,
-				AF44CEC12601A32B00DAA44B /* libgstlame.a in Frameworks */,
-				AF44CEC22601A32B00DAA44B /* libgstlevel.a in Frameworks */,
-				AF44CEC32601A32B00DAA44B /* libgstmatroska.a in Frameworks */,
-				AF44CEC42601A32B00DAA44B /* libgstmpg123.a in Frameworks */,
-				AF44CEC52601A32B00DAA44B /* libgstmulaw.a in Frameworks */,
-				AF44CEC62601A32B00DAA44B /* libgstmultifile.a in Frameworks */,
-				AF44CEC72601A32B00DAA44B /* libgstmultipart.a in Frameworks */,
-				AF44CEC82601A32B00DAA44B /* libgstogg.a in Frameworks */,
-				AF44CEC92601A32B00DAA44B /* libgstopus.a in Frameworks */,
-				AF44CECA2601A32B00DAA44B /* libgstosxaudio.a in Frameworks */,
-				AF44CECB2601A32B00DAA44B /* libgstoverlaycomposition.a in Frameworks */,
-				AF44CECD2601A32B00DAA44B /* libgstplayback.a in Frameworks */,
-				AF44CECE2601A32B00DAA44B /* libgstpng.a in Frameworks */,
-				AF44CECF2601A32B00DAA44B /* libgstrawparse.a in Frameworks */,
-				AF44CED02601A32B00DAA44B /* libgstreplaygain.a in Frameworks */,
-				AF44CED12601A32B00DAA44B /* libgstrtp.a in Frameworks */,
-				AF44CED22601A32B00DAA44B /* libgstrtpmanager.a in Frameworks */,
-				AF44CED32601A32B00DAA44B /* libgstrtsp.a in Frameworks */,
-				AF44CED42601A32B00DAA44B /* libgstshapewipe.a in Frameworks */,
-				AF44CED52601A32B00DAA44B /* libgstsmpte.a in Frameworks */,
-				AF44CED62601A32B00DAA44B /* libgstsoup.a in Frameworks */,
-				AF44CED72601A32B00DAA44B /* libgstspectrum.a in Frameworks */,
-				AF44CED82601A32B00DAA44B /* libgstspeex.a in Frameworks */,
-				AF44CED92601A32B00DAA44B /* libgstsubparse.a in Frameworks */,
-				AF44CEDA2601A32B00DAA44B /* libgsttaglib.a in Frameworks */,
-				AF44CEDB2601A32B00DAA44B /* libgsttcp.a in Frameworks */,
-				AF44CEDC2601A32B00DAA44B /* libgsttheora.a in Frameworks */,
-				AF44CEDD2601A32B00DAA44B /* libgsttypefindfunctions.a in Frameworks */,
-				AF44CEDE2601A32B00DAA44B /* libgstudp.a in Frameworks */,
-				AF44CEDF2601A32B00DAA44B /* libgstvideobox.a in Frameworks */,
-				AF44CEE02601A32B00DAA44B /* libgstvideoconvert.a in Frameworks */,
-				AF44CEE12601A32B00DAA44B /* libgstvideocrop.a in Frameworks */,
-				AF44CEE22601A32B00DAA44B /* libgstvideofilter.a in Frameworks */,
-				AF44CEE32601A32B00DAA44B /* libgstvideomixer.a in Frameworks */,
-				AF44CEE42601A32B00DAA44B /* libgstvideorate.a in Frameworks */,
-				AF44CEE52601A32B00DAA44B /* libgstvideoscale.a in Frameworks */,
-				AF44CEE62601A32B00DAA44B /* libgstvideotestsrc.a in Frameworks */,
-				AF44CEE72601A32B00DAA44B /* libgstvolume.a in Frameworks */,
-				AF44CEE82601A32B00DAA44B /* libgstvorbis.a in Frameworks */,
-				AF44CEE92601A32B00DAA44B /* libgstwavenc.a in Frameworks */,
-				AF44CEEA2601A32B00DAA44B /* libgstwavpack.a in Frameworks */,
-				AF44CEEB2601A32B00DAA44B /* libgstwavparse.a in Frameworks */,
-				AF44CEEC2601A32B00DAA44B /* libgsty4menc.a in Frameworks */,
-				AF44CE6F2601A16600DAA44B /* libiconv.a in Frameworks */,
-				AF44CDBF260197FA00DAA44B /* libbz2.a in Frameworks */,
-				AF44CDC0260197FA00DAA44B /* libcairo-gobject.a in Frameworks */,
-				AF44CDC1260197FA00DAA44B /* libcairo-script-interpreter.a in Frameworks */,
-				AF44CDC2260197FA00DAA44B /* libcairo.a in Frameworks */,
-				AF44CDC3260197FA00DAA44B /* libcharset.a in Frameworks */,
-				AF44CDC5260197FA00DAA44B /* libdv.a in Frameworks */,
-				AF44CDC6260197FA00DAA44B /* libexpat.a in Frameworks */,
-				AF44CDC7260197FA00DAA44B /* libffi.a in Frameworks */,
-				AF44CDC8260197FA00DAA44B /* libFLAC.a in Frameworks */,
-				AF44CDC9260197FA00DAA44B /* libfontconfig.a in Frameworks */,
-				AF44CDCA260197FA00DAA44B /* libfreetype.a in Frameworks */,
-				AF44CDCC260197FA00DAA44B /* libgdk_pixbuf-2.0.a in Frameworks */,
-				AF44CDCD260197FA00DAA44B /* libgio-2.0.a in Frameworks */,
-				AF44CDCE260197FA00DAA44B /* libglib-2.0.a in Frameworks */,
-				AF44CDCF260197FA00DAA44B /* libgmodule-2.0.a in Frameworks */,
-				AF44CDD0260197FA00DAA44B /* libgobject-2.0.a in Frameworks */,
-				AF44CDD1260197FA00DAA44B /* libgraphene-1.0.a in Frameworks */,
-				AF44CDD2260197FA00DAA44B /* libgstallocators-1.0.a in Frameworks */,
-				AF44CDD3260197FA00DAA44B /* libgstapp-1.0.a in Frameworks */,
-				AF44CDD4260197FA00DAA44B /* libgstbase-1.0.a in Frameworks */,
-				AF44CDD5260197FA00DAA44B /* libgstcheck-1.0.a in Frameworks */,
-				AF44CDD6260197FA00DAA44B /* libgstcontroller-1.0.a in Frameworks */,
-				AF44CDD7260197FA00DAA44B /* libgstfft-1.0.a in Frameworks */,
-				AF44CDD8260197FA00DAA44B /* libgstnet-1.0.a in Frameworks */,
-				AF44CDD9260197FA00DAA44B /* libgstpbutils-1.0.a in Frameworks */,
-				AF44CDDA260197FA00DAA44B /* libgstreamer-1.0.a in Frameworks */,
-				AF44CDDB260197FA00DAA44B /* libgstriff-1.0.a in Frameworks */,
-				AF44CDDC260197FA00DAA44B /* libgstrtp-1.0.a in Frameworks */,
-				AF44CDDD260197FA00DAA44B /* libgstrtsp-1.0.a in Frameworks */,
-				AF44CDDE260197FA00DAA44B /* libgstsdp-1.0.a in Frameworks */,
-				AF44CDDF260197FA00DAA44B /* libgsttag-1.0.a in Frameworks */,
-				AF44CDE0260197FA00DAA44B /* libgstvideo-1.0.a in Frameworks */,
-				AF44CDE1260197FA00DAA44B /* libgthread-2.0.a in Frameworks */,
-				AF44CDE4260197FA00DAA44B /* libintl.a in Frameworks */,
-				AF44CDE5260197FA00DAA44B /* libjpeg.a in Frameworks */,
-				AF44CDE6260197FA00DAA44B /* libjson-glib-1.0.a in Frameworks */,
-				AF44CDE7260197FA00DAA44B /* libmp3lame.a in Frameworks */,
-				AF44CDE8260197FA00DAA44B /* libmpg123.a in Frameworks */,
-				AF44CDE9260197FA00DAA44B /* libogg.a in Frameworks */,
-				AF44CDEA260197FA00DAA44B /* libopus.a in Frameworks */,
-				AF44CDEB260197FA00DAA44B /* liborc-0.4.a in Frameworks */,
-				AF44CDEF260197FA00DAA44B /* libpixman-1.a in Frameworks */,
-				AF44CDF0260197FA00DAA44B /* libpng16.a in Frameworks */,
-				AF44CDF1260197FA00DAA44B /* libpsl.a in Frameworks */,
-				AF44CDF2260197FA00DAA44B /* libsoup-2.4.a in Frameworks */,
-				AF44CDF3260197FA00DAA44B /* libspeex.a in Frameworks */,
-				AF44CDF4260197FA00DAA44B /* libspice-client-glib-2.0.a in Frameworks */,
-				AF44CDF5260197FA00DAA44B /* libspiceglue.a in Frameworks */,
-				AF44CDF7260197FA00DAA44B /* libtag.a in Frameworks */,
-				AF44CDF8260197FA00DAA44B /* libtheora.a in Frameworks */,
-				AF44CDF9260197FA00DAA44B /* libtheoradec.a in Frameworks */,
-				AF44CDFA260197FA00DAA44B /* libtheoraenc.a in Frameworks */,
-				AF44CDFB260197FA00DAA44B /* libtiff.a in Frameworks */,
-				AF44CDFC260197FA00DAA44B /* libvorbis.a in Frameworks */,
-				AF44CDFD260197FA00DAA44B /* libvorbisenc.a in Frameworks */,
-				AF44CDFE260197FA00DAA44B /* libvorbisfile.a in Frameworks */,
-				AF44CDFF260197FA00DAA44B /* libvorbisidec.a in Frameworks */,
-				AF44CE00260197FA00DAA44B /* libvpx.a in Frameworks */,
-				AF44CE01260197FA00DAA44B /* libwavpack.a in Frameworks */,
-				AF44CE02260197FA00DAA44B /* libxml2.a in Frameworks */,
-				AF44CE03260197FA00DAA44B /* libz.a in Frameworks */,
-				AF44CDB4260192B800DAA44B /* libgstaudio-1.0.a in Frameworks */,
+				162C3C1F2D03912B00DD5610 /* libcrypto.a in Frameworks */,
+				162C3C1E2D03910E00DD5610 /* gigalib.a in Frameworks */,
+				162C3C202D03912C00DD5610 /* libssl.a in Frameworks */,
+				162C3C222D03913B00DD5610 /* libssh2.a in Frameworks */,
+				162C3C232D03914100DD5610 /* libiconv.2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1490,9 +1503,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				162C39A22D0356C700DD5610 /* libssl.a in Frameworks */,
+				162C39A42D0356E000DD5610 /* libcrypto.a in Frameworks */,
 				1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AFB391D8274F585C0059F91F /* libz.tbd in Frameworks */,
-				162C39962D00C3C700DD5610 /* duperlib.a in Frameworks */,
+				162C39A02D03558D00DD5610 /* duperlib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1686,7 +1701,7 @@
 				AF043A1623B3DADA00C43ED7 /* Products */,
 				AF48247C23B4783500826395 /* Frameworks */,
 				AFFFA867260E53590029384B /* Recovered References */,
-				161A28C92CFFD72000FA2BC2 /* aRDP copy-Info.plist */,
+				162C3A732D035CAA00DD5610 /* aSPICE copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1701,6 +1716,7 @@
 				AFB391D1274F564A0059F91F /* aRDP.app */,
 				16E231232CFEBDC8003C9768 /* bVNC Pro.app */,
 				161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */,
+				162C3A722D035CA800DD5610 /* aSPICE Pro.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1766,6 +1782,251 @@
 		AF48247C23B4783500826395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				162C3C212D03912C00DD5610 /* libssh2.a */,
+				162C3C1D2D0390E900DD5610 /* gigalib.a */,
+				162C3C152D036BB000DD5610 /* libiconv.2.tbd */,
+				162C3C162D036BB000DD5610 /* libiconv.tbd */,
+				162C3C0F2D03658300DD5610 /* gigalib.a */,
+				162C3BB42D03639000DD5610 /* libiconv.a */,
+				162C3B622D03634F00DD5610 /* libgstadaptivedemux2.a */,
+				162C3B7D2D03635100DD5610 /* libgstalaw.a */,
+				162C3B602D03634F00DD5610 /* libgstalpha.a */,
+				162C3BAA2D03635400DD5610 /* libgstalphacolor.a */,
+				162C3B712D03635000DD5610 /* libgstamrnb.a */,
+				162C3B962D03635300DD5610 /* libgstamrwbdec.a */,
+				162C3B9E2D03635300DD5610 /* libgstapetag.a */,
+				162C3BAF2D03635500DD5610 /* libgstapp.a */,
+				162C3BA72D03635400DD5610 /* libgstaudioconvert.a */,
+				162C3B822D03635100DD5610 /* libgstaudiofx.a */,
+				162C3B852D03635200DD5610 /* libgstaudiomixer.a */,
+				162C3B9B2D03635300DD5610 /* libgstaudioparsers.a */,
+				162C3BA92D03635400DD5610 /* libgstaudiorate.a */,
+				162C3B722D03635000DD5610 /* libgstaudioresample.a */,
+				162C3B5F2D03634F00DD5610 /* libgstaudiotestsrc.a */,
+				162C3B6E2D03634F00DD5610 /* libgstauparse.a */,
+				162C3BAE2D03635500DD5610 /* libgstautodetect.a */,
+				162C3B732D03635000DD5610 /* libgstavi.a */,
+				162C3B8C2D03635200DD5610 /* libgstcairo.a */,
+				162C3B872D03635200DD5610 /* libgstcompositor.a */,
+				162C3B882D03635200DD5610 /* libgstcoreelements.a */,
+				162C3B7B2D03635000DD5610 /* libgstcoretracers.a */,
+				162C3B912D03635300DD5610 /* libgstcutter.a */,
+				162C3B972D03635300DD5610 /* libgstdebug.a */,
+				162C3B8B2D03635200DD5610 /* libgstdeinterlace.a */,
+				162C3B942D03635300DD5610 /* libgstdtmf.a */,
+				162C3B6C2D03634F00DD5610 /* libgstdv.a */,
+				162C3B9D2D03635300DD5610 /* libgsteffectv.a */,
+				162C3BB02D03635500DD5610 /* libgstencoding.a */,
+				162C3BA32D03635400DD5610 /* libgstequalizer.a */,
+				162C3BB12D03635500DD5610 /* libgstflac.a */,
+				162C3B5E2D03634F00DD5610 /* libgstflv.a */,
+				162C3B772D03635000DD5610 /* libgstflxdec.a */,
+				162C3BA82D03635400DD5610 /* libgstgdkpixbuf.a */,
+				162C3BB32D03635500DD5610 /* libgstgio.a */,
+				162C3B842D03635100DD5610 /* libgstgoom.a */,
+				162C3B902D03635300DD5610 /* libgstgoom2k1.a */,
+				162C3BA62D03635400DD5610 /* libgsticydemux.a */,
+				162C3B8E2D03635200DD5610 /* libgstid3demux.a */,
+				162C3BA52D03635400DD5610 /* libgstimagefreeze.a */,
+				162C3B672D03634F00DD5610 /* libgstinterleave.a */,
+				162C3B9C2D03635300DD5610 /* libgstisomp4.a */,
+				162C3BAC2D03635400DD5610 /* libgstjpeg.a */,
+				162C3B632D03634F00DD5610 /* libgstlame.a */,
+				162C3B7C2D03635100DD5610 /* libgstlevel.a */,
+				162C3B782D03635000DD5610 /* libgstmatroska.a */,
+				162C3B6F2D03635000DD5610 /* libgstmpg123.a */,
+				162C3B8F2D03635200DD5610 /* libgstmulaw.a */,
+				162C3B702D03635000DD5610 /* libgstmultifile.a */,
+				162C3B642D03634F00DD5610 /* libgstmultipart.a */,
+				162C3BA42D03635400DD5610 /* libgstogg.a */,
+				162C3B952D03635300DD5610 /* libgstopus.a */,
+				162C3B7E2D03635100DD5610 /* libgstosxaudio.a */,
+				162C3BAB2D03635400DD5610 /* libgstoverlaycomposition.a */,
+				162C3B832D03635100DD5610 /* libgstpango.a */,
+				162C3B812D03635100DD5610 /* libgstplayback.a */,
+				162C3B922D03635300DD5610 /* libgstpng.a */,
+				162C3BAD2D03635500DD5610 /* libgstrawparse.a */,
+				162C3B612D03634F00DD5610 /* libgstreplaygain.a */,
+				162C3B982D03635300DD5610 /* libgstrtp.a */,
+				162C3B932D03635300DD5610 /* libgstrtpmanager.a */,
+				162C3B992D03635300DD5610 /* libgstrtsp.a */,
+				162C3B8D2D03635200DD5610 /* libgstshapewipe.a */,
+				162C3BA22D03635400DD5610 /* libgstsmpte.a */,
+				162C3B762D03635000DD5610 /* libgstsoup.a */,
+				162C3B9F2D03635400DD5610 /* libgstspectrum.a */,
+				162C3BB22D03635500DD5610 /* libgstspeex.a */,
+				162C3B862D03635200DD5610 /* libgstsubparse.a */,
+				162C3B6D2D03634F00DD5610 /* libgsttaglib.a */,
+				162C3BA02D03635400DD5610 /* libgsttcp.a */,
+				162C3B742D03635000DD5610 /* libgsttheora.a */,
+				162C3B652D03634F00DD5610 /* libgsttypefindfunctions.a */,
+				162C3B7F2D03635100DD5610 /* libgstudp.a */,
+				162C3B662D03634F00DD5610 /* libgstvideobox.a */,
+				162C3B9A2D03635300DD5610 /* libgstvideoconvertscale.a */,
+				162C3B802D03635100DD5610 /* libgstvideocrop.a */,
+				162C3B7A2D03635000DD5610 /* libgstvideofilter.a */,
+				162C3B752D03635000DD5610 /* libgstvideomixer.a */,
+				162C3B6A2D03634F00DD5610 /* libgstvideorate.a */,
+				162C3B5C2D03634E00DD5610 /* libgstvideotestsrc.a */,
+				162C3B892D03635200DD5610 /* libgstvolume.a */,
+				162C3BA12D03635400DD5610 /* libgstvorbis.a */,
+				162C3B6B2D03634F00DD5610 /* libgstvpx.a */,
+				162C3B5D2D03634F00DD5610 /* libgstwavenc.a */,
+				162C3B792D03635000DD5610 /* libgstwavpack.a */,
+				162C3B682D03634F00DD5610 /* libgstwavparse.a */,
+				162C3B692D03634F00DD5610 /* libgstxingmux.a */,
+				162C3B8A2D03635200DD5610 /* libgsty4menc.a */,
+				162C3B5A2D03631F00DD5610 /* libgstadder.a */,
+				162C39A32D0356D200DD5610 /* libcrypto.a */,
+				162C39A12D0356BB00DD5610 /* libssl.a */,
+				162C3AA32D035E1D00DD5610 /* libbz2.a */,
+				162C3AFF2D035EB900DD5610 /* libavutil.a */,
+				162C3B032D035EB900DD5610 /* libbz2.a */,
+				162C3A882D035E1B00DD5610 /* libcairo-gobject.a */,
+				162C3AF72D035EB900DD5610 /* libavcodec.a */,
+				162C3AC82D035EB400DD5610 /* libavfilter.a */,
+				162C3ABD2D035EB400DD5610 /* libavformat.a */,
+				162C3ADD2D035EB600DD5610 /* libcairo-gobject.a */,
+				162C3A872D035E1B00DD5610 /* libcairo-script-interpreter.a */,
+				162C3AAA2D035E1D00DD5610 /* libcairo.a */,
+				162C3A832D035E1B00DD5610 /* libcharset.a */,
+				162C3A952D035E1C00DD5610 /* libcrypto.a */,
+				162C3A8F2D035E1C00DD5610 /* libdv.a */,
+				162C3A742D035E1A00DD5610 /* libexpat.a */,
+				162C3AE92D035EB600DD5610 /* libdv.a */,
+				162C3AEB2D035EB800DD5610 /* libexpat.a */,
+				162C3A792D035E1B00DD5610 /* libffi.a */,
+				162C3A7A2D035E1B00DD5610 /* libFLAC.a */,
+				162C3AD62D035EB500DD5610 /* libcrypto.a */,
+				162C3ADA2D035EB500DD5610 /* libffi.a */,
+				162C3AE52D035EB600DD5610 /* libFLAC.a */,
+				162C3A782D035E1B00DD5610 /* libfontconfig.a */,
+				162C3AC72D035EB400DD5610 /* libcairo.a */,
+				162C3AC92D035EB400DD5610 /* libcharset.a */,
+				162C3AD22D035EB500DD5610 /* libfontconfig.a */,
+				162C3A852D035E1B00DD5610 /* libfreetype.a */,
+				162C3A962D035E1C00DD5610 /* libgdk_pixbuf-2.0.a */,
+				162C3AF52D035EB900DD5610 /* libfribidi.a */,
+				162C3AFC2D035EB900DD5610 /* libgdk_pixbuf-2.0.a */,
+				162C3A8A2D035E1B00DD5610 /* libgio-2.0.a */,
+				162C3AE32D035EB600DD5610 /* libgio-2.0.a */,
+				162C3A992D035E1C00DD5610 /* libglib-2.0.a */,
+				162C3AC32D035EB400DD5610 /* libfreetype.a */,
+				162C3AC62D035EB400DD5610 /* libglib-2.0.a */,
+				162C3A942D035E1C00DD5610 /* libgmodule-2.0.a */,
+				162C3A8E2D035E1C00DD5610 /* libgobject-2.0.a */,
+				162C3B052D035EB900DD5610 /* libgobject-2.0.a */,
+				162C3A932D035E1C00DD5610 /* libgraphene-1.0.a */,
+				162C3A7D2D035E1B00DD5610 /* libgstallocators-1.0.a */,
+				162C3AA92D035E1D00DD5610 /* libgstapp-1.0.a */,
+				162C3AD02D035EB500DD5610 /* libgraphene-1.0.a */,
+				162C3AF42D035EB900DD5610 /* libgstallocators-1.0.a */,
+				162C3AFB2D035EB900DD5610 /* libgstapp-1.0.a */,
+				162C3A7F2D035E1B00DD5610 /* libgstaudio-1.0.a */,
+				162C3A972D035E1C00DD5610 /* libgstbase-1.0.a */,
+				162C3AAF2D035E1D00DD5610 /* libgstcheck-1.0.a */,
+				162C3AF82D035EB900DD5610 /* libgstbase-1.0.a */,
+				162C3AFE2D035EB900DD5610 /* libgstcheck-1.0.a */,
+				162C3AB02D035E1E00DD5610 /* libgstcontroller-1.0.a */,
+				162C3AF02D035EB800DD5610 /* libgstcontroller-1.0.a */,
+				162C3A862D035E1B00DD5610 /* libgstfft-1.0.a */,
+				162C3A982D035E1C00DD5610 /* libgstnet-1.0.a */,
+				162C3AF22D035EB800DD5610 /* libgstnet-1.0.a */,
+				162C3AB42D035E1E00DD5610 /* libgstpbutils-1.0.a */,
+				162C3AB22D035E1E00DD5610 /* libgstreamer-1.0.a */,
+				162C3A812D035E1B00DD5610 /* libgstriff-1.0.a */,
+				162C3ABE2D035EB400DD5610 /* libgmodule-2.0.a */,
+				162C3AC42D035EB400DD5610 /* libgstaudio-1.0.a */,
+				162C3AD12D035EB500DD5610 /* libgstfft-1.0.a */,
+				162C3ADC2D035EB600DD5610 /* libgstpbutils-1.0.a */,
+				162C3AEF2D035EB800DD5610 /* libgstreamer-1.0.a */,
+				162C3B062D035EB900DD5610 /* libgstriff-1.0.a */,
+				162C3AA52D035E1D00DD5610 /* libgstrtp-1.0.a */,
+				162C3A9E2D035E1C00DD5610 /* libgstrtsp-1.0.a */,
+				162C3A822D035E1B00DD5610 /* libgstsdp-1.0.a */,
+				162C3AFA2D035EB900DD5610 /* libgstsdp-1.0.a */,
+				162C3A7E2D035E1B00DD5610 /* libgsttag-1.0.a */,
+				162C3AAD2D035E1D00DD5610 /* libgstvideo-1.0.a */,
+				162C3AE12D035EB600DD5610 /* libgsttag-1.0.a */,
+				162C3AE72D035EB600DD5610 /* libgstvideo-1.0.a */,
+				162C3AA82D035E1D00DD5610 /* libgthread-2.0.a */,
+				162C3AD92D035EB500DD5610 /* libgstrtsp-1.0.a */,
+				162C3ADB2D035EB500DD5610 /* libgthread-2.0.a */,
+				162C3AF92D035EB900DD5610 /* libharfbuzz.a */,
+				162C3B022D035EB900DD5610 /* libiconv.a */,
+				162C3AB12D035E1E00DD5610 /* libintl.a */,
+				162C3A8C2D035E1B00DD5610 /* libjpeg.a */,
+				162C3A842D035E1B00DD5610 /* libjson-glib-1.0.a */,
+				162C3AC12D035EB400DD5610 /* libintl.a */,
+				162C3AC52D035EB400DD5610 /* libjpeg.a */,
+				162C3ACD2D035EB500DD5610 /* libjson-glib-1.0.a */,
+				162C3A8D2D035E1C00DD5610 /* liblz4.a */,
+				162C3A9B2D035E1C00DD5610 /* libmp3lame.a */,
+				162C3AA42D035E1D00DD5610 /* libmpg123.a */,
+				162C3A902D035E1C00DD5610 /* libogg.a */,
+				162C3A9F2D035E1C00DD5610 /* libopus.a */,
+				162C3AF62D035EB900DD5610 /* libopus.a */,
+				162C3A772D035E1B00DD5610 /* liborc-0.4.a */,
+				162C3ABF2D035EB400DD5610 /* liblz4.a */,
+				162C3ACF2D035EB500DD5610 /* libmp3lame.a */,
+				162C3AD42D035EB500DD5610 /* libmpg123.a */,
+				162C3AFD2D035EB900DD5610 /* libogg.a */,
+				162C3AD32D035EB500DD5610 /* libopencore-amrnb.a */,
+				162C3ACC2D035EB500DD5610 /* libopencore-amrwb.a */,
+				162C3AD82D035EB500DD5610 /* libopenh264.a */,
+				162C3AE22D035EB600DD5610 /* liborc-0.4.a */,
+				162C3AF12D035EB800DD5610 /* libpango-1.0.a */,
+				162C3AE42D035EB600DD5610 /* libpangocairo-1.0.a */,
+				162C3AEA2D035EB700DD5610 /* libpangoft2-1.0.a */,
+				162C3ADE2D035EB600DD5610 /* libpcre2-8.a */,
+				162C3A922D035E1C00DD5610 /* libpixman-1.a */,
+				162C3AA22D035E1C00DD5610 /* libpng16.a */,
+				162C3AA72D035E1D00DD5610 /* libpsl.a */,
+				162C3AE82D035EB600DD5610 /* libpsl.a */,
+				162C3A7C2D035E1B00DD5610 /* libsoup-2.4.a */,
+				162C3A7B2D035E1B00DD5610 /* libspeex.a */,
+				162C3AEE2D035EB800DD5610 /* libspeex.a */,
+				162C3A9C2D035E1C00DD5610 /* libspice-client-glib-2.0.a */,
+				162C3ABA2D035EB400DD5610 /* libcairo-script-interpreter.a */,
+				162C3ABB2D035EB400DD5610 /* libgstrtp-1.0.a */,
+				162C3ABC2D035EB400DD5610 /* libpixman-1.a */,
+				162C3B002D035EB900DD5610 /* libpng16.a */,
+				162C3AB72D035EB400DD5610 /* libpostproc.a */,
+				162C3ACA2D035EB500DD5610 /* libsoup-2.4.a */,
+				162C3ACE2D035EB500DD5610 /* libspice-client-glib-2.0.a */,
+				162C3A892D035E1B00DD5610 /* libspiceglue.a */,
+				162C3A9D2D035E1C00DD5610 /* libssl.a */,
+				162C3ADF2D035EB600DD5610 /* libssl.a */,
+				162C3ACB2D035EB500DD5610 /* libswresample.a */,
+				162C3B042D035EB900DD5610 /* libswscale.a */,
+				162C3AA62D035E1D00DD5610 /* libtag.a */,
+				162C3AA02D035E1C00DD5610 /* libtheora.a */,
+				162C3A752D035E1B00DD5610 /* libtheoradec.a */,
+				162C3AB62D035EB400DD5610 /* libspiceglue.a */,
+				162C3AB92D035EB400DD5610 /* libtag.a */,
+				162C3AEC2D035EB800DD5610 /* libtheora.a */,
+				162C3AF32D035EB900DD5610 /* libtheoradec.a */,
+				162C3AAC2D035E1D00DD5610 /* libtheoraenc.a */,
+				162C3A8B2D035E1B00DD5610 /* libtiff.a */,
+				162C3A762D035E1B00DD5610 /* libvorbis.a */,
+				162C3AE02D035EB600DD5610 /* libturbojpeg.a */,
+				162C3B012D035EB900DD5610 /* libvorbis.a */,
+				162C3AB32D035E1E00DD5610 /* libvorbisenc.a */,
+				162C3A9A2D035E1C00DD5610 /* libvorbisfile.a */,
+				162C3AB52D035EB400DD5610 /* libtheoraenc.a */,
+				162C3AB82D035EB400DD5610 /* libtiff.a */,
+				162C3AC02D035EB400DD5610 /* libvorbisenc.a */,
+				162C3AED2D035EB800DD5610 /* libvorbisfile.a */,
+				162C3AE62D035EB600DD5610 /* libvpx.a */,
+				162C3AD72D035EB500DD5610 /* libwavpack.a */,
+				162C3AD52D035EB500DD5610 /* libxml2.a */,
+				162C3AC22D035EB400DD5610 /* libz.a */,
+				162C3AA12D035E1C00DD5610 /* libvorbisidec.a */,
+				162C3AAB2D035E1D00DD5610 /* libvpx.a */,
+				162C3AAE2D035E1D00DD5610 /* libwavpack.a */,
+				162C3A912D035E1C00DD5610 /* libxml2.a */,
+				162C3A802D035E1B00DD5610 /* libz.a */,
+				162C399F2D03558200DD5610 /* libs_combined_iphoneos */,
 				162C39952D00C3B800DD5610 /* duperlib.a */,
 				162C398D2D0097E200DD5610 /* libjpeg.a */,
 				162C39902D0097E200DD5610 /* libssh2.a */,
@@ -2499,6 +2760,24 @@
 			productReference = 161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */;
 			productType = "com.apple.product-type.application";
 		};
+		162C39A52D035CA800DD5610 /* aSPICE-macos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 162C3A6F2D035CA800DD5610 /* Build configuration list for PBXNativeTarget "aSPICE-macos" */;
+			buildPhases = (
+				162C39A62D035CA800DD5610 /* Sources */,
+				162C39CD2D035CA800DD5610 /* Frameworks */,
+				162C3A672D035CA800DD5610 /* Resources */,
+				162C3A6E2D035CA800DD5610 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "aSPICE-macos";
+			productName = bVNC;
+			productReference = 162C3A722D035CA800DD5610 /* aSPICE Pro.app */;
+			productType = "com.apple.product-type.application";
+		};
 		16E230E72CFEBDC8003C9768 /* bVNC-macos */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 16E231202CFEBDC8003C9768 /* Build configuration list for PBXNativeTarget "bVNC-macos" */;
@@ -2682,6 +2961,7 @@
 				AFB3910E274F564A0059F91F /* aRDP */,
 				16E230E72CFEBDC8003C9768 /* bVNC-macos */,
 				161A288A2CFFD71F00FA2BC2 /* aRDP-macos */,
+				162C39A52D035CA800DD5610 /* aSPICE-macos */,
 			);
 		};
 /* End PBXProject section */
@@ -2707,6 +2987,19 @@
 				161A28C12CFFD71F00FA2BC2 /* Localizable.strings in Resources */,
 				161A28C22CFFD71F00FA2BC2 /* Preview Assets.xcassets in Resources */,
 				161A28C32CFFD71F00FA2BC2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		162C3A672D035CA800DD5610 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				162C3A682D035CA800DD5610 /* PrivacyInfo.xcprivacy in Resources */,
+				162C3A692D035CA800DD5610 /* aSPICE-resources in Resources */,
+				162C3A6A2D035CA800DD5610 /* LaunchScreen.storyboard in Resources */,
+				162C3A6B2D035CA800DD5610 /* Localizable.strings in Resources */,
+				162C3A6C2D035CA800DD5610 /* Preview Assets.xcassets in Resources */,
+				162C3A6D2D035CA800DD5610 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2802,6 +3095,23 @@
 
 /* Begin PBXShellScriptBuildPhase section */
 		161A28C42CFFD71F00FA2BC2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\n# This script loops through the frameworks embedded in the application and\n# removes unused architectures.\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\n    FRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\n    FRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\n    echo \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\n\n    EXTRACTED_ARCHS=()\n\n    for ARCH in $ARCHS\n    do\n        echo \"Extracting $ARCH from $FRAMEWORK_EXECUTABLE_NAME\"\n        lipo -extract \"$ARCH\" \"$FRAMEWORK_EXECUTABLE_PATH\" -o \"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\"\n        EXTRACTED_ARCHS+=(\"$FRAMEWORK_EXECUTABLE_PATH-$ARCH\")\n    done\n\n    echo \"Merging extracted architectures: ${ARCHS}\"\n    lipo -o \"$FRAMEWORK_EXECUTABLE_PATH-merged\" -create \n\"${EXTRACTED_ARCHS[@]}\"\n    rm \"${EXTRACTED_ARCHS[@]}\"\n\n    echo \"Replacing original executable with thinned version\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_EXECUTABLE_PATH-merged\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n\ndone\n";
+		};
+		162C3A6E2D035CA800DD5610 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2948,6 +3258,51 @@
 				161A28AF2CFFD71F00FA2BC2 /* TouchEnabledUIImageView.swift in Sources */,
 				161A28B02CFFD71F00FA2BC2 /* TouchInputType.swift in Sources */,
 				161A28B12CFFD71F00FA2BC2 /* HelpPage.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		162C39A62D035CA800DD5610 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				162C39A72D035CA800DD5610 /* ConnectionListPage.swift in Sources */,
+				162C39A82D035CA800DD5610 /* Constants.swift in Sources */,
+				162C39A92D035CA800DD5610 /* SshPortForwarder.c in Sources */,
+				162C39AA2D035CA800DD5610 /* StringExtension.swift in Sources */,
+				162C39AB2D035CA800DD5610 /* CustomTextInput.swift in Sources */,
+				162C39AC2D035CA800DD5610 /* SecureStorageDelegate.swift in Sources */,
+				162C39AD2D035CA800DD5610 /* ToggleButton.swift in Sources */,
+				162C39AE2D035CA800DD5610 /* MultilineTextView.swift in Sources */,
+				162C39AF2D035CA800DD5610 /* VncSessionDummy.swift in Sources */,
+				162C39B02D035CA800DD5610 /* ucs2xkeysym.c in Sources */,
+				162C39B12D035CA800DD5610 /* LocalizedStringKey.swift in Sources */,
+				162C39B22D035CA800DD5610 /* Utils.swift in Sources */,
+				162C39B32D035CA800DD5610 /* RemoteBridge.c in Sources */,
+				162C39B42D035CA800DD5610 /* ClipboardMonitor.swift in Sources */,
+				162C39B52D035CA800DD5610 /* StoreReviewHelper.swift in Sources */,
+				162C39B62D035CA800DD5610 /* SystemMonitor.m in Sources */,
+				162C39B72D035CA800DD5610 /* SimulatedTouchpadUIImageView.swift in Sources */,
+				162C39B82D035CA800DD5610 /* PhysicalKeyboardHandler.swift in Sources */,
+				162C39B92D035CA800DD5610 /* RemoteSession.swift in Sources */,
+				162C39BA2D035CA800DD5610 /* LongTapDragUIImageView.swift in Sources */,
+				162C39BB2D035CA800DD5610 /* AppDelegate.swift in Sources */,
+				162C39BC2D035CA800DD5610 /* SceneDelegate.swift in Sources */,
+				162C39BD2D035CA800DD5610 /* SshKeyGenerator.swift in Sources */,
+				162C39BE2D035CA800DD5610 /* AddOrEditConnectionPage.swift in Sources */,
+				162C39BF2D035CA800DD5610 /* SpiceBridge.c in Sources */,
+				162C39C02D035CA800DD5610 /* FilterableConnections.swift in Sources */,
+				162C39C12D035CA800DD5610 /* KeyboardObserving.swift in Sources */,
+				162C39C22D035CA800DD5610 /* StateKeeper.swift in Sources */,
+				162C39C32D035CA800DD5610 /* MainPage.swift in Sources */,
+				162C39C42D035CA800DD5610 /* Utility.c in Sources */,
+				162C39C52D035CA800DD5610 /* ShortTapDragUIImageView.swift in Sources */,
+				162C39C62D035CA800DD5610 /* SpiceSession.swift in Sources */,
+				162C39C72D035CA800DD5610 /* Utilities.m in Sources */,
+				162C39C82D035CA800DD5610 /* MiscellaneousPages.swift in Sources */,
+				162C39C92D035CA800DD5610 /* RdpSessionDummy.swift in Sources */,
+				162C39CA2D035CA800DD5610 /* TouchEnabledUIImageView.swift in Sources */,
+				162C39CB2D035CA800DD5610 /* TouchInputType.swift in Sources */,
+				162C39CC2D035CA800DD5610 /* HelpPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3264,8 +3619,8 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aRDP-info.plist";
@@ -3274,10 +3629,7 @@
 					"${inherited}",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib";
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3294,7 +3646,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = 2;
@@ -3325,8 +3677,8 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aRDP-info.plist";
@@ -3339,10 +3691,7 @@
 					"${inherited}",
 					"@executable_path/Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib";
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3360,8 +3709,166 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				);
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		162C3A702D035CA800DD5610 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "aSPICE-AppIcon";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 166;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"SPICE=1",
+					"DEBUG=1",
+				);
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"${PROJECT_DIR}/bVNC.xcodeproj/ios_universal_maccatalyst//include/spice-client-glib-2.0",
+					"${PROJECT_DIR}/bVNC.xcodeproj/ios_universal_maccatalyst//include/spice-1",
+				);
+				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/iconv",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 40;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lresolv",
+					"-liconv",
+				);
+				PRELINK_LIBS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
+				PRODUCT_NAME = "aSPICE Pro";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
+				);
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//lib/glib-2.0/include",
+				);
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		162C3A712D035CA800DD5610 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = "aSPICE-AppIcon";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_USE_OPTIMIZATION_PROFILE = NO;
+				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 166;
+				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
+				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				ENABLE_BITCODE = NO;
+				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/bVNC.xcodeproj",
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "SPICE=1";
+				GCC_STRICT_ALIASING = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"${PROJECT_DIR}/bVNC.xcodeproj/ios_universal_maccatalyst//include/spice-client-glib-2.0",
+					"${PROJECT_DIR}/bVNC.xcodeproj/ios_universal_maccatalyst//include/spice-1",
+				);
+				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[arch=*]" = (
+					"${inherited}",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/iconv",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+				);
+				LLVM_LTO = NO;
+				MARKETING_VERSION = 40;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lresolv",
+					"-liconv",
+				);
+				PRELINK_LIBS = "";
+				"PRELINK_LIBS[arch=*]" = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
+				PRODUCT_NAME = "aSPICE Pro";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
 				);
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -3645,9 +4152,9 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -3674,8 +4181,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3705,9 +4212,9 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/bVNC-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -3864,7 +4371,7 @@
 				);
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include";
 				INFOPLIST_FILE = "bVNC/Simple Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3873,7 +4380,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
@@ -3885,7 +4392,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -3912,7 +4419,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "VNC=1";
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include";
 				INFOPLIST_FILE = "bVNC/Simple Remote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3925,7 +4432,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
@@ -3939,7 +4446,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include";
+				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -3971,9 +4478,12 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/glib-2.0/",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/spice-client-glib-2.0/",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/spice-1/",
 				);
 				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -3982,9 +4492,9 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 40;
@@ -3998,9 +4508,17 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
+				);
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos//lib/glib-2.0/include",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4030,9 +4548,12 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/glib-2.0/",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/spice-client-glib-2.0/",
+					"$(PROJECT_DIR)/bVNC.xcodeproj//ios_universal_iphoneos/include/spice-1/",
 				);
 				INFOPLIST_FILE = "bVNC/aSPICE-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -4045,9 +4566,9 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 40;
@@ -4062,9 +4583,11 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "bVNC/bVNC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+				SYSTEM_HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst//include/glib-2.0",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4097,7 +4620,7 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
@@ -4110,7 +4633,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
@@ -4126,7 +4648,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4157,7 +4679,7 @@
 				GCC_STRICT_ALIASING = YES;
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
 				);
@@ -4174,7 +4696,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
@@ -4191,7 +4712,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4206,6 +4727,15 @@
 			buildConfigurations = (
 				161A28C62CFFD71F00FA2BC2 /* Debug */,
 				161A28C72CFFD71F00FA2BC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		162C3A6F2D035CA800DD5610 /* Build configuration list for PBXNativeTarget "aSPICE-macos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				162C3A702D035CA800DD5610 /* Debug */,
+				162C3A712D035CA800DD5610 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

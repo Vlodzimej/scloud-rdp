@@ -1,0 +1,16 @@
+diff --git a/recipes/ffmpeg.recipe b/recipes/ffmpeg.recipe
+index 4366a800..059e5f15 100644
+--- a/recipes/ffmpeg.recipe
++++ b/recipes/ffmpeg.recipe
+@@ -71,6 +71,11 @@ class Recipe(recipe.Recipe):
+                 # See https://github.com/FFmpeg/FFmpeg/blob/n6.0/libavutil/x86/x86inc.asm#L104-L108
+                 self.meson_options['asm'] = 'disabled'
+ 
++        if self.config.target_arch == Architecture.X86_64:
++           if self.config.target_platform == Platform.IOS:
++                self.library_type = LibraryType.STATIC
++                self.meson_options['asm'] = 'disabled'
++
+         # Populate self.files_devel
+         files_devel_tpl = ['%(libdir)s/{}.la', '%(libdir)s/pkgconfig/{}.pc', 'include/{}']
+         if self.library_type != LibraryType.SHARED:
