@@ -11,6 +11,8 @@ aspice-lib-ios/libs_*
 aspice-lib-ios/cerbero_iphoneos
 aspice-lib-ios/cerbero_maccatalyst
 aspice-lib-ios/python
+aspice-lib-ios/ios_universal_*
+aspice-lib-ios/gigalib.a
 remote-desktop-clients/
 scripts/export
 ardp-lib-ios/libs_*

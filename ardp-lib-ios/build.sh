@@ -11,8 +11,13 @@ PARALLELISM=16
 
 export LDFLAGS="-lc++"
 
+DEP_BASE_PATH=../aspice-lib-ios/ios_universal
+ISSH_DEP_PATH=../iSSH2-1.1.1w
+JPEG_DEP_PATH=../libjpeg-turbo
+
 if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
 then
+  DEP_PATH=${DEP_BASE_PATH}_iphoneos
   pushd FreeRDP_iphoneos
   git checkout ${FREERDP_VERSION}
 
@@ -25,15 +30,15 @@ then
 
   # iOS Build
   cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
-      -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2-1.1.1w/openssl_iphoneos) \
+      -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
       -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_LD_FLAGS:STRING="-lc++" \
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
-      -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2-1.1.1w/openssl_iphoneos) \
-      -DJPEG_LIBRARY=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/lib) \
-      -DJPEG_INCLUDE_DIR=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/include) \
-      -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero_iphoneos/build/dist/ios_universal) \
+      -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
+      -DJPEG_LIBRARY=$(realpath ../$JPEG_DEP_PATH/libs_combined_iphoneos/lib) \
+      -DJPEG_INCLUDE_DIR=$(realpath ../$JPEG_DEP_PATH/libs_combined_iphoneos/include) \
+      -DCMAKE_PREFIX_PATH=$(realpath ../$DEP_PATH) \
       -DPLATFORM=OS64 \
       -DWITH_SSE2=OFF \
       -DWITH_JPEG=ON \
@@ -52,6 +57,7 @@ popd
 
 for arch in arm64 x86_64
 do
+  DEP_PATH=${DEP_BASE_PATH}_maccatalyst
   if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_maccatalyst_$arch
   then
   # Mac Catalyst build
@@ -68,16 +74,16 @@ do
     MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
     cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
-        -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../../iSSH2-1.1.1w/openssl_macosx) \
+        -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
         -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
         -DCMAKE_OSX_ARCHITECTURES="$arch" \
         -DCMAKE_CXX_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE -lc++" \
         -DCMAKE_C_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
         -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
-        -DOPENSSL_ROOT_DIR=$(realpath ../../iSSH2-1.1.1w/openssl_macosx) \
-        -DJPEG_LIBRARY=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/lib) \
-        -DJPEG_INCLUDE_DIR=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/include) \
-        -DCMAKE_PREFIX_PATH=$(realpath ../../aspice-lib-ios/cerbero_maccatalyst/build/dist/ios_universal) \
+        -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
+        -DJPEG_LIBRARY=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/lib) \
+        -DJPEG_INCLUDE_DIR=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/include) \
+        -DCMAKE_PREFIX_PATH=$(realpath ../$DEP_PATH) \
         -DPLATFORM=MAC_CATALYST \
         -DWITH_NEON=OFF \
         -DWITH_SSE2=OFF \
@@ -110,12 +116,14 @@ done
 
 for platform in iphoneos maccatalyst
 do
+  DEP_PATH=${DEP_BASE_PATH}_$platform
+
   issh_platform="$platform"
   if [ "$platform" == "maccatalyst" ]
   then
     issh_platform="macosx"
   fi
-  deps="libs_$platform/* ../iSSH2-1.1.1w/openssl_$issh_platform/lib/* ../iSSH2-1.1.1w/libssh2_$issh_platform/lib/* ../aspice-lib-ios/cerbero_$platform/build/dist/ios_universal/lib/libav*.a ../aspice-lib-ios/cerbero_$platform/build/dist/ios_universal/lib/libswresample.a ../aspice-lib-ios/cerbero_$platform/build/dist/ios_universal/lib/libopenh264.a"
+  deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/* $DEP_PATH/lib/libav*.a $DEP_PATH/lib/libswresample.a $DEP_PATH/lib/libopenh264.a"
   echo libtool -static -o duperlib.a $deps
   libtool -static -o duperlib.a $deps
   mv duperlib.a ../bVNC.xcodeproj/libs_combined_$platform/lib/

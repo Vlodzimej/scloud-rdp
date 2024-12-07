@@ -20,6 +20,9 @@
 
 CERBERO_VERSION=1.24.10
 EXPECTED_XCODE_PATH=/Applications/Xcode.app/Contents/Developer
+# Use clang from Xcode developer toolchain
+export PATH=$EXPECTED_XCODE_PATH/Toolchains/XcodeDefault.xctoolchain/usr/bin:${PATH}
+export SDKROOT="$EXPECTED_XCODE_PATH/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
 
 realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
@@ -27,7 +30,7 @@ realpath() {
 
 if [ ! -d cerbero_iphoneos -o ! -d cerbero_maccatalyst ]
 then
-  BREW_DEPS="expat perl autoconf libtool gtk-doc python3 cpanm cmake"
+  BREW_DEPS="expat perl autoconf libtool gtk-doc python3 cpanm cmake python-setuptools"
   brew install ${BREW_DEPS} || true
   brew unlink ${BREW_DEPS}
   brew link --overwrite ${BREW_DEPS}
@@ -73,7 +76,7 @@ for platform in iphoneos maccatalyst
 do
   pushd cerbero_$platform
   # Copy all spice recipes in automatically or git clone a repo with them.
-  rsync -avP --exclude=.git --exclude='ffmpeg*' --exclude='libjpeg8*' ../recipes/ ./recipes/
+  rsync -avP --exclude=.git --exclude='ffmpeg*' ../recipes/ ./recipes/
 
   # Workaround for missing lib-pthread.la dependency.
   for arch in x86_64 arm64
@@ -82,43 +85,35 @@ do
       ln -sf libz.la build/dist/ios_universal/${arch}/lib/lib-pthread.la
   done
 
-  # Use clang from Xcode developer toolchain
-  export PATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:${PATH}
-
-  # Needed for Mac Catalyst builds
-  # TODO: If freetype build fails, export SDKROOT and run make again. Then, rerun build and skip freetype recipe.
-  export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
-
+  # NOTE: Projects openh264 and ffmpeg are dependencies for aRDP
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc build spiceglue
-  # Added to build dependencies for aRDP
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone openh264
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone ffmpeg
+  ./cerbero-uninstalled -c config/cross-ios-universal.cbc build openh264 ffmpeg spiceglue
   popd
 done
 
 for platform in iphoneos maccatalyst
 do
-  # Cleaning up dynamic and .la files to prevent linking issues if dylib is missing one of the expected architectures (e.g. libavcodec dylib)
-  find cerbero_$platform -name \*.dylib -exec rm {} \;
-  find cerbero_$platform -name \*.la -exec rm {} \;
-
   for arch in arm64 x86_64
   do
-    # Workaround for missing spiceglue header files
+    # Workaround for missing spiceglue header files. TODO: Move to recipe.
     cp cerbero_$platform/build/sources/ios_universal/$arch/spiceglue-2.2/src/*.h cerbero_$platform/build/dist/ios_universal/include/
-    # Workaround for missing spice-client header files
+    # Workaround for missing spice-client header files. TODO: Move to recipe.
     rsync -a cerbero_$platform/build/dist/ios_universal/$arch/include/spice-client-glib-2.0/ cerbero_$platform/build/dist/ios_universal/include/spice-client-glib-2.0/
   done
 
-  # We are using system-provided libiconv.2.tbd, so hence we exclude it from the huge library
-  deps="$(find cerbero_$platform/build/dist/ios_universal/lib -name \*.a ! -name 'libiconv.a')"
+  echo "Creating ios_universal_$platform/"
+  rsync -a --delete cerbero_$platform/build/dist/ios_universal/ ios_universal_$platform/
+  # Cleaning up dynamic and .la files to prevent linking issues if dylib is missing one of the expected architectures (e.g. libavcodec dylib)
+  find ios_universal_$platform/ -name \*.dylib -exec rm {} \;
+  find ios_universal_$platform/ -name \*.la -exec rm {} \;
 
-  echo libtool -static -o gigalib.a $deps
-  libtool -static -o gigalib.a $deps
+  # NOTE: We are using system-provided libiconv.2.tbd, so hence we exclude libiconv.a from the huge library
+  deps="$(find ios_universal_$platform/lib -name \*.a ! -name 'libiconv.a')"
 
-  mv gigalib.a libs_$platform/lib/
+  mkdir -p libs_$platform/lib/
+  echo libtool -static -o libs_$platform/lib/gigalib.a $deps
+  libtool -static -o libs_$platform/lib/gigalib.a $deps
 
-  rsync -a cerbero_$platform/build/dist/ios_universal/include/ cerbero_$platform/build/dist/ios_universal/lib/glib-2.0/include/ libs_$platform/include/
+  rsync -a ios_universal_$platform/include/ ios_universal_$platform/lib/glib-2.0/include/ libs_$platform/include/
   rsync -a --delete $(realpath libs_$platform)/ ../bVNC.xcodeproj/ios_universal_$platform/
 done
