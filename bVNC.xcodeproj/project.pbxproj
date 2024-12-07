@@ -75,8 +75,6 @@
 		162940692B8A31230086396F /* MultilineTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */; };
 		162C39942D00A93200DD5610 /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 161A28CB2CFFD7A500FA2BC2 /* duperlib.a */; };
 		162C39A02D03558D00DD5610 /* duperlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39952D00C3B800DD5610 /* duperlib.a */; };
-		162C39A22D0356C700DD5610 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A12D0356BB00DD5610 /* libssl.a */; };
-		162C39A42D0356E000DD5610 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 162C39A32D0356D200DD5610 /* libcrypto.a */; };
 		162C39A72D035CA800DD5610 /* ConnectionListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */; };
 		162C39A82D035CA800DD5610 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		162C39A92D035CA800DD5610 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
@@ -1503,8 +1501,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				162C39A22D0356C700DD5610 /* libssl.a in Frameworks */,
-				162C39A42D0356E000DD5610 /* libcrypto.a in Frameworks */,
 				1602CFC92A674CC4004A9D89 /* libresolv.9.tbd in Frameworks */,
 				AFB391D8274F585C0059F91F /* libz.tbd in Frameworks */,
 				162C39A02D03558D00DD5610 /* duperlib.a in Frameworks */,
