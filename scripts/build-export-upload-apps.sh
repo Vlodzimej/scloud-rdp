@@ -104,15 +104,7 @@ function build_export_archive_apps() {
             ARCHIVE_FLAGS=""
             if [ "$destination" == 'platform=macOS,variant=Mac Catalyst' ]
             then
-                if [ "$app" == "aSPICE" ]
-                then
-                    DESTINATION="${DESTINATION},arch=x86_64"
-                    ARCHIVE_FLAGS="EXCLUDED_ARCHS=arm64"
-                fi
-                if [ "$app" == "bVNC" -o "$app" == "aRDP" ]
-                then
-                    SCHEME="$SCHEME-macos"
-                fi
+                SCHEME="$SCHEME-macos"
                 EXPORT_EXTENSION=pkg
                 UPLOAD_TYPE=macos
             elif [ "$destination" == 'generic/platform=iOS' ]

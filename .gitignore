@@ -2,12 +2,12 @@ OpenSSL-for-iPhone
 ios-cmake
 libvncserver
 libjpeg-turbo
-bVNC.xcodeproj/libs_combined/
 bVNC.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 bVNC.xcodeproj/project.xcworkspace/xcuserdata/
 iSSH2*
 bVNC.xcodeproj/ios_universal
 aspice-lib-ios/recipes
+aspice-lib-ios/libs_*
 aspice-lib-ios/cerbero_iphoneos
 aspice-lib-ios/cerbero_maccatalyst
 aspice-lib-ios/python
@@ -15,3 +15,4 @@ remote-desktop-clients/
 scripts/export
 ardp-lib-ios/libs_*
 bVNC.xcodeproj/libs_combined_*
+bVNC.xcodeproj/ios_universal_*
