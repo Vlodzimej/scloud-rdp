@@ -1,3 +1,4 @@
+#!/bin/bash -e
 #
 # Copyright (C) 2020- Morpheusly Inc.
 #
@@ -16,7 +17,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
 # USA.
 #
-#!/bin/bash -e
 
 CERBERO_VERSION=1.24.10
 EXPECTED_XCODE_PATH=/Applications/Xcode.app/Contents/Developer
@@ -48,6 +48,7 @@ then
   pushd cerbero_iphoneos
   git checkout $CERBERO_VERSION
   patch -p1 < ../cerbero-disable-harfbuzz-docs.patch
+  ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
   popd
 fi
 
@@ -59,6 +60,7 @@ then
   patch -p1 < ../cerbero-enable-maccatalyst-config.patch
   patch -p1 < ../cerbero-disable-gst-gl.patch
   patch -p1 < ../cerbero-disable-asm-mac-catalyst.patch
+  ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
   popd
 fi
 
@@ -86,7 +88,7 @@ do
   done
 
   # NOTE: Projects openh264 and ffmpeg are dependencies for aRDP
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
+  ./cerbero-uninstalled -c config/cross-ios-universal.cbc build libjpeg-turbo
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc build openh264 ffmpeg spiceglue
   popd
 done
