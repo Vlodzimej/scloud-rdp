@@ -573,9 +573,9 @@ class RemoteSession {
     }
     
     @objc func reDraw() {
-        if (self.stateKeeper.isDrawing) {
-            UserInterface {
-                self.reDrawTimer.invalidate()
+        UserInterface {
+            self.reDrawTimer.invalidate()
+            if (self.stateKeeper.isDrawing && self.data != nil) {
                 self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
             }
         }
@@ -584,20 +584,19 @@ class RemoteSession {
     func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
         if self.connected {
             self.data = data
-            
             let timeNow = CACurrentMediaTime()
             if (timeNow - lastUpdate < 0.032) {
                 // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
-                self.rescheduleReDrawTimer(data: self.data, fbW: fbW, fbH: fbH)
+                self.rescheduleReDrawTimer()
             } else {
                 // Drawing a frame normally
-                self.draw(data: self.data, fbW: fbW, fbH: fbH)
+                self.draw(data: data, fbW: fbW, fbH: fbH)
                 lastUpdate = CACurrentMediaTime()
             }
         }
     }
     
-    func rescheduleReDrawTimer(data: UnsafeMutableRawPointer?, fbW: Int32, fbH: Int32) {
+    func rescheduleReDrawTimer() {
         if (self.connected) {
             UserInterface{
                 self.reDrawTimer.invalidate()

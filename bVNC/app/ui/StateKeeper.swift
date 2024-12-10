@@ -1063,6 +1063,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func remoteResized(fbW: Int32, fbH: Int32) {
         UserInterface {
             autoreleasepool {
+                self.remoteSession?.data = nil
+                self.remoteSession?.reDrawTimer.invalidate()
                 self.receivedUpdate = true
                 self.imageView?.removeFromSuperview()
                 self.imageView?.image = nil
@@ -1089,9 +1091,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.addButtons(buttons: self.interfaceButtons)
                 self.showConnectedSession()
                 self.keepSessionRefreshed()
-                if !Utils.isRdp() {
-                    self.remoteSession?.reDraw()
-                }
                 self.clipboardMonitor?.startMonitoring()
                 self.remoteSession?.hasDrawnFirstFrame = true
             }
