@@ -279,9 +279,12 @@ class SpiceSession: RemoteSession {
     }
     
     override func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
-        if self.connected {
-            self.data = data
-            self.draw(data: data, fbW: fbW, fbH: fbH)
+        if self.stateKeeper.isiPhoneOrPad() {
+            super.updateCallback(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
+        } else {
+            if self.connected {
+                self.draw(data: data, fbW: fbW, fbH: fbH)
+            }
         }
     }
 }
