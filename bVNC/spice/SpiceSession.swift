@@ -270,7 +270,7 @@ class SpiceSession: RemoteSession {
     }
 
     @objc override func sendScreenUpdateRequest(incrementalUpdate: Bool) {
-        // Not used for SPICE
+        reDraw()
     }
     
     override func requestRemoteResolution(x: Int, y: Int) {
