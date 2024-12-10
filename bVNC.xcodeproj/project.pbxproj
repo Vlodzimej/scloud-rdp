@@ -402,7 +402,6 @@
 		162C39A12D0356BB00DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssl.a; sourceTree = "<group>"; };
 		162C39A32D0356D200DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
 		162C3A722D035CA800DD5610 /* aSPICE Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "aSPICE Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		162C3A732D035CAA00DD5610 /* aSPICE copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE copy-Info.plist"; path = "/Users/iordan/software/remote-desktop-clients-ios/aSPICE copy-Info.plist"; sourceTree = "<absolute>"; };
 		162C3A742D035E1A00DD5610 /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libexpat.a; sourceTree = "<group>"; };
 		162C3A752D035E1B00DD5610 /* libtheoradec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoradec.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtheoradec.a; sourceTree = "<group>"; };
 		162C3A762D035E1B00DD5610 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbis.a; sourceTree = "<group>"; };
@@ -1697,7 +1696,6 @@
 				AF043A1623B3DADA00C43ED7 /* Products */,
 				AF48247C23B4783500826395 /* Frameworks */,
 				AFFFA867260E53590029384B /* Recovered References */,
-				162C3A732D035CAA00DD5610 /* aSPICE copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
