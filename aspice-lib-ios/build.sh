@@ -47,7 +47,10 @@ if git clone https://github.com/GStreamer/cerbero.git cerbero_iphoneos
 then
   pushd cerbero_iphoneos
   git checkout $CERBERO_VERSION
-  patch -p1 < ../cerbero-disable-harfbuzz-docs.patch
+  for patch in ../cerbero-disable-harfbuzz-docs.patch ../cerbero-disable-neon-pixman.patch
+  do
+    patch -p1 < $patch
+  done
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
   popd
 fi
@@ -56,10 +59,13 @@ if git clone https://github.com/GStreamer/cerbero.git cerbero_maccatalyst
 then
   pushd cerbero_maccatalyst
   git checkout $CERBERO_VERSION
-  patch -p1 < ../cerbero-disable-harfbuzz-docs.patch
-  patch -p1 < ../cerbero-enable-maccatalyst-config.patch
-  patch -p1 < ../cerbero-disable-gst-gl.patch
-  patch -p1 < ../cerbero-disable-asm-mac-catalyst.patch
+  for patch in  ../cerbero-disable-harfbuzz-docs.patch \
+                ../cerbero-enable-maccatalyst-config.patch \
+                ../cerbero-disable-gst-gl.patch \
+                ../cerbero-disable-asm-mac-catalyst.patch
+  do
+    patch -p1 < $patch
+  done
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
   popd
 fi
@@ -88,6 +94,7 @@ do
   done
 
   # NOTE: Projects openh264 and ffmpeg are dependencies for aRDP
+  ./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone pixman
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc build libjpeg-turbo
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc build openh264 ffmpeg spiceglue
   popd
