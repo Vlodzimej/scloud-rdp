@@ -384,7 +384,7 @@
 		1608AEB329A2FE5900D82A58 /* ClipboardMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardMonitor.swift; sourceTree = "<group>"; };
 		161A28742CFFBE9D00FA2BC2 /* Superlib.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Superlib.xcframework; path = bVNC.xcodeproj/Superlib.xcframework; sourceTree = "<group>"; };
 		161A287B2CFFC38000FA2BC2 /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/superlib.a; sourceTree = "<group>"; };
-		161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "aRDP Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		161A28C82CFFD71F00FA2BC2 /* aRDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aRDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		161A28CB2CFFD7A500FA2BC2 /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/duperlib.a; sourceTree = "<group>"; };
 		1624FE0A29A5D90500FD54CA /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		162940622B8A30250086396F /* AddOrEditConnectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOrEditConnectionPage.swift; sourceTree = "<group>"; };
@@ -401,7 +401,7 @@
 		162C399F2D03558200DD5610 /* libs_combined_iphoneos */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libs_combined_iphoneos; path = bVNC.xcodeproj/libs_combined_iphoneos; sourceTree = "<group>"; };
 		162C39A12D0356BB00DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssl.a; sourceTree = "<group>"; };
 		162C39A32D0356D200DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
-		162C3A722D035CA800DD5610 /* aSPICE Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "aSPICE Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		162C3A722D035CA800DD5610 /* aSPICE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aSPICE.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		162C3A742D035E1A00DD5610 /* libexpat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libexpat.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libexpat.a; sourceTree = "<group>"; };
 		162C3A752D035E1B00DD5610 /* libtheoradec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtheoradec.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libtheoradec.a; sourceTree = "<group>"; };
 		162C3A762D035E1B00DD5610 /* libvorbis.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbis.a; path = bVNC.xcodeproj/ios_universal.BAK/lib/libvorbis.a; sourceTree = "<group>"; };
@@ -663,7 +663,7 @@
 		16E230E12CFE66B6003C9768 /* build-libs.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "build-libs.conf"; sourceTree = "<group>"; };
 		16E230E22CFE66B7003C9768 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16E230E32CFE66B7003C9768 /* build-libs.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "build-libs.sh"; sourceTree = "<group>"; };
-		16E231232CFEBDC8003C9768 /* bVNC Pro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bVNC Pro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		16E231232CFEBDC8003C9768 /* bVNC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bVNC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		16E231252CFEBF72003C9768 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		16E231272CFEBF8A003C9768 /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/superlib.a; sourceTree = "<group>"; };
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
@@ -1708,9 +1708,9 @@
 				AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */,
 				AFB2C8F326001F4D00E2859F /* aSPICE.app */,
 				AFB391D1274F564A0059F91F /* aRDP.app */,
-				16E231232CFEBDC8003C9768 /* bVNC Pro.app */,
-				161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */,
-				162C3A722D035CA800DD5610 /* aSPICE Pro.app */,
+				16E231232CFEBDC8003C9768 /* bVNC.app */,
+				161A28C82CFFD71F00FA2BC2 /* aRDP.app */,
+				162C3A722D035CA800DD5610 /* aSPICE.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2751,7 +2751,7 @@
 			);
 			name = "aRDP-macos";
 			productName = bVNC;
-			productReference = 161A28C82CFFD71F00FA2BC2 /* aRDP Pro.app */;
+			productReference = 161A28C82CFFD71F00FA2BC2 /* aRDP.app */;
 			productType = "com.apple.product-type.application";
 		};
 		162C39A52D035CA800DD5610 /* aSPICE-macos */ = {
@@ -2769,7 +2769,7 @@
 			);
 			name = "aSPICE-macos";
 			productName = bVNC;
-			productReference = 162C3A722D035CA800DD5610 /* aSPICE Pro.app */;
+			productReference = 162C3A722D035CA800DD5610 /* aSPICE.app */;
 			productType = "com.apple.product-type.application";
 		};
 		16E230E72CFEBDC8003C9768 /* bVNC-macos */ = {
@@ -2787,7 +2787,7 @@
 			);
 			name = "bVNC-macos";
 			productName = bVNC;
-			productReference = 16E231232CFEBDC8003C9768 /* bVNC Pro.app */;
+			productReference = 16E231232CFEBDC8003C9768 /* bVNC.app */;
 			productType = "com.apple.product-type.application";
 		};
 		AF043A1423B3DADA00C43ED7 /* bVNC */ = {
@@ -3630,7 +3630,7 @@
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
-				PRODUCT_NAME = "aRDP Pro";
+				PRODUCT_NAME = aRDP;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3693,7 +3693,7 @@
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
-				PRODUCT_NAME = "aRDP Pro";
+				PRODUCT_NAME = aRDP;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3766,7 +3766,7 @@
 				);
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
-				PRODUCT_NAME = "aSPICE Pro";
+				PRODUCT_NAME = aSPICE;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3849,7 +3849,7 @@
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aSPICE;
-				PRODUCT_NAME = "aSPICE Pro";
+				PRODUCT_NAME = aSPICE;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3916,7 +3916,7 @@
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
 				PRELINK_LIBS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC;
-				PRODUCT_NAME = "bVNC Pro";
+				PRODUCT_NAME = bVNC;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -3984,7 +3984,7 @@
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC;
-				PRODUCT_NAME = "bVNC Pro";
+				PRODUCT_NAME = bVNC;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

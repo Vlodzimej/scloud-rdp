@@ -28,6 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>vnc</string>
+				<string>morpheuslyvnc</string>
 			</array>
 		</dict>
 	</array>
