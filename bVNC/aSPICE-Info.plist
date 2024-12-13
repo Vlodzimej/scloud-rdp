@@ -43,6 +43,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>spice</string>
+				<string>aspice</string>
 			</array>
 		</dict>
 	</array>

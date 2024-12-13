@@ -27,6 +27,7 @@
 			<string>com.iiordanov.aRDP</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>ardp</string>
 				<string>rdp</string>
 			</array>
 		</dict>
