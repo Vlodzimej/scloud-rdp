@@ -1,5 +1,5 @@
 diff --git a/channels/rdpsnd/client/ios/rdpsnd_ios.c b/channels/rdpsnd/client/ios/rdpsnd_ios.c
-index 29feb97cc..f455f8386 100644
+index 29feb97cc..531bbe9cf 100644
 --- a/channels/rdpsnd/client/ios/rdpsnd_ios.c
 +++ b/channels/rdpsnd/client/ios/rdpsnd_ios.c
 @@ -52,10 +52,12 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
@@ -23,7 +23,7 @@ index 29feb97cc..f455f8386 100644
  			const int bytes_to_copy = MIN((int32_t)target_buffer->mDataByteSize, available_bytes);
  			memcpy(target_buffer->mData, buffer, bytes_to_copy);
  			target_buffer->mDataByteSize = bytes_to_copy;
-@@ -76,9 +79,8 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+@@ -76,49 +79,54 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
  		}
  		else
  		{
@@ -34,9 +34,11 @@ index 29feb97cc..f455f8386 100644
  		}
  	}
  
-@@ -87,38 +89,44 @@ static OSStatus rdpsnd_ios_render_cb(void* inRefCon,
+ 	return noErr;
+ }
  
- static BOOL rdpsnd_ios_format_supported(rdpsndDevicePlugin* __unused device, AUDIO_FORMAT* format)
+-static BOOL rdpsnd_ios_format_supported(rdpsndDevicePlugin* __unused device, AUDIO_FORMAT* format)
++static BOOL rdpsnd_ios_format_supported(rdpsndDevicePlugin* __unused device, const AUDIO_FORMAT* format)
  {
 +	WLog_DBG(TAG, "rdpsnd_ios_format_supported called");
  	if (format->wFormatTag == WAVE_FORMAT_PCM)
@@ -48,8 +50,10 @@ index 29feb97cc..f455f8386 100644
  	return 0;
  }
  
- static BOOL rdpsnd_ios_set_format(rdpsndDevicePlugin* __unused device,
-                                   AUDIO_FORMAT* __unused format, int __unused latency)
+-static BOOL rdpsnd_ios_set_format(rdpsndDevicePlugin* __unused device,
+-                                  AUDIO_FORMAT* __unused format, int __unused latency)
++static BOOL rdpsnd_ios_set_format(rdpsndDevicePlugin* __unused device, const AUDIO_FORMAT* __unused desired,
++                                AUDIO_FORMAT* __unused defaultFormat)
  {
 +	WLog_DBG(TAG, "rdpsnd_ios_set_format called");
  	return TRUE;
@@ -94,9 +98,12 @@ index 29feb97cc..f455f8386 100644
  		/* Stop the device. */
  		AudioOutputUnitStop(p->audio_unit);
  		p->is_playing = 0;
-@@ -142,22 +152,28 @@ static void rdpsnd_ios_stop(rdpsndDevicePlugin* __unused device)
+@@ -140,24 +150,30 @@ static void rdpsnd_ios_stop(rdpsndDevicePlugin* __unused device)
+ 	}
+ }
  
- static UINT rdpsnd_ios_play(rdpsndDevicePlugin* device, BYTE* data, int size)
+-static UINT rdpsnd_ios_play(rdpsndDevicePlugin* device, BYTE* data, int size)
++static UINT rdpsnd_ios_play(rdpsndDevicePlugin* device, const BYTE* data, size_t size)
  {
 +	WLog_DBG(TAG, "rdpsnd_ios_play called");
  	rdpsndIOSPlugin* p = THIS(device);
@@ -113,7 +120,8 @@ index 29feb97cc..f455f8386 100644
 +	return 100; /* TODO: Get real latency in [ms] */
  }
  
- static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, int __unused latency)
+-static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, AUDIO_FORMAT* format, int __unused latency)
++static BOOL rdpsnd_ios_open(rdpsndDevicePlugin* device, const AUDIO_FORMAT* format, unsigned int __unused latency)
  {
 +	WLog_DBG(TAG, "rdpsnd_ios_open called");
  	rdpsndIOSPlugin* p = THIS(device);
