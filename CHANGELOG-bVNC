@@ -1,6 +1,7 @@
 40
   - Silicon support
   - Upgraded VNC library to latest as of 2024-12-08
+  - UltraVNC compatibility fix
 39
   - Bugfixes
 38
