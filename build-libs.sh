@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # Copyright (C) 2020- Morpheusly Inc.
 #
@@ -17,6 +17,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
 # USA.
 #
+
+set -e
 
 . build-libs.conf
 
@@ -211,13 +213,15 @@ function build_issh2 {
   fi
 
   # Copy SSH libs and header files to project
-  rsync -avP iSSH2/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
-  rsync -avP iSSH2/openssl_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
-  rsync -avP iSSH2/libssh2_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
-  rsync -avP iSSH2/openssl_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  rsync -avP $DIR/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
+  rsync -avP $DIR/openssl_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
+  rsync -avP $DIR/libssh2_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  rsync -avP $DIR/openssl_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
 }
 
 function build_libvncserver() {
+  local SSL_DIR=$1
+
   git clone https://github.com/iiordanov/libvncserver.git || true
   pushd libvncserver/
   git pull
@@ -241,17 +245,21 @@ function build_libvncserver() {
           -DPLATFORM=OS64 \
           -DDEPLOYMENT_TARGET=13.2 \
           -DENABLE_BITCODE=OFF \
-          -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libssl.a) \
-          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_iphoneos/lib/libcrypto.a) \
-          -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_iphoneos/include) \
+          -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libssl.a) \
+          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libcrypto.a) \
+          -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_iphoneos/include) \
           -DCMAKE_INSTALL_PREFIX=./libs \
           -DBUILD_SHARED_LIBS=OFF \
           -DENABLE_VISIBILITY=ON \
           -DENABLE_ARC=OFF \
           -DWITH_SASL=OFF \
+          -DWITH_LZO=OFF \
           -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
           -DWITH_GCRYPT=OFF \
           -DWITH_PNG=OFF \
+          -DWITH_EXAMPLES=OFF \
+          -DWITH_TESTS=OFF \
+          -DWITH_QT=OFF \
           -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/)
       popd
     fi
@@ -263,7 +271,7 @@ function build_libvncserver() {
 
   for arch in x86_64 arm64
   do
-    if ! -d build_maccatalyst_${arch} ]
+    if [ ! -d build_maccatalyst_${arch} ]
     then
       echo "libvncserver Mac Catalyst build"
       mkdir -p build_maccatalyst_${arch}
@@ -276,17 +284,21 @@ function build_libvncserver() {
           -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
           -DCMAKE_BUILD_TYPE=MAC_CATALYST \
           -DENABLE_BITCODE=OFF \
-          -DOPENSSL_SSL_LIBRARY=$(realpath ../../iSSH2/openssl_macosx/lib/libssl.a) \
-          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../iSSH2/openssl_macosx/lib/libcrypto.a) \
-          -DOPENSSL_INCLUDE_DIR=$(realpath ../../iSSH2/openssl_macosx/include) \
+          -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libssl.a) \
+          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libcrypto.a) \
+          -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_macosx/include) \
           -DCMAKE_INSTALL_PREFIX=./libs \
           -DBUILD_SHARED_LIBS=OFF \
           -DENABLE_VISIBILITY=ON \
           -DENABLE_ARC=OFF \
           -DWITH_SASL=OFF \
+          -DWITH_LZO=OFF \
           -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
           -DWITH_GCRYPT=OFF \
           -DWITH_PNG=OFF \
+          -DWITH_EXAMPLES=OFF \
+          -DWITH_TESTS=OFF \
+          -DWITH_QT=OFF \
           -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/)
       popd
     fi
@@ -361,9 +373,8 @@ function build_rdp_dependencies() {
 
 set_up_ios_cmake
 build_jpeg_turbo
-build_issh2
-build_issh2 1.1.1w
-build_libvncserver
+build_issh2 "$SSL_VERSION"
+build_libvncserver "iSSH2-$SSL_VERSION"
 lipo_libvncserver
 create_super_and_spice_libs
 copy_spice_keyboard_layouts_from_android_project
