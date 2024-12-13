@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "161A288A2CFFD71F00FA2BC2"
-               BuildableName = "aRDP Pro.app"
+               BuildableName = "aRDP.app"
                BlueprintName = "aRDP-macos"
                ReferencedContainer = "container:bVNC.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "161A288A2CFFD71F00FA2BC2"
-            BuildableName = "aRDP Pro.app"
+            BuildableName = "aRDP.app"
             BlueprintName = "aRDP-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "161A288A2CFFD71F00FA2BC2"
-            BuildableName = "aRDP Pro.app"
+            BuildableName = "aRDP.app"
             BlueprintName = "aRDP-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>

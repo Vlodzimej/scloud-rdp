@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "16E230E72CFEBDC8003C9768"
-               BuildableName = "bVNC Pro.app"
+               BuildableName = "bVNC.app"
                BlueprintName = "bVNC-macos"
                ReferencedContainer = "container:bVNC.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "16E230E72CFEBDC8003C9768"
-            BuildableName = "bVNC Pro.app"
+            BuildableName = "bVNC.app"
             BlueprintName = "bVNC-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "16E230E72CFEBDC8003C9768"
-            BuildableName = "bVNC Pro.app"
+            BuildableName = "bVNC.app"
             BlueprintName = "bVNC-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "162C39A52D035CA800DD5610"
-               BuildableName = "aSPICE Pro.app"
+               BuildableName = "aSPICE.app"
                BlueprintName = "aSPICE-macos"
                ReferencedContainer = "container:bVNC.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "162C39A52D035CA800DD5610"
-            BuildableName = "aSPICE Pro.app"
+            BuildableName = "aSPICE.app"
             BlueprintName = "aSPICE-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "162C39A52D035CA800DD5610"
-            BuildableName = "aSPICE Pro.app"
+            BuildableName = "aSPICE.app"
             BlueprintName = "aSPICE-macos"
             ReferencedContainer = "container:bVNC.xcodeproj">
          </BuildableReference>
