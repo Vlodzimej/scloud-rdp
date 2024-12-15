@@ -163,7 +163,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     var requestingSshCredentials: Bool = false
 
     var onScreenKeysHidden: Bool = true
-    
+    var fbW: CGFloat = 0.0
+    var fbH: CGFloat = 0.0
+
     @objc func reDraw() {
         self.remoteSession?.reDraw()
     }
@@ -319,10 +321,6 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
 
-    func setImageView(imageView: TouchEnabledUIImageView) {
-        self.imageView = imageView
-    }
-    
     func selectAndConnect(connection: [String: String]) {
         log_callback_str(message: #function)
         self.connections.select(connection: connection)
@@ -703,8 +701,21 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         }
     }
     
+    /**
+     *
+     * @return The smallest scale supported by the implementation; the scale at which
+     * the bitmap would be smaller than the screen
+     */
+    func getMinimumScale() -> CGFloat {
+        let windowWidth: CGFloat = globalWindow!.bounds.maxX
+        let windowHeight: CGFloat = globalWindow!.bounds.maxY
+        let width: CGFloat = fbW <= 0 ? windowWidth : fbW
+        let height: CGFloat = fbH <= 0 ? windowHeight : fbH
+        return min(windowWidth / width, windowHeight / height)
+    }
+    
     @objc func correctTopSpacingForOrientation() {
-        minScale = getMinimumScale(fbW: CGFloat(fbW), fbH: CGFloat(fbH))
+        minScale = getMinimumScale()
 
         let windowX = globalWindow?.frame.maxX ?? 0
         let windowY = globalWindow?.frame.maxY ?? 0
@@ -717,18 +728,18 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if newOrientation == 0 {
             //log_callback_str(message: "New orientation is portrait")
             leftSpacing = 0
-            topSpacing = max(StateKeeper.bH, (globalWindow!.bounds.maxY - CGFloat(fbH)*minScale)/4)
+            topSpacing = max(StateKeeper.bH, (globalWindow!.bounds.maxY - self.fbH*minScale)/4)
             topButtonSpacing = 0
         } else if newOrientation == 1 {
             //log_callback_str(message: "New orientation is landscape")
-            leftSpacing = (globalWindow!.bounds.maxX - CGFloat(fbW)*minScale)/2
-            topSpacing = min(StateKeeper.bH, (globalWindow!.bounds.maxY - CGFloat(fbH)*minScale)/2)
+            leftSpacing = (globalWindow!.bounds.maxX - self.fbW*minScale)/2
+            topSpacing = min(StateKeeper.bH, (globalWindow!.bounds.maxY - self.fbH*minScale)/2)
             topButtonSpacing = 0
         }
         
         if (newOrientation != orientation) {
             orientation = newOrientation
-            setImageRect(newRect: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale))
+            setImageRect(newRect: CGRect(x: leftSpacing, y: topSpacing, width: self.fbW*minScale, height: self.fbH*minScale))
             createAndRepositionButtons()
         } else {
             //log_callback_str(message: "Actual orientation appears not to have changed, not disturbing the displayed image or buttons.")
@@ -1047,7 +1058,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     func resizeWindow() {
         if currInst >= 0 && isDrawing && self.imageView?.image != nil {
-            resize_callback(instance: Int32(currInst), fbW: fbW, fbH: fbH)
+            resize_callback(instance: Int32(currInst), fbW: globalFb.fbW, fbH: globalFb.fbH)
         }
         // FIXME: Make a config option
         let syncRemoteToLocalResolution = true
@@ -1063,25 +1074,34 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func remoteResized(fbW: Int32, fbH: Int32) {
         UserInterface {
             autoreleasepool {
+                self.fbW = CGFloat(fbW)
+                self.fbH = CGFloat(fbH)
                 self.remoteSession?.data = nil
                 self.remoteSession?.reDrawTimer.invalidate()
                 self.receivedUpdate = true
                 self.imageView?.removeFromSuperview()
                 self.imageView?.image = nil
                 self.imageView = nil
-                let minScale = getMinimumScale(fbW: CGFloat(fbW), fbH: CGFloat(fbH))
+                let minScale = self.getMinimumScale()
                 self.correctTopSpacingForOrientation()
                 let leftSpacing = self.leftSpacing
                 let topSpacing = self.topSpacing
+                let imageFrame = CGRect(x: leftSpacing, y: topSpacing, width: self.fbW*minScale, height: self.fbH*minScale)
                 if self.isOnMacOsOriPadOnMacOs() == true {
                     log_callback_str(message: "Running on MacOS")
-                    self.imageView = ShortTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                    self.imageView = ShortTapDragUIImageView(
+                        frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH
+                    )
                 } else {
                     log_callback_str(message: "Running on iOS")
                     if (self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.simulatedTouchpad.rawValue) {
-                        self.imageView = SimulatedTouchpadUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                        self.imageView = SimulatedTouchpadUIImageView(
+                            frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH
+                        )
                     } else {
-                        self.imageView = LongTapDragUIImageView(frame: CGRect(x: leftSpacing, y: topSpacing, width: CGFloat(fbW)*minScale, height: CGFloat(fbH)*minScale), stateKeeper: self)
+                        self.imageView = LongTapDragUIImageView(
+                            frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH
+                        )
                     }
                 }
                 self.imageView?.enableGestures()

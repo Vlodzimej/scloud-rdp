@@ -26,8 +26,15 @@
 #include <signal.h>
 #include <string.h>
 
-extern int fbW;
-extern int fbH;
+typedef struct {
+    uint8_t *frameBuffer;
+    uint8_t *oldFrameBuffer;
+    int resolutionRequested;
+    int fbW;
+    int fbH;
+} FrameBuffer;
+
+extern FrameBuffer globalFb;
 
 typedef bool (*pFrameBufferUpdateCallback)(int instance, uint8_t *buffer, int fbW, int fbH, int x, int y, int w, int h);
 extern pFrameBufferUpdateCallback frameBufferUpdateCallback;
@@ -43,12 +50,14 @@ typedef int (*pYesNoCallback)(int instance, int8_t *, int8_t *, int8_t *, int8_t
 extern pYesNoCallback yesNoCallback;
 
 extern bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int y, int w, int h);
-extern void (*framebuffer_resize_callback)(int, int fbW, int fbH);
+extern void (*framebuffer_resize_callback)(int instance, int fbW, int fbH);
 extern void (*failure_callback)(int, uint8_t *);
 
 bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, int h);
 void signal_handler(int signal, siginfo_t *info, void *reserved);
 void handle_signals(void);
 void clientCutText(void *c, char *hostClipboardContents, int size);
+void handle_signals(void);
+FrameBuffer *getCurrentFrameBuffer(void);
 
 #endif /* RemoteBridge_h */

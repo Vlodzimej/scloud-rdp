@@ -80,7 +80,7 @@ static char* get_password(rfbClient *cl){
 
 static void update (rfbClient *cl, int x, int y, int w, int h) {
     //rfbClientLog("Update received\n");
-    if (!framebuffer_update_callback(cl->instance, cl->frameBuffer, fbW, fbH, x, y, w, h)) {
+    if (!framebuffer_update_callback(cl->instance, globalFb.frameBuffer, globalFb.fbW, globalFb.fbH, x, y, w, h)) {
         // This session is a left-over backgrounded session and must quit.
         rfbClientLog("Must quit background session with instance number %d\n", cl->instance);
     }
@@ -88,17 +88,18 @@ static void update (rfbClient *cl, int x, int y, int w, int h) {
 
 static rfbBool resize(rfbClient *cl) {
     rfbClientLog("Resize RFB Buffer, allocating buffer\n");
-    fbW = cl->width;
-    fbH = cl->height;
-    rfbClientLog("Width, height: %d, %d\n", fbW, fbH);
+    globalFb.fbW = cl->width;
+    globalFb.fbH = cl->height;
+    rfbClientLog("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
     
-    uint8_t* oldFrameBuffer = cl->frameBuffer;
-    pixel_buffer_size = BYTES_PER_PIXEL*fbW*fbH*sizeof(char);
+    globalFb.oldFrameBuffer = cl->frameBuffer;
+    pixel_buffer_size = BYTES_PER_PIXEL*globalFb.fbW*globalFb.fbH*sizeof(char);
     cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-    framebuffer_resize_callback(cl->instance, fbW, fbH);
-    update(cl, 0, 0, fbW, fbH);
-    if (oldFrameBuffer != NULL) {
-        free(oldFrameBuffer);
+    globalFb.frameBuffer = cl->frameBuffer;
+    framebuffer_resize_callback(cl->instance, globalFb.fbW, globalFb.fbH);
+    update(cl, 0, 0, globalFb.fbW, globalFb.fbH);
+    if (globalFb.oldFrameBuffer != NULL) {
+        free(globalFb.oldFrameBuffer);
     }
     return TRUE;
 }
@@ -183,8 +184,8 @@ void *initializeVnc(int instance,
                     char* addr, char* user, char* password) {
     rfbClientLog("Initializing VNC session.\n");
     current_instance = instance;
-    fbW = 0;
-    fbH = 0;
+    globalFb.fbW = 0;
+    globalFb.fbH = 0;
     handle_signals();
     authRequested = false;
     authSucceeded = false;

@@ -31,6 +31,7 @@ extension UIImage {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Big)
         let bitsPerComponent = 8
+
         guard let context: CGContext = CGContext(data: pixels, width: withWidth, height: withHeight, bitsPerComponent: bitsPerComponent, bytesPerRow: 4*withWidth, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
             log_callback_str(message: "Could not create CGContext")
             return UIImage()
@@ -142,6 +143,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     var directionUp = false
     var directionDown = false
     let pointerLayer = CAShapeLayer()
+    var fbW: CGFloat = 0.0
+    var fbH: CGFloat = 0.0
     
     func initialize() {
         isMultipleTouchEnabled = true
@@ -235,9 +238,11 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         initialize()
     }
     
-    init(frame: CGRect, stateKeeper: StateKeeper?) {
+    init(frame: CGRect, stateKeeper: StateKeeper?, fbW: CGFloat, fbH: CGFloat) {
         super.init(frame: frame)
         self.stateKeeper = stateKeeper
+        self.fbW = fbW
+        self.fbH = fbH
         initialize()
     }
     
@@ -321,9 +326,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
 
-                self.remoteX = Float(CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0) * self.newX / self.width)
-                self.remoteY = Float(CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0) * self.newY / self.height)
-
+                self.remoteX = Float(self.fbW * self.newX / self.width)
+                self.remoteY = Float(self.fbH * self.newY / self.height)
                 stateKeeper?.remoteSession?.pointerEvent(
                     remoteX: remoteX, remoteY: remoteY,
                     firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,

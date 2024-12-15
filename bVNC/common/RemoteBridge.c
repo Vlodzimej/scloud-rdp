@@ -20,8 +20,6 @@
 #include "RemoteBridge.h"
 #include "Utility.h"
 
-int fbW = 0;
-int fbH = 0;
 bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int y, int w, int h);
 void (*framebuffer_resize_callback)(int, int fbW, int fbH);
 void (*failure_callback)(int, uint8_t *);
@@ -31,13 +29,14 @@ pFrameBufferResizeCallback frameBufferResizeCallback;
 pFailCallback failCallback;
 pClientLogCallback clientLogCallback;
 pYesNoCallback yesNoCallback;
+FrameBuffer globalFb;
 
 void signal_handler(int signal, siginfo_t *info, void *reserved) {
     client_log("Handling signal: %d", signal);
     failure_callback(-1, NULL);
 }
 
-void handle_signals() {
+void handle_signals(void) {
     struct sigaction handler;
     memset(&handler, 0, sizeof(handler));
     handler.sa_sigaction = signal_handler;
@@ -53,10 +52,14 @@ void handle_signals() {
 
 bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, int h) {
     //client_log("Update received");
-    if (!framebuffer_update_callback(instance, frameBuffer, fbW, fbH, x, y, w, h)) {
+    if (!framebuffer_update_callback(instance, globalFb.frameBuffer, globalFb.fbW, globalFb.fbH, x, y, w, h)) {
         // This session is a left-over backgrounded session and must quit.
         client_log("Must quit background session with instance number %d", instance);
         return false;
     }
     return true;
+}
+
+FrameBuffer *getCurrentFrameBuffer(void) {
+    return &globalFb;
 }

@@ -33,8 +33,6 @@ SpiceConnectionParameters p;
 
 pthread_t mainloop_worker;
 pthread_t spice_worker;
-extern int fbW;
-extern int fbH;
 int desiredFbW;
 int desiredFbH;
 uint32_t *guestClipboardP = NULL;
@@ -93,7 +91,7 @@ void engine_mainloop_worker(void *data) {
 }
 
 static void updateSpiceBuffer(int x, int y, int w, int h) {
-    if (!updateFramebuffer(p.instance, p.frameBuffer, x, y, w, h)) {
+    if (!updateFramebuffer(p.instance, globalFb.frameBuffer, x, y, w, h)) {
         disconnectSpice();
     }
 }
@@ -155,8 +153,8 @@ void *initializeSpice(int instance, int width, int height,
     
     gst_init_and_register_static_plugins();
     
-    fbW = 0;
-    fbH = 0;
+    globalFb.fbW = 0;
+    globalFb.fbH = 0;
     desiredFbW = width;
     desiredFbH = height;
     
@@ -203,8 +201,8 @@ void *initializeSpiceVv(int instance, int width, int height,
     
     gst_init_and_register_static_plugins();
     
-    fbW = 0;
-    fbH = 0;
+    globalFb.fbW = 0;
+    globalFb.fbH = 0;
     desiredFbW = width;
     desiredFbH = height;
     
@@ -223,27 +221,28 @@ void *initializeSpiceVv(int instance, int width, int height,
 
 static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     client_log("Resizing Draw Buffer, allocating buffer\n");
-    fbW = width;
-    fbH = height;
-    client_log("Width, height: %d, %d\n", fbW, fbH);
-    if (p.oldFrameBuffer != NULL) {
-        client_log("Freeing old framebuffer");
-        free(p.oldFrameBuffer);
-        p.oldFrameBuffer = NULL;
-    }
-    p.oldFrameBuffer = p.frameBuffer;
-    int pixel_buffer_size = bytesPerPixel*fbW*fbH*sizeof(char);
-    p.frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-    if (fbW > 0 && fbH > 0) {
-        framebuffer_resize_callback(p.instance, fbW, fbH);
-        updateFramebuffer(p.instance, p.frameBuffer, 0, 0, fbW, fbH);
-    }
+    client_log("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
     SpiceGlibGlueLockDisplayBuffer(&width, &height);
-    SpiceGlibGlueSetDisplayBuffer((uint32_t *)p.frameBuffer, width, height);
+    if (globalFb.oldFrameBuffer != NULL) {
+        client_log("Freeing old framebuffer");
+        free(globalFb.oldFrameBuffer);
+        globalFb.oldFrameBuffer = NULL;
+    }
+    globalFb.oldFrameBuffer = globalFb.frameBuffer;
+    int pixel_buffer_size = bytesPerPixel*width*height*sizeof(char);
+    uint8_t* new_buffer = (uint8_t*)malloc(pixel_buffer_size);
+    globalFb.frameBuffer = new_buffer;
+    globalFb.fbW = width;
+    globalFb.fbH = height;
+    if (width > 0 && height > 0) {
+        framebuffer_resize_callback(p.instance, globalFb.fbW, globalFb.fbH);
+        updateFramebuffer(p.instance, globalFb.frameBuffer, 0, 0, globalFb.fbW, globalFb.fbH);
+    }
+    SpiceGlibGlueSetDisplayBuffer((uint32_t *)globalFb.frameBuffer, width, height);
     SpiceGlibGlueUnlockDisplayBuffer();
     
-    if (fbW > 0 && fbH > 0 &&
-        (fbW != desiredFbW || fbH != desiredFbH) &&
+    if (globalFb.fbW > 0 && globalFb.fbH > 0 &&
+        (globalFb.fbW != desiredFbW || globalFb.fbH != desiredFbH) &&
         p.resolutionRequested == 0) {
         client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
         requestResolution(desiredFbW, desiredFbH);
@@ -298,3 +297,4 @@ int getButtonState(bool firstDown, bool secondDown, bool thirdDown, bool scrollU
 int32_t spiceKeyEvent(int16_t isDown, int32_t hardware_keycode) {
     return SpiceGlibGlue_SpiceKeyEvent(isDown, hardware_keycode);
 }
+

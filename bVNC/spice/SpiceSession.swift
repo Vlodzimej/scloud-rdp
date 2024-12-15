@@ -277,14 +277,4 @@ class SpiceSession: RemoteSession {
         log_callback_str(message: "Requesting remote resolution to be \(x)x\(y)")
         requestResolution(Int32(x), Int32(y));
     }
-    
-    override func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
-        if self.stateKeeper.isiPhoneOrPad() {
-            super.updateCallback(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
-        } else {
-            if self.connected {
-                self.draw(data: data, fbW: fbW, fbH: fbH)
-            }
-        }
-    }
 }

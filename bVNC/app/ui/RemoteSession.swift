@@ -238,19 +238,6 @@ func yes_no_dialog_callback(instance: Int32, title: UnsafeMutablePointer<Int8>?,
     return res
 }
 
-/**
- *
- * @return The smallest scale supported by the implementation; the scale at which
- * the bitmap would be smaller than the screen
- */
-func getMinimumScale(fbW: CGFloat, fbH: CGFloat) -> CGFloat {
-    let windowWidth = globalWindow!.bounds.maxX
-    let windowHeight = globalWindow!.bounds.maxY
-    let width = fbW <= 0 ? windowWidth : fbW
-    let height = fbH <= 0 ? windowHeight : fbH
-    return min(windowWidth / width, windowHeight / height);
-}
-
 func widthRatioLessThanHeightRatio(fbW: CGFloat, fbH: CGFloat) -> Bool {
     return globalWindow!.bounds.maxX / fbW < globalWindow!.bounds.maxY / fbH;
 }
@@ -274,7 +261,7 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
     }
     
     if (globalStateKeeper?.remoteSession?.hasDrawnFirstFrame ?? false) {
-        globalStateKeeper?.remoteSession?.updateCallback(data: data, fbW: fbW, fbH: fbH, x: x, y: y, w: w, h: h)
+        globalStateKeeper?.remoteSession?.updateCallback()
     }
     return true
 }
@@ -302,8 +289,6 @@ class RemoteSession {
     var user: String = ""
     var pass: String = ""
     
-    var fbW: Int32 = 0
-    var fbH: Int32 = 0
     var data: UnsafeMutablePointer<UInt8>?
     var connected: Bool = false
     var hasDrawnFirstFrame: Bool = false
@@ -556,17 +541,16 @@ class RemoteSession {
         }
     }
     
-    func draw(data: UnsafeMutableRawPointer?, fbW: Int32, fbH: Int32) {
-        UserInterface {
-            autoreleasepool {
-                self.fbW = fbW
-                self.fbH = fbH
+    func draw() {
+        let fb: FrameBuffer? = getCurrentFrameBuffer()?.pointee
+        let data = fb?.frameBuffer
+        let fbW = Int(fb?.fbW ?? 0)
+        let fbH = Int(fb?.fbH ?? 0)
+        autoreleasepool {
+            let newImage = UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
+            UserInterface {
                 if self.stateKeeper.isDrawing {
-                    self.stateKeeper.imageView?.image = UIImage.imageFromARGB32Bitmap(
-                        pixels: data,
-                        withWidth: Int(fbW),
-                        withHeight: Int(fbH)
-                    )
+                    self.stateKeeper.imageView?.image = newImage
                 }
             }
         }
@@ -575,22 +559,21 @@ class RemoteSession {
     @objc func reDraw() {
         UserInterface {
             self.reDrawTimer.invalidate()
-            if (self.stateKeeper.isDrawing && self.data != nil) {
-                self.draw(data: self.data, fbW: self.fbW, fbH: self.fbH)
+            if (self.stateKeeper.isDrawing) {
+                self.draw()
             }
         }
     }
     
-    func updateCallback(data: UnsafeMutablePointer<UInt8>?, fbW: Int32, fbH: Int32, x: Int32, y: Int32, w: Int32, h: Int32) {
+    func updateCallback() {
         if self.connected {
-            self.data = data
             let timeNow = CACurrentMediaTime()
             if (timeNow - lastUpdate < 0.032) {
                 // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
                 self.rescheduleReDrawTimer()
             } else {
                 // Drawing a frame normally
-                self.draw(data: data, fbW: fbW, fbH: fbH)
+                self.draw()
                 lastUpdate = CACurrentMediaTime()
             }
         }

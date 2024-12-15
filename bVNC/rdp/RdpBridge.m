@@ -65,10 +65,11 @@ static BOOL end_paint(rdpContext* context) {
 
     mfInfo *mfi = MFI_FROM_INSTANCE(context->instance);
     uint8_t* pixels = CGBitmapContextGetData(mfi->bitmap_context);
-    fbW = context->instance->settings->DesktopWidth;
-    fbH = context->instance->settings->DesktopHeight;
+    globalFb.fbW = context->instance->settings->DesktopWidth;
+    globalFb.fbH = context->instance->settings->DesktopHeight;
+    globalFb.frameBuffer = pixels;
 
-    if (!frameBufferUpdateCallback(i, pixels, fbW, fbH, 0, 0, fbW, fbH)) {
+    if (!frameBufferUpdateCallback(i, pixels, globalFb.fbW, globalFb.fbH, 0, 0, globalFb.fbW, globalFb.fbH)) {
         // This session is a left-over backgrounded session and must quit.
         printf("Must quit background session with instance number %d\n", i);
         disconnectRdp(context->instance);
@@ -97,9 +98,9 @@ static BOOL post_connect(freerdp *instance) {
 
     CGContextRef old_context = mfi->bitmap_context;
     mfi->bitmap_context = reallocate_buffer(mfi);
-    fbW = instance->settings->DesktopWidth;
-    fbH = instance->settings->DesktopHeight;
-    frameBufferResizeCallback(i, fbW, fbH);
+    globalFb.fbW = instance->settings->DesktopWidth;
+    globalFb.fbH = instance->settings->DesktopHeight;
+    frameBufferResizeCallback(i, globalFb.fbW, globalFb.fbH);
     if (old_context != NULL) {
         CGContextRelease(old_context);
     }
@@ -366,3 +367,4 @@ void clientCutText(void *i, char *hostClipboardContents, int size) {
         ios_send_clipboard_data(instance->context, (void*)hostClipboardContents, size);
     }
 }
+

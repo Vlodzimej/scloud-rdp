@@ -151,10 +151,8 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         var rX = lastX - diffX
         var rY = lastY - diffY
         
-        let fbW = CGFloat(self.stateKeeper?.remoteSession?.fbW ?? 0)
-        let fbH = CGFloat(self.stateKeeper?.remoteSession?.fbH ?? 0)
-        let newRemoteX = CGFloat(fbW * rX / self.width)
-        let newRemoteY = CGFloat(fbH * rY / self.height)
+        let newRemoteX = CGFloat(self.fbW * rX / self.width)
+        let newRemoteY = CGFloat(self.fbH * rY / self.height)
         
         if newRemoteX <= 0 {
             rX = 0
