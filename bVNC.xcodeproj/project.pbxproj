@@ -3625,7 +3625,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib";
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -3687,7 +3687,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib";
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -3758,7 +3758,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lresolv",
@@ -3840,7 +3840,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lresolv",
@@ -3911,7 +3911,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
 				PRELINK_LIBS = "";
@@ -3977,7 +3977,7 @@
 					"$(SDKROOT)/usr/lib/swift",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
@@ -4163,7 +4163,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
 				PRELINK_LIBS = "";
@@ -4228,7 +4228,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "-lresolv";
@@ -4495,7 +4495,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -4570,7 +4570,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -4636,7 +4636,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
@@ -4700,7 +4700,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 41;
+				MARKETING_VERSION = 40;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
