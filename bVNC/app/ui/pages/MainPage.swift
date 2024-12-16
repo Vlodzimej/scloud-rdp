@@ -88,7 +88,10 @@ struct MainPage : View {
                     rdpGatewayPass: selectedConnection["rdpGatewayPass"] ?? "",
                     rdpGatewayEnabled: Bool(selectedConnection["rdpGatewayEnabled"] ?? "false") ?? false,
                     consoleFile: selectedConnection["consoleFile"] ?? "",
-                    desktopScaleFactor: Utils.getScaleFactor(selectedConnection["desktopScaleFactor"])
+                    desktopScaleFactor: Utils.getScaleFactor(selectedConnection["desktopScaleFactor"]),
+                    customResolution: Bool(selectedConnection["customResolution"] ?? "false") ?? false,
+                    customWidth: Utils.getResolutionWidth(selectedConnection["customWidth"]),
+                    customHeight: Utils.getResolutionHeight(selectedConnection["customHeight"])
                 )
 
 
@@ -156,7 +159,10 @@ struct MainPageA_Previews : PreviewProvider {
             rdpGatewayPass: "",
             rdpGatewayEnabled: false,
             consoleFile: "",
-            desktopScaleFactor: Constants.DEFAULT_DESKTOP_SCALE_FACTOR
+            desktopScaleFactor: Constants.DEFAULT_DESKTOP_SCALE_FACTOR,
+            customResolution: false,
+            customWidth: 0,
+            customHeight: 0
         )
     }
 }

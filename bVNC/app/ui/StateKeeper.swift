@@ -345,6 +345,20 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.selectAndConnect(connection: connection)
     }
     
+    fileprivate func constructRemoteSession(_ customResolution: Bool, _ customWidth: Int, _ customHeight: Int) -> RemoteSession {
+        var remoteSession: RemoteSession? = nil
+        if Utils.isSpice() {
+            remoteSession = SpiceSession(
+                instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight
+            )
+        } else if Utils.isRdp() {
+            remoteSession = RdpSession(instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight)
+        } else {
+            remoteSession = VncSession(instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight)
+        }
+        return remoteSession!
+    }
+    
     /**
      Used to connect with an individual connection, potentially specially crafted from a console file or URI
      */
@@ -367,13 +381,10 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.currInst = (currInst + 1) % maxClCapacity
         self.isDrawing = true
         self.toggleModifiersIfDown()
-        if Utils.isSpice() {
-            self.remoteSession = SpiceSession(instance: currInst, stateKeeper: self)
-        } else if Utils.isRdp() {
-            self.remoteSession = RdpSession(instance: currInst, stateKeeper: self)
-        } else {
-            self.remoteSession = VncSession(instance: currInst, stateKeeper: self)
-        }
+        let customResolution = Bool(connection["customResolution"] ?? "false")!
+        let customWidth = Utils.getResolutionWidth(connection["customWidth"])
+        let customHeight = Utils.getResolutionHeight(connection["customHeight"])
+        self.remoteSession = constructRemoteSession(customResolution, customWidth, customHeight)
         self.remoteSession!.connect(currentConnection: connection)
         createAndRepositionButtons()
     }

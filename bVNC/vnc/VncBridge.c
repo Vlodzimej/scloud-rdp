@@ -419,7 +419,7 @@ void clientCutText(void *c, char *hostClipboardContents, int size) {
     }
 }
 
-void requestResolution(rfbClient *cl) {
+void requestVncResolution(rfbClient *cl) {
     if ((cl->screen.width != desiredFbW || cl->screen.height != desiredFbH) &&
         cl->screen.width > 0 && cl->screen.height > 0 && !cl->requestedResize) {
         client_log("Current screen.width: %hu, screen.height: %hu\n", cl->screen.width, cl->screen.height);

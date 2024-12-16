@@ -114,3 +114,6 @@ Email us directly at support@morpheusly.com for help.
 "TOUCH_INPUT_METHOD_SIMULATED_TOUCHPAD" = "Simulated Touchpad";
 "GENERATE_SSH_KEY_LABEL" = "Generate SSH Key";
 "DESKTOP_SCALE_LABEL" = "Desktop Scale Factor";
+"CUSTOM_RESOLUTION" = "Custom Resolution";
+"CUSTOM_WIDTH" = "Custom Resolution Width";
+"CUSTOM_HEIGHT" = "Custom Resolution Height";

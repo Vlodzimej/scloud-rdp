@@ -148,8 +148,19 @@ struct Utils {
     }
     
     static func getScaleFactor(_ scaleFactor: String?) -> Int {
-        let defaultValue = Constants.DEFAULT_DESKTOP_SCALE_FACTOR
+        return getIntFromString(scaleFactor, Constants.DEFAULT_DESKTOP_SCALE_FACTOR)
+    }
+    
+    static func getResolutionWidth(_ width: String?) -> Int {
+        return getIntFromString(width, Constants.DEFAULT_WIDTH)
+    }
+    
+    static func getResolutionHeight(_ height: String?) -> Int {
+        return getIntFromString(height, Constants.DEFAULT_HEIGHT)
+    }
+    
+    static func getIntFromString(_ stringSetting: String?, _ defaultValue: Int) -> Int {
         let defaultValueStr = String(defaultValue)
-        return Int(scaleFactor ?? defaultValueStr) ?? defaultValue
+        return Int(stringSetting ?? defaultValueStr) ?? defaultValue
     }
 }

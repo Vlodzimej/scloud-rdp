@@ -51,6 +51,9 @@ struct AddOrEditConnectionPage : View {
     @State var rdpGatewayEnabled: Bool
     @State var consoleFile: String
     @State var desktopScaleFactor: Int
+    @State var customResolution: Bool
+    @State var customWidth: Int
+    @State var customHeight: Int
 
     @State var generateSshKeyButtonClicked: Bool = false
     @State var instructions = "If you generate a key within the app, the private key will automatically be copied to your clipboard.\n\nPaste it into a file private.pem.\n\nRun the following commands to get a public key string for your authorized_keys file:\n\nchmod go-rwx private.pem\nssh-keygen -f private.pem -y\n"
@@ -84,7 +87,10 @@ struct AddOrEditConnectionPage : View {
             "requiresVpn": String(self.requiresVpn),
             "vpnUriScheme": self.vpnUriScheme.trimmingCharacters(in: .whitespacesAndNewlines),
             "consoleFile": self.consoleFile.trimmingCharacters(in: .whitespacesAndNewlines),
-            "desktopScaleFactor": String(self.desktopScaleFactor).trimmingCharacters(in: .whitespacesAndNewlines),
+            "desktopScaleFactor": String(self.desktopScaleFactor),
+            "customResolution": String(self.customResolution),
+            "customWidth": String(self.customWidth),
+            "customHeight": String(self.customHeight),
         ]
         if Utils.isSpice() {
             connection["tlsPort"] = self.tlsPortText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -429,6 +435,29 @@ struct AddOrEditConnectionPage : View {
                                 Text("\(scale)").tag(scale)
                             }
                         }.pickerStyle(.wheel)
+                    }
+                }
+                if !Utils.isVnc() {
+                    VStack {
+                        Toggle(isOn: $customResolution) {
+                            Text("CUSTOM_RESOLUTION").font(.title)
+                        }
+                        HStack {
+                            Text("CUSTOM_WIDTH").font(.title)
+                            Picker("", selection: $customWidth) {
+                                ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
+                                    Text("\(scale)").tag(scale)
+                                }
+                            }.pickerStyle(.wheel)
+                        }
+                        HStack {
+                            Text("CUSTOM_HEIGHT").font(.title)
+                            Picker("", selection: $customHeight) {
+                                ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
+                                    Text("\(scale)").tag(scale)
+                                }
+                            }.pickerStyle(.wheel)
+                        }
                     }
                 }
             }

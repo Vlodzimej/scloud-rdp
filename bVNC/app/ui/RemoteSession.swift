@@ -357,20 +357,34 @@ class RemoteSession {
         XK_Delete: RemoteSession.DEL
     ]
     
-    init(instance: Int, stateKeeper: StateKeeper) {
+    fileprivate func hideTitleBarIfOnMac() {
+        if self.stateKeeper.isOnMacOsOriPadOnMacOs() {
+#if targetEnvironment(macCatalyst)
+            globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
+#endif
+        }
+    }
+    
+    init(
+        instance: Int,
+        stateKeeper: StateKeeper,
+        customResolution: Bool,
+        customWidth: Int,
+        customHeight: Int
+    ) {
         log_callback_str(message: "Initializing Remote Session instance: \(instance)")
         self.instance = instance
         self.stateKeeper = stateKeeper
-        self.width = 0
-        self.height = 0
+        self.width = customWidth
+        self.height = customHeight
         self.cl = nil
-
-        let res = self.resolution()
-        self.width = res[0]
-        self.height = res[1]
+        hideTitleBarIfOnMac()
+        if !customResolution {
+            self.setDesiredResolution()
+        }
     }
     
-    func resolution() -> [Int] {
+    func setDesiredResolution() {
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
         log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
@@ -378,11 +392,7 @@ class RemoteSession {
         var newScreenWidth = screenWidth
         var newScreenHeight = screenHeight
         
-        if self.stateKeeper.isOnMacOsOriPadOnMacOs() {
-            #if targetEnvironment(macCatalyst)
-            globalWindow?.windowScene?.titlebar?.titleVisibility = .hidden
-            #endif
-        } else {
+        if !self.stateKeeper.isOnMacOsOriPadOnMacOs() {
             log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
             if (screenWidth > Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS ||
                 screenHeight > Constants.MAX_RESOLUTION_FOR_AUTO_SCALE_UP_IOS) {
@@ -394,7 +404,8 @@ class RemoteSession {
                 log_callback_str(message: "Automatically scaled iOS resolution up to \(newScreenWidth)x\(newScreenHeight)")
             }
         }
-        return [Int(newScreenWidth), Int(newScreenHeight)]
+        self.width = Int(newScreenWidth)
+        self.height = Int(newScreenHeight)
     }
     
     func updateCurrentState(buttonId: Int, isDown: Bool) -> Bool {
@@ -420,9 +431,6 @@ class RemoteSession {
     }
     
     func syncRemoteToLocalResolution() {
-        let res = self.resolution()
-        self.width = res[0]
-        self.height = res[1]
         requestRemoteResolution(x: self.width, y: self.height)
     }
     
