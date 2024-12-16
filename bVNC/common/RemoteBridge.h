@@ -35,6 +35,8 @@ typedef struct {
 } FrameBuffer;
 
 extern FrameBuffer globalFb;
+extern int desiredFbW;
+extern int desiredFbH;
 
 typedef bool (*pFrameBufferUpdateCallback)(int instance, uint8_t *buffer, int fbW, int fbH, int x, int y, int w, int h);
 extern pFrameBufferUpdateCallback frameBufferUpdateCallback;

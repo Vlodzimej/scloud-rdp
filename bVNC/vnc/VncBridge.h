@@ -35,7 +35,7 @@ void *initializeVnc(int instance,
                     void (*lock_wrt_tls_callback)(int instance),
                     void (*unlock_wrt_tls_callback)(int instance),
                     int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                    char* addr, char* user, char* password);
+                    char* addr, char* user, char* password, int width, int height);
 void connectVnc(void *c);
 void disconnectVnc(void *c);
 void sendKeyEvent(void *c, const char *character);
@@ -53,5 +53,6 @@ void (*unlock_write_tls_callback)(int instance);
 void sendWholeScreenUpdateRequest(void *c, bool incrementalUpdate);
 void setMaintainConnection(void *c, int state);
 void keepSessionFresh(void *c);
+void requestResolution(rfbClient *cl);
 
 #endif /* VncBridge_h */

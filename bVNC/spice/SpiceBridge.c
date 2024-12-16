@@ -33,8 +33,6 @@ SpiceConnectionParameters p;
 
 pthread_t mainloop_worker;
 pthread_t spice_worker;
-int desiredFbW;
-int desiredFbH;
 uint32_t *guestClipboardP = NULL;
 uint32_t *hostClipboardP = NULL;
 

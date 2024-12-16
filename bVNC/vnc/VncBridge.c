@@ -181,7 +181,7 @@ void *initializeVnc(int instance,
                     void (*lock_wrt_tls_callback)(int instance),
                     void (*unlock_wrt_tls_callback)(int instance),
                     int (*y_n_callback)(int instance, int8_t *, int8_t *, int8_t *, int8_t *, int8_t *, int),
-                    char* addr, char* user, char* password) {
+                    char* addr, char* user, char* password, int width, int height) {
     rfbClientLog("Initializing VNC session.\n");
     current_instance = instance;
     globalFb.fbW = 0;
@@ -232,7 +232,9 @@ void *initializeVnc(int instance,
     cl->LockWriteToTLS = lockWriteToTLS;
     cl->UnlockWriteToTLS = unlockWriteToTLS;
     cl->instance = instance;
-    
+    desiredFbW = width;
+    desiredFbH = height;
+
     if (!rfbInitClient(cl, &argc, argv)) {
         rfbClientLog("Failed to initialize VNC session\n");
         cl = NULL; /* rfbInitClient has already freed the client struct */
@@ -256,22 +258,9 @@ void connectVnc(void *c) {
         
     while (cl != NULL) {
         i = WaitForMessage(cl, 16000);
-        if (maintainConnection != true) {
-            cleanup(cl, NULL);
-            break;
-        }
-        if (i < 0) {
-            cleanup(cl, "CONNECTION_FAILED");
-            break;
-        }
-        //if (i) {
-            //rfbClientLog("Handling RFB Server Message\n");
-        //}
-        if (i == rfbSetDesktopSize) {
-            rfbClientLog("Server cut text!!!\n");
-        }
-        if (!HandleRFBServerMessage(cl)) {
-            cleanup(cl, "CONNECTION_FAILED");
+        if (maintainConnection != true || i < 0 || !HandleRFBServerMessage(cl)) {
+            char *message = maintainConnection ? "CONNECTION_FAILED" : NULL;
+            cleanup(cl, message);
             break;
         }
     }
@@ -427,5 +416,16 @@ void clientCutText(void *c, char *hostClipboardContents, int size) {
     rfbClient *cl = (rfbClient *)c;
     if (cl != NULL) {
         SendClientCutText(cl, hostClipboardContents, size);
+    }
+}
+
+void requestResolution(rfbClient *cl) {
+    if ((cl->screen.width != desiredFbW || cl->screen.height != desiredFbH) &&
+        cl->screen.width > 0 && cl->screen.height > 0 && !cl->requestedResize) {
+        client_log("Current screen.width: %hu, screen.height: %hu\n", cl->screen.width, cl->screen.height);
+        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
+        if (!SendExtDesktopSize(cl, (uint16_t)desiredFbW, (uint16_t)desiredFbH)) {
+            client_log("Failed to request new width, height\n");
+        }
     }
 }

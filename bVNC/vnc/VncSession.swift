@@ -45,7 +45,9 @@ class VncSession: RemoteSession {
                     yes_no_dialog_callback,
                     UnsafeMutablePointer<Int8>(mutating: (addressAndPort as NSString).utf8String),
                     UnsafeMutablePointer<Int8>(mutating: (self.user as NSString).utf8String),
-                    UnsafeMutablePointer<Int8>(mutating: (self.pass as NSString).utf8String)
+                    UnsafeMutablePointer<Int8>(mutating: (self.pass as NSString).utf8String),
+                    Int32(self.width),
+                    Int32(self.height)
                 )
                 if self.cl != nil {
                     self.stateKeeper.setCurrentInstance(inst: self.cl)
