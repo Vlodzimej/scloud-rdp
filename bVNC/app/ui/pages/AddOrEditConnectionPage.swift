@@ -434,10 +434,10 @@ struct AddOrEditConnectionPage : View {
                             ForEach(Constants.SCALE_FACTOR_ENTRIES, id: \.self) { scale in
                                 Text("\(scale)").tag(scale)
                             }
-                        }.pickerStyle(.wheel)
+                        }
                     }
                 }
-                VStack {
+                VStack(alignment: .leading) {
                     Toggle(isOn: $customResolution) {
                         Text("CUSTOM_RESOLUTION").font(.title)
                     }
@@ -447,7 +447,7 @@ struct AddOrEditConnectionPage : View {
                             ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
                                 Text("\(scale)").tag(scale)
                             }
-                        }.pickerStyle(.wheel)
+                        }
                     }
                     HStack {
                         Text("CUSTOM_HEIGHT").font(.title)
@@ -455,7 +455,7 @@ struct AddOrEditConnectionPage : View {
                             ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
                                 Text("\(scale)").tag(scale)
                             }
-                        }.pickerStyle(.wheel)
+                        }
                     }
                 }
             }

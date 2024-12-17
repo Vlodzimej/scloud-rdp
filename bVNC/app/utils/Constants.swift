@@ -34,8 +34,9 @@ class Constants {
     class var SCROLL_TOLERANCE: Double { return 1.2 }
     class var DEFAULT_BUNDLE_ID: String { return "com.iiordanov.bVNC" }
     class var DEFAULT_DESKTOP_SCALE_FACTOR: Int { return 100 }
-    class var SCALE_FACTOR_ENTRIES: Array<Int> { return Array(100...500) }
-    class var CUSTOM_RESOLUTION_ENTRIES: Array<Int> { return Array(480...4000) }
+    class var SCALE_FACTOR_ENTRIES: Array<Int> { return Array(stride(from: 100, to: 500, by: 10)) }
+    class var CUSTOM_RESOLUTION_ENTRIES: Array<Int> { return Array(stride(from: 128, to: 4097, by: 128)) }
     class var DEFAULT_WIDTH: Int { return 1280 }
-    class var DEFAULT_HEIGHT: Int { return 800 }
+    class var DEFAULT_HEIGHT: Int { return 768 }
 }
+
