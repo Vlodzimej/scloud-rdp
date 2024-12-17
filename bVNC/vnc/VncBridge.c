@@ -88,19 +88,21 @@ static void update (rfbClient *cl, int x, int y, int w, int h) {
 
 static rfbBool resize(rfbClient *cl) {
     rfbClientLog("Resize RFB Buffer, allocating buffer\n");
-    globalFb.fbW = cl->width;
-    globalFb.fbH = cl->height;
-    rfbClientLog("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
-    
-    globalFb.oldFrameBuffer = cl->frameBuffer;
-    pixel_buffer_size = BYTES_PER_PIXEL*globalFb.fbW*globalFb.fbH*sizeof(char);
-    cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-    globalFb.frameBuffer = cl->frameBuffer;
-    framebuffer_resize_callback(cl->instance, globalFb.fbW, globalFb.fbH);
-    update(cl, 0, 0, globalFb.fbW, globalFb.fbH);
-    if (globalFb.oldFrameBuffer != NULL) {
-        free(globalFb.oldFrameBuffer);
+    if (globalFb.fbW != cl->width || globalFb.fbH != cl->height) {
+        globalFb.fbW = cl->width;
+        globalFb.fbH = cl->height;
+        rfbClientLog("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
+        globalFb.oldFrameBuffer = cl->frameBuffer;
+        pixel_buffer_size = BYTES_PER_PIXEL*globalFb.fbW*globalFb.fbH*sizeof(char);
+        cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
+        globalFb.frameBuffer = cl->frameBuffer;
+        framebuffer_resize_callback(cl->instance, globalFb.fbW, globalFb.fbH);
+        update(cl, 0, 0, globalFb.fbW, globalFb.fbH);
+        if (globalFb.oldFrameBuffer != NULL) {
+            free(globalFb.oldFrameBuffer);
+        }
     }
+    requestVncResolutionIfNecessary(cl, desiredFbW, desiredFbH);
     return TRUE;
 }
 
@@ -419,12 +421,20 @@ void clientCutText(void *c, char *hostClipboardContents, int size) {
     }
 }
 
-void requestVncResolution(rfbClient *cl) {
-    if ((cl->screen.width != desiredFbW || cl->screen.height != desiredFbH) &&
-        cl->screen.width > 0 && cl->screen.height > 0 && !cl->requestedResize) {
-        client_log("Current screen.width: %hu, screen.height: %hu\n", cl->screen.width, cl->screen.height);
+void requestVncResolutionIfNecessary(void *c, int newW, int newH) {
+    rfbClient *client = (rfbClient *)c;
+    int screenId = client->screen.id;
+    uint16_t w = rfbClientSwap16IfLE(client->screen.width);
+    uint16_t h = rfbClientSwap16IfLE(client->screen.height);
+    desiredFbW = newW;
+    desiredFbH = newH;
+    if (screenId != 0 &&
+        (w != desiredFbW || h != desiredFbH) &&
+        w > 0 && h > 0 && !client->requestedResize) {
+        client_log("Current width, height: %hu, %hu\n", w, h);
         client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
-        if (!SendExtDesktopSize(cl, (uint16_t)desiredFbW, (uint16_t)desiredFbH)) {
+        client->requestedResize = FALSE;
+        if (!SendExtDesktopSize(client, desiredFbW, desiredFbH)) {
             client_log("Failed to request new width, height\n");
         }
     }

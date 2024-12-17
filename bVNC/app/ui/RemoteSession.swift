@@ -292,6 +292,7 @@ class RemoteSession {
     var data: UnsafeMutablePointer<UInt8>?
     var connected: Bool = false
     var hasDrawnFirstFrame: Bool = false
+    var customResolution: Bool = false
     var reDrawTimer: Timer = Timer()
 
     class var LCONTROL: Int { return 29 }
@@ -378,13 +379,14 @@ class RemoteSession {
         self.width = customWidth
         self.height = customHeight
         self.cl = nil
-        hideTitleBarIfOnMac()
-        if !customResolution {
-            self.setDesiredResolution()
+        self.hideTitleBarIfOnMac()
+        self.customResolution = customResolution
+        if !self.customResolution {
+            self.setWidthAndHeightAutomatically()
         }
     }
     
-    func setDesiredResolution() {
+    func setWidthAndHeightAutomatically() {
         let screenWidth = (globalWindow?.frame.size.width ?? 0)
         let screenHeight = (globalWindow?.frame.size.height ?? 0)
         log_callback_str(message: "Device reports screen resolution \(screenWidth)x\(screenHeight)")
@@ -431,6 +433,10 @@ class RemoteSession {
     }
     
     func syncRemoteToLocalResolution() {
+        if !self.customResolution {
+            self.setWidthAndHeightAutomatically()
+        }
+        log_callback_str(message: "syncRemoteToLocalResolution: \(self.width)x\(self.height)")
         requestRemoteResolution(x: self.width, y: self.height)
     }
     

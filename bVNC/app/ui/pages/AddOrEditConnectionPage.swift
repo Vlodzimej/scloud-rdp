@@ -437,27 +437,25 @@ struct AddOrEditConnectionPage : View {
                         }.pickerStyle(.wheel)
                     }
                 }
-                if !Utils.isVnc() {
-                    VStack {
-                        Toggle(isOn: $customResolution) {
-                            Text("CUSTOM_RESOLUTION").font(.title)
-                        }
-                        HStack {
-                            Text("CUSTOM_WIDTH").font(.title)
-                            Picker("", selection: $customWidth) {
-                                ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
-                                    Text("\(scale)").tag(scale)
-                                }
-                            }.pickerStyle(.wheel)
-                        }
-                        HStack {
-                            Text("CUSTOM_HEIGHT").font(.title)
-                            Picker("", selection: $customHeight) {
-                                ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
-                                    Text("\(scale)").tag(scale)
-                                }
-                            }.pickerStyle(.wheel)
-                        }
+                VStack {
+                    Toggle(isOn: $customResolution) {
+                        Text("CUSTOM_RESOLUTION").font(.title)
+                    }
+                    HStack {
+                        Text("CUSTOM_WIDTH").font(.title)
+                        Picker("", selection: $customWidth) {
+                            ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
+                                Text("\(scale)").tag(scale)
+                            }
+                        }.pickerStyle(.wheel)
+                    }
+                    HStack {
+                        Text("CUSTOM_HEIGHT").font(.title)
+                        Picker("", selection: $customHeight) {
+                            ForEach(Constants.CUSTOM_RESOLUTION_ENTRIES, id: \.self) { scale in
+                                Text("\(scale)").tag(scale)
+                            }
+                        }.pickerStyle(.wheel)
                     }
                 }
             }

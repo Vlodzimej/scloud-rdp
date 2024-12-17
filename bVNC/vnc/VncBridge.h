@@ -53,6 +53,6 @@ void (*unlock_write_tls_callback)(int instance);
 void sendWholeScreenUpdateRequest(void *c, bool incrementalUpdate);
 void setMaintainConnection(void *c, int state);
 void keepSessionFresh(void *c);
-void requestVncResolution(rfbClient *cl);
+void requestVncResolutionIfNecessary(void *c, int newW, int newH);
 
 #endif /* VncBridge_h */

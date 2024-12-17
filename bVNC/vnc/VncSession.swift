@@ -131,11 +131,8 @@ class VncSession: RemoteSession {
         sendWholeScreenUpdateRequest(self.cl, incrementalUpdate)
     }
     
-    override func syncRemoteToLocalResolution() {
-        // Not used
-    }
-    
     override func requestRemoteResolution(x: Int, y: Int) {
+        requestVncResolutionIfNecessary(self.cl, Int32(x), Int32(y))
         self.stateKeeper.reDraw()
     }
 }

@@ -1071,9 +1071,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if currInst >= 0 && isDrawing && self.imageView?.image != nil {
             resize_callback(instance: Int32(currInst), fbW: globalFb.fbW, fbH: globalFb.fbH)
         }
-        // FIXME: Make a config option
-        let syncRemoteToLocalResolution = true
-        if syncRemoteToLocalResolution {
+
+        if !(self.remoteSession?.customResolution ?? false) {
             self.remoteSession?.syncRemoteToLocalResolution()
         }
     }
@@ -1124,6 +1123,9 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.keepSessionRefreshed()
                 self.clipboardMonitor?.startMonitoring()
                 self.remoteSession?.hasDrawnFirstFrame = true
+                if (!Utils.isRdp()) {
+                    self.reDraw()
+                }
             }
         }
     }
