@@ -50,11 +50,17 @@ static gint get_display_id(SpiceDisplay *display)
 }
 
 void requestResolution(int w, int h) {
-    SpiceDisplay* display = global_display();
-    SpiceDisplayPrivate *d = SPICE_DISPLAY_GET_PRIVATE(display);
-    if (d != NULL) {
-        spice_main_channel_update_display_enabled(d->main, get_display_id(display), TRUE, FALSE);
-        spice_main_channel_update_display(d->main, get_display_id(display), 0, 0, w, h, TRUE);
+    if (globalFb.numResolutionRetries < MAX_RESOLUTION_RETRIES &&
+        globalFb.fbW > 0 && globalFb.fbH > 0 &&
+        (globalFb.fbW != globalFb.desiredFbW || globalFb.fbH != globalFb.desiredFbH)) {
+        client_log("Requesting new width, height: %d, %d\n", globalFb.desiredFbW, globalFb.desiredFbH);
+        SpiceDisplay* display = global_display();
+        SpiceDisplayPrivate *d = SPICE_DISPLAY_GET_PRIVATE(display);
+        if (d != NULL) {
+            globalFb.numResolutionRetries += 1;
+            spice_main_channel_update_display_enabled(d->main, get_display_id(display), TRUE, FALSE);
+            spice_main_channel_update_display(d->main, get_display_id(display), 0, 0, w, h, TRUE);
+        }
     }
 }
 
@@ -153,8 +159,7 @@ void *initializeSpice(int instance, int width, int height,
     
     globalFb.fbW = 0;
     globalFb.fbH = 0;
-    desiredFbW = width;
-    desiredFbH = height;
+    resetDesiredResolution(width, height);
     
     p.resolutionRequested = 0;
     p.instance = instance;
@@ -201,8 +206,7 @@ void *initializeSpiceVv(int instance, int width, int height,
     
     globalFb.fbW = 0;
     globalFb.fbH = 0;
-    desiredFbW = width;
-    desiredFbH = height;
+    resetDesiredResolution(width, height);
     
     p.resolutionRequested = 0;
     p.instance = instance;
@@ -239,13 +243,7 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     SpiceGlibGlueSetDisplayBuffer((uint32_t *)globalFb.frameBuffer, width, height);
     SpiceGlibGlueUnlockDisplayBuffer();
     
-    if (globalFb.fbW > 0 && globalFb.fbH > 0 &&
-        (globalFb.fbW != desiredFbW || globalFb.fbH != desiredFbH) &&
-        p.resolutionRequested == 0) {
-        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
-        requestResolution(desiredFbW, desiredFbH);
-        p.resolutionRequested = 1;
-    }
+    requestResolution(globalFb.desiredFbW, globalFb.desiredFbH);
 }
 
 void disconnectSpice() {

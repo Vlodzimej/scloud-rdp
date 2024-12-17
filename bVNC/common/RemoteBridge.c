@@ -30,8 +30,8 @@ pFailCallback failCallback;
 pClientLogCallback clientLogCallback;
 pYesNoCallback yesNoCallback;
 FrameBuffer globalFb;
-int desiredFbW;
-int desiredFbH;
+
+const int MAX_RESOLUTION_RETRIES = 3;
 
 void signal_handler(int signal, siginfo_t *info, void *reserved) {
     client_log("Handling signal: %d", signal);
@@ -64,4 +64,10 @@ bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, 
 
 FrameBuffer *getCurrentFrameBuffer(void) {
     return &globalFb;
+}
+
+void resetDesiredResolution(int width, int height) {
+    globalFb.desiredFbW = width;
+    globalFb.desiredFbH = height;
+    globalFb.numResolutionRetries = 0;
 }

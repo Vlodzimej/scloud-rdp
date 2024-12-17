@@ -32,11 +32,14 @@ typedef struct {
     int resolutionRequested;
     int fbW;
     int fbH;
+    int desiredFbW;
+    int desiredFbH;
+    int numResolutionRetries;
 } FrameBuffer;
 
+extern const int MAX_RESOLUTION_RETRIES;
+
 extern FrameBuffer globalFb;
-extern int desiredFbW;
-extern int desiredFbH;
 
 typedef bool (*pFrameBufferUpdateCallback)(int instance, uint8_t *buffer, int fbW, int fbH, int x, int y, int w, int h);
 extern pFrameBufferUpdateCallback frameBufferUpdateCallback;
@@ -61,5 +64,6 @@ void handle_signals(void);
 void clientCutText(void *c, char *hostClipboardContents, int size);
 void handle_signals(void);
 FrameBuffer *getCurrentFrameBuffer(void);
+void resetDesiredResolution(int width, int height);
 
 #endif /* RemoteBridge_h */

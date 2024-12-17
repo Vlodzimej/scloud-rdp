@@ -132,6 +132,7 @@ class VncSession: RemoteSession {
     }
     
     override func requestRemoteResolution(x: Int, y: Int) {
+        resetDesiredResolution(Int32(x), Int32(y))
         requestVncResolutionIfNecessary(self.cl, Int32(x), Int32(y))
         self.stateKeeper.reDraw()
     }

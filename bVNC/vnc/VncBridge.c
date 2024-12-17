@@ -102,7 +102,7 @@ static rfbBool resize(rfbClient *cl) {
             free(globalFb.oldFrameBuffer);
         }
     }
-    requestVncResolutionIfNecessary(cl, desiredFbW, desiredFbH);
+    requestVncResolutionIfNecessary(cl, globalFb.desiredFbW, globalFb.desiredFbH);
     return TRUE;
 }
 
@@ -174,6 +174,8 @@ static void vnc_client_log(const char *format, ...) {
     }
 }
 
+
+
 void *initializeVnc(int instance,
                     bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                     void (*fb_resize_callback)(int instance, int fbW, int fbH),
@@ -188,6 +190,7 @@ void *initializeVnc(int instance,
     current_instance = instance;
     globalFb.fbW = 0;
     globalFb.fbH = 0;
+    resetDesiredResolution(width, height);
     handle_signals();
     authRequested = false;
     authSucceeded = false;
@@ -234,8 +237,6 @@ void *initializeVnc(int instance,
     cl->LockWriteToTLS = lockWriteToTLS;
     cl->UnlockWriteToTLS = unlockWriteToTLS;
     cl->instance = instance;
-    desiredFbW = width;
-    desiredFbH = height;
 
     if (!rfbInitClient(cl, &argc, argv)) {
         rfbClientLog("Failed to initialize VNC session\n");
@@ -426,15 +427,17 @@ void requestVncResolutionIfNecessary(void *c, int newW, int newH) {
     int screenId = client->screen.id;
     uint16_t w = rfbClientSwap16IfLE(client->screen.width);
     uint16_t h = rfbClientSwap16IfLE(client->screen.height);
-    desiredFbW = newW;
-    desiredFbH = newH;
-    if (screenId != 0 &&
-        (w != desiredFbW || h != desiredFbH) &&
+    globalFb.desiredFbW = newW;
+    globalFb.desiredFbH = newH;
+    if (globalFb.numResolutionRetries <= MAX_RESOLUTION_RETRIES &&
+        screenId != 0 &&
+        (w != globalFb.desiredFbW || h != globalFb.desiredFbH) &&
         w > 0 && h > 0 && !client->requestedResize) {
+        globalFb.numResolutionRetries += 1;
         client_log("Current width, height: %hu, %hu\n", w, h);
-        client_log("Requesting new width, height: %d, %d\n", desiredFbW, desiredFbH);
+        client_log("Requesting new width, height: %d, %d\n", globalFb.desiredFbW, globalFb.desiredFbH);
         client->requestedResize = FALSE;
-        if (!SendExtDesktopSize(client, desiredFbW, desiredFbH)) {
+        if (!SendExtDesktopSize(client, globalFb.desiredFbW, globalFb.desiredFbH)) {
             client_log("Failed to request new width, height\n");
         }
     }
