@@ -9,8 +9,6 @@ brew install coreutils cmake
 
 PARALLELISM=16
 
-export LDFLAGS="-lc++"
-
 DEP_BASE_PATH=../aspice-lib-ios/ios_universal
 ISSH_DEP_PATH=../iSSH2-1.1.1w
 JPEG_DEP_PATH=../libjpeg-turbo
@@ -29,6 +27,7 @@ then
   patch -p1 < ../freerdp_sse_guards.patch
 
   # iOS Build
+  export LDFLAGS="-lc++"
   cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
       -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
       -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
@@ -73,6 +72,12 @@ do
 
     MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
+    if [ "${arch}" == "arm64" ]
+    then
+      export LDFLAGS="-lc++ -Wl,-ld_classic"
+    else
+      export LDFLAGS="-lc++"
+    fi
     cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
         -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
         -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
