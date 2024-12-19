@@ -1123,7 +1123,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 self.keepSessionRefreshed()
                 self.clipboardMonitor?.startMonitoring()
                 self.remoteSession?.hasDrawnFirstFrame = true
-                if (!Utils.isRdp()) {
+                if (Utils.isSpice()) {
                     self.reDraw()
                 }
             }

@@ -400,9 +400,7 @@ class RdpSession: RemoteSession {
     
     override func requestRemoteResolution(x: Int, y: Int) {
         log_callback_str(message: "Requesting remote resolution to be \(x)x\(y)")
-        Background {
-            resizeRemoteRdpDesktop(self.cl, Int32(x), Int32(y))
-            self.stateKeeper.reDraw()
-        }
+        resizeRemoteRdpDesktop(self.cl, Int32(x), Int32(y))
+        self.stateKeeper.reDraw()
     }
 }

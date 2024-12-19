@@ -54,5 +54,7 @@ void sendWholeScreenUpdateRequest(void *c, bool incrementalUpdate);
 void setMaintainConnection(void *c, int state);
 void keepSessionFresh(void *c);
 void requestVncResolutionIfNecessary(void *c, int newW, int newH);
+rfbBool lockWriteToTLS(rfbClient *client);
+rfbBool unlockWriteToTLS(rfbClient *client);
 
 #endif /* VncBridge_h */

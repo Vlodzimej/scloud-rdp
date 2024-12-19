@@ -89,18 +89,18 @@ static void update (rfbClient *cl, int x, int y, int w, int h) {
 static rfbBool resize(rfbClient *cl) {
     rfbClientLog("Resize RFB Buffer, allocating buffer\n");
     if (globalFb.fbW != cl->width || globalFb.fbH != cl->height) {
-        globalFb.fbW = cl->width;
-        globalFb.fbH = cl->height;
-        rfbClientLog("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
-        globalFb.oldFrameBuffer = cl->frameBuffer;
-        pixel_buffer_size = BYTES_PER_PIXEL*globalFb.fbW*globalFb.fbH*sizeof(char);
-        cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
-        globalFb.frameBuffer = cl->frameBuffer;
-        framebuffer_resize_callback(cl->instance, globalFb.fbW, globalFb.fbH);
-        update(cl, 0, 0, globalFb.fbW, globalFb.fbH);
         if (globalFb.oldFrameBuffer != NULL) {
             free(globalFb.oldFrameBuffer);
         }
+        rfbClientLog("Width, height: %d, %d\n", globalFb.fbW, globalFb.fbH);
+        globalFb.oldFrameBuffer = cl->frameBuffer;
+        pixel_buffer_size = BYTES_PER_PIXEL*cl->width*cl->height*sizeof(char);
+        cl->frameBuffer = (uint8_t*)malloc(pixel_buffer_size);
+        globalFb.frameBuffer = cl->frameBuffer;
+        globalFb.fbW = cl->width;
+        globalFb.fbH = cl->height;
+        framebuffer_resize_callback(cl->instance, globalFb.fbW, globalFb.fbH);
+        update(cl, 0, 0, globalFb.fbW, globalFb.fbH);
     }
     requestVncResolutionIfNecessary(cl, globalFb.desiredFbW, globalFb.desiredFbH);
     return TRUE;
@@ -424,15 +424,28 @@ void clientCutText(void *c, char *hostClipboardContents, int size) {
 
 void requestVncResolutionIfNecessary(void *c, int newW, int newH) {
     rfbClient *client = (rfbClient *)c;
+    if (client == NULL) {
+        return;
+    }
     int screenId = client->screen.id;
     uint16_t w = rfbClientSwap16IfLE(client->screen.width);
     uint16_t h = rfbClientSwap16IfLE(client->screen.height);
     globalFb.desiredFbW = newW;
     globalFb.desiredFbH = newH;
-    if (globalFb.numResolutionRetries <= MAX_RESOLUTION_RETRIES &&
-        screenId != 0 &&
-        (w != globalFb.desiredFbW || h != globalFb.desiredFbH) &&
-        w > 0 && h > 0 && !client->requestedResize) {
+    bool retriesNotExceeded = globalFb.numResolutionRetries <= MAX_RESOLUTION_RETRIES;
+    bool screenIdValid = screenId != 0;
+    bool desiredResolutionNotMatching = (w != globalFb.desiredFbW || h != globalFb.desiredFbH);
+    bool screenDimensionsValid = w > 0 && h > 0;
+    bool inProgressOfRequestingResize = !client->requestedResize;
+    client_log("requestVncResolutionIfNecessary - retriesNotExceeded: %d, screenIdValid: %d, desiredResolutionNotMatching: %d, screenDimensionsValid: %d, inProgressOfRequestingResize: %d\n",
+               retriesNotExceeded, screenIdValid, desiredResolutionNotMatching, screenDimensionsValid, inProgressOfRequestingResize);
+    if (
+        retriesNotExceeded &&
+        screenIdValid &&
+        desiredResolutionNotMatching &&
+        screenDimensionsValid &&
+        inProgressOfRequestingResize
+    ) {
         globalFb.numResolutionRetries += 1;
         client_log("Current width, height: %hu, %hu\n", w, h);
         client_log("Requesting new width, height: %d, %d\n", globalFb.desiredFbW, globalFb.desiredFbH);
