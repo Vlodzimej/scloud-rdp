@@ -582,7 +582,7 @@ class RemoteSession {
     func updateCallback() {
         if self.connected {
             let timeNow = CACurrentMediaTime()
-            if (timeNow - lastUpdate < 0.032) {
+            if (timeNow - lastUpdate < 0.0167) {
                 // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
                 self.rescheduleReDrawTimer()
             } else {
