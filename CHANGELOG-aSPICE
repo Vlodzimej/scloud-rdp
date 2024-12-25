@@ -1,5 +1,7 @@
+43
+  - Fix for on-screen buttons and window resize
 42
-  - Increased framerate
+  - Increased framerate limit to 60
 41
   - Performance optimizations
 40
