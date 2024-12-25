@@ -1075,6 +1075,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         if !(self.remoteSession?.customResolution ?? false) {
             self.remoteSession?.syncRemoteToLocalResolution()
         }
+        createAndRepositionButtons()
     }
     
     func exitNow() {
