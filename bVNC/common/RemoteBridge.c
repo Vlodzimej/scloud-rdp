@@ -24,6 +24,7 @@ bool (*framebuffer_update_callback)(int, uint8_t *, int fbW, int fbH, int x, int
 void (*framebuffer_resize_callback)(int, int fbW, int fbH);
 void (*failure_callback)(int, uint8_t *);
 
+pCursorShapeUpdateCallback cursorShapeUpdateCallback;
 pFrameBufferUpdateCallback frameBufferUpdateCallback;
 pFrameBufferResizeCallback frameBufferResizeCallback;
 pFailCallback failCallback;
@@ -60,6 +61,10 @@ bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, 
         return false;
     }
     return true;
+}
+
+void updateCursorShape(int instance, int w, int h, int x, int y, int *data) {
+    cursorShapeUpdateCallback(instance, w, h, x, y, data);
 }
 
 FrameBuffer *getCurrentFrameBuffer(void) {

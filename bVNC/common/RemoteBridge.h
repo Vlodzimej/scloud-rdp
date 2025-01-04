@@ -41,6 +41,8 @@ extern const int MAX_RESOLUTION_RETRIES;
 
 extern FrameBuffer globalFb;
 
+typedef void (*pCursorShapeUpdateCallback)(int instance, int w, int h, int x, int y, uint8_t *);
+extern pCursorShapeUpdateCallback cursorShapeUpdateCallback;
 typedef bool (*pFrameBufferUpdateCallback)(int instance, uint8_t *buffer, int fbW, int fbH, int x, int y, int w, int h);
 extern pFrameBufferUpdateCallback frameBufferUpdateCallback;
 typedef void (*pFrameBufferResizeCallback)(int instance, int fbW, int fbH);
@@ -65,5 +67,6 @@ void clientCutText(void *c, char *hostClipboardContents, int size);
 void handle_signals(void);
 FrameBuffer *getCurrentFrameBuffer(void);
 void resetDesiredResolution(int width, int height);
+void updateCursorShape(int instance, int w, int h, int x, int y, int *data);
 
 #endif /* RemoteBridge_h */

@@ -266,6 +266,14 @@ func update_callback(instance: Int32, data: UnsafeMutablePointer<UInt8>?, fbW: I
     return true
 }
 
+func cursor_shape_updated_callback(
+    instance: Int32, w: Int32, h: Int32, x: Int32, y: Int32, data: UnsafeMutablePointer<UInt8>?
+) {
+    let pointer = globalStateKeeper?.imageView?.getPointerData()
+    let newPointer = PointerData(pixels: data, width: Int(w), height: Int(h), hotX: Int(x), hotY: Int(y), x: pointer?.getRemoteX() ?? 0, y: pointer?.getRemoteY() ?? 0)
+    globalStateKeeper?.imageView?.setPointerData(pointerData: newPointer)
+}
+
 class RemoteSession {
     let stateKeeper: StateKeeper
     var instance: Int
@@ -556,15 +564,19 @@ class RemoteSession {
     }
     
     func draw() {
-        let fb: FrameBuffer? = getCurrentFrameBuffer()?.pointee
-        let data = fb?.frameBuffer
-        let fbW = Int(fb?.fbW ?? 0)
-        let fbH = Int(fb?.fbH ?? 0)
         autoreleasepool {
-            let newImage = UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
-            UserInterface {
+            Background {
+                let fb: FrameBuffer? = getCurrentFrameBuffer()?.pointee
+                let data = fb?.frameBuffer
+                let fbW = Int(fb?.fbW ?? 0)
+                let fbH = Int(fb?.fbH ?? 0)
+                var newImage = self.stateKeeper.imageView?.getPointerData().drawIn(
+                    image: UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
+                )
                 if self.stateKeeper.isDrawing {
-                    self.stateKeeper.imageView?.image = newImage
+                    UserInterface {
+                        self.stateKeeper.imageView?.image = newImage
+                    }
                 }
             }
         }

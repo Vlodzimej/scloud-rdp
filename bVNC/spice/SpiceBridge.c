@@ -64,12 +64,16 @@ void requestResolution(int w, int h) {
     }
 }
 
-void spiceConnectionFailure() {
+void spiceConnectionFailure(void) {
     failure_callback(p.instance, (uint8_t*)"SPICE_SESSION_DISCONNECTED");
 }
 
-void spiceAuthenticationFailure() {
+void spiceAuthenticationFailure(void) {
     failure_callback(p.instance, (uint8_t*)"SPICE_AUTHENTICATION_FAILED_TITLE");
+}
+
+void spiceUpdateCursorShape(int w, int h, int x, int y, int *data) {
+    updateCursorShape(p.instance, w, h, x, y, data);
 }
 
 void engine_spice_worker(void *data) {
@@ -87,6 +91,7 @@ void engine_spice_worker(void *data) {
     SpiceGlibGlue_SetBufferUpdateCallback(updateSpiceBuffer);
     SpiceGlibGlue_SetDisconnectCallback(spiceConnectionFailure);
     SpiceGlibGlue_SetAuthFailedCallback(spiceAuthenticationFailure);
+    SpiceGlibGlue_SetCursorShapeUpdatedCallback(spiceUpdateCursorShape);
 }
 
 void engine_mainloop_worker(void *data) {
@@ -105,7 +110,7 @@ GST_PLUGIN_STATIC_DECLARE(coreelements);  GST_PLUGIN_STATIC_DECLARE(coretracers)
 GST_PLUGIN_STATIC_DECLARE(osxaudio);
 
 /* Call this function to register static plugins */
-void gst_init_and_register_static_plugins () {
+void gst_init_and_register_static_plugins (void) {
     GError * gst_init_error = NULL;
     gst_init_check(NULL, NULL, &gst_init_error);
     
@@ -119,7 +124,7 @@ void gst_init_and_register_static_plugins () {
     }
 }
 
-static void initClipboardStorage() {
+static void initClipboardStorage(void) {
     if (guestClipboardP == NULL) {
         guestClipboardP = malloc(CB_SIZE);
     }
@@ -139,6 +144,7 @@ void clientCutText(void *c, char *hostClipboardContents, int size) {
 }
 
 void *initializeSpice(int instance, int width, int height,
+                      pCursorShapeUpdateCallback cursor_update_callback,
                       bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                       void (*fb_resize_callback)(int instance, int fbW, int fbH),
                       void (*fail_callback)(int instance, uint8_t *),
@@ -149,6 +155,7 @@ void *initializeSpice(int instance, int width, int height,
                       char* cert_subject, bool enable_sound) {
     client_log("Initializing SPICE session\n");
     
+    cursorShapeUpdateCallback = cursor_update_callback;
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
@@ -187,6 +194,7 @@ void *initializeSpice(int instance, int width, int height,
 }
 
 void *initializeSpiceVv(int instance, int width, int height,
+                        pCursorShapeUpdateCallback cursor_update_callback,
                         bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                         void (*fb_resize_callback)(int instance, int fbW, int fbH),
                         void (*fail_callback)(int instance, uint8_t *),
@@ -196,6 +204,7 @@ void *initializeSpiceVv(int instance, int width, int height,
                         char* vv_file, bool enable_sound) {
     client_log("Initializing SPICE session from vv file\n");
     
+    cursorShapeUpdateCallback = cursor_update_callback;
     framebuffer_update_callback = fb_update_callback;
     framebuffer_resize_callback = fb_resize_callback;
     failure_callback = fail_callback;
@@ -246,7 +255,7 @@ static void resizeSpiceBuffer(int bytesPerPixel, int width, int height) {
     requestResolution(globalFb.desiredFbW, globalFb.desiredFbH);
 }
 
-void disconnectSpice() {
+void disconnectSpice(void) {
     SpiceGlibGlue_Disconnect();
 }
 

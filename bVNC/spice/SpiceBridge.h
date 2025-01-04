@@ -39,6 +39,7 @@ typedef struct {
 } SpiceConnectionParameters;
 
 void *initializeSpice(int instance, int width, int height,
+                      pCursorShapeUpdateCallback cursorUpdateCallback,
                       bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                       void (*fb_resize_callback)(int instance, int fbW, int fbH),
                       void (*fail_callback)(int instance, uint8_t *),
@@ -48,6 +49,7 @@ void *initializeSpice(int instance, int width, int height,
                       char* addr, char* port, char* ws_port, char* tls_port, char* password, char* ca_file,
                       char* cert_subject, bool enable_sound);
 void *initializeSpiceVv(int instance, int width, int height,
+                        void (*cursor_update_callback)(int instance, int w, int h, int x, int y, uint8_t *),
                         bool (*fb_update_callback)(int instance, uint8_t *, int fbW, int fbH, int x, int y, int w, int h),
                         void (*fb_resize_callback)(int instance, int fbW, int fbH),
                         void (*fail_callback)(int instance, uint8_t *),

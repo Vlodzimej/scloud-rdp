@@ -161,6 +161,13 @@
 		16BDBF40281F86530072EDF5 /* aSPICE-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */; };
 		16BDBF41281F86530072EDF5 /* aRDP-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */; };
 		16BDBF43281F884A0072EDF5 /* Simple Remote-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */; };
+		16C90C612D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C622D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C632D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C642D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C652D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C662D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16C90C672D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
 		16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
@@ -659,6 +666,7 @@
 		16C51EFA2BD573E800565BB6 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = bVNC.xcodeproj/ios_universal/lib/libavutil.a; sourceTree = "<group>"; };
 		16C51EFB2BD573E800565BB6 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = bVNC.xcodeproj/ios_universal/lib/libavfilter.a; sourceTree = "<group>"; };
 		16C51F002BD5743800565BB6 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = bVNC.xcodeproj/ios_universal/lib/libswresample.a; sourceTree = "<group>"; };
+		16C90C602D29A9B900DA5DD2 /* PointerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerData.swift; sourceTree = "<group>"; };
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
 		16E230E12CFE66B6003C9768 /* build-libs.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "build-libs.conf"; sourceTree = "<group>"; };
 		16E230E22CFE66B7003C9768 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -1546,6 +1554,7 @@
 				167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */,
 				AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */,
 				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
+				16C90C602D29A9B900DA5DD2 /* PointerData.swift */,
 			);
 			path = mouse;
 			sourceTree = "<group>";
@@ -3245,6 +3254,7 @@
 				161A28A82CFFD71F00FA2BC2 /* KeyboardObserving.swift in Sources */,
 				161A28A92CFFD71F00FA2BC2 /* StateKeeper.swift in Sources */,
 				161A28AA2CFFD71F00FA2BC2 /* MainPage.swift in Sources */,
+				16C90C662D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				161A28AB2CFFD71F00FA2BC2 /* Utility.c in Sources */,
 				161A28AC2CFFD71F00FA2BC2 /* ShortTapDragUIImageView.swift in Sources */,
 				161A28AD2CFFD71F00FA2BC2 /* MiscellaneousPages.swift in Sources */,
@@ -3290,6 +3300,7 @@
 				162C39C32D035CA800DD5610 /* MainPage.swift in Sources */,
 				162C39C42D035CA800DD5610 /* Utility.c in Sources */,
 				162C39C52D035CA800DD5610 /* ShortTapDragUIImageView.swift in Sources */,
+				16C90C672D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				162C39C62D035CA800DD5610 /* SpiceSession.swift in Sources */,
 				162C39C72D035CA800DD5610 /* Utilities.m in Sources */,
 				162C39C82D035CA800DD5610 /* MiscellaneousPages.swift in Sources */,
@@ -3335,6 +3346,7 @@
 				16E231052CFEBDC8003C9768 /* Utility.c in Sources */,
 				16E231062CFEBDC8003C9768 /* ShortTapDragUIImageView.swift in Sources */,
 				16E231072CFEBDC8003C9768 /* Utilities.m in Sources */,
+				16C90C652D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				16E231082CFEBDC8003C9768 /* TouchEnabledUIImageView.swift in Sources */,
 				16E231092CFEBDC8003C9768 /* SpiceSessionDummy.swift in Sources */,
 				16E2310A2CFEBDC8003C9768 /* MiscellaneousPages.swift in Sources */,
@@ -3380,6 +3392,7 @@
 				AF9E8F932427F3B500752FC2 /* Utility.c in Sources */,
 				AF99997F2435955F0018204F /* ShortTapDragUIImageView.swift in Sources */,
 				AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */,
+				16C90C612D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */,
 				AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
 				16E4FC662B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */,
@@ -3443,6 +3456,7 @@
 				AF30D1A4253396EF00BA7A62 /* MainPage.swift in Sources */,
 				AF30D1A5253396EF00BA7A62 /* Utility.c in Sources */,
 				AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */,
+				16C90C622D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */,
 				AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */,
 				16E4FC672B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */,
@@ -3488,6 +3502,7 @@
 				AFB2C8E026001F4D00E2859F /* MainPage.swift in Sources */,
 				AFB2C8E126001F4D00E2859F /* Utility.c in Sources */,
 				AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */,
+				16C90C632D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */,
 				AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */,
 				16E4FC682B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */,
@@ -3533,6 +3548,7 @@
 				AFB39121274F564A0059F91F /* KeyboardObserving.swift in Sources */,
 				AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */,
 				AFB39123274F564A0059F91F /* MainPage.swift in Sources */,
+				16C90C642D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AFB39124274F564A0059F91F /* Utility.c in Sources */,
 				AFB39125274F564A0059F91F /* ShortTapDragUIImageView.swift in Sources */,
 				16E4FC692B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */,
@@ -3595,7 +3611,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3656,7 +3672,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3719,7 +3735,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3800,7 +3816,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3878,7 +3894,7 @@
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -3943,7 +3959,7 @@
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4129,7 +4145,7 @@
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4193,7 +4209,7 @@
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4351,7 +4367,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4403,7 +4419,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4458,7 +4474,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4532,7 +4548,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4602,7 +4618,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;
@@ -4665,7 +4681,7 @@
 				CLANG_USE_OPTIMIZATION_PROFILE = NO;
 				CODE_SIGN_ENTITLEMENTS = "bVNC/bVNC Pro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 184;
+				CURRENT_PROJECT_VERSION = 185;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
 				DEVELOPMENT_TEAM = 96Z3MCQKZA;
 				ENABLE_BITCODE = NO;

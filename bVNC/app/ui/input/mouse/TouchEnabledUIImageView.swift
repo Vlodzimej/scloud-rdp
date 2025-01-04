@@ -25,11 +25,16 @@ let insetDimension: CGFloat = 0
 
 extension UIImage {
 
-    static func imageFromARGB32Bitmap(pixels: UnsafeMutableRawPointer?, withWidth: Int, withHeight: Int) -> UIImage {
+    static func imageFromARGB32Bitmap(
+        pixels: UnsafeMutableRawPointer?,
+        withWidth: Int,
+        withHeight: Int,
+        alphaValue: CGImageAlphaInfo = CGImageAlphaInfo.noneSkipLast
+    ) -> UIImage {
         guard withWidth > 0 && withHeight > 0 else { return UIImage() }
         guard pixels != nil else { return UIImage() }
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue).union(.byteOrder32Big)
+        let bitmapInfo = CGBitmapInfo(rawValue: alphaValue.rawValue).union(.byteOrder32Big)
         let bitsPerComponent = 8
 
         guard let context: CGContext = CGContext(data: pixels, width: withWidth, height: withHeight, bitsPerComponent: bitsPerComponent, bytesPerRow: 4*withWidth, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
@@ -55,6 +60,16 @@ extension UIImage {
                                  intent: .defaultIntent)
         return UIImage(cgImage: cgImage!)
         */
+    }
+    
+    // Example from https://stackoverflow.com/questions/6656745/draw-another-image-on-a-uiimage
+    func image(byDrawingImage image: UIImage, inRect rect: CGRect) -> UIImage! {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        image.draw(in: rect)
+        let result = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return result
     }
 }
 
@@ -143,6 +158,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     var directionUp = false
     var directionDown = false
     let pointerLayer = CAShapeLayer()
+    private var pointerData: PointerData = PointerData(pixels: nil, width: 0, height: 0, hotX: 0, hotY: 0, x: 0, y: 0)
     var fbW: CGFloat = 0.0
     var fbH: CGFloat = 0.0
     
@@ -309,7 +325,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     fileprivate func repositionPointerIfScrolling(fourthDown: Bool, fifthDown: Bool) {
         if fourthDown || fifthDown {
             stateKeeper?.remoteSession?.pointerEvent(
-                remoteX: self.remoteX, remoteY: self.remoteY,
+                remoteX: self.pointerData.getRemoteX(), remoteY: self.pointerData.getRemoteY(),
                 firstDown: false, secondDown: false, thirdDown: false,
                 scrollUp: false, scrollDown: false)
         }
@@ -326,16 +342,16 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
                 //log_callback_str(message: "sendPointerEvent: x: \(newX), y: \(newY), scrolling: \(scrolling), moving: \(moving), firstDown: \(firstDown), secondDown: \(secondDown), thirdDown: \(thirdDown), fourthDown: \(fourthDown), fifthDown: \(fifthDown)")
                 repositionPointerIfScrolling(fourthDown: fourthDown, fifthDown: fifthDown)
 
-                self.remoteX = Float(self.fbW * self.newX / self.width)
-                self.remoteY = Float(self.fbH * self.newY / self.height)
+                pointerData.setRemoteX(newX: Float(self.fbW * self.newX / self.width))
+                pointerData.setRemoteY(newY: Float(self.fbH * self.newY / self.height))
                 stateKeeper?.remoteSession?.pointerEvent(
-                    remoteX: remoteX, remoteY: remoteY,
+                    remoteX: pointerData.getRemoteX(), remoteY: pointerData.getRemoteY(),
                     firstDown: firstDown, secondDown: secondDown, thirdDown: thirdDown,
                     scrollUp: fourthDown, scrollDown: fifthDown)
             }
             self.lastX = self.newX
             self.lastY = self.newY
-            self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.3, fullScreenUpdate: false, recurring: false)
+            self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.01, fullScreenUpdate: false, recurring: false)
         }
     }
         
@@ -736,5 +752,13 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         pointerLayer.fillColor = UIColor.white.cgColor
         pointerLayer.strokeColor = UIColor.black.cgColor
         view.layer.addSublayer(pointerLayer)
+    }
+    
+    func setPointerData(pointerData: PointerData) {
+        self.pointerData = pointerData
+    }
+    
+    func getPointerData() -> PointerData {
+        return self.pointerData
     }
 }
