@@ -110,8 +110,9 @@ Email us directly at support@morpheusly.com for help.
 "SOUND_SETTINGS_LABEL" = "Sound Settings";
 "SOUND_ENABLED_LABEL" = "Remote Sound Enabled";
 "TOUCH_INPUT_METHOD_LABEL" = "Touch Input Type";
-"TOUCH_INPUT_METHOD_DIRECT_SWIPE_PAN" = "Direct, Swipe Pan";
+"TOUCH_INPUT_METHOD_DIRECT_SWIPE_PAN" = "Direct, Long Press Drag and Drop, Short Press Screen Pan";
 "TOUCH_INPUT_METHOD_SIMULATED_TOUCHPAD" = "Simulated Touchpad";
+"TOUCH_INPUT_METHOD_DIRECT_LONG_PRESS_PAN" = "Direct, Short Press Drag and Drop, Long Press Screen Pan";
 "GENERATE_SSH_KEY_LABEL" = "Generate SSH Key";
 "DESKTOP_SCALE_LABEL" = "Desktop Scale Factor";
 "CUSTOM_RESOLUTION" = "Custom Resolution";

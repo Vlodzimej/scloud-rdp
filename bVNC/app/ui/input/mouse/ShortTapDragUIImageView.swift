@@ -24,6 +24,7 @@ class ShortTapDragUIImageView: TouchEnabledUIImageView {
     
     override func initialize() {
         super.initialize()
+        numEventsToDrop = 0
         panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         panGesture?.minimumNumberOfTouches = 2
         panGesture?.maximumNumberOfTouches = 2
