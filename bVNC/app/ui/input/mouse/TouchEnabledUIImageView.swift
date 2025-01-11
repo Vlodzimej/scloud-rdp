@@ -161,6 +161,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     private var pointerData: PointerData = PointerData(pixels: nil, width: 0, height: 0, hotX: 0, hotY: 0, x: 0, y: 0)
     var fbW: CGFloat = 0.0
     var fbH: CGFloat = 0.0
+    var numEventsToDrop = 12
     
     func initialize() {
         isMultipleTouchEnabled = true
@@ -199,6 +200,9 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         }
         if self.stateKeeper?.isiPhoneOrPad() ?? false {
             customPointerInteraction(on: self, pointerInteractionDelegate: self)
+        }
+        if !(self.stateKeeper?.allowPanning ?? true) {
+            numEventsToDrop = 0
         }
     }
     
@@ -444,7 +448,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
             for (index, finger) in self.fingers.enumerated() {
                 if let finger = finger, finger == touch {
                     if index == 0 {
-                        if stateKeeper!.isOnMacOsOriPadOnMacOs() || moveEventsSinceFingerDown >= 12 {
+                        if stateKeeper!.isOnMacOsOriPadOnMacOs() || moveEventsSinceFingerDown >= numEventsToDrop {
                             //log_callback_str(message: "\(#function) +\(self.firstDown) + \(self.secondDown) + \(self.thirdDown)")
                             self.inPanDragging = true
                             self.sendDownThenUpEvent(scrolling: false, moving: true, firstDown: self.firstDown, secondDown:     self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)

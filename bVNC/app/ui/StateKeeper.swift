@@ -1100,8 +1100,8 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
                 let leftSpacing = self.leftSpacing
                 let topSpacing = self.topSpacing
                 let imageFrame = CGRect(x: leftSpacing, y: topSpacing, width: self.fbW*minScale, height: self.fbH*minScale)
-                if self.isOnMacOsOriPadOnMacOs() == true {
-                    log_callback_str(message: "Running on MacOS")
+                if !self.allowPanning || self.isOnMacOsOriPadOnMacOs() == true {
+                    log_callback_str(message: "Running on MacOS or panning is disallowed")
                     self.imageView = ShortTapDragUIImageView(
                         frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH
                     )
