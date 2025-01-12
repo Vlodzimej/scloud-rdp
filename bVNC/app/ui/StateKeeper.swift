@@ -1085,8 +1085,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     fileprivate func useShortPressDragDropAndLongPressPan() -> Bool {
-        return !self.allowPanning ||
-            self.isOnMacOsOriPadOnMacOs() ||
+        return self.isOnMacOsOriPadOnMacOs() ||
             self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.directLongPressPan.rawValue
     }
     

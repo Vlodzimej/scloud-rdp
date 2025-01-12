@@ -1,7 +1,6 @@
 44
   - Fix for ability to capture log when connecting with .RDP file
   - Make Short press drag and drop input mode available
-  - Make Short press drag and drop input mode used when panning is disabled
 43
   - Fix for on-screen buttons and window resize
 42
