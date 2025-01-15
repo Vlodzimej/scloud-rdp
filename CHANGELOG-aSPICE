@@ -22,6 +22,7 @@
   - Increased resolution for certain pointer actions
 36
   - Stability improvements
+  - Ability to open vv files on command-line
   - Custom cursor shape on applicable platforms
 35
   - Bugfix for Esc key breaking input on MacOS

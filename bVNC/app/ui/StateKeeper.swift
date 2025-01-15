@@ -1083,10 +1083,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     func exitNow() {
         exit(0)
     }
-    
+
+    fileprivate func useMacOsUIImageView() -> Bool {
+        return self.isOnMacOsOriPadOnMacOs()
+    }
+
     fileprivate func useShortPressDragDropAndLongPressPan() -> Bool {
-        return self.isOnMacOsOriPadOnMacOs() ||
-            self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.directLongPressPan.rawValue
+        return self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.directLongPressPan.rawValue
     }
     
     fileprivate func useSimulatedTouchpad() -> Bool {
@@ -1095,13 +1098,18 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     
     fileprivate func setInputMethod(_ leftSpacing: CGFloat, _ topSpacing: CGFloat, _ minScale: CGFloat) {
         let imageFrame = CGRect(x: leftSpacing, y: topSpacing, width: self.fbW*minScale, height: self.fbH*minScale)
-        if self.useShortPressDragDropAndLongPressPan() {
-            log_callback_str(message: "Using ShortTapDragUIImageView")
-            self.imageView = ShortTapDragUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
+        if self.useMacOsUIImageView() {
+            log_callback_str(message: "Using ShortTapDragNoPanUIImageView")
+            self.imageView = MacOsUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
+        } else if self.useShortPressDragDropAndLongPressPan() {
+            log_callback_str(message: "Using ShortTapDragLongPressPanUIImageView")
+            self.imageView = ShortTapDragLongPressPanUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
+
         } else if self.useSimulatedTouchpad() {
             log_callback_str(message: "Using SimulatedTouchpadUIImageView")
             self.imageView = SimulatedTouchpadUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
         } else {
+            log_callback_str(message: "Using LongTapDragUIImageView")
             self.imageView = LongTapDragUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
         }
     }

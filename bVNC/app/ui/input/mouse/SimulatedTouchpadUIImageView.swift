@@ -78,7 +78,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
         panView(sender: sender, newCX: newCenterX, newCY: newCenterY)
     }
     
-    @objc private func handlePan(_ sender: UIPanGestureRecognizer) {
+    @objc override func handlePan(_ sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
             self.inPanDragging = false
             if !inPanning {
@@ -110,24 +110,7 @@ class SimulatedTouchpadUIImageView: TouchEnabledUIImageView {
             panToKeepPointerVisible(view, sender)
         }
     }
-    
-    @objc private func handleLongTap(_ sender: UILongPressGestureRecognizer) {
-        if let touchView = sender.view {
-            if sender.state == .began {
-                AudioServicesPlaySystemSound(1100);
-                self.inLeftDragging = true
-            } else if sender.state == .ended {
-                self.inLeftDragging = false
-            }
-            self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
-            self.firstDown = !(sender.state == .ended)
-            let moving = self.firstDown
-            self.secondDown = false
-            self.thirdDown = false
-            self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
-        }
-    }
-    
+
     override func setViewParameters(point: CGPoint, touchView: UIView, setDoubleTapCoordinates: Bool=false, gestureBegan: Bool=false) {
         self.width = touchView.frame.width
         self.height = touchView.frame.height

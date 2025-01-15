@@ -20,6 +20,7 @@
 import Foundation
 import UIKit
 import GameController
+import AudioToolbox
 
 let insetDimension: CGFloat = 0
 
@@ -143,7 +144,8 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     var inPanning = false
     var inPanDragging = false
     var panningToleranceEvents = 0
-    
+    var panViaPanGestureDetector = true
+
     var tapGestureDetected = false
     
     var stateKeeper: StateKeeper?
@@ -596,7 +598,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     func panView(sender: UIPanGestureRecognizer, newCX: CGFloat? = nil, newCY: CGFloat? = nil) -> Void {
         //log_callback_str(message: #function)
         var tempVerticalOnlyPan = false
-        if !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
+        if !self.panViaPanGestureDetector || !self.stateKeeper!.allowPanning && !(self.stateKeeper!.keyboardHeight > 0) {
             // Panning is disallowed and keyboard is not up, not doing anything
             return
         } else if !self.stateKeeper!.allowPanning && self.stateKeeper!.keyboardHeight > 0 {
@@ -761,5 +763,65 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     
     func getPointerData() -> PointerData {
         return self.pointerData
+    }
+    
+    @objc func handleLongTap(_ sender: UILongPressGestureRecognizer) {
+        log_callback_str(message: #function)
+        if let touchView = sender.view {
+            if sender.state == .began {
+                AudioServicesPlaySystemSound(1100);
+                self.inLeftDragging = true
+            } else if sender.state == .ended {
+                self.inLeftDragging = false
+            }
+            self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
+            self.firstDown = !(sender.state == .ended)
+            let moving = self.firstDown
+            self.secondDown = false
+            self.thirdDown = false
+            self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
+        }
+    }
+    
+    @objc func handlePan(_ sender: UIPanGestureRecognizer) {
+        //log_callback_str(message: #function)
+        if sender.state == .ended {
+            log_callback_str(message: "\(#function): state ended")
+            if (inPanDragging) {
+                sendMouseEventsAndResetButtonState()
+            }
+            self.inPanDragging = false
+            if !inPanning {
+                // If there was actual pointer interaction to the server, request a refresh
+                self.stateKeeper?.rescheduleScreenUpdateRequest(timeInterval: 0.5, fullScreenUpdate: false, recurring: false)
+            }
+            return
+        }
+        
+        let translation = sender.translation(in: sender.view)
+
+        if let view = sender.view {
+            let scaleX = sender.view!.transform.a
+            let scaleY = sender.view!.transform.d
+            
+            //print ("inPanDragging: \(inPanDragging), inPanning: \(inPanning), thirdDown: \(thirdDown), abs(scaleX*translation.x): \(abs(scaleX*translation.x)), abs(scaleY*translation.y): \(abs(scaleY*translation.y))")
+            // self.thirdDown (which marks a right click) helps ensure this mode does not scroll with one finger
+            if (scroll(touchView: view, translation: translation, viewTransform: view.transform, scaleX: scaleX, scaleY: scaleY,
+                       gesturePoint: sender.location(in: view), restorePointerPosition: false)) {
+                return
+            } else if self.secondDown || self.thirdDown {
+                print("\(#function), second or third dragging")
+                self.inPanDragging = true
+                if let touchView = sender.view {
+                    self.setViewParameters(point: sender.location(in: touchView), touchView: touchView)
+                    let moving = !(sender.state == .ended)
+                    self.sendDownThenUpEvent(scrolling: false, moving: moving, firstDown: self.firstDown, secondDown: self.secondDown, thirdDown: self.thirdDown, fourthDown: false, fifthDown: false)
+                }
+                return
+            } else if abs(scaleY*translation.y) > 0.25 || abs(scaleX*translation.x) > 0.25 {
+                resetButtonState()
+                panView(sender: sender)
+            }
+        }
     }
 }

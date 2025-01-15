@@ -20,15 +20,9 @@
 import Foundation
 import UIKit
 
-class LongTapDragUIImageView: TouchEnabledUIImageView {
-    
+class MacOsUIImageView: TouchEnabledUIImageView {
     override func initialize() {
         super.initialize()
-        panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-        panGesture?.minimumNumberOfTouches = 1
-        panGesture?.maximumNumberOfTouches = 2
-        
-        longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTap(_:)))
-        pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handleZooming(_:)))
+        numEventsToDrop = 0
     }
 }

@@ -48,7 +48,7 @@
 		161A28A92CFFD71F00FA2BC2 /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
 		161A28AA2CFFD71F00FA2BC2 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		161A28AB2CFFD71F00FA2BC2 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		161A28AC2CFFD71F00FA2BC2 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		161A28AC2CFFD71F00FA2BC2 /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		161A28AD2CFFD71F00FA2BC2 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
 		161A28AE2CFFD71F00FA2BC2 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		161A28AF2CFFD71F00FA2BC2 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
@@ -105,7 +105,7 @@
 		162C39C22D035CA800DD5610 /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
 		162C39C32D035CA800DD5610 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		162C39C42D035CA800DD5610 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		162C39C52D035CA800DD5610 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		162C39C52D035CA800DD5610 /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		162C39C62D035CA800DD5610 /* SpiceSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB2C8C725FFD2E600E2859F /* SpiceSession.swift */; };
 		162C39C72D035CA800DD5610 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		162C39C82D035CA800DD5610 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
@@ -168,6 +168,13 @@
 		16C90C652D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
 		16C90C662D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
 		16C90C672D29A9B900DA5DD2 /* PointerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C90C602D29A9B900DA5DD2 /* PointerData.swift */; };
+		16CDF24C2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF24D2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF24E2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF24F2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF2502D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF2512D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
+		16CDF2522D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */; };
 		16CF04E7293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E8293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
 		16CF04E9293EB248000C3DF0 /* FilterableConnections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */; };
@@ -204,7 +211,7 @@
 		16E231032CFEBDC8003C9768 /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
 		16E231042CFEBDC8003C9768 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		16E231052CFEBDC8003C9768 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		16E231062CFEBDC8003C9768 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		16E231062CFEBDC8003C9768 /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		16E231072CFEBDC8003C9768 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		16E231082CFEBDC8003C9768 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
 		16E231092CFEBDC8003C9768 /* SpiceSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */; };
@@ -266,7 +273,7 @@
 		AF30D1A3253396EF00BA7A62 /* VncBridge.c in Sources */ = {isa = PBXBuildFile; fileRef = AF48283123B47EC300826395 /* VncBridge.c */; };
 		AF30D1A4253396EF00BA7A62 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		AF30D1A5253396EF00BA7A62 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AF30D1A6253396EF00BA7A62 /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
 		AF30D1AC253396EF00BA7A62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
@@ -290,7 +297,7 @@
 		AF7421F4241D58EB00C552A7 /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
 		AF8C9CD3255B2F07001563A0 /* PhysicalKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */; };
 		AF99997D243593C70018204F /* LongTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997C243593C70018204F /* LongTapDragUIImageView.swift */; };
-		AF99997F2435955F0018204F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AF99997F2435955F0018204F /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		AF9E8F932427F3B500752FC2 /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
 		AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AF9E8F99242AE4E900752FC2 /* SystemMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */; };
@@ -311,7 +318,7 @@
 		AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
 		AFB2C8E026001F4D00E2859F /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		AFB2C8E126001F4D00E2859F /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AFB2C8E226001F4D00E2859F /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AFB2C8E426001F4D00E2859F /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
 		AFB2C8EB26001F4D00E2859F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
@@ -338,7 +345,7 @@
 		AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF53DCB22402391600569F19 /* StateKeeper.swift */; };
 		AFB39123274F564A0059F91F /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF043A1C23B3DADA00C43ED7 /* MainPage.swift */; };
 		AFB39124274F564A0059F91F /* Utility.c in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F922427F3B500752FC2 /* Utility.c */; };
-		AFB39125274F564A0059F91F /* ShortTapDragUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */; };
+		AFB39125274F564A0059F91F /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		AFB39127274F564A0059F91F /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AFB39128274F564A0059F91F /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
 		AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
@@ -667,6 +674,7 @@
 		16C51EFB2BD573E800565BB6 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = bVNC.xcodeproj/ios_universal/lib/libavfilter.a; sourceTree = "<group>"; };
 		16C51F002BD5743800565BB6 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = bVNC.xcodeproj/ios_universal/lib/libswresample.a; sourceTree = "<group>"; };
 		16C90C602D29A9B900DA5DD2 /* PointerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerData.swift; sourceTree = "<group>"; };
+		16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortTapDragLongPressPanUIImageView.swift; sourceTree = "<group>"; };
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
 		16E230E12CFE66B6003C9768 /* build-libs.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "build-libs.conf"; sourceTree = "<group>"; };
 		16E230E22CFE66B7003C9768 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -1387,7 +1395,7 @@
 		AF8C75F4243BEF4B00AF0CF3 /* libvncclient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvncclient.xcodeproj; path = ../../../libvncclient/libvncclient/libvncclient.xcodeproj; sourceTree = "<group>"; };
 		AF94A6B3251663C000AA2A25 /* bVNC Pro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "bVNC Pro.entitlements"; sourceTree = "<group>"; };
 		AF99997C243593C70018204F /* LongTapDragUIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongTapDragUIImageView.swift; sourceTree = "<group>"; };
-		AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortTapDragUIImageView.swift; sourceTree = "<group>"; };
+		AF99997E2435955F0018204F /* MacOsUIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MacOsUIImageView.swift; sourceTree = "<group>"; };
 		AF9E8F912427F3B500752FC2 /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		AF9E8F922427F3B500752FC2 /* Utility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Utility.c; sourceTree = "<group>"; };
 		AF9E8F94242ADD9200752FC2 /* Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
@@ -1552,7 +1560,8 @@
 			children = (
 				AF99997C243593C70018204F /* LongTapDragUIImageView.swift */,
 				167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */,
-				AF99997E2435955F0018204F /* ShortTapDragUIImageView.swift */,
+				AF99997E2435955F0018204F /* MacOsUIImageView.swift */,
+				16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */,
 				AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */,
 				16C90C602D29A9B900DA5DD2 /* PointerData.swift */,
 			);
@@ -3254,9 +3263,10 @@
 				161A28A82CFFD71F00FA2BC2 /* KeyboardObserving.swift in Sources */,
 				161A28A92CFFD71F00FA2BC2 /* StateKeeper.swift in Sources */,
 				161A28AA2CFFD71F00FA2BC2 /* MainPage.swift in Sources */,
+				16CDF2512D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C662D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				161A28AB2CFFD71F00FA2BC2 /* Utility.c in Sources */,
-				161A28AC2CFFD71F00FA2BC2 /* ShortTapDragUIImageView.swift in Sources */,
+				161A28AC2CFFD71F00FA2BC2 /* MacOsUIImageView.swift in Sources */,
 				161A28AD2CFFD71F00FA2BC2 /* MiscellaneousPages.swift in Sources */,
 				161A28AE2CFFD71F00FA2BC2 /* Utilities.m in Sources */,
 				161A28AF2CFFD71F00FA2BC2 /* TouchEnabledUIImageView.swift in Sources */,
@@ -3299,7 +3309,8 @@
 				162C39C22D035CA800DD5610 /* StateKeeper.swift in Sources */,
 				162C39C32D035CA800DD5610 /* MainPage.swift in Sources */,
 				162C39C42D035CA800DD5610 /* Utility.c in Sources */,
-				162C39C52D035CA800DD5610 /* ShortTapDragUIImageView.swift in Sources */,
+				162C39C52D035CA800DD5610 /* MacOsUIImageView.swift in Sources */,
+				16CDF2522D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C672D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				162C39C62D035CA800DD5610 /* SpiceSession.swift in Sources */,
 				162C39C72D035CA800DD5610 /* Utilities.m in Sources */,
@@ -3344,8 +3355,9 @@
 				16E231032CFEBDC8003C9768 /* VncBridge.c in Sources */,
 				16E231042CFEBDC8003C9768 /* MainPage.swift in Sources */,
 				16E231052CFEBDC8003C9768 /* Utility.c in Sources */,
-				16E231062CFEBDC8003C9768 /* ShortTapDragUIImageView.swift in Sources */,
+				16E231062CFEBDC8003C9768 /* MacOsUIImageView.swift in Sources */,
 				16E231072CFEBDC8003C9768 /* Utilities.m in Sources */,
+				16CDF2502D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C652D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				16E231082CFEBDC8003C9768 /* TouchEnabledUIImageView.swift in Sources */,
 				16E231092CFEBDC8003C9768 /* SpiceSessionDummy.swift in Sources */,
@@ -3390,8 +3402,9 @@
 				AF48283223B47EC300826395 /* VncBridge.c in Sources */,
 				AF043A1D23B3DADA00C43ED7 /* MainPage.swift in Sources */,
 				AF9E8F932427F3B500752FC2 /* Utility.c in Sources */,
-				AF99997F2435955F0018204F /* ShortTapDragUIImageView.swift in Sources */,
+				AF99997F2435955F0018204F /* MacOsUIImageView.swift in Sources */,
 				AF9E8F95242ADD9200752FC2 /* Utilities.m in Sources */,
+				16CDF24C2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C612D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AFF244E42408AF9B00F5839B /* TouchEnabledUIImageView.swift in Sources */,
 				AF44CF36260259A300DAA44B /* SpiceSessionDummy.swift in Sources */,
@@ -3455,7 +3468,8 @@
 				AF30D1A3253396EF00BA7A62 /* VncBridge.c in Sources */,
 				AF30D1A4253396EF00BA7A62 /* MainPage.swift in Sources */,
 				AF30D1A5253396EF00BA7A62 /* Utility.c in Sources */,
-				AF30D1A6253396EF00BA7A62 /* ShortTapDragUIImageView.swift in Sources */,
+				AF30D1A6253396EF00BA7A62 /* MacOsUIImageView.swift in Sources */,
+				16CDF24D2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C622D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AF30D1A7253396EF00BA7A62 /* Utilities.m in Sources */,
 				AF30D1A8253396EF00BA7A62 /* TouchEnabledUIImageView.swift in Sources */,
@@ -3501,7 +3515,8 @@
 				AFB2C8DE26001F4D00E2859F /* StateKeeper.swift in Sources */,
 				AFB2C8E026001F4D00E2859F /* MainPage.swift in Sources */,
 				AFB2C8E126001F4D00E2859F /* Utility.c in Sources */,
-				AFB2C8E226001F4D00E2859F /* ShortTapDragUIImageView.swift in Sources */,
+				AFB2C8E226001F4D00E2859F /* MacOsUIImageView.swift in Sources */,
+				16CDF24E2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C632D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AF44CF2F2602596000DAA44B /* SpiceSession.swift in Sources */,
 				AFB2C8E326001F4D00E2859F /* Utilities.m in Sources */,
@@ -3548,9 +3563,10 @@
 				AFB39121274F564A0059F91F /* KeyboardObserving.swift in Sources */,
 				AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */,
 				AFB39123274F564A0059F91F /* MainPage.swift in Sources */,
+				16CDF24F2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
 				16C90C642D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AFB39124274F564A0059F91F /* Utility.c in Sources */,
-				AFB39125274F564A0059F91F /* ShortTapDragUIImageView.swift in Sources */,
+				AFB39125274F564A0059F91F /* MacOsUIImageView.swift in Sources */,
 				16E4FC692B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */,
 				AFB39127274F564A0059F91F /* Utilities.m in Sources */,
 				AFB39128274F564A0059F91F /* TouchEnabledUIImageView.swift in Sources */,
