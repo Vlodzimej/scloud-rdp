@@ -590,11 +590,20 @@ class RemoteSession {
             }
         }
     }
+
+    fileprivate func getTimeBetweenFrames() -> Double {
+        var timeBetweenFrames = 0.0334
+        if #available(iOS 16.0, *) {
+            // Allow 60 fps only on newer devices
+            timeBetweenFrames = 0.0167
+        }
+        return timeBetweenFrames
+    }
     
     func updateCallback() {
         if self.connected {
             let timeNow = CACurrentMediaTime()
-            if (timeNow - lastUpdate < 0.0167) {
+            if (timeNow - lastUpdate < getTimeBetweenFrames()) {
                 // Last frame drawn less than the threshold amount of time ago, discarding frame, scheduling redraw
                 self.rescheduleReDrawTimer()
             } else {
