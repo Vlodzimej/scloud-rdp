@@ -210,12 +210,26 @@ static void setGlobalCallbacks(pClientClipboardCallback cl_clipboard_callback, p
     yesNoCallback = y_n_callback;
 }
 
+static void copyCredentials(char *domain, char **domainCopy, char *pass, char **passCopy, char *user, char **userCopy) {
+    int bufLength = 512;
+    *domainCopy = malloc(bufLength);
+    strncpy(*domainCopy, domain, bufLength - 1);
+    *userCopy = malloc(bufLength);
+    strncpy(*userCopy, user, bufLength - 1);
+    *passCopy = malloc(bufLength);
+    strncpy(*passCopy, pass, bufLength - 1);
+}
+
 static void setSessionParameters(freerdp *instance, int i, char *addr, char *gateway_addr, char *gateway_domain, bool gateway_enabled, char *gateway_pass, char *gateway_port, char *gateway_user, char *port, char *domain, char *user, char *pass) {
     instance->context->argc = i;
-        
-    instance->context->settings->Domain = domain;
-    instance->context->settings->Username = user;
-    instance->context->settings->Password = pass;
+
+    char * domainCopy;
+    char * userCopy;
+    char * passCopy;
+    copyCredentials(domain, &domainCopy, pass, &passCopy, user, &userCopy);
+    instance->context->settings->Domain = domainCopy;
+    instance->context->settings->Username = userCopy;
+    instance->context->settings->Password = passCopy;
     
     instance->context->settings->ServerHostname = addr;
     instance->context->settings->ServerPort = atoi(port);
@@ -231,14 +245,11 @@ static void setSessionParameters(freerdp *instance, int i, char *addr, char *gat
 }
 
 static void setSessionConfigFile(freerdp *instance, int i, char *configFile, char *domain, char *user, char *pass) {
-    int bufLength = 512;
-    char *domainCopy = malloc(bufLength);
-    strncpy(domainCopy, domain, bufLength - 1);
-    char *userCopy = malloc(bufLength);
-    strncpy(userCopy, user, bufLength - 1);
-    char *passCopy = malloc(bufLength);
-    strncpy(passCopy, pass, bufLength - 1);
-    
+    char * domainCopy;
+    char * userCopy;
+    char * passCopy;
+    copyCredentials(domain, &domainCopy, pass, &passCopy, user, &userCopy);
+
     instance->context->argc = i;
     instance->context->settings->ConnectionFile = configFile;
     instance->context->settings->Domain = domainCopy;
@@ -277,6 +288,8 @@ static void setSessionPreferences(freerdp *instance, bool enable_sound, int heig
     instance->context->settings->RedirectClipboard = TRUE;
     instance->context->settings->DesktopScaleFactor = desktopScaleFactor;
     instance->context->settings->DeviceScaleFactor = 100;
+    instance->context->settings->SupportGraphicsPipeline = TRUE;
+    instance->context->settings->ColorDepth = 32;
 
 }
 
