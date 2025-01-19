@@ -1,0 +1,12 @@
+diff --git a/client/iOS/FreeRDP/ios_freerdp.m b/client/iOS/FreeRDP/ios_freerdp.m
+index 295d769a8..00626cc05 100644
+--- a/client/iOS/FreeRDP/ios_freerdp.m
++++ b/client/iOS/FreeRDP/ios_freerdp.m
+@@ -355,7 +355,6 @@ int ios_run_freerdp(freerdp *instance)
+ 	mfi->bitmap_context = NULL;
+ 	mfi->connection_state = TSXConnectionDisconnected;
+ 	// Cleanup
+-	freerdp_disconnect(instance);
+ 	gdi_free(instance);
+ 	cache_free(instance->context->cache);
+ 	[pool release];

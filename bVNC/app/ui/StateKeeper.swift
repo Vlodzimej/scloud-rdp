@@ -490,20 +490,13 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.showDisconnectionPage()
         self.scheduleDisconnectTimer(interval: 1, wasDrawing: self.isDrawing)
     }
-    
-    func isRdpConnectedWithConfigFile() -> Bool {
-        return Utils.isRdp() && self.connectedWithConsoleFileOrUri
-    }
 
     @objc func scheduleDisconnectTimer(interval: Double = 1, wasDrawing: Bool) {
-        // Workaround for crash within LibFreeRDP when disconnecting after starting with an RDP file
-        if !isRdpConnectedWithConfigFile() {
-            UserInterface {
-                log_callback_str(message: "Scheduling disconnect")
-                self.lazyDisconnect()
-                self.disconnectTimer.invalidate()
-                self.disconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.disconnect(sender:)), userInfo: wasDrawing, repeats: false)
-            }
+        UserInterface {
+            log_callback_str(message: "Scheduling disconnect")
+            self.lazyDisconnect()
+            self.disconnectTimer.invalidate()
+            self.disconnectTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(self.disconnect(sender:)), userInfo: wasDrawing, repeats: false)
         }
     }
 

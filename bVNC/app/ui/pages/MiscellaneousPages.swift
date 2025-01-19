@@ -130,12 +130,8 @@ struct DismissableMessageDialog : View {
         return stateKeeper.message
     }
     
-    fileprivate func showConnectionsOrExit() {
-        if self.stateKeeper.isRdpConnectedWithConfigFile() {
-            AppDelegate.exitApp()
-        } else {
-            self.stateKeeper.showConnections()
-        }
+    fileprivate func handleDismissClick() {
+        self.stateKeeper.showConnections()
     }
 
     var body: some View {
@@ -158,7 +154,7 @@ struct DismissableMessageDialog : View {
                     }.padding()
                 }
                 Button(action: {
-                    showConnectionsOrExit()
+                    handleDismissClick()
                 }) {
                     HStack(spacing: 10) {
                         Image(systemName: "arrowshape.turn.up.left")
