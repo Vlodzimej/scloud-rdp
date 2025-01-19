@@ -1,0 +1,13 @@
+diff --git a/libfreerdp/core/gateway/rpc.h b/libfreerdp/core/gateway/rpc.h
+index 26eebf131..af157bb03 100644
+--- a/libfreerdp/core/gateway/rpc.h
++++ b/libfreerdp/core/gateway/rpc.h
+@@ -400,7 +400,7 @@ typedef struct
+ 
+ struct _RPC_FAULT_CODE
+ {
+-	UINT32 code;
++	UINT64 code;
+ 	const char* name;
+ 	const char* category;
+ };

@@ -18,3 +18,4 @@ scripts/export
 ardp-lib-ios/libs_*
 bVNC.xcodeproj/libs_combined_*
 bVNC.xcodeproj/ios_universal_*
+**/.DS_Store

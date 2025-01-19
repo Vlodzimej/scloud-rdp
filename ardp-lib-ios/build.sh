@@ -13,18 +13,24 @@ DEP_BASE_PATH=../aspice-lib-ios/ios_universal
 ISSH_DEP_PATH=../iSSH2-1.1.1w
 JPEG_DEP_PATH=../libjpeg-turbo
 
-if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
-then
-  DEP_PATH=${DEP_BASE_PATH}_iphoneos
-  pushd FreeRDP_iphoneos
-  git checkout ${FREERDP_VERSION}
-
+function apply_patches() {
   patch -p1 < ../freerdp_ifreerdp_library.patch
   patch -p1 < ../freerdp_mac_catalyst.patch
   patch -p1 < ../disable_freerdp_context_free.patch
   patch -p1 < ../clipboard-redirection.patch
   patch -p1 < ../freerdp_fix_for_set_format.patch
   patch -p1 < ../freerdp_sse_guards.patch
+  patch -p1 < ../freerdp_ios_disconnect_fix.patch
+  patch -p1 < ../freerdp_fix_arm64_alignment_issues.patch
+}
+
+if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_iphoneos
+then
+  DEP_PATH=${DEP_BASE_PATH}_iphoneos
+  pushd FreeRDP_iphoneos
+  git checkout ${FREERDP_VERSION}
+
+  apply_patches
 
   # iOS Build
   export LDFLAGS="-lc++"
@@ -63,21 +69,11 @@ do
     pushd FreeRDP_maccatalyst_$arch
     git checkout ${FREERDP_VERSION}
 
-    patch -p1 < ../freerdp_ifreerdp_library.patch
-    patch -p1 < ../freerdp_mac_catalyst.patch
-    patch -p1 < ../disable_freerdp_context_free.patch
-    patch -p1 < ../clipboard-redirection.patch
-    patch -p1 < ../freerdp_fix_for_set_format.patch
-    patch -p1 < ../freerdp_sse_guards.patch
+    apply_patches
 
     MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-    if [ "${arch}" == "arm64" ]
-    then
-      export LDFLAGS="-lc++ -Wl,-ld_classic"
-    else
-      export LDFLAGS="-lc++"
-    fi
+    export LDFLAGS="-lc++"
     cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
         -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
         -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \

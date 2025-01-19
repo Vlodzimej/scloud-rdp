@@ -1,3 +1,6 @@
+45
+  - Bugfixes
+  - No longer requiring app exit when disconnecting with .RDP file
 44
   - Fix for ability to capture log when connecting with .RDP file
   - New Short press drag and drop input mode
