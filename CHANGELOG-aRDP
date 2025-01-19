@@ -1,7 +1,7 @@
 44
   - Fix for ability to capture log when connecting with .RDP file
-  - Make Short press drag and drop input mode available
-  - Provide better experience on older devices
+  - New Short press drag and drop input mode
+  - Better experience on older devices
   - Improved support for GNOME remote desktop server
 43
   - Fix for on-screen buttons and window resize
