@@ -565,18 +565,15 @@ class RemoteSession {
     
     func draw() {
         autoreleasepool {
-            Background {
-                let fb: FrameBuffer? = getCurrentFrameBuffer()?.pointee
-                let data = fb?.frameBuffer
-                let fbW = Int(fb?.fbW ?? 0)
-                let fbH = Int(fb?.fbH ?? 0)
-                var newImage = self.stateKeeper.imageView?.getPointerData().drawIn(
-                    image: UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
-                )
-                if self.stateKeeper.isDrawing {
-                    UserInterface {
-                        self.stateKeeper.imageView?.image = newImage
-                    }
+            let data = getCurrentFrameBufferPixels()
+            let fbW = Int(getCurrentFrameBufferWidth())
+            let fbH = Int(getCurrentFrameBufferHeight())
+            let newImage = self.stateKeeper.imageView?.getPointerData().drawIn(
+                image: UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
+            )
+            if self.stateKeeper.isDrawing {
+                UserInterface {
+                    self.stateKeeper.imageView?.image = newImage
                 }
             }
         }

@@ -45,16 +45,6 @@ static CGContextRef reallocate_buffer(mfInfo *mfi) {
     return bc;
 }
 
-static BOOL bitmap_update(rdpContext* context, const BITMAP_UPDATE* bitmap) {
-    //printf("bitmap_update, instance %d\n", context->instance->context->argc);
-    return true;
-}
-
-static BOOL begin_paint(rdpContext* context) {
-    //printf("begin_paint, instance %d\n", context->instance->context->argc);
-    return true;
-}
-
 void disconnectRdp(void *instance) {
     freerdp_abort_connect((freerdp *)instance);
 }
@@ -295,8 +285,6 @@ static void setSessionPreferences(freerdp *instance, bool enable_sound, int heig
 
 static void setSessionCallbacks(freerdp *instance) {
     instance->update->DesktopResize = resize_window;
-    instance->update->BitmapUpdate = bitmap_update;
-    instance->update->BeginPaint = begin_paint;
     instance->update->EndPaint = end_paint;
     mfInfo *mfi = MFI_FROM_INSTANCE(instance);
     mfi->context->ServerCutText = serverCutText;

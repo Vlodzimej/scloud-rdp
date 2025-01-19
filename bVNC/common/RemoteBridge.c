@@ -64,11 +64,19 @@ bool updateFramebuffer(int instance, uint8_t *frameBuffer, int x, int y, int w, 
 }
 
 void updateCursorShape(int instance, int w, int h, int x, int y, int *data) {
-    cursorShapeUpdateCallback(instance, w, h, x, y, data);
+    cursorShapeUpdateCallback(instance, w, h, x, y, (uint8_t *)data);
 }
 
-FrameBuffer *getCurrentFrameBuffer(void) {
-    return &globalFb;
+int getCurrentFrameBufferWidth(void) {
+    return globalFb.fbW;
+}
+
+int getCurrentFrameBufferHeight(void) {
+    return globalFb.fbH;
+}
+
+uint8_t *getCurrentFrameBufferPixels(void) {
+    return globalFb.frameBuffer;
 }
 
 void resetDesiredResolution(int width, int height) {

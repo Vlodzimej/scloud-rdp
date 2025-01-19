@@ -65,7 +65,9 @@ void signal_handler(int signal, siginfo_t *info, void *reserved);
 void handle_signals(void);
 void clientCutText(void *c, char *hostClipboardContents, int size);
 void handle_signals(void);
-FrameBuffer *getCurrentFrameBuffer(void);
+uint8_t *getCurrentFrameBufferPixels(void);
+int getCurrentFrameBufferWidth(void);
+int getCurrentFrameBufferHeight(void);
 void resetDesiredResolution(int width, int height);
 void updateCursorShape(int instance, int w, int h, int x, int y, int *data);
 
