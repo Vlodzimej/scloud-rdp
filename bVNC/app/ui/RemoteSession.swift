@@ -568,10 +568,10 @@ class RemoteSession {
             let data = getCurrentFrameBufferPixels()
             let fbW = Int(getCurrentFrameBufferWidth())
             let fbH = Int(getCurrentFrameBufferHeight())
-            let newImage = self.stateKeeper.imageView?.getPointerData().drawIn(
-                image: UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
-            )
-            if self.stateKeeper.isDrawing {
+            if self.stateKeeper.isCurrentSessionConnectedAndDrawing() {
+                let newImage = self.stateKeeper.imageView?.getPointerData().drawIn(
+                    image: UIImage.imageFromARGB32Bitmap(pixels: data, withWidth: fbW, withHeight: fbH)
+                )
                 UserInterface {
                     self.stateKeeper.imageView?.image = newImage
                 }

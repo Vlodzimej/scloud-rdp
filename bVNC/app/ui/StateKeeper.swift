@@ -1149,8 +1149,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         self.requestCredentialsForConnection()
     }
     
-    func isCurrentSessionConnected() -> Bool? {
-        return self.remoteSession?.connected
+    func isCurrentSessionConnected() -> Bool {
+        return self.remoteSession?.connected ?? false
+    }
+
+    func isCurrentSessionConnectedAndDrawing() -> Bool {
+        return self.isDrawing && self.isCurrentSessionConnected()
     }
     
 	/*
