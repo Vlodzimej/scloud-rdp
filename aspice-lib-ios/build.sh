@@ -55,20 +55,20 @@ then
   popd
 fi
 
-if git clone https://github.com/GStreamer/cerbero.git cerbero_maccatalyst
-then
-  pushd cerbero_maccatalyst
-  git checkout $CERBERO_VERSION
-  for patch in  ../cerbero-disable-harfbuzz-docs.patch \
-                ../cerbero-enable-maccatalyst-config.patch \
-                ../cerbero-disable-gst-gl.patch \
-                ../cerbero-disable-asm-mac-catalyst.patch
-  do
-    patch -p1 < $patch
-  done
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
-  popd
-fi
+# if git clone https://github.com/GStreamer/cerbero.git cerbero_maccatalyst
+# then
+#   pushd cerbero_maccatalyst
+#   git checkout $CERBERO_VERSION
+#   for patch in  ../cerbero-disable-harfbuzz-docs.patch \
+#                 ../cerbero-enable-maccatalyst-config.patch \
+#                 ../cerbero-disable-gst-gl.patch \
+#                 ../cerbero-disable-asm-mac-catalyst.patch
+#   do
+#     patch -p1 < $patch
+#   done
+#   ./cerbero-uninstalled -c config/cross-ios-universal.cbc bootstrap
+#   popd
+# fi
 
 git config --global protocol.file.allow always
 
@@ -80,14 +80,14 @@ pushd recipes
 git pull
 popd
 
-for platform in iphoneos maccatalyst
+for platform in iphoneos
 do
   pushd cerbero_$platform
   # Copy all spice recipes in automatically or git clone a repo with them.
   rsync -avP --exclude=.git --exclude='ffmpeg*' ../recipes/ ./recipes/
 
   # Workaround for missing lib-pthread.la dependency.
-  for arch in x86_64 arm64
+  for arch in arm64 #x86_64
   do
       mkdir -p build/dist/ios_universal/${arch}/lib/
       ln -sf libz.la build/dist/ios_universal/${arch}/lib/lib-pthread.la
@@ -100,9 +100,9 @@ do
   popd
 done
 
-for platform in iphoneos maccatalyst
+for platform in iphoneos #maccatalyst
 do
-  for arch in arm64 x86_64
+  for arch in arm64 #x86_64
   do
     # Workaround for missing spiceglue header files. TODO: Move to recipe.
     cp cerbero_$platform/build/sources/ios_universal/$arch/spiceglue-2.2/src/*.h cerbero_$platform/build/dist/ios_universal/include/

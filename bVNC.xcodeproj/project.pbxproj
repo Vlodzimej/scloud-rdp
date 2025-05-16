@@ -326,7 +326,6 @@
 		AFB2C8ED26001F4D00E2859F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
 		AFB2C8EE26001F4D00E2859F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */; };
 		AFB39110274F564A0059F91F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
-		AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */ = {isa = PBXBuildFile; fileRef = AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */; };
 		AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
 		AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
@@ -412,7 +411,7 @@
 		162C398F2D0097E200DD5610 /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/libvncclient.a; sourceTree = "<group>"; };
 		162C39902D0097E200DD5610 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined_maccatalyst/lib/libssh2.a; sourceTree = "<group>"; };
 		162C39952D00C3B800DD5610 /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/duperlib.a; sourceTree = "<group>"; };
-		162C399F2D03558200DD5610 /* libs_combined_iphoneos */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libs_combined_iphoneos; path = bVNC.xcodeproj/libs_combined_iphoneos; sourceTree = "<group>"; };
+		162C399F2D03558200DD5610 /* libs_combined_iphoneos */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libs_combined; path = bVNC.xcodeproj/libs_combined; sourceTree = "<group>"; };
 		162C39A12D0356BB00DD5610 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssl.a; sourceTree = "<group>"; };
 		162C39A32D0356D200DD5610 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
 		162C3A722D035CA800DD5610 /* aSPICE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aSPICE.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -659,7 +658,7 @@
 		162C3C1D2D0390E900DD5610 /* gigalib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = gigalib.a; path = bVNC.xcodeproj/ios_universal_iphoneos/lib/gigalib.a; sourceTree = "<group>"; };
 		162C3C212D03912C00DD5610 /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssh2.a; sourceTree = "<group>"; };
 		163A502D2CD9B4E5003BC6AE /* TouchInputType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchInputType.swift; sourceTree = "<group>"; };
-		164F78EC2C01077E0063B590 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = bVNC.xcodeproj/libs_combined/lib/spicelib.a; sourceTree = "<group>"; };
+		164F78EC2C01077E0063B590 /* spicelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/spicelib.a; sourceTree = "<group>"; };
 		165BCA182B8A39E900A1F756 /* ConnectionListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionListPage.swift; sourceTree = "<group>"; };
 		167176C52838248F00D8719B /* SimulatedTouchpadUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedTouchpadUIImageView.swift; sourceTree = "<group>"; };
 		167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshKeyGenerator.swift; sourceTree = "<group>"; };
@@ -724,7 +723,7 @@
 		AF130CD125FA89800085C2E8 /* libgio-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgio-2.0.a"; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libgio-2.0.a"; sourceTree = "<group>"; };
 		AF130CD225FA89800085C2E8 /* libspice-client-glib-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libspice-client-glib-2.0.a"; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libspice-client-glib-2.0.a"; sourceTree = "<group>"; };
 		AF130CD325FA89800085C2E8 /* libgmodule-2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libgmodule-2.0.a"; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libgmodule-2.0.a"; sourceTree = "<group>"; };
-		AF25C1A1243C085600513BBD /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined/lib/superlib.a; sourceTree = "<group>"; };
+		AF25C1A1243C085600513BBD /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/superlib.a; sourceTree = "<group>"; };
 		AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewHelper.swift; sourceTree = "<group>"; };
 		AF291AD4242418A200DCD383 /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		AF30D1B4253396EF00BA7A62 /* SimpleRemoteTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleRemoteTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -980,8 +979,8 @@
 		AF44CD8326018B1B00DAA44B /* GStreamer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GStreamer.framework; path = Library/Frameworks/GStreamer.framework; sourceTree = DEVELOPER_DIR; };
 		AF44CE6E2601A16600DAA44B /* libiconv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiconv.a; path = bVNC.xcodeproj/ios_universal/lib/iconv/libiconv.a; sourceTree = "<group>"; };
 		AF44CF35260259A300DAA44B /* SpiceSessionDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpiceSessionDummy.swift; sourceTree = "<group>"; };
-		AF48247D23B4783500826395 /* libvncclient.0.9.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncclient.0.9.13.dylib; path = bVNC.xcodeproj/libs_combined/lib/libvncclient.0.9.13.dylib; sourceTree = "<group>"; };
-		AF48247F23B478C300826395 /* libvncclient.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncclient.1.dylib; path = bVNC.xcodeproj/libs_combined/lib/libvncclient.1.dylib; sourceTree = "<group>"; };
+		AF48247D23B4783500826395 /* libvncclient.0.9.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncclient.0.9.13.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libvncclient.0.9.13.dylib; sourceTree = "<group>"; };
+		AF48247F23B478C300826395 /* libvncclient.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncclient.1.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libvncclient.1.dylib; sourceTree = "<group>"; };
 		AF48248123B479DD00826395 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		AF48248223B479DD00826395 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		AF48248323B479DD00826395 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1373,10 +1372,10 @@
 		AF48264A23B479F300826395 /* libswiftCoreLocation.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftCoreLocation.tbd; path = usr/lib/swift/libswiftCoreLocation.tbd; sourceTree = SDKROOT; };
 		AF48264B23B479F300826395 /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		AF48264C23B479F300826395 /* libswiftMapKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftMapKit.tbd; path = usr/lib/swift/libswiftMapKit.tbd; sourceTree = SDKROOT; };
-		AF48281D23B47C9E00826395 /* libturbojpeg.0.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libturbojpeg.0.2.0.dylib; path = bVNC.xcodeproj/libs_combined/lib/libturbojpeg.0.2.0.dylib; sourceTree = "<group>"; };
-		AF48281E23B47C9E00826395 /* libvncserver.0.9.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncserver.0.9.13.dylib; path = bVNC.xcodeproj/libs_combined/lib/libvncserver.0.9.13.dylib; sourceTree = "<group>"; };
-		AF48281F23B47C9E00826395 /* libjpeg.62.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjpeg.62.3.0.dylib; path = bVNC.xcodeproj/libs_combined/lib/libjpeg.62.3.0.dylib; sourceTree = "<group>"; };
-		AF48282923B47D7F00826395 /* libvncserver.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncserver.1.dylib; path = bVNC.xcodeproj/libs_combined/lib/libvncserver.1.dylib; sourceTree = "<group>"; };
+		AF48281D23B47C9E00826395 /* libturbojpeg.0.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libturbojpeg.0.2.0.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libturbojpeg.0.2.0.dylib; sourceTree = "<group>"; };
+		AF48281E23B47C9E00826395 /* libvncserver.0.9.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncserver.0.9.13.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libvncserver.0.9.13.dylib; sourceTree = "<group>"; };
+		AF48281F23B47C9E00826395 /* libjpeg.62.3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjpeg.62.3.0.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libjpeg.62.3.0.dylib; sourceTree = "<group>"; };
+		AF48282923B47D7F00826395 /* libvncserver.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvncserver.1.dylib; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libvncserver.1.dylib; sourceTree = "<group>"; };
 		AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bVNC-Bridging-Header.h"; sourceTree = "<group>"; };
 		AF48283023B47EC300826395 /* VncBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VncBridge.h; sourceTree = "<group>"; };
 		AF48283123B47EC300826395 /* VncBridge.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = VncBridge.c; sourceTree = "<group>"; };
@@ -1389,9 +1388,9 @@
 		AF5D23F227508A2700974427 /* RdpBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RdpBridge.h; sourceTree = "<group>"; };
 		AF7421F2241D58EB00C552A7 /* SshPortForwarder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SshPortForwarder.h; sourceTree = "<group>"; };
 		AF7421F3241D58EB00C552A7 /* SshPortForwarder.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = SshPortForwarder.c; sourceTree = "<group>"; };
-		AF8C75A1243AB46100AF0CF3 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined/lib/libcrypto.a; sourceTree = "<group>"; };
-		AF8C75A3243AB47700AF0CF3 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined/lib/libssl.a; sourceTree = "<group>"; };
-		AF8C75A5243AB48600AF0CF3 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = bVNC.xcodeproj/libs_combined/lib/libturbojpeg.a; sourceTree = "<group>"; };
+		AF8C75A1243AB46100AF0CF3 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libcrypto.a; sourceTree = "<group>"; };
+		AF8C75A3243AB47700AF0CF3 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssl.a; sourceTree = "<group>"; };
+		AF8C75A5243AB48600AF0CF3 /* libturbojpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libturbojpeg.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libturbojpeg.a; sourceTree = "<group>"; };
 		AF8C75F4243BEF4B00AF0CF3 /* libvncclient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvncclient.xcodeproj; path = ../../../libvncclient/libvncclient/libvncclient.xcodeproj; sourceTree = "<group>"; };
 		AF94A6B3251663C000AA2A25 /* bVNC Pro.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "bVNC Pro.entitlements"; sourceTree = "<group>"; };
 		AF99997C243593C70018204F /* LongTapDragUIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongTapDragUIImageView.swift; sourceTree = "<group>"; };
@@ -1409,12 +1408,12 @@
 		AFB2C91E2600210B00E2859F /* spicelib_no_jpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = spicelib_no_jpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/spicelib_no_jpeg.a"; sourceTree = "<group>"; };
 		AFB2C9252600217F00E2859F /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		AFB2CA3126002A5F00E2859F /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libiconv.2.tbd; sourceTree = DEVELOPER_DIR; };
-		AFB2CA3E26002A9B00E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/libs_combined/lib/libjpeg.a; sourceTree = "<group>"; };
+		AFB2CA3E26002A9B00E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libjpeg.a; sourceTree = "<group>"; };
 		AFB2CA6626002B8700E2859F /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libjpeg.a"; sourceTree = "<group>"; };
 		AFB2CA8C26002C6C00E2859F /* libiconv.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.2.dylib; path = "aspice-lib-ios/cerbero/build/dist/ios_universal/lib/libiconv.2.dylib"; sourceTree = "<group>"; };
 		AFB391D1274F564A0059F91F /* aRDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aRDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFB391D7274F585C0059F91F /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.0.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
-		AFB391D9274F586D0059F91F /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined/lib/duperlib.a; sourceTree = "<group>"; };
+		AFB391D9274F586D0059F91F /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/duperlib.a; sourceTree = "<group>"; };
 		AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSessionDummy.swift; sourceTree = "<group>"; };
 		AFB391E2274F5A820059F91F /* RdpSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSession.swift; sourceTree = "<group>"; };
 		AFBBBD7924C3C6CD00F64E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -1422,8 +1421,8 @@
 		AFE0251E260DBD2D005E851E /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = bVNC.xcodeproj/ios_universal/lib/liblz4.a; sourceTree = "<group>"; };
 		AFE02552260E51C4005E851E /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		AFE28DE52541405900F127A2 /* PhysicalKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalKeyboardHandler.swift; sourceTree = "<group>"; };
-		AFE7B0BF243A316900275C3A /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined/lib/libvncclient.a; sourceTree = "<group>"; };
-		AFECDF212439D9C6000E1E9A /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined/lib/libssh2.a; sourceTree = "<group>"; };
+		AFE7B0BF243A316900275C3A /* libvncclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvncclient.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libvncclient.a; sourceTree = "<group>"; };
+		AFECDF212439D9C6000E1E9A /* libssh2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssh2.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/libssh2.a; sourceTree = "<group>"; };
 		AFF244E12407985E00F5839B /* CustomTextInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextInput.swift; sourceTree = "<group>"; };
 		AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchEnabledUIImageView.swift; sourceTree = "<group>"; };
 		AFF5043D2617AC53007C7644 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -3534,7 +3533,6 @@
 			files = (
 				165BCA1C2B8A39EA00A1F756 /* ConnectionListPage.swift in Sources */,
 				AFB39110274F564A0059F91F /* Constants.swift in Sources */,
-				AFB39111274F564A0059F91F /* SshPortForwarder.c in Sources */,
 				1624FE0E29A5D90500FD54CA /* StringExtension.swift in Sources */,
 				AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */,
 				16F948562BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
@@ -3629,7 +3627,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3690,7 +3688,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3787,7 +3785,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/iconv",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 45;
@@ -3869,7 +3867,7 @@
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_maccatalyst/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_maccatalyst/lib/iconv",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
 				MARKETING_VERSION = 45;
@@ -4163,7 +4161,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4190,7 +4188,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 					"$(SDKROOT)/usr/lib/swift",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
@@ -4227,7 +4225,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4255,7 +4253,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 					"$(SDKROOT)/usr/lib/swift",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
@@ -4275,7 +4273,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4492,7 +4490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -4566,7 +4564,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -4636,7 +4634,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -4653,8 +4651,8 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aRDP-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -4663,8 +4661,8 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/gstreamer-1.0",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
@@ -4682,7 +4680,7 @@
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4699,7 +4697,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 195;
 				DEVELOPMENT_ASSET_PATHS = "bVNC/Preview\\ Content";
-				DEVELOPMENT_TEAM = 96Z3MCQKZA;
+				DEVELOPMENT_TEAM = 8Y5KT345PS;
 				ENABLE_BITCODE = NO;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_PREVIEWS = YES;
@@ -4713,8 +4711,8 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/glib-2.0/include",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/glib-2.0/include",
 				);
 				INFOPLIST_FILE = "bVNC/aRDP-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -4727,8 +4725,8 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/lib/gstreamer-1.0",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/lib/gstreamer-1.0",
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/lib",
 				);
 				LLVM_LTO = NO;
@@ -4747,7 +4745,7 @@
 				SWIFT_VERSION = 5.0;
 				"SYSTEM_HEADER_SEARCH_PATHS[arch=*]" = (
 					"$(PROJECT_DIR)/bVNC.xcodeproj/libs_combined_iphoneos/include",
-					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal/include/**",
+					"$(PROJECT_DIR)/bVNC.xcodeproj/ios_universal_iphoneos/include/**",
 				);
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -35,23 +35,18 @@ then
   # iOS Build
   export LDFLAGS="-lc++"
   cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
+      -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
       -DCMAKE_CXX_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_C_FLAGS:STRING="-DTARGET_OS_IPHONE" \
       -DCMAKE_LD_FLAGS:STRING="-lc++" \
       -DCMAKE_OSX_ARCHITECTURES="arm64" \
-      -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_iphoneos) \
-      -DJPEG_LIBRARY=$(realpath ../$JPEG_DEP_PATH/libs_combined_iphoneos/lib) \
-      -DJPEG_INCLUDE_DIR=$(realpath ../$JPEG_DEP_PATH/libs_combined_iphoneos/include) \
-      -DCMAKE_PREFIX_PATH=$(realpath ../$DEP_PATH) \
       -DPLATFORM=OS64 \
       -DWITH_SSE2=OFF \
-      -DWITH_JPEG=ON \
+      -DWITH_JPEG=OFF \
       -DENABLE_BITCODE=OFF \
-      -DWITH_FFMPEG=ON \
-      -DWITH_OPENH264=ON \
-      -DWITH_IOSAUDIO=ON \
-      -DWITH_ZLIB=ON \
+      -DWITH_FFMPEG=OFF \
       -G"Unix Makefiles"
   popd
 fi
@@ -60,47 +55,47 @@ pushd FreeRDP_iphoneos
 cmake --build . -j $PARALLELISM -v
 popd
 
-for arch in arm64 x86_64
-do
-  DEP_PATH=${DEP_BASE_PATH}_maccatalyst
-  if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_maccatalyst_$arch
-  then
-  # Mac Catalyst build
-    pushd FreeRDP_maccatalyst_$arch
-    git checkout ${FREERDP_VERSION}
+# for arch in arm64 x86_64
+# do
+#   DEP_PATH=${DEP_BASE_PATH}_maccatalyst
+#   if git clone https://github.com/FreeRDP/FreeRDP.git FreeRDP_maccatalyst_$arch
+#   then
+#   # Mac Catalyst build
+#     pushd FreeRDP_maccatalyst_$arch
+#     git checkout ${FREERDP_VERSION}
 
-    apply_patches
+#     apply_patches
 
-    MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+#     MACOSX_SDK_DIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
-    export LDFLAGS="-lc++"
-    cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
-        -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
-        -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
-        -DCMAKE_OSX_ARCHITECTURES="$arch" \
-        -DCMAKE_CXX_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE -lc++" \
-        -DCMAKE_C_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
-        -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
-        -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
-        -DJPEG_LIBRARY=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/lib) \
-        -DJPEG_INCLUDE_DIR=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/include) \
-        -DCMAKE_PREFIX_PATH=$(realpath ../$DEP_PATH) \
-        -DPLATFORM=MAC_CATALYST \
-        -DWITH_NEON=OFF \
-        -DWITH_SSE2=OFF \
-        -DWITH_JPEG=ON \
-        -DENABLE_BITCODE=OFF \
-        -DWITH_FFMPEG=ON \
-        -DWITH_OPENH264=ON \
-        -DWITH_IOSAUDIO=ON \
-        -DWITH_ZLIB=ON \
-        -G"Unix Makefiles"
-    popd
-  fi
-  pushd FreeRDP_maccatalyst_$arch
-  cmake --build . -j $PARALLELISM -v
-  popd
-done
+#     export LDFLAGS="-lc++"
+#     cmake -DCMAKE_TOOLCHAIN_FILE="${CMAKE_TOOLCHAIN_FILE}" \
+#         -DFREERDP_IOS_EXTERNAL_SSL_PATH=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
+#         -DUIKIT_FRAMEWORK="${MACOSX_SDK_DIR}/System/iOSSupport/System/Library/Frameworks/UIKit.framework" \
+#         -DCMAKE_OSX_ARCHITECTURES="$arch" \
+#         -DCMAKE_CXX_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE -lc++" \
+#         -DCMAKE_C_FLAGS:STRING="-target $arch-apple-ios13.4-macabi -DTARGET_OS_IPHONE" \
+#         -DCMAKE_IOS_SDK_ROOT=${MACOSX_SDK_DIR} \
+#         -DOPENSSL_ROOT_DIR=$(realpath ../$ISSH_DEP_PATH/openssl_macosx) \
+#         -DJPEG_LIBRARY=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/lib) \
+#         -DJPEG_INCLUDE_DIR=$(realpath ../$JPEG_DEP_PATH/libs_combined_maccatalyst/include) \
+#         -DCMAKE_PREFIX_PATH=$(realpath ../$DEP_PATH) \
+#         -DPLATFORM=MAC_CATALYST \
+#         -DWITH_NEON=OFF \
+#         -DWITH_SSE2=OFF \
+#         -DWITH_JPEG=ON \
+#         -DENABLE_BITCODE=OFF \
+#         -DWITH_FFMPEG=ON \
+#         -DWITH_OPENH264=ON \
+#         -DWITH_IOSAUDIO=ON \
+#         -DWITH_ZLIB=ON \
+#         -G"Unix Makefiles"
+#     popd
+#   fi
+#   pushd FreeRDP_maccatalyst_$arch
+#   cmake --build . -j $PARALLELISM -v
+#   popd
+# done
 
 # Build library with all architectures
 mkdir -p libs_iphoneos
@@ -109,13 +104,13 @@ do
   lipo FreeRDP_iphoneos/$f -output libs_iphoneos/$(basename $f) -create
 done
 
-mkdir -p libs_maccatalyst
-for f in $(find FreeRDP_iphoneos/ -name \*.a | sed 's/FreeRDP_iphoneos\///')
-do
-  lipo FreeRDP_maccatalyst_*/$f -output libs_maccatalyst/$(basename $f) -create
-done
+# mkdir -p libs_maccatalyst
+# for f in $(find FreeRDP_iphoneos/ -name \*.a | sed 's/FreeRDP_iphoneos\///')
+# do
+#   lipo FreeRDP_maccatalyst_*/$f -output libs_maccatalyst/$(basename $f) -create
+# done
 
-for platform in iphoneos maccatalyst
+for platform in iphoneos #maccatalyst
 do
   DEP_PATH=${DEP_BASE_PATH}_$platform
 
@@ -125,8 +120,12 @@ do
     issh_platform="macosx"
   fi
   deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/* $DEP_PATH/lib/libav*.a $DEP_PATH/lib/libswresample.a $DEP_PATH/lib/libopenh264.a"
-  echo libtool -static -o duperlib.a $deps
-  libtool -static -o duperlib.a $deps
+  /Library/Developer/CommandLineTools/usr/bin//libtool -o duperlib.a $deps
+  /Library/Developer/CommandLineTools/usr/bin//libtool -static -o duperlib.a $deps
+
+  # deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/* $DEP_PATH/lib/libav*.a $DEP_PATH/lib/libswresample.a $DEP_PATH/lib/libopenh264.a"
+  # echo ar -rc  duperlib.a $deps
+  # /Library/Developer/CommandLineTools/usr/bin//libtool -o duperlib.a $deps
   mv duperlib.a ../bVNC.xcodeproj/libs_combined_$platform/lib/
 
   # Make all include files available to the project

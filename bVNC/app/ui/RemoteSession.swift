@@ -543,23 +543,23 @@ class RemoteSession {
             self.stateKeeper.sshTunnelingStarted = true
             log_callback_str(message: "Setting up SSH forwarding from \(self.address):\(self.port)")
             log_callback_str(message: "Setting up SSH forwarding to \(forwardToAddress):\(forwardToPort)")
-            setupSshPortForward(
-                Int32(self.stateKeeper.currInst),
-                failure_callback_swift,
-                ssh_forward_success,
-                ssh_forward_failure,
-                log_callback,
-                yes_no_dialog_callback,
-                UnsafeMutablePointer<Int8>(mutating: (self.sshAddress as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshPort as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshUser as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshPass as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshPassphrase as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshPrivateKey as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (self.sshForwardPort as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
-                UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
+//            setupSshPortForward(
+//                Int32(self.stateKeeper.currInst),
+//                failure_callback_swift,
+//                ssh_forward_success,
+//                ssh_forward_failure,
+//                log_callback,
+//                yes_no_dialog_callback,
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshAddress as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshPort as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshUser as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshPass as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshPassphrase as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshPrivateKey as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: ("127.0.0.1" as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (self.sshForwardPort as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (forwardToAddress as NSString).utf8String),
+//                UnsafeMutablePointer<Int8>(mutating: (forwardToPort as NSString).utf8String))
         }
     }
     

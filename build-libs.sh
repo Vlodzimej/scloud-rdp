@@ -117,42 +117,45 @@ EOF
             -DCMAKE_INSTALL_PREFIX=./libs \
             -DENABLE_BITCODE=OFF \
             -DENABLE_VISIBILITY=ON \
+            -DENABLE_SHARED=OFF \
+            -DENABLE_STATIC=ON \
             -DENABLE_ARC=OFF ..
+            
       make -j 12
       make install
       popd
     done
 
-    for arch in x86_64 arm64
-    do
-        mkdir -p build_maccatalyst_"${arch}"
-        pushd build_maccatalyst_"${arch}"
+#     for arch in arm64 #x86_64
+#     do
+#         mkdir -p build_maccatalyst_"${arch}"
+#         pushd build_maccatalyst_"${arch}"
 
-        echo "libjpeg-turbo Mac Catalyst build, architecture ${arch}"
+#         echo "libjpeg-turbo Mac Catalyst build, architecture ${arch}"
 
-        IOS_PLATFORMDIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
-        IOS_SYSROOT=($IOS_PLATFORMDIR/Developer/SDKs/MacOSX*.sdk)
-        export CFLAGS="-Wall -arch ${arch} -mmacosx-version-min=10.15 -funwind-tables"
-        cat <<EOF >toolchain.cmake
-          set(CMAKE_SYSTEM_NAME Darwin)
-          set(CMAKE_SYSTEM_PROCESSOR ${arch})
-          set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
-        cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
-              -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-              -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=13.2 \
-              -DCMAKE_INSTALL_PREFIX=./libs \
-              -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
-              -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
-              -DCMAKE_BUILD_TYPE=MAC_CATALYST \
-              -DENABLE_BITCODE=OFF \
-              -DENABLE_VISIBILITY=ON \
-              -DENABLE_ARC=OFF ..
+#         IOS_PLATFORMDIR=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform
+#         IOS_SYSROOT=($IOS_PLATFORMDIR/Developer/SDKs/MacOSX*.sdk)
+#         export CFLAGS="-Wall -arch ${arch} -mmacosx-version-min=10.15 -funwind-tables"
+#         cat <<EOF >toolchain.cmake
+#           set(CMAKE_SYSTEM_NAME Darwin)
+#           set(CMAKE_SYSTEM_PROCESSOR ${arch})
+#           set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
+# EOF
+#         cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
+#               -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
+#               -DPLATFORM=MAC_CATALYST -DDEPLOYMENT_TARGET=13.2 \
+#               -DCMAKE_INSTALL_PREFIX=./libs \
+#               -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+#               -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+#               -DCMAKE_BUILD_TYPE=MAC_CATALYST \
+#               -DENABLE_BITCODE=OFF \
+#               -DENABLE_VISIBILITY=ON \
+#               -DENABLE_ARC=OFF ..
 
-        make -j 12
-        make install
-        popd
-    done
+#         make -j 12
+#         make install
+#         popd
+#     done
 
     popd # libjpeg-turbo
   else
@@ -173,19 +176,19 @@ EOF
   echo "Running rsync to copy over iphoneos libraries"
   rsync -avP libjpeg-turbo/libs_combined_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
 
-  mkdir -p libjpeg-turbo/libs_combined_maccatalyst/lib/
-  echo "Rsync Maccatalyst arm64 libjpeg-turbo headers to the common directory"
-  rsync -avP libjpeg-turbo/build_maccatalyst_arm64/libs/include libjpeg-turbo/libs_combined_maccatalyst/
-  echo "Lipo together the architectures for Maccatalyst libjpeg-turbo and copy them to the common directory"
-  for lib in libjpeg.a libturbojpeg.a
-  do
-    echo "Running lipo to create mac catalyst ${lib}"
-    lipo libjpeg-turbo/build_maccatalyst_*/libs/lib/${lib} \
-          -output libjpeg-turbo/libs_combined_maccatalyst/lib/${lib} -create
-  done
+  # mkdir -p libjpeg-turbo/libs_combined_maccatalyst/lib/
+  # echo "Rsync Maccatalyst arm64 libjpeg-turbo headers to the common directory"
+  # rsync -avP libjpeg-turbo/build_maccatalyst_arm64/libs/include libjpeg-turbo/libs_combined_maccatalyst/
+  # echo "Lipo together the architectures for Maccatalyst libjpeg-turbo and copy them to the common directory"
+  # for lib in libjpeg.a libturbojpeg.a
+  # do
+  #   echo "Running lipo to create mac catalyst ${lib}"
+  #   lipo libjpeg-turbo/build_maccatalyst_*/libs/lib/${lib} \
+  #         -output libjpeg-turbo/libs_combined_maccatalyst/lib/${lib} -create
+  # done
 
-  echo "Running rsync to copy over mac catalyst fat libraries"
-  rsync -avP libjpeg-turbo/libs_combined_maccatalyst/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  # echo "Running rsync to copy over mac catalyst fat libraries"
+  # rsync -avP libjpeg-turbo/libs_combined_maccatalyst/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
 }
 
 function build_issh2 {
@@ -215,8 +218,8 @@ function build_issh2 {
   # Copy SSH libs and header files to project
   rsync -avP $DIR/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
   rsync -avP $DIR/openssl_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
-  rsync -avP $DIR/libssh2_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
-  rsync -avP $DIR/openssl_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  # rsync -avP $DIR/libssh2_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  # rsync -avP $DIR/openssl_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
 }
 
 function build_libvncserver() {
@@ -243,6 +246,7 @@ function build_libvncserver() {
       cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
           -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
           -DPLATFORM=OS64 \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
           -DDEPLOYMENT_TARGET=13.2 \
           -DENABLE_BITCODE=OFF \
           -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libssl.a) \
@@ -269,50 +273,51 @@ function build_libvncserver() {
     popd
   done
 
-  for arch in x86_64 arm64
-  do
-    if [ ! -d build_maccatalyst_${arch} ]
-    then
-      echo "libvncserver Mac Catalyst build"
-      mkdir -p build_maccatalyst_${arch}
-      pushd build_maccatalyst_${arch}
-      cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
-          -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
-          -DPLATFORM=MAC_CATALYST \
-          -DDEPLOYMENT_TARGET=13.2 \
-          -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
-          -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
-          -DCMAKE_BUILD_TYPE=MAC_CATALYST \
-          -DENABLE_BITCODE=OFF \
-          -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libssl.a) \
-          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libcrypto.a) \
-          -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_macosx/include) \
-          -DCMAKE_INSTALL_PREFIX=./libs \
-          -DBUILD_SHARED_LIBS=OFF \
-          -DENABLE_VISIBILITY=ON \
-          -DENABLE_ARC=OFF \
-          -DWITH_SASL=OFF \
-          -DWITH_LZO=OFF \
-          -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
-          -DWITH_GCRYPT=OFF \
-          -DWITH_PNG=OFF \
-          -DWITH_EXAMPLES=OFF \
-          -DWITH_TESTS=OFF \
-          -DWITH_QT=OFF \
-          -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/)
-      popd
-    fi
-    pushd build_maccatalyst_${arch}
-    make -j 12
-    make install
-    popd
-  done
+  # for arch in x86_64 arm64
+  # do
+  #   if [ ! -d build_maccatalyst_${arch} ]
+  #   then
+  #     echo "libvncserver Mac Catalyst build"
+  #     mkdir -p build_maccatalyst_${arch}
+  #     pushd build_maccatalyst_${arch}
+  #     cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
+  #         -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
+  #         -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+  #         -DPLATFORM=MAC_CATALYST \
+  #         -DDEPLOYMENT_TARGET=13.2 \
+  #         -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+  #         -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+  #         -DCMAKE_BUILD_TYPE=MAC_CATALYST \
+  #         -DENABLE_BITCODE=OFF \
+  #         -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libssl.a) \
+  #         -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libcrypto.a) \
+  #         -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_macosx/include) \
+  #         -DCMAKE_INSTALL_PREFIX=./libs \
+  #         -DBUILD_SHARED_LIBS=OFF \
+  #         -DENABLE_VISIBILITY=ON \
+  #         -DENABLE_ARC=OFF \
+  #         -DWITH_SASL=OFF \
+  #         -DWITH_LZO=OFF \
+  #         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+  #         -DWITH_GCRYPT=OFF \
+  #         -DWITH_PNG=OFF \
+  #         -DWITH_EXAMPLES=OFF \
+  #         -DWITH_TESTS=OFF \
+  #         -DWITH_QT=OFF \
+  #         -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_maccatalyst/)
+  #     popd
+  #   fi
+  #   pushd build_maccatalyst_${arch}
+  #   make -j 12
+  #   make install
+  #   popd
+  # done
   popd
 }
 
 function lipo_libvncserver() {
   pushd libvncserver/
-  for platform in iphoneos maccatalyst
+  for platform in iphoneos #maccatalyst
   do
     # Lipo together the architectures for libvncserver and copy them to the common directory.
     mkdir -p libs_combined_${platform}
@@ -334,7 +339,7 @@ function lipo_libvncserver() {
 
 function create_super_and_spice_libs() {
   # Make a super duper static lib out of all the other libs
-  for platform in iphoneos maccatalyst
+  for platform in iphoneos #maccatalyst
   do
     pushd bVNC.xcodeproj/libs_combined_${platform}/lib
     /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a libvncclient.a
@@ -371,12 +376,12 @@ function build_rdp_dependencies() {
 
 # Main program start
 
-set_up_ios_cmake
-build_jpeg_turbo
-build_issh2 "$SSL_VERSION"
-build_libvncserver "iSSH2-$SSL_VERSION"
-lipo_libvncserver
-create_super_and_spice_libs
-copy_spice_keyboard_layouts_from_android_project
-build_spice_dependencies
+# set_up_ios_cmake
+# build_jpeg_turbo
+# build_issh2 "$SSL_VERSION"
+# build_libvncserver "iSSH2-$SSL_VERSION"
+# lipo_libvncserver
+# create_super_and_spice_libs
+# copy_spice_keyboard_layouts_from_android_project
+# build_spice_dependencies
 build_rdp_dependencies
