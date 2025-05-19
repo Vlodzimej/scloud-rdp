@@ -312,8 +312,8 @@ function build_issh2 {
   #   make install
   #   popd
   # done
-  popd
-}
+  # popd
+#}
 
 # function lipo_libvncserver() {
 #   pushd libvncserver/
