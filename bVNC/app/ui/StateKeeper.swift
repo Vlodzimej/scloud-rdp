@@ -346,17 +346,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     }
     
     fileprivate func constructRemoteSession(_ customResolution: Bool, _ customWidth: Int, _ customHeight: Int) -> RemoteSession {
-        var remoteSession: RemoteSession? = nil
-        if Utils.isSpice() {
-            remoteSession = SpiceSession(
-                instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight
-            )
-        } else if Utils.isRdp() {
-            remoteSession = RdpSession(instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight)
-        } else {
-            remoteSession = VncSession(instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight)
-        }
-        return remoteSession!
+        return RdpSession(instance: currInst, stateKeeper: self, customResolution: customResolution, customWidth: customWidth, customHeight: customHeight)
     }
     
     /**
