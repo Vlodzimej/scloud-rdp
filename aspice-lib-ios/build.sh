@@ -124,5 +124,5 @@ do
   libtool -static -o libs_$platform/lib/gigalib.a $deps
 
   rsync -a ios_universal_$platform/include/ ios_universal_$platform/lib/glib-2.0/include/ libs_$platform/include/
-  rsync -a --delete $(realpath libs_$platform)/ ../bVNC.xcodeproj/ios_universal_$platform/
+  rsync -a --delete $(realpath libs_$platform)/ ../sCloudRDP.xcodeproj/ios_universal_$platform/
 done

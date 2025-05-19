@@ -70,7 +70,7 @@ fi
 CLEAN=$2
 if [ -n "${CLEAN}" ]
 then
-  rm -rf ios-cmake libjpeg-turbo iSSH2 libvncserver remote-desktop-clients
+  rm -rf ios-cmake libjpeg-turbo iSSH2 lisCloudRDPserver remote-desktop-clients
   exit 0
 fi
 
@@ -166,7 +166,7 @@ EOF
   mkdir -p libjpeg-turbo/libs_combined_iphoneos/lib/
   echo "Copy over iPhone libjpeg-turbo headers and library to the common directory"
   rsync -avP libjpeg-turbo/build_iphoneos_arm64/libs/include libjpeg-turbo/libs_combined_iphoneos/
-  mkdir -p ./bVNC.xcodeproj/libs_combined_iphoneos/lib/
+  mkdir -p ./sCloudRDP.xcodeproj/libs_combined_iphoneos/lib/
   for lib in libjpeg.a libturbojpeg.a
   do
     echo "Running lipo to create iphone ${lib}"
@@ -174,7 +174,7 @@ EOF
           -output libjpeg-turbo/libs_combined_iphoneos/lib/${lib} -create
   done
   echo "Running rsync to copy over iphoneos libraries"
-  rsync -avP libjpeg-turbo/libs_combined_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
+  rsync -avP libjpeg-turbo/libs_combined_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
 
   # mkdir -p libjpeg-turbo/libs_combined_maccatalyst/lib/
   # echo "Rsync Maccatalyst arm64 libjpeg-turbo headers to the common directory"
@@ -188,7 +188,7 @@ EOF
   # done
 
   # echo "Running rsync to copy over mac catalyst fat libraries"
-  # rsync -avP libjpeg-turbo/libs_combined_maccatalyst/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  # rsync -avP libjpeg-turbo/libs_combined_maccatalyst/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
 }
 
 function build_issh2 {
@@ -216,19 +216,19 @@ function build_issh2 {
   fi
 
   # Copy SSH libs and header files to project
-  rsync -avP $DIR/libssh2_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
-  rsync -avP $DIR/openssl_iphoneos/ ./bVNC.xcodeproj/libs_combined_iphoneos/
-  # rsync -avP $DIR/libssh2_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
-  # rsync -avP $DIR/openssl_macosx/ ./bVNC.xcodeproj/libs_combined_maccatalyst/
+  rsync -avP $DIR/libssh2_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
+  rsync -avP $DIR/openssl_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
+  # rsync -avP $DIR/libssh2_macosx/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
+  # rsync -avP $DIR/openssl_macosx/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
 }
 
-function build_libvncserver() {
+function build_lisCloudRDPserver() {
   local SSL_DIR=$1
 
-  git clone https://github.com/iiordanov/libvncserver.git || true
-  pushd libvncserver/
+  git clone https://github.com/iiordanov/lisCloudRDPserver.git || true
+  pushd lisCloudRDPserver/
   git pull
-  git checkout ${LIBVNCSERVER_VERSION}
+  git checkout ${LIsCloudRDPSERVER_VERSION}
 
   if [ -n "${CLEAN}" ]
   then
@@ -237,7 +237,7 @@ function build_libvncserver() {
 
   for arch in arm64 arm64e
   do
-    echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.bVNC' > ${TYPE}.xcconfig
+    echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.sCloudRDP' > ${TYPE}.xcconfig
     if [ ! -d build_iphoneos_${arch} ]
     then
       echo "iPhone build"
@@ -258,7 +258,7 @@ function build_libvncserver() {
           -DENABLE_ARC=OFF \
           -DWITH_SASL=OFF \
           -DWITH_LZO=OFF \
-          -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+          -DLIsCloudRDPSERVER_HAVE_ENDIAN_H=OFF \
           -DWITH_GCRYPT=OFF \
           -DWITH_PNG=OFF \
           -DWITH_EXAMPLES=OFF \
@@ -277,7 +277,7 @@ function build_libvncserver() {
   # do
   #   if [ ! -d build_maccatalyst_${arch} ]
   #   then
-  #     echo "libvncserver Mac Catalyst build"
+  #     echo "lisCloudRDPserver Mac Catalyst build"
   #     mkdir -p build_maccatalyst_${arch}
   #     pushd build_maccatalyst_${arch}
   #     cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
@@ -298,7 +298,7 @@ function build_libvncserver() {
   #         -DENABLE_ARC=OFF \
   #         -DWITH_SASL=OFF \
   #         -DWITH_LZO=OFF \
-  #         -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+  #         -DLIsCloudRDPSERVER_HAVE_ENDIAN_H=OFF \
   #         -DWITH_GCRYPT=OFF \
   #         -DWITH_PNG=OFF \
   #         -DWITH_EXAMPLES=OFF \
@@ -315,11 +315,11 @@ function build_libvncserver() {
   popd
 }
 
-function lipo_libvncserver() {
-  pushd libvncserver/
+function lipo_lisCloudRDPserver() {
+  pushd lisCloudRDPserver/
   for platform in iphoneos #maccatalyst
   do
-    # Lipo together the architectures for libvncserver and copy them to the common directory.
+    # Lipo together the architectures for lisCloudRDPserver and copy them to the common directory.
     mkdir -p libs_combined_${platform}
     pushd build_${platform}_arm64 # Using one of the architectures to get lib names
     for lib in lib*.a
@@ -331,8 +331,8 @@ function lipo_libvncserver() {
     popd
     echo "Copying include files from one of of the architectures"
     rsync -avPL build_${platform}_arm64/libs/include libs_combined_${platform}/
-    echo "Rsyncing libs_combined_${platform}/ to ../bVNC.xcodeproj/libs_combined_${platform}/"
-    rsync -avPL libs_combined_${platform}/ ../bVNC.xcodeproj/libs_combined_${platform}/
+    echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
+    rsync -avPL libs_combined_${platform}/ ../sCloudRDP.xcodeproj/libs_combined_${platform}/
   done
   popd
 }
@@ -341,8 +341,8 @@ function create_super_and_spice_libs() {
   # Make a super duper static lib out of all the other libs
   for platform in iphoneos #maccatalyst
   do
-    pushd bVNC.xcodeproj/libs_combined_${platform}/lib
-    /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a libvncclient.a
+    pushd sCloudRDP.xcodeproj/libs_combined_${platform}/lib
+    /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a lisCloudRDPclient.a
     /Library/Developer/CommandLineTools/usr/bin//libtool -static -o spicelib.a libcrypto.a libssh2.a libssl.a
     popd
   done
@@ -356,7 +356,7 @@ function copy_spice_keyboard_layouts_from_android_project() {
   pushd remote-desktop-clients/
   git pull
   popd
-  rsync -avP remote-desktop-clients/bVNC/src/main/assets/layouts Sources/aSPICE-resources/Resources/
+  rsync -avP remote-desktop-clients/sCloudRDP/src/main/assets/layouts Sources/aSPICE-resources/Resources/
 }
 
 function build_spice_dependencies() {
@@ -379,8 +379,8 @@ function build_rdp_dependencies() {
 #set_up_ios_cmake
 #build_jpeg_turbo
 #build_issh2 "$SSL_VERSION"
-#build_libvncserver "iSSH2-$SSL_VERSION"
-#lipo_libvncserver
+#build_lisCloudRDPserver "iSSH2-$SSL_VERSION"
+#lipo_lisCloudRDPserver
 #create_super_and_spice_libs
 #copy_spice_keyboard_layouts_from_android_project
 #build_spice_dependencies

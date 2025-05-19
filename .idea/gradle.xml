@@ -15,11 +15,11 @@
             <option value="$PROJECT_DIR$/Opaque-app" />
             <option value="$PROJECT_DIR$/aRDP-app" />
             <option value="$PROJECT_DIR$/aSPICE-app" />
-            <option value="$PROJECT_DIR$/bVNC" />
-            <option value="$PROJECT_DIR$/bVNC-app" />
+            <option value="$PROJECT_DIR$/sCloudRDP" />
+            <option value="$PROJECT_DIR$/sCloudRDP-app" />
             <option value="$PROJECT_DIR$/freeaRDP-app" />
             <option value="$PROJECT_DIR$/freeaSPICE-app" />
-            <option value="$PROJECT_DIR$/freebVNC-app" />
+            <option value="$PROJECT_DIR$/freesCloudRDP-app" />
             <option value="$PROJECT_DIR$/pubkeyGenerator" />
             <option value="$PROJECT_DIR$/remoteClientLib" />
             <option value="$PROJECT_DIR$/remoteClientLib/jni" />

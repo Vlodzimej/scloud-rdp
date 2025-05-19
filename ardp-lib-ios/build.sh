@@ -126,12 +126,12 @@ do
   # deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/* $DEP_PATH/lib/libav*.a $DEP_PATH/lib/libswresample.a $DEP_PATH/lib/libopenh264.a"
   # echo ar -rc  duperlib.a $deps
   # /Library/Developer/CommandLineTools/usr/bin//libtool -o duperlib.a $deps
-  mv duperlib.a ../bVNC.xcodeproj/libs_combined_$platform/lib/
+  mv duperlib.a ../sCloudRDP.xcodeproj/libs_combined_$platform/lib/
 
   # Make all include files available to the project
   for d in $(find FreeRDP_iphoneos/ -name include -type d) FreeRDP_iphoneos/client/iOS/FreeRDP/ FreeRDP_iphoneos/client/iOS/Misc/
   do
-    rsync -avP $d/ ../bVNC.xcodeproj/libs_combined_$platform/include/
+    rsync -avP $d/ ../sCloudRDP.xcodeproj/libs_combined_$platform/include/
   done
 done
 

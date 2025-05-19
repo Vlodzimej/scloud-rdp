@@ -1,11 +1,11 @@
 OpenSSL-for-iPhone
 ios-cmake
-libvncserver
+lisCloudRDPserver
 libjpeg-turbo
-bVNC.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
-bVNC.xcodeproj/project.xcworkspace/xcuserdata/
+sCloudRDP.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+sCloudRDP.xcodeproj/project.xcworkspace/xcuserdata/
 iSSH2*
-bVNC.xcodeproj/ios_universal
+sCloudRDP.xcodeproj/ios_universal
 aspice-lib-ios/recipes
 aspice-lib-ios/libs_*
 aspice-lib-ios/cerbero_iphoneos
@@ -16,6 +16,6 @@ aspice-lib-ios/gigalib.a
 remote-desktop-clients/
 scripts/export
 ardp-lib-ios/libs_*
-bVNC.xcodeproj/libs_combined_*
-bVNC.xcodeproj/ios_universal_*
+sCloudRDP.xcodeproj/libs_combined_*
+sCloudRDP.xcodeproj/ios_universal_*
 **/.DS_Store

@@ -2,11 +2,11 @@
 
 ## Intro
 
-bVNC is a VNC client for iOS and Mac OS X. aSPICE is a SPICE Client for iOS and Mac OS X.
+sCloudRDP is a VNC client for iOS and Mac OS X. aSPICE is a SPICE Client for iOS and Mac OS X.
 
 ## Links to Apple App Store
 
-bVNC Pro is available at [bVNC Pro](https://apps.apple.com/app/bvnc-pro/id1506461202).
+sCloudRDP Pro is available at [sCloudRDP Pro](https://apps.apple.com/app/sCloudRDP-pro/id1506461202).
 
 aSPICE Pro is available at [aSPICE Pro](https://apps.apple.com/app/aspice-pro/id1560593107).
 
@@ -49,6 +49,6 @@ the script instructions in the terminal.
 
 ### Developing
 
-- Open `bVNC.xcodeproj` in Xcode.
+- Open `sCloudRDP.xcodeproj` in Xcode.
 - You will probably need to enter your Development team ID into the project.
 - Get it from https://developer.apple.com/account/#/membership/

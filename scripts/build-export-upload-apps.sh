@@ -4,12 +4,12 @@
 set -xe
 
 DATE=$(date +%Y-%m-%d)
-PROJ_FILE=../bVNC.xcodeproj
+PROJ_FILE=../sCloudRDP.xcodeproj
 EXPORT_OPTS_FILE=./export-app-store.plist
 BASE_EXPORT_PATH=./export/$DATE
 buildconfig="Release"
 
-APPS="${APPS:-bVNC aRDP aSPICE}"
+APPS="${APPS:-sCloudRDP aRDP aSPICE}"
 BUILD=false
 ARCHIVE=false
 UPLOAD=false
@@ -28,7 +28,7 @@ do
             ;;
         f)
             APPS="${OPTARG}"
-            [[ ! $APPS =~ aRDP|bVNC|aSPICE ]] && {
+            [[ ! $APPS =~ aRDP|sCloudRDP|aSPICE ]] && {
                 echo "Provide one or more app to build, archive, or upload"
                 exit 1
             }
