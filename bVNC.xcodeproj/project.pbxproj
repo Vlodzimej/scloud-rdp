@@ -46,7 +46,6 @@
 		AFB39125274F564A0059F91F /* MacOsUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF99997E2435955F0018204F /* MacOsUIImageView.swift */; };
 		AFB39127274F564A0059F91F /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AF9E8F94242ADD9200752FC2 /* Utilities.m */; };
 		AFB39128274F564A0059F91F /* TouchEnabledUIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E32408AF9B00F5839B /* TouchEnabledUIImageView.swift */; };
-		AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */ = {isa = PBXBuildFile; fileRef = AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */; };
 		AFB391C9274F564A0059F91F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2323B3DADB00C43ED7 /* LaunchScreen.storyboard */; };
 		AFB391CA274F564A0059F91F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AFF808432487533C00A6B35E /* Localizable.strings */; };
 		AFB391CB274F564A0059F91F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */; };
@@ -81,7 +80,6 @@
 		167E59E72CE58CE700C6DAA7 /* SshKeyGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshKeyGenerator.swift; sourceTree = "<group>"; };
 		1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextView.swift; sourceTree = "<group>"; };
 		168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aSPICE-Info.plist"; path = "bVNC/aSPICE-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "bVNC/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
 		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
 		16C90C602D29A9B900DA5DD2 /* PointerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerData.swift; sourceTree = "<group>"; };
@@ -104,13 +102,11 @@
 		AF043A1C23B3DADA00C43ED7 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AF043A2123B3DADB00C43ED7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "bVNC-Info.plist"; sourceTree = "<group>"; };
 		AF043A2F23B3DADB00C43ED7 /* bVNCTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bVNCTests.swift; sourceTree = "<group>"; };
 		AF043A3123B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bVNCUITests.swift; sourceTree = "<group>"; };
 		AF043A3C23B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF05184926115F3B00B64D95 /* VncSessionDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VncSessionDummy.swift; sourceTree = "<group>"; };
-		AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "aSPICE-resources"; path = "Sources/aSPICE-resources"; sourceTree = SOURCE_ROOT; };
 		AF25C1A1243C085600513BBD /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/superlib.a; sourceTree = "<group>"; };
 		AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewHelper.swift; sourceTree = "<group>"; };
 		AF291AD4242418A200DCD383 /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
@@ -750,12 +746,9 @@
 		AF043A1723B3DADA00C43ED7 /* bVNC */ = {
 			isa = PBXGroup;
 			children = (
-				AF09BD4626126EBF00D1A1D7 /* aSPICE-resources */,
 				AF94A6B3251663C000AA2A25 /* bVNC Pro.entitlements */,
 				AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */,
 				16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */,
-				16BDBF3E281F86530072EDF5 /* aSPICE-Info.plist */,
-				AF043A2623B3DADB00C43ED7 /* bVNC-Info.plist */,
 				16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */,
 				168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */,
 				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
@@ -1278,7 +1271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				168B8AF42BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy in Resources */,
-				AFB391C8274F564A0059F91F /* aSPICE-resources in Resources */,
 				AFB391C9274F564A0059F91F /* LaunchScreen.storyboard in Resources */,
 				AFB391CA274F564A0059F91F /* Localizable.strings in Resources */,
 				AFB391CB274F564A0059F91F /* Preview Assets.xcassets in Resources */,

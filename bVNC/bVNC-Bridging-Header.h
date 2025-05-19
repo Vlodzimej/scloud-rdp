@@ -20,15 +20,13 @@
 //
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
+
 #include "common/RemoteBridge.h"
-#include "spice/SpiceBridge.h"
-#include "vnc/VncBridge.h"
+#include "Utility.h"
+#include "rfb/rfbclient.h"
 #include "rdp/RdpBridge.h"
-#include "ssh/SshPortForwarder.h"
 #include "common/SystemMonitor.h"
 #include "common/Utilities.h"
-#ifdef RDP
 #include "freerdp/api.h"
 #include "freerdp/input.h"
-#endif
 
