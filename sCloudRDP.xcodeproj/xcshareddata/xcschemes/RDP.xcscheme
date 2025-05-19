@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AFB2C8CD26001F4D00E2859F"
-               BuildableName = "aSPICE.app"
-               BlueprintName = "aSPICE"
+               BlueprintIdentifier = "AFB3910E274F564A0059F91F"
+               BuildableName = "RDP.app"
+               BlueprintName = "RDP"
                ReferencedContainer = "container:sCloudRDP.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AFB2C8CD26001F4D00E2859F"
-            BuildableName = "aSPICE.app"
-            BlueprintName = "aSPICE"
+            BlueprintIdentifier = "AFB3910E274F564A0059F91F"
+            BuildableName = "RDP.app"
+            BlueprintName = "RDP"
             ReferencedContainer = "container:sCloudRDP.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AFB2C8CD26001F4D00E2859F"
-            BuildableName = "aSPICE.app"
-            BlueprintName = "aSPICE"
+            BlueprintIdentifier = "AFB3910E274F564A0059F91F"
+            BuildableName = "RDP.app"
+            BlueprintName = "RDP"
             ReferencedContainer = "container:sCloudRDP.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
