@@ -27,7 +27,6 @@
 		AFB39110274F564A0059F91F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
 		AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF291AD4242418A200DCD383 /* ToggleButton.swift */; };
-		AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF05184926115F3B00B64D95 /* VncSessionDummy.swift */; };
 		AFB39115274F564A0059F91F /* ucs2xkeysym.c in Sources */ = {isa = PBXBuildFile; fileRef = AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */; };
 		AFB39116274F564A0059F91F /* LocalizedStringKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBBD7A24C4A1E600F64E4A /* LocalizedStringKey.swift */; };
 		AFB39117274F564A0059F91F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF6D39C260FE8B20077F6D2 /* Utils.swift */; };
@@ -105,7 +104,6 @@
 		AF043A3123B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF043A3A23B3DADB00C43ED7 /* bVNCUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bVNCUITests.swift; sourceTree = "<group>"; };
 		AF043A3C23B3DADB00C43ED7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AF05184926115F3B00B64D95 /* VncSessionDummy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VncSessionDummy.swift; sourceTree = "<group>"; };
 		AF25C1A1243C085600513BBD /* superlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = superlib.a; path = bVNC.xcodeproj/libs_combined_iphoneos/lib/superlib.a; sourceTree = "<group>"; };
 		AF25C1AA2440FB2400513BBD /* StoreReviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewHelper.swift; sourceTree = "<group>"; };
 		AF291AD4242418A200DCD383 /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
@@ -483,11 +481,8 @@
 		AF48264B23B479F300826395 /* CallKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CallKit.framework; path = System/Library/Frameworks/CallKit.framework; sourceTree = SDKROOT; };
 		AF48264C23B479F300826395 /* libswiftMapKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftMapKit.tbd; path = usr/lib/swift/libswiftMapKit.tbd; sourceTree = SDKROOT; };
 		AF48282F23B47EC200826395 /* bVNC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bVNC-Bridging-Header.h"; sourceTree = "<group>"; };
-		AF48283023B47EC300826395 /* VncBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VncBridge.h; sourceTree = "<group>"; };
-		AF48283123B47EC300826395 /* VncBridge.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = VncBridge.c; sourceTree = "<group>"; };
 		AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ucs2xkeysym.h; sourceTree = "<group>"; };
 		AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ucs2xkeysym.c; sourceTree = "<group>"; };
-		AF53DCB024022C8C00569F19 /* VncSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VncSession.swift; sourceTree = "<group>"; };
 		AF53DCB22402391600569F19 /* StateKeeper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateKeeper.swift; sourceTree = "<group>"; };
 		AF59A3D3242CE9E100658CE6 /* KeyboardObserving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserving.swift; sourceTree = "<group>"; };
 		AF5D23EE275088E500974427 /* RdpBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RdpBridge.m; sourceTree = "<group>"; };
@@ -648,10 +643,6 @@
 			children = (
 				AF51B2FE2410BAED005DE8AB /* ucs2xkeysym.h */,
 				AF51B2FF2410BAED005DE8AB /* ucs2xkeysym.c */,
-				AF48283023B47EC300826395 /* VncBridge.h */,
-				AF48283123B47EC300826395 /* VncBridge.c */,
-				AF53DCB024022C8C00569F19 /* VncSession.swift */,
-				AF05184926115F3B00B64D95 /* VncSessionDummy.swift */,
 			);
 			path = vnc;
 			sourceTree = "<group>";
@@ -1295,7 +1286,6 @@
 				16F948562BA9045D009B919D /* SecureStorageDelegate.swift in Sources */,
 				AFB39113274F564A0059F91F /* ToggleButton.swift in Sources */,
 				162940692B8A31230086396F /* MultilineTextView.swift in Sources */,
-				AFB39114274F564A0059F91F /* VncSessionDummy.swift in Sources */,
 				AFB391E6274F5A860059F91F /* RdpSession.swift in Sources */,
 				AFB39115274F564A0059F91F /* ucs2xkeysym.c in Sources */,
 				AFB39116274F564A0059F91F /* LocalizedStringKey.swift in Sources */,
