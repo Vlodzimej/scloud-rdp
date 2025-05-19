@@ -78,7 +78,6 @@
 		1682253F2B8A2E5900EF07E3 /* MultilineTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTextView.swift; sourceTree = "<group>"; };
 		168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "aRDP-Info.plist"; path = "sCloudRDP/aRDP-Info.plist"; sourceTree = SOURCE_ROOT; };
-		16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Simple Remote-Info.plist"; sourceTree = "<group>"; };
 		16C90C602D29A9B900DA5DD2 /* PointerData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointerData.swift; sourceTree = "<group>"; };
 		16CDF24B2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortTapDragLongPressPanUIImageView.swift; sourceTree = "<group>"; };
 		16CF04E6293EB248000C3DF0 /* FilterableConnections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableConnections.swift; sourceTree = "<group>"; };
@@ -712,7 +711,6 @@
 				AF94A6B3251663C000AA2A25 /* sCloudRDP Pro.entitlements */,
 				AF48282F23B47EC200826395 /* sCloudRDP-Bridging-Header.h */,
 				16BDBF3F281F86530072EDF5 /* aRDP-Info.plist */,
-				16BDBF42281F884A0072EDF5 /* Simple Remote-Info.plist */,
 				168B8AF22BB8CF9D00EA0DDE /* PrivacyInfo.xcprivacy */,
 				AF043A1E23B3DADB00C43ED7 /* Assets.xcassets */,
 				16FABD072AE9E644007A5810 /* app */,
