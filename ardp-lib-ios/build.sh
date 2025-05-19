@@ -119,7 +119,7 @@ do
   then
     issh_platform="macosx"
   fi
-  deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/* $DEP_PATH/lib/libav*.a $DEP_PATH/lib/libswresample.a $DEP_PATH/lib/libopenh264.a"
+  deps="$JPEG_DEP_PATH/libs_combined_$platform/lib/*.a libs_$platform/* $ISSH_DEP_PATH/openssl_$issh_platform/lib/* $ISSH_DEP_PATH/libssh2_$issh_platform/lib/*"
   /Library/Developer/CommandLineTools/usr/bin//libtool -o duperlib.a $deps
   /Library/Developer/CommandLineTools/usr/bin//libtool -static -o duperlib.a $deps
 

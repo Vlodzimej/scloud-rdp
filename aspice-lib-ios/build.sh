@@ -94,8 +94,8 @@ do
   done
 
   # NOTE: Projects openh264 and ffmpeg are dependencies for aRDP
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone pixman
-  ./cerbero-uninstalled -c config/cross-ios-universal.cbc build libjpeg-turbo
+  # ./cerbero-uninstalled -c config/cross-ios-universal.cbc buildone pixman
+  # ./cerbero-uninstalled -c config/cross-ios-universal.cbc build libjpeg-turbo
   ./cerbero-uninstalled -c config/cross-ios-universal.cbc build openh264 ffmpeg spiceglue
   popd
 done

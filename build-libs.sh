@@ -376,12 +376,12 @@ function build_rdp_dependencies() {
 
 # Main program start
 
-# set_up_ios_cmake
-# build_jpeg_turbo
-# build_issh2 "$SSL_VERSION"
-# build_libvncserver "iSSH2-$SSL_VERSION"
-# lipo_libvncserver
-# create_super_and_spice_libs
-# copy_spice_keyboard_layouts_from_android_project
-# build_spice_dependencies
+#set_up_ios_cmake
+#build_jpeg_turbo
+#build_issh2 "$SSL_VERSION"
+#build_libvncserver "iSSH2-$SSL_VERSION"
+#lipo_libvncserver
+#create_super_and_spice_libs
+#copy_spice_keyboard_layouts_from_android_project
+#build_spice_dependencies
 build_rdp_dependencies
