@@ -86,45 +86,45 @@ function set_up_ios_cmake() {
   fi
 }
 
-function build_jpeg_turbo() {
-  # Clone and build libjpeg-turbo
-  if git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
-  then
-    pushd libjpeg-turbo
-    for arch in arm64 arm64e
-    do
-      echo "libjpeg-turbo iPhone build"
+# function build_jpeg_turbo() {
+#   # Clone and build libjpeg-turbo
+#   if git clone https://github.com/libjpeg-turbo/libjpeg-turbo.git
+#   then
+#     pushd libjpeg-turbo
+#     for arch in arm64 arm64e
+#     do
+#       echo "libjpeg-turbo iPhone build"
 
-      git checkout ${LIBJPEG_TURBO_VERSION}
+#       git checkout ${LIBJPEG_TURBO_VERSION}
 
-      mkdir -p build_iphoneos_${arch}
-      pushd build_iphoneos_${arch}
+#       mkdir -p build_iphoneos_${arch}
+#       pushd build_iphoneos_${arch}
 
-      IOS_SYSROOT=$(xcrun --sdk iphoneos --show-sdk-path)
-      export CFLAGS="-Wall -arch ${arch} -miphoneos-version-min=8.0 -funwind-tables"
-      export ASMFLAGS=""
-      export LDFLAGS=""
-      export NASM=/usr/local/bin/nasm
+#       IOS_SYSROOT=$(xcrun --sdk iphoneos --show-sdk-path)
+#       export CFLAGS="-Wall -arch ${arch} -miphoneos-version-min=8.0 -funwind-tables"
+#       export ASMFLAGS=""
+#       export LDFLAGS=""
+#       export NASM=/usr/local/bin/nasm
 
-      cat <<EOF >toolchain.cmake
-        set(CMAKE_SYSTEM_NAME Darwin)
-        set(CMAKE_SYSTEM_PROCESSOR aarch64)
-        set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
-EOF
-      cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
-            -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
-            -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.2 \
-            -DCMAKE_INSTALL_PREFIX=./libs \
-            -DENABLE_BITCODE=OFF \
-            -DENABLE_VISIBILITY=ON \
-            -DENABLE_SHARED=OFF \
-            -DENABLE_STATIC=ON \
-            -DENABLE_ARC=OFF ..
+#       cat <<EOF >toolchain.cmake
+#         set(CMAKE_SYSTEM_NAME Darwin)
+#         set(CMAKE_SYSTEM_PROCESSOR aarch64)
+#         set(CMAKE_C_COMPILER /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang)
+# EOF
+#       cmake -G"Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
+#             -DCMAKE_OSX_SYSROOT=${IOS_SYSROOT[0]} \
+#             -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.2 \
+#             -DCMAKE_INSTALL_PREFIX=./libs \
+#             -DENABLE_BITCODE=OFF \
+#             -DENABLE_VISIBILITY=ON \
+#             -DENABLE_SHARED=OFF \
+#             -DENABLE_STATIC=ON \
+#             -DENABLE_ARC=OFF ..
             
-      make -j 12
-      make install
-      popd
-    done
+#       make -j 12
+#       make install
+#       popd
+#     done
 
 #     for arch in arm64 #x86_64
 #     do
@@ -157,24 +157,24 @@ EOF
 #         popd
 #     done
 
-    popd # libjpeg-turbo
-  else
-    echo "Found libjpeg-turbo directory, run rm -rf libjpeg-turbo to build again."
-    sleep 2
-  fi
+  #   popd # libjpeg-turbo
+  # else
+  #   echo "Found libjpeg-turbo directory, run rm -rf libjpeg-turbo to build again."
+  #   sleep 2
+  # fi
 
-  mkdir -p libjpeg-turbo/libs_combined_iphoneos/lib/
-  echo "Copy over iPhone libjpeg-turbo headers and library to the common directory"
-  rsync -avP libjpeg-turbo/build_iphoneos_arm64/libs/include libjpeg-turbo/libs_combined_iphoneos/
-  mkdir -p ./sCloudRDP.xcodeproj/libs_combined_iphoneos/lib/
-  for lib in libjpeg.a libturbojpeg.a
-  do
-    echo "Running lipo to create iphone ${lib}"
-    lipo libjpeg-turbo/build_iphoneos_*/libs/lib/${lib} \
-          -output libjpeg-turbo/libs_combined_iphoneos/lib/${lib} -create
-  done
-  echo "Running rsync to copy over iphoneos libraries"
-  rsync -avP libjpeg-turbo/libs_combined_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
+  # mkdir -p libjpeg-turbo/libs_combined_iphoneos/lib/
+  # echo "Copy over iPhone libjpeg-turbo headers and library to the common directory"
+  # rsync -avP libjpeg-turbo/build_iphoneos_arm64/libs/include libjpeg-turbo/libs_combined_iphoneos/
+  # mkdir -p ./sCloudRDP.xcodeproj/libs_combined_iphoneos/lib/
+  # for lib in libjpeg.a libturbojpeg.a
+  # do
+  #   echo "Running lipo to create iphone ${lib}"
+  #   lipo libjpeg-turbo/build_iphoneos_*/libs/lib/${lib} \
+  #         -output libjpeg-turbo/libs_combined_iphoneos/lib/${lib} -create
+  # done
+  # echo "Running rsync to copy over iphoneos libraries"
+  # rsync -avP libjpeg-turbo/libs_combined_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
 
   # mkdir -p libjpeg-turbo/libs_combined_maccatalyst/lib/
   # echo "Rsync Maccatalyst arm64 libjpeg-turbo headers to the common directory"
@@ -189,7 +189,7 @@ EOF
 
   # echo "Running rsync to copy over mac catalyst fat libraries"
   # rsync -avP libjpeg-turbo/libs_combined_maccatalyst/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
-}
+# }
 
 function build_issh2 {
   OPENSSL_VERSION=$1

@@ -87,11 +87,8 @@
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
 		16F948522BA9045D009B919D /* SecureStorageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageDelegate.swift; sourceTree = "<group>"; };
-		690C707F2693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		690C70802693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
-		690C708526937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		690C708626937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
-		690C70872693802F004F2EA1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		690C708826938030004F2EA1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ko; path = ko.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AF043A1823B3DADA00C43ED7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AF043A1A23B3DADA00C43ED7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -499,7 +496,7 @@
 		AF9E8F97242AE4BB00752FC2 /* SystemMonitor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemMonitor.h; sourceTree = "<group>"; };
 		AF9E8F98242AE4E900752FC2 /* SystemMonitor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemMonitor.m; sourceTree = "<group>"; };
 		AFB2C8C025FFCEC000E2859F /* RemoteSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSession.swift; sourceTree = "<group>"; };
-		AFB391D1274F564A0059F91F /* aRDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aRDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFB391D1274F564A0059F91F /* RDP.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RDP.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFB391D9274F586D0059F91F /* duperlib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = duperlib.a; path = sCloudRDP.xcodeproj/libs_combined_iphoneos/lib/duperlib.a; sourceTree = "<group>"; };
 		AFB391DE274F5A0D0059F91F /* RdpSessionDummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSessionDummy.swift; sourceTree = "<group>"; };
 		AFB391E2274F5A820059F91F /* RdpSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdpSession.swift; sourceTree = "<group>"; };
@@ -514,7 +511,6 @@
 		AFF6D39C260FE8B20077F6D2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		AFF8083E2487525800A6B35E /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ja; path = ja.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AFF808422487533C00A6B35E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		AFF808442487534200A6B35E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -700,7 +696,7 @@
 		AF043A1623B3DADA00C43ED7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AFB391D1274F564A0059F91F /* aRDP.app */,
+				AFB391D1274F564A0059F91F /* RDP.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1158,9 +1154,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AFB3910E274F564A0059F91F /* aRDP */ = {
+		AFB3910E274F564A0059F91F /* RDP */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "aRDP" */;
+			buildConfigurationList = AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "RDP" */;
 			buildPhases = (
 				AFB3910F274F564A0059F91F /* Sources */,
 				AFB39129274F564A0059F91F /* Frameworks */,
@@ -1171,9 +1167,9 @@
 			);
 			dependencies = (
 			);
-			name = aRDP;
+			name = RDP;
 			productName = sCloudRDP;
-			productReference = AFB391D1274F564A0059F91F /* aRDP.app */;
+			productReference = AFB391D1274F564A0059F91F /* RDP.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1209,7 +1205,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				AFB3910E274F564A0059F91F /* aRDP */,
+				AFB3910E274F564A0059F91F /* RDP */,
 			);
 		};
 /* End PBXProject section */
@@ -1322,10 +1318,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				AFF808422487533C00A6B35E /* en */,
-				AFF808442487534200A6B35E /* ja */,
-				690C707F2693606A004F2EA1 /* zh-Hant */,
-				690C708526937A5B004F2EA1 /* zh-Hans */,
-				690C70872693802F004F2EA1 /* ko */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1498,7 +1490,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scloud.rdp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1563,7 +1555,7 @@
 				OTHER_LDFLAGS = "-lresolv";
 				PRELINK_LIBS = "";
 				"PRELINK_LIBS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.aRDP;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scloud.rdp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1591,7 +1583,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "aRDP" */ = {
+		AFB391CE274F564A0059F91F /* Build configuration list for PBXNativeTarget "RDP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AFB391CF274F564A0059F91F /* Debug */,
