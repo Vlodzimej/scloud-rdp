@@ -70,7 +70,7 @@ fi
 CLEAN=$2
 if [ -n "${CLEAN}" ]
 then
-  rm -rf ios-cmake libjpeg-turbo iSSH2 lisCloudRDPserver remote-desktop-clients
+  rm -rf ios-cmake libjpeg-turbo iSSH2 libvncserver remote-desktop-clients
   exit 0
 fi
 
@@ -222,62 +222,62 @@ function build_issh2 {
   # rsync -avP $DIR/openssl_macosx/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
 }
 
-function build_lisCloudRDPserver() {
-  local SSL_DIR=$1
+# function build_libvncserver() {
+#   local SSL_DIR=$1
 
-  git clone https://github.com/iiordanov/lisCloudRDPserver.git || true
-  pushd lisCloudRDPserver/
-  git pull
-  git checkout ${LIsCloudRDPSERVER_VERSION}
+#   git clone https://github.com/iiordanov/libvncserver.git || true
+#   pushd libvncserver/
+#   git pull
+#   git checkout ${LIBVNCRDPSERVER_VERSION}
 
-  if [ -n "${CLEAN}" ]
-  then
-    rm -rf build_iphoneos build_maccatalyst_*
-  fi
+#   if [ -n "${CLEAN}" ]
+#   then
+#     rm -rf build_iphoneos build_maccatalyst_*
+#   fi
 
-  for arch in arm64 arm64e
-  do
-    echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.sCloudRDP' > ${TYPE}.xcconfig
-    if [ ! -d build_iphoneos_${arch} ]
-    then
-      echo "iPhone build"
-      mkdir -p build_iphoneos_${arch}
-      pushd build_iphoneos_${arch}
-      cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
-          -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
-          -DPLATFORM=OS64 \
-          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-          -DDEPLOYMENT_TARGET=13.2 \
-          -DENABLE_BITCODE=OFF \
-          -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libssl.a) \
-          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libcrypto.a) \
-          -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_iphoneos/include) \
-          -DCMAKE_INSTALL_PREFIX=./libs \
-          -DBUILD_SHARED_LIBS=OFF \
-          -DENABLE_VISIBILITY=ON \
-          -DENABLE_ARC=OFF \
-          -DWITH_SASL=OFF \
-          -DWITH_LZO=OFF \
-          -DLIsCloudRDPSERVER_HAVE_ENDIAN_H=OFF \
-          -DWITH_GCRYPT=OFF \
-          -DWITH_PNG=OFF \
-          -DWITH_EXAMPLES=OFF \
-          -DWITH_TESTS=OFF \
-          -DWITH_QT=OFF \
-          -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/)
-      popd
-    fi
-    pushd build_iphoneos_${arch}
-    make -j 12
-    make install
-    popd
-  done
+#   for arch in arm64 arm64e
+#   do
+#     echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.sCloudRDP' > ${TYPE}.xcconfig
+#     if [ ! -d build_iphoneos_${arch} ]
+#     then
+#       echo "iPhone build"
+#       mkdir -p build_iphoneos_${arch}
+#       pushd build_iphoneos_${arch}
+#       cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
+#           -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
+#           -DPLATFORM=OS64 \
+#           -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+#           -DDEPLOYMENT_TARGET=13.2 \
+#           -DENABLE_BITCODE=OFF \
+#           -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libssl.a) \
+#           -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_iphoneos/lib/libcrypto.a) \
+#           -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_iphoneos/include) \
+#           -DCMAKE_INSTALL_PREFIX=./libs \
+#           -DBUILD_SHARED_LIBS=OFF \
+#           -DENABLE_VISIBILITY=ON \
+#           -DENABLE_ARC=OFF \
+#           -DWITH_SASL=OFF \
+#           -DWITH_LZO=OFF \
+#           -Dlibvncserver_HAVE_ENDIAN_H=OFF \
+#           -DWITH_GCRYPT=OFF \
+#           -DWITH_PNG=OFF \
+#           -DWITH_EXAMPLES=OFF \
+#           -DWITH_TESTS=OFF \
+#           -DWITH_QT=OFF \
+#           -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/)
+#       popd
+#     fi
+#     pushd build_iphoneos_${arch}
+#     make -j 12
+#     make install
+#     popd
+#   done
 
   # for arch in x86_64 arm64
   # do
   #   if [ ! -d build_maccatalyst_${arch} ]
   #   then
-  #     echo "lisCloudRDPserver Mac Catalyst build"
+  #     echo "libvncserver Mac Catalyst build"
   #     mkdir -p build_maccatalyst_${arch}
   #     pushd build_maccatalyst_${arch}
   #     cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
@@ -298,7 +298,7 @@ function build_lisCloudRDPserver() {
   #         -DENABLE_ARC=OFF \
   #         -DWITH_SASL=OFF \
   #         -DWITH_LZO=OFF \
-  #         -DLIsCloudRDPSERVER_HAVE_ENDIAN_H=OFF \
+  #         -Dlibvncserver_HAVE_ENDIAN_H=OFF \
   #         -DWITH_GCRYPT=OFF \
   #         -DWITH_PNG=OFF \
   #         -DWITH_EXAMPLES=OFF \
@@ -315,27 +315,27 @@ function build_lisCloudRDPserver() {
   popd
 }
 
-function lipo_lisCloudRDPserver() {
-  pushd lisCloudRDPserver/
-  for platform in iphoneos #maccatalyst
-  do
-    # Lipo together the architectures for lisCloudRDPserver and copy them to the common directory.
-    mkdir -p libs_combined_${platform}
-    pushd build_${platform}_arm64 # Using one of the architectures to get lib names
-    for lib in lib*.a
-    do
-      echo "Running lipo for ${lib}"
-      mkdir -p ../libs_combined_${platform}/lib/
-      lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
-    done
-    popd
-    echo "Copying include files from one of of the architectures"
-    rsync -avPL build_${platform}_arm64/libs/include libs_combined_${platform}/
-    echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
-    rsync -avPL libs_combined_${platform}/ ../sCloudRDP.xcodeproj/libs_combined_${platform}/
-  done
-  popd
-}
+# function lipo_libvncserver() {
+#   pushd libvncserver/
+#   for platform in iphoneos #maccatalyst
+#   do
+#     # Lipo together the architectures for libvncserver and copy them to the common directory.
+#     mkdir -p libs_combined_${platform}
+#     pushd build_${platform}_arm64 # Using one of the architectures to get lib names
+#     for lib in lib*.a
+#     do
+#       echo "Running lipo for ${lib}"
+#       mkdir -p ../libs_combined_${platform}/lib/
+#       lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
+#     done
+#     popd
+#     echo "Copying include files from one of of the architectures"
+#     rsync -avPL build_${platform}_arm64/libs/include libs_combined_${platform}/
+#     echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
+#     rsync -avPL libs_combined_${platform}/ ../sCloudRDP.xcodeproj/libs_combined_${platform}/
+#   done
+#   popd
+# }
 
 function create_super_and_spice_libs() {
   # Make a super duper static lib out of all the other libs
@@ -343,28 +343,28 @@ function create_super_and_spice_libs() {
   do
     pushd sCloudRDP.xcodeproj/libs_combined_${platform}/lib
     /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a libturbojpeg.a lisCloudRDPclient.a
-    /Library/Developer/CommandLineTools/usr/bin//libtool -static -o spicelib.a libcrypto.a libssh2.a libssl.a
+    # /Library/Developer/CommandLineTools/usr/bin//libtool -static -o spicelib.a libcrypto.a libssh2.a libssl.a
     popd
   done
 }
 
-function copy_spice_keyboard_layouts_from_android_project() {
-  # Copy over SPICE layouts
-  mkdir -p Sources/aSPICE-resources/Resources/
+# function copy_spice_keyboard_layouts_from_android_project() {
+#   # Copy over SPICE layouts
+#   mkdir -p Sources/aSPICE-resources/Resources/
 
-  git clone https://github.com/iiordanov/remote-desktop-clients.git || true
-  pushd remote-desktop-clients/
-  git pull
-  popd
-  rsync -avP remote-desktop-clients/sCloudRDP/src/main/assets/layouts Sources/aSPICE-resources/Resources/
-}
+#   git clone https://github.com/iiordanov/remote-desktop-clients.git || true
+#   pushd remote-desktop-clients/
+#   git pull
+#   popd
+#   rsync -avP remote-desktop-clients/sCloudRDP/src/main/assets/layouts Sources/aSPICE-resources/Resources/
+# }
 
-function build_spice_dependencies() {
-  # Build SPICE dependencies
-  pushd aspice-lib-ios
-  ./build.sh
-  popd
-}
+# function build_spice_dependencies() {
+#   # Build SPICE dependencies
+#   pushd aspice-lib-ios
+#   ./build.sh
+#   popd
+# }
 
 function build_rdp_dependencies() {
   # Build RDP dependencies
@@ -376,11 +376,11 @@ function build_rdp_dependencies() {
 
 # Main program start
 
-#set_up_ios_cmake
+set_up_ios_cmake
 #build_jpeg_turbo
-#build_issh2 "$SSL_VERSION"
-#build_lisCloudRDPserver "iSSH2-$SSL_VERSION"
-#lipo_lisCloudRDPserver
+build_issh2 "$SSL_VERSION"
+#build_libvncserver "iSSH2-$SSL_VERSION"
+#lipo_libvncserver
 #create_super_and_spice_libs
 #copy_spice_keyboard_layouts_from_android_project
 #build_spice_dependencies
