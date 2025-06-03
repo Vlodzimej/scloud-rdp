@@ -213,23 +213,23 @@ struct AddOrEditConnectionPage : View {
         }
     }
     
-    fileprivate func getGenerateSshKeyButton() -> Button<some View> {
-        return Button(action: {
-            let generator = SshKeyGenerator()
-            let privateKey = generator.generatePrivateKey(type: kSecAttrKeyTypeEC, bits: 521)
-            if (privateKey != nil) {
-                sshPrivateKeyText = generator.privateKeytoBase64String(privateKey: privateKey!) ?? ""
-                UIPasteboard.general.string = sshPrivateKeyText
-            }
-            generateSshKeyButtonClicked = true
-        }) {
-            getButton(imageName: "bubbles.and.sparkles", textLabel: "GENERATE_SSH_KEY_LABEL")
-        }
-    }
-    
+//    fileprivate func getGenerateSshKeyButton() -> Button<some View> {
+//        return Button(action: {
+//            let generator = SshKeyGenerator()
+//            let privateKey = generator.generatePrivateKey(type: kSecAttrKeyTypeEC, bits: 521)
+//            if (privateKey != nil) {
+//                sshPrivateKeyText = generator.privateKeytoBase64String(privateKey: privateKey!) ?? ""
+//                UIPasteboard.general.string = sshPrivateKeyText
+//            }
+//            generateSshKeyButtonClicked = true
+//        }) {
+//            getButton(imageName: "bubbles.and.sparkles", textLabel: "GENERATE_SSH_KEY_LABEL")
+//        }
+//    }
+//    
     fileprivate func getHelpButtonActions() {
         var help_messages_list: [LocalizedStringKey] = ["VNC_CONNECTION_SETUP_HELP_TEXT", "UI_SETUP_HELP_TEXT"]
-        if self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "") {
+        if self.stateKeeper.sshAppIds.contains("UIApplication.appId") {
             help_messages_list.insert("SSH_CONNECTION_SETUP_HELP_TEXT", at: 0)
         }
         self.stateKeeper.connections.edit(connection: self.retrieveConnectionDetails())
@@ -317,7 +317,7 @@ struct AddOrEditConnectionPage : View {
                     getTextField(text: "SSH_PORT_LABEL", binding: $sshPortText)
                     getSshCredentialsFields()
                     getSecureField(text: "SSH_PASSPHRASE_LABEL", binding: $sshPassphraseText)
-                    getGenerateSshKeyButton()
+                    //getGenerateSshKeyButton()
                     if (generateSshKeyButtonClicked) {
                         MultilineTextView(placeholder: "", text: $instructions, minHeight: self.textHeight, calculatedHeight: $textHeight).frame(minHeight: self.textHeight, maxHeight: self.textHeight)
                     }
@@ -350,7 +350,7 @@ struct AddOrEditConnectionPage : View {
     }
     
     fileprivate func shouldShowSshSettingsFields() -> Bool {
-        return self.stateKeeper.sshAppIds.contains(UIApplication.appId ?? "")
+        return self.stateKeeper.sshAppIds.contains("UIApplication.appId")
     }
     
     fileprivate func getTextField(text: String, binding: Binding<String>) -> some View {

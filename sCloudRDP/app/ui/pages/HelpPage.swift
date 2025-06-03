@@ -25,7 +25,7 @@ struct HelpPage : View {
                 ForEach(self.stateKeeper.localizedMessages, id: \.self) { message in
                     Text(message).font(.body).padding()
                 }
-                if self.stateKeeper.helpDialogAppIds.contains(UIApplication.appId ?? "") {
+                if self.stateKeeper.helpDialogAppIds.contains("UIApplication.appId") {
                     VStack {
                         Button(action: {
                             UIApplication.shared.open(URL(string: "https://groups.google.com/forum/#!forum/sCloudRDP-ardp-aspice-opaque-remote-desktop-clients")!, options: [:], completionHandler: nil)

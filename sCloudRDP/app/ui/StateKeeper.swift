@@ -22,6 +22,16 @@ import Combine
 import SwiftUI
 import GameController
 
+class MyUIHostingController<Content> : UIHostingController<Content> where Content : View {
+  override var prefersStatusBarHidden: Bool {
+    return true
+  }
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    log_callback_str(message: "Received a memory warning.")
+  }
+}
+
 class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     static let bH = CGFloat(30.0)
     static let bW = CGFloat(40.0)

@@ -87,6 +87,9 @@ function set_up_ios_cmake() {
 }
 
 function build_issh2 {
+  mkdir -p ./sCloudRDP.xcodeproj/libs_combined_iphoneos/lib/
+
+
   OPENSSL_VERSION=$1
   # Clone and build libssh2
   export CFLAGS=""
@@ -113,6 +116,8 @@ function build_issh2 {
   # Copy SSH libs and header files to project
   rsync -avP $DIR/libssh2_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
   rsync -avP $DIR/openssl_iphoneos/ ./sCloudRDP.xcodeproj/libs_combined_iphoneos/
+  rsync -avP $DIR/libssh2_macosx/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
+  rsync -avP $DIR/openssl_macosx/ ./sCloudRDP.xcodeproj/libs_combined_maccatalyst/
 }
 
 function build_libvncserver() {
@@ -121,7 +126,7 @@ function build_libvncserver() {
   git clone https://github.com/iiordanov/libvncserver.git || true
   pushd libvncserver/
   git pull
-  git checkout ${LIBVNCRDPSERVER_VERSION}
+  git checkout ${LIBVNCSERVER_VERSION}
 
   if [ -n "${CLEAN}" ]
   then
@@ -130,7 +135,7 @@ function build_libvncserver() {
 
   for arch in arm64 arm64e
   do
-    echo 'PRODUCT_BUNDLE_IDENTIFIER = com.iiordanov.sCloudRDP' > ${TYPE}.xcconfig
+    echo 'PRODUCT_BUNDLE_IDENTIFIER = com.scloud.rdp' > ${TYPE}.xcconfig
     if [ ! -d build_iphoneos_${arch} ]
     then
       echo "iPhone build"
@@ -151,13 +156,12 @@ function build_libvncserver() {
           -DENABLE_ARC=OFF \
           -DWITH_SASL=OFF \
           -DWITH_LZO=OFF \
-          -Dlibvncserver_HAVE_ENDIAN_H=OFF \
+          -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
           -DWITH_GCRYPT=OFF \
           -DWITH_PNG=OFF \
           -DWITH_EXAMPLES=OFF \
           -DWITH_TESTS=OFF \
           -DWITH_QT=OFF \
-          -DCMAKE_PREFIX_PATH=$(realpath ../../libjpeg-turbo/libs_combined_iphoneos/)
       popd
     fi
     pushd build_iphoneos_${arch}
@@ -166,34 +170,72 @@ function build_libvncserver() {
     popd
   done
 
+  for arch in arm64 x86_64
+  do
+    if [ ! -d build_maccatalyst_${arch} ]
+    then
+      echo "libvncserver Mac Catalyst build"
+      mkdir -p build_maccatalyst_${arch}
+      pushd build_maccatalyst_${arch}
+      cmake .. -G"Unix Makefiles" -DARCHS="${arch}" \
+          -DCMAKE_TOOLCHAIN_FILE=$(realpath ../../ios-cmake/ios.toolchain.cmake) \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DPLATFORM=MAC_CATALYST \
+          -DDEPLOYMENT_TARGET=13.2 \
+          -DCMAKE_CXX_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+          -DCMAKE_C_FLAGS_MAC_CATALYST:STRING="-target ${arch}-apple-ios13.2-macabi" \
+          -DCMAKE_BUILD_TYPE=MAC_CATALYST \
+          -DENABLE_BITCODE=OFF \
+          -DOPENSSL_SSL_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libssl.a) \
+          -DOPENSSL_CRYPTO_LIBRARY=$(realpath ../../$SSL_DIR/openssl_macosx/lib/libcrypto.a) \
+          -DOPENSSL_INCLUDE_DIR=$(realpath ../../$SSL_DIR/openssl_macosx/include) \
+          -DCMAKE_INSTALL_PREFIX=./libs \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DENABLE_VISIBILITY=ON \
+          -DENABLE_ARC=OFF \
+          -DWITH_SASL=OFF \
+          -DWITH_LZO=OFF \
+          -DLIBVNCSERVER_HAVE_ENDIAN_H=OFF \
+          -DWITH_GCRYPT=OFF \
+          -DWITH_PNG=OFF \
+          -DWITH_EXAMPLES=OFF \
+          -DWITH_TESTS=OFF \
+          -DWITH_QT=OFF \
+      popd
+    fi
+    pushd build_maccatalyst_${arch}
+    make -j 12
+    make install
+    popd
+  done
   popd
 }
 
 function lipo_libvncserver() {
   pushd libvncserver/
-  for platform in iphoneos #maccatalyst
+  for platform in iphoneos maccatalyst
   do
-    # Lipo together the architectures for libvncserver and copy them to the common directory.
-    mkdir -p libs_combined_${platform}
-    pushd build_${platform}_arm64 # Using one of the architectures to get lib names
-    for lib in lib*.a
-    do
-      echo "Running lipo for ${lib}"
-      mkdir -p ../libs_combined_${platform}/lib/
-      lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
-    done
-    popd
+    # # Lipo together the architectures for libvncserver and copy them to the common directory.
+    # mkdir -p libs_combined_${platform}
+    # pushd build_${platform}_arm64 # Using one of the architectures to get lib names
+    # for lib in lib*.a
+    # do
+    #   echo "Running lipo for ${lib}"
+    #   mkdir -p ../libs_combined_${platform}/lib/
+    #   lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
+    # done
+    # popd
     echo "Copying include files from one of of the architectures"
     rsync -avPL build_${platform}_arm64/libs/include libs_combined_${platform}/
-    echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
-    rsync -avPL libs_combined_${platform}/ ../sCloudRDP.xcodeproj/libs_combined_${platform}/
+    # echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
+    # rsync -avPL libs_combined_${platform}/ ../sCloudRDP.xcodeproj/libs_combined_${platform}/
   done
   popd
 }
 
 function create_super_lib() {
   # Make a super duper static lib out of all the other libs
-  for platform in iphoneos #maccatalyst
+  for platform in iphoneos maccatalyst
   do
     pushd sCloudRDP.xcodeproj/libs_combined_${platform}/lib
     /Library/Developer/CommandLineTools/usr/bin//libtool -static -o superlib.a libcrypto.a libssh2.a libssl.a

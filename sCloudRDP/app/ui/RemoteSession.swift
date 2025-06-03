@@ -20,6 +20,9 @@
 import UIKit
 import SwiftUI
 
+var globalStateKeeper: StateKeeper? = StateKeeper()
+var globalWindow: UIWindow?
+
 @discardableResult
 public func synchronized<T>(_ lock: AnyObject, closure:() -> T) -> T {
     objc_sync_enter(lock)
