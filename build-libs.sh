@@ -213,18 +213,19 @@ function build_libvncserver() {
 
 function lipo_libvncserver() {
   pushd libvncserver/
+  
   for platform in iphoneos maccatalyst
   do
     # # Lipo together the architectures for libvncserver and copy them to the common directory.
-    # mkdir -p libs_combined_${platform}
-    # pushd build_${platform}_arm64 # Using one of the architectures to get lib names
-    # for lib in lib*.a
-    # do
-    #   echo "Running lipo for ${lib}"
-    #   mkdir -p ../libs_combined_${platform}/lib/
-    #   lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
-    # done
-    # popd
+    mkdir -p libs_combined_${platform}
+    pushd build_${platform}_arm64 # Using one of the architectures to get lib names
+    for lib in lib*.a
+    do
+      echo "Running lipo for ${lib}"
+      mkdir -p ../libs_combined_${platform}/lib/
+      lipo ../build_${platform}_*/${lib} -output ../libs_combined_${platform}/lib/${lib} -create
+    done
+    popd
     echo "Copying include files from one of of the architectures"
     rsync -avPL build_${platform}_arm64/libs/include libs_combined_${platform}/
     # echo "Rsyncing libs_combined_${platform}/ to ../sCloudRDP.xcodeproj/libs_combined_${platform}/"
@@ -252,9 +253,9 @@ function build_rdp_dependencies() {
 
 
 # Main program start
-set_up_ios_cmake
-build_issh2 "$SSL_VERSION"
-build_libvncserver
-lipo_libvncserver
-create_super_lib
+# set_up_ios_cmake
+# build_issh2 "$SSL_VERSION"
+# build_libvncserver
+# lipo_libvncserver
+# create_super_lib
 build_rdp_dependencies

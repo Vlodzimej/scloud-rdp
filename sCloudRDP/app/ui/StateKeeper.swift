@@ -22,16 +22,6 @@ import Combine
 import SwiftUI
 import GameController
 
-class MyUIHostingController<Content> : UIHostingController<Content> where Content : View {
-  override var prefersStatusBarHidden: Bool {
-    return true
-  }
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    log_callback_str(message: "Received a memory warning.")
-  }
-}
-
 class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
     static let bH = CGFloat(30.0)
     static let bW = CGFloat(40.0)
@@ -1089,7 +1079,7 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         return self.connections.selectedConnection["touchInputMethod"] == TouchInputMethod.simulatedTouchpad.rawValue
     }
     
-    fileprivate func setInputMethod(_ leftSpacing: CGFloat, _ topSpacing: CGFloat, _ minScale: CGFloat) {
+    func setInputMethod(_ leftSpacing: CGFloat, _ topSpacing: CGFloat, _ minScale: CGFloat) {
         let imageFrame = CGRect(x: leftSpacing, y: topSpacing, width: self.fbW*minScale, height: self.fbH*minScale)
         if self.useMacOsUIImageView() {
             log_callback_str(message: "Using ShortTapDragNoPanUIImageView")
@@ -1097,13 +1087,12 @@ class StateKeeper: NSObject, ObservableObject, KeyboardObserving, NSCoding {
         } else if self.useShortPressDragDropAndLongPressPan() {
             log_callback_str(message: "Using ShortTapDragLongPressPanUIImageView")
             self.imageView = ShortTapDragLongPressPanUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
-
         } else if self.useSimulatedTouchpad() {
             log_callback_str(message: "Using SimulatedTouchpadUIImageView")
             self.imageView = SimulatedTouchpadUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
         } else {
             log_callback_str(message: "Using LongTapDragUIImageView")
-            self.imageView = LongTapDragUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
+            self.imageView = TouchEnabledUIImageView(frame: imageFrame, stateKeeper: self, fbW: self.fbW, fbH: self.fbH)
         }
     }
     

@@ -20,7 +20,7 @@
 import UIKit
 import SwiftUI
 
-var globalStateKeeper: StateKeeper? = StateKeeper()
+var globalStateKeeper: StateKeeper? 
 var globalWindow: UIWindow?
 
 @discardableResult

@@ -210,7 +210,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
         view.addInteraction(pointerInteraction)
     }
     
-    fileprivate func mousePointer(fromX: CGFloat, fromY: CGFloat, toX: CGFloat, toY: CGFloat) -> UIBezierPath {
+    func mousePointer(fromX: CGFloat, fromY: CGFloat, toX: CGFloat, toY: CGFloat) -> UIBezierPath {
         return UIBezierPath.arrow(
             from: CGPointMake(fromX, fromY),
             to: CGPointMake(toX, toY),
@@ -749,7 +749,7 @@ class TouchEnabledUIImageView: UIImageView, UIContextMenuInteractionDelegate, UI
     
     func drawPointer(x: CGFloat, y: CGFloat, inView view: UIView) {
         pointerLayer.removeFromSuperlayer()
-        let path = mousePointer(fromX: x + 15, fromY: y + 15, toX: x, toY: y)
+        let path = mousePointer(fromX: x + 9, fromY: y + 20, toX: x, toY: y)
         pointerLayer.path = path.cgPath
         pointerLayer.opacity = 0.8
         pointerLayer.fillColor = UIColor.white.cgColor
