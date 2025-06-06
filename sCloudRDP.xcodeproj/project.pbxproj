@@ -23,6 +23,7 @@
 		16E4FC642B8A3B000074D7E8 /* HelpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC602B8A3B000074D7E8 /* HelpPage.swift */; };
 		16E4FC692B8A3C410074D7E8 /* MiscellaneousPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */; };
 		16F948562BA9045D009B919D /* SecureStorageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F948522BA9045D009B919D /* SecureStorageDelegate.swift */; };
+		66F645642DF080CA00C92312 /* MyHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F645632DF080CA00C92312 /* MyHostingController.swift */; };
 		AF5D23F02750890800974427 /* RdpBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AF5D23EE275088E500974427 /* RdpBridge.m */; };
 		AFB39110274F564A0059F91F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF5043D2617AC53007C7644 /* Constants.swift */; };
 		AFB39112274F564A0059F91F /* CustomTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF244E12407985E00F5839B /* CustomTextInput.swift */; };
@@ -86,6 +87,7 @@
 		16E4FC602B8A3B000074D7E8 /* HelpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpPage.swift; sourceTree = "<group>"; };
 		16E4FC652B8A3C410074D7E8 /* MiscellaneousPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscellaneousPages.swift; sourceTree = "<group>"; };
 		16F948522BA9045D009B919D /* SecureStorageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageDelegate.swift; sourceTree = "<group>"; };
+		66F645632DF080CA00C92312 /* MyHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHostingController.swift; sourceTree = "<group>"; };
 		690C70802693606A004F2EA1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		690C708626937A5B004F2EA1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.storyboard"; sourceTree = "<group>"; };
 		690C708826938030004F2EA1 /* ko */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ko; path = ko.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -621,6 +623,7 @@
 				AF53DCB22402391600569F19 /* StateKeeper.swift */,
 				163A50252CD9B204003BC6AE /* input */,
 				163A50222CD9B1D7003BC6AE /* pages */,
+				66F645632DF080CA00C92312 /* MyHostingController.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -1262,6 +1265,7 @@
 				AFB39122274F564A0059F91F /* StateKeeper.swift in Sources */,
 				AFB39123274F564A0059F91F /* MainPage.swift in Sources */,
 				16CDF24F2D373A3D005B5874 /* ShortTapDragLongPressPanUIImageView.swift in Sources */,
+				66F645642DF080CA00C92312 /* MyHostingController.swift in Sources */,
 				16C90C642D29A9B900DA5DD2 /* PointerData.swift in Sources */,
 				AFB39124274F564A0059F91F /* Utility.c in Sources */,
 				AFB39125274F564A0059F91F /* MacOsUIImageView.swift in Sources */,
